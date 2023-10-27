@@ -32,6 +32,13 @@ const specialPageColors = {
       hover: globalColor.white,
     },
   },
+  'cyber-security-data-privacy': {
+    bgColor: globalColor.black,
+    buttonsColors: {
+      color: globalColor.white,
+      hover: globalColor.white,
+    }
+  }
 };
 
 const MobileMenu = () => {

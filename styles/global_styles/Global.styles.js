@@ -81,6 +81,11 @@ export const entAndMediaColors = {
   entAndMediaColorGray: '#4F4F4F',
 }
 
+export const cyberSecurityColors = {
+  cyberSecurityColorBlack: '#161616',
+  cyberSecurityColorGray: '#8D8D8D',
+}
+
 export const globalGradient = {
   award: 'linear-gradient(180deg, #101113 68.23%, #60191b 94.79%)',
 };

@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import {
   cannabisLawColors,
+  cyberSecurityColors,
   globalColor,
+  rem,
 } from '../../global_styles/Global.styles';
 import {
   media_breakpoint_down,
@@ -49,6 +51,50 @@ export const SpecialHeaderContainer = styled.header`
     }
   }
 
+  &.cyber-security {
+    position: relative;
+    background-color: ${globalColor.white};
+    border-bottom-width: 3px;
+    box-shadow: 0px 4px 22px 0px rgba(0, 0, 0, 0.25);
+
+    .navbar {
+      padding-right: 40px;
+    }
+
+    .nav-item > a {
+      color: ${cyberSecurityColors.cyberSecurityColorBlack};
+      font-size: ${rem(18)};
+      line-height: ${rem(25)};
+      font-weight: 600;
+      font-family: var(--font-poppins);
+    }
+
+    .navbar-nav .show > .nav-link {
+      color: ${cyberSecurityColors.cyberSecurityColorBlack};
+    }
+
+    ${() => `
+      ${SearchBoxContainer} {
+        svg {
+          color: ${cyberSecurityColors.cyberSecurityColorBlack};
+        }
+      }
+    `}
+
+    .link-btn-header {
+      background-color: ${cyberSecurityColors.cyberSecurityColorBlack};
+      border: 2px solid ${cyberSecurityColors.cyberSecurityColorBlack};
+      transition: all 0.5s ease;
+
+      :hover {
+        color: ${cyberSecurityColors.cyberSecurityColorBlack};
+        background-color: ${globalColor.white};
+
+      }
+    }
+
+  }
+
   ${media_breakpoint_exactly_down(1415)} {
     flex-wrap: wrap;
     justify-content: space-between;
@@ -94,6 +140,7 @@ export const SpecialHeaderContainer = styled.header`
       > :nth-child(5) { order: 1; }
   `}
   }
+  
 `;
 export const SearchBoxContainer = styled.div`
   display: ${({ isOpenSearch }) => (isOpenSearch ? 'none' : 'flex')};
