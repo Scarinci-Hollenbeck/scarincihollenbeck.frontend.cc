@@ -11,6 +11,7 @@ import {
 } from '../../mediaBreakpoints.style';
 import { BsSearch } from 'react-icons/bs';
 import { LinksBox } from '../../Header.style';
+import { BurgerBtn, NavList } from 'styles/MobileMenu.style';
 
 export const SpecialHeaderContainer = styled.header`
   display: flex;
@@ -90,6 +91,12 @@ export const SpecialHeaderContainer = styled.header`
         color: ${cyberSecurityColors.cyberSecurityColorBlack};
         background-color: ${globalColor.white};
 
+      }
+    }
+
+    ${BurgerBtn} {
+      svg {
+        color: ${globalColor.black};
       }
     }
 

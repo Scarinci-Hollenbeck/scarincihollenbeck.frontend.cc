@@ -45,12 +45,14 @@ export const OffcanvasContainer = styled(Offcanvas)`
     ul {
       li {
         background-color: ${variants.bgColor};
+        color: ${variants.liColor};
       }
     }
   }
 
   .accordion-button {
     background-color: ${variants.bgColor};
+    color: ${variants.liColor};
   }
   
   .link-btn-header {
@@ -67,6 +69,20 @@ export const OffcanvasContainer = styled(Offcanvas)`
       }
 		}
   }
+
+  li {
+    a {
+      color: ${variants.liColor};
+    }
+  }
+
+  .accordion-button:not(.collapsed) {
+    color: var(--bs-accordion-active-color);
+  }
+
+  --bs-accordion-icon-color: ${variants.buttonsColors.color}
+
+  
   `}
 `;
 export const OffcanvasBody = styled(Offcanvas.Body)`

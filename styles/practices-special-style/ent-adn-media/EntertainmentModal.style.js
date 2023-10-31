@@ -118,14 +118,17 @@ export const EntertainmentModalListItem = styled.div`
   }
 `;
 export const EntertainmentModalListNumber = styled.div`
-  width: 5%;
+  padding-left: ${rem(29)};
+  width: ${rem(54)};
   display: flex;
   align-items: center;
   justify-content: center;
-  column-gap: ${rem(8)};
   color: ${entAndMediaColors.entAndMediaColorGray};
+  position: relative;
 
   ::before {
+    position: absolute;
+    left: 12.5px;
     content: "";
     display: flex;
     width: 0;
@@ -138,6 +141,12 @@ export const EntertainmentModalListNumber = styled.div`
   @media (max-width: 768px) {
     font-size: ${rem(14)};
     line-height: ${rem(21)};
+    width: ${rem(34)};
+    padding-left: ${rem(15)};
+
+    ::before {
+      left: 0;
+    }
   }
 `;
 

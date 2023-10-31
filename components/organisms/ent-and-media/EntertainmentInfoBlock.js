@@ -37,8 +37,8 @@ const EntertainmentInfoBlock = ({ tabs }) => {
   const setTabStyles = (variant) => {
     const tabStyle = {
       first: '',
-      second: 'full-image',
-      third: 'right-image',
+      middle: 'full-image',
+      second: 'right-image',
     };
     return tabStyle[variant];
   };
@@ -82,7 +82,7 @@ const EntertainmentInfoBlock = ({ tabs }) => {
           </div>
           <EnterntainmentTabBtns>
             <EnterntainmentTabBtn onClick={handleModalOpenerClick}>
-              Know more
+              More services
             </EnterntainmentTabBtn>
             <EnterntainmentTabBtn className="btn-white">
               See attorneys

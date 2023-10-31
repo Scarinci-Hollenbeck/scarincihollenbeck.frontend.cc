@@ -267,7 +267,7 @@ export const getServerSideProps = async ({ res, resolvedUrl }) => {
         },
         {
           id: 22,
-          variant: 'second',
+          variant: 'middle',
           title: 'Media',
           image: '/images/entAndMediaInfoBlock2.jpg',
           imageWidth: 1920,
@@ -356,7 +356,7 @@ export const getServerSideProps = async ({ res, resolvedUrl }) => {
         },
         {
           id: 33,
-          variant: 'third',
+          variant: 'second',
           title: 'Sport',
           image: '/images/entAndMediaInfoBlock3.jpg',
           imageWidth: 1920,

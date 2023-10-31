@@ -4,7 +4,7 @@ import SubHeader from '../../../layouts/SubHeader/SubHeader';
 import useApolloQuery from '../../../hooks/useApolloQuery';
 import { categoryPostsByIdQuery } from '../../../requests/graphql-queries';
 
-const AttorneysBlock = dynamic(() => import('../../organisms/ent-and-media/AttorneysBlock'));
+const AttorneysBlock = dynamic(() => import('../../organisms/common-practices-specials/AttorneysBlock'));
 const EntertainmentInfoBlock = dynamic(() => import('../../organisms/ent-and-media/EntertainmentInfoBlock'));
 const EntertainmentClientsBlock = dynamic(() => import('../../organisms/ent-and-media/EntertainmentClientsBlock'));
 const ArticlesBlock = dynamic(() => import('../../organisms/ent-and-media/ArticlesBlock'));
@@ -61,6 +61,7 @@ const EntertainmentAndMediaPage = ({
         attorneyListPractice={attorneyListPractice}
         chairPractice={chairPractice}
         title={entAndMediaData.attorneysBlockTitle}
+        isUnderline
       />
 
       <EntertainmentInfoBlock tabs={entAndMediaData.infoBlock.tabs} />

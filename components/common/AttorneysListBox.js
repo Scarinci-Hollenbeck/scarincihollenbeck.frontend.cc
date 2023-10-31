@@ -1,6 +1,6 @@
 import { AttorneysContainer } from 'styles/AttorneysListBox.style';
 import { Fragment, useState } from 'react';
-import AttorneyEntAndMediaCard from 'components/molecules/ent-and-media/AttorneyEntAndMediaCard';
+import AttorneySpecialCard from 'components/molecules/common-practices-specials/AttorneySpecialCard';
 import AttorneyPracticeCard from '../molecules/practice/AttorneyPracticeCard';
 import useStateScreen from '../../hooks/useStateScreen';
 import AttorneyCard from '../shared/AttorneyCard';
@@ -9,7 +9,7 @@ import AttorneyCannabisCard from '../molecules/cannabis-law/AttorneyCannabisCard
 const CardVariantsMap = {
   default: AttorneyPracticeCard,
   cannabis: AttorneyCannabisCard,
-  entandmedia: AttorneyEntAndMediaCard,
+  special: AttorneySpecialCard,
 };
 const renderCardsByVariants = (variant, propsCard, cardsMap) => {
   const AttorneysCardVariable = cardsMap[variant];

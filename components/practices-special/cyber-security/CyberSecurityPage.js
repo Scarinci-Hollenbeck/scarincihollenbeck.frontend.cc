@@ -1,10 +1,11 @@
 import dynamic from 'next/dynamic';
+import AboutUsBlock from 'components/organisms/cyber-security/AboutUsBlock';
 import BasicSiteHead from '../../shared/head/BasicSiteHead';
 import SubHeader from '../../../layouts/SubHeader/SubHeader';
 import useApolloQuery from '../../../hooks/useApolloQuery';
 import { categoryPostsByIdQuery } from '../../../requests/graphql-queries';
 
-const AttorneysBlock = dynamic(() => import('../../organisms/ent-and-media/AttorneysBlock'));
+const AttorneysBlock = dynamic(() => import('../../organisms/common-practices-specials/AttorneysBlock'));
 const ArticlesBlock = dynamic(() => import('../../organisms/ent-and-media/ArticlesBlock'));
 const PracticesLinksBlock = dynamic(() => import('../../organisms/ent-and-media/PracticesLinksBlock'));
 
@@ -58,6 +59,14 @@ const CyberSecurityPage = ({
       <AttorneysBlock
         attorneyListPractice={attorneyListPractice}
         chairPractice={chairPractice}
+        isUnderline={false}
+      />
+
+      <AboutUsBlock
+        aboutUsContent={cyberSecurityData.aboutUsContent}
+        attorneyListPractice={attorneyListPractice}
+        chairPractice={chairPractice}
+        maxAttorneys={3}
       />
 
       <ArticlesBlock paginationData={paginationDataProps} />

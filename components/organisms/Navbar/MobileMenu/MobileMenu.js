@@ -31,13 +31,24 @@ const specialPageColors = {
       color: cannabisLawColors.cannabisColorDarkGray,
       hover: globalColor.white,
     },
+    liColor: 'inherit',
+  },
+  'entertainment-and-media': {
+    bgColor: cannabisLawColors.cannabisColorGray,
+    buttonsColors: {
+      color: cannabisLawColors.cannabisColorDarkGray,
+      hover: globalColor.white,
+    },
+    liColor: 'inherit',
   },
   'cyber-security-data-privacy': {
     bgColor: globalColor.black,
     buttonsColors: {
       color: globalColor.white,
       hover: globalColor.white,
-    }
+    },
+    liColor: globalColor.white,
+    closeVariant: 'white',
   }
 };
 
@@ -66,7 +77,7 @@ const MobileMenu = () => {
         onHide={handleClose}
         placement="end"
       >
-        <Offcanvas.Header closeButton />
+        <Offcanvas.Header closeButton closeVariant={specialPageColors[slug]?.closeVariant} />
         <OffcanvasBody>
           <NavList>
             {SITE_NAVIGATION.map(({ id, label, children, slug }) => (

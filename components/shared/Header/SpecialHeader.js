@@ -19,7 +19,6 @@ import {
 const headerType = (pageSlug) => {
   const pagesMap = {
     'entertainment-and-media': 'entAndMedia',
-    'cyber-security-data-privacy': 'cyberSecurity',
   };
 
   return pagesMap[pageSlug] || '';
