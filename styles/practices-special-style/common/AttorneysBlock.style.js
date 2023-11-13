@@ -1,41 +1,44 @@
-import { entAndMediaColors, globalColor, rem } from "styles/global_styles/Global.styles";
-import { ContainerContent } from "../commonForSpecial.style";
-import { AttorneysContainer } from "styles/AttorneysListBox.style";
-import { ContactBox, InfoBox, LinkBox, UserName } from "styles/AttorneyCard.style";
-import styled from "styled-components";
+import {
+  entAndMediaColors,
+  globalColor,
+  rem,
+} from 'styles/global_styles/Global.styles';
+import { ContainerContent } from '../commonForSpecial.style';
+import { AttorneysContainer } from 'styles/AttorneysListBox.style';
+import {
+  ContactBox,
+  InfoBox,
+  LinkBox,
+  UserName,
+} from 'styles/AttorneyCard.style';
+import styled from 'styled-components';
 
 export const AttorneySection = styled.section`
-  padding: ${rem(120)} 0 0 0;
+  padding: 120px 0 0 0;
 
   .attorney-title {
-    margin: 0 0 ${rem(40)} 0;
+    margin: 0 0 40px 0;
     color: ${globalColor.black};
+    font-family: var(--font-carilo);
     font-size: ${rem(64)};
     font-weight: 400;
-    line-height: ${rem(100)};
-    font-style: italic;
+    line-height: 100px;
   }
 
   ${ContainerContent} {
     position: relative;
     padding-bottom: ${rem(120)};
 
-    ${({isUnderline}) => {
-      if (isUnderline) {
-        return `
-          &::after {
-            content: "";
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: calc(100% - ${rem(270)});
-            height: 1px;
-            background-color: ${globalColor.grayExtraLite.grayExtraLite50};
-          }
-        `;
-      }
-    }}
+    &::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: calc(100% - ${rem(270)});
+      height: 1px;
+      background-color: ${globalColor.grayExtraLite.grayExtraLite50};
+    }
 
     @media (max-width: 1440px) {
       padding-bottom: ${rem(100)};
@@ -56,7 +59,8 @@ export const AttorneySection = styled.section`
     box-shadow: none;
     column-gap: ${rem(40)};
 
-    .chair-box, .attorneys-list-box{
+    .chair-box,
+    .attorneys-list-box {
       h3 {
         margin: 0 0 ${rem(32)} 0;
         color: ${globalColor.black};
@@ -137,7 +141,8 @@ export const AttorneySection = styled.section`
     @media (max-width: 1440px) {
       flex-direction: column;
 
-      .chair-box, .attorneys-list-box{
+      .chair-box,
+      .attorneys-list-box {
         h3 {
           margin: 0 0 ${rem(24)} 0;
           font-size: ${rem(32)};
@@ -165,7 +170,7 @@ export const AttorneySection = styled.section`
         > div {
           display: grid;
           grid-template-columns: 1fr;
-          
+
           row-gap: ${rem(16)};
         }
       }

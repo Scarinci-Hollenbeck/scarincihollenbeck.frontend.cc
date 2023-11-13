@@ -79,7 +79,7 @@ export const entAndMediaColors = {
   entAndMediaColorGold: '#D1C09D',
   entAndMediaColorMediumGray: '#505050',
   entAndMediaColorGray: '#4F4F4F',
-}
+};
 
 export const cyberSecurityColors = {
   cyberSecurityColorBlack: '#161616',

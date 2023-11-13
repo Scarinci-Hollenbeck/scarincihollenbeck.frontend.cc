@@ -74,11 +74,11 @@ export const DropMenu = styled(Dropdown.Menu)`
   overflow-y: auto;
 `;
 
-export const DropdownItemPractice = styled(Dropdown.Item)`
-  font-size: 1rem;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
-`;
+// export const DropdownItemPractice = styled(Dropdown.Item)`
+//   font-size: 1rem;
+//   overflow-wrap: break-word;
+//   white-space: pre-wrap;
+// `;
 
 export const BlockListBox = styled.section`
   margin-top: 3rem;

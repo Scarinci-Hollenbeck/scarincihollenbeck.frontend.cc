@@ -7,7 +7,10 @@ import {
 } from '../../styles/practices-special-style/SpecialSubHeader.style';
 import ScrollDownArrow from '../../components/common/ScrollDownArrow';
 import DescriptionPlusBtn from '../../components/organisms/cannabis-law/DescriptionPlusBtn';
-import { CannabisSubTitle } from '../../styles/practices-special-style/canabis-law/CannabisSubHeader';
+import {
+  CannabisSubTitle,
+  CannabisTitle,
+} from '../../styles/practices-special-style/canabis-law/CannabisSubHeader';
 import { FullHDContainer } from '../../styles/practices-special-style/commonForSpecial.style';
 
 const SpecialSubHeader = ({
@@ -29,14 +32,6 @@ const SpecialSubHeader = ({
         </video>
       )}
       <PostBreadcrumbs />
-      <h1 className="animate__animated animate__fadeInDown animate__fast">
-        {changeTitle(title)}
-      </h1>
-      {!empty(subtitle) && (
-        <CannabisSubTitle>
-          <p>{subtitle}</p>
-        </CannabisSubTitle>
-      )}
       <MiddleContainer>
         <ScrollDownArrow
           handleOnClick={handleClickAnchor}
@@ -45,6 +40,17 @@ const SpecialSubHeader = ({
         />
         <DescriptionPlusBtn labelForBtn="See attorneys" text={article} />
       </MiddleContainer>
+      <CannabisTitle>
+        <h1 className="animate__animated animate__fadeInDown animate__fast">
+          {changeTitle(title)}
+        </h1>
+
+        {!empty(subtitle) && (
+          <CannabisSubTitle>
+            <p>{subtitle}</p>
+          </CannabisSubTitle>
+        )}
+      </CannabisTitle>
     </FullHDContainer>
   </SpecialSubHeaderContainer>
 );

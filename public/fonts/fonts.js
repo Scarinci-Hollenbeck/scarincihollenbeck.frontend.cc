@@ -1,4 +1,5 @@
 import { Licorice, Montserrat, Poppins, Rajdhani } from '@next/font/google';
+import localFont from '@next/font/local'
 
 export const montserrat = Montserrat({
 	weight: ['300', '500', '600', '900'],
@@ -26,4 +27,15 @@ export const licorice = Licorice({
 	subsets: ['latin'],
 	variable: '--font-licorice',
 	preload: true,
+});
+
+export const carilo = localFont({
+	src: [
+		{
+			path: './Carilo.ttf',
+			weight: '400',
+			style: 'normal',
+		},],
+		variable: '--font-carilo',
+		preload: true,
 });

@@ -78,6 +78,10 @@ export const TitleButtonBox = styled.div`
     color: ${globalColor.white};
     font-size: ${rem(44)};
     text-transform: uppercase;
+
+    ${media_breakpoint_down('sm')} {
+      font-size: 2rem;
+    }
   }
 `;
 
@@ -91,5 +95,9 @@ export const LinkToCategory = styled(Link)`
   :hover {
     color: ${globalColor.black};
     background-color: ${cannabisLawColors.cannabisColorGray};
+  }
+
+  ${media_breakpoint_down('sm')} {
+    padding: 10px 24px;
   }
 `;

@@ -1,5 +1,9 @@
-import styled from "styled-components";
-import { entAndMediaColors, globalColor, rem } from "styles/global_styles/Global.styles";
+import styled from 'styled-components';
+import {
+  entAndMediaColors,
+  globalColor,
+  rem,
+} from 'styles/global_styles/Global.styles';
 
 export const PracticesSection = styled.section`
   padding: ${rem(140)} 0 ${rem(120)};
@@ -34,23 +38,23 @@ export const PracticesPreview = styled.div`
   width: 40%;
   display: flex;
   flex-direction: column;
-  row-gap: ${rem(8)};
+  row-gap: 8px;
 
   @media (max-width: 1440px) {
     align-items: flex-start;
-    width: ${rem(380)};
+    width: 380px;
   }
 
   @media (max-width: 768px) {
     align-items: flex-start;
-    max-width: ${rem(343)};
+    max-width: 343px;
     width: 100%;
   }
 `;
 export const PracticesTitle = styled.h2`
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-carilo);
   font-size: ${rem(84)};
-  line-height: ${rem(100)};
+  line-height: 100px;
   font-style: italic;
   font-weight: 400;
   color: ${entAndMediaColors.entAndMediaColorGold};
@@ -61,18 +65,18 @@ export const PracticesTitle = styled.h2`
 
   @media (max-width: 1440px) {
     font-size: ${rem(48)};
-    line-height: ${rem(72)};
+    line-height: 72px;
   }
 
   @media (max-width: 768px) {
     font-size: ${rem(32)};
-    line-height: ${rem(48)};
+    line-height: 48px;
   }
 `;
 export const PracticesImage = styled.div`
-  margin-left: auto;
-  width: ${rem(428)};
-  height: ${rem(98)};
+  margin-left: 100px;
+  width: 428px;
+  height: 98px;
 
   img {
     width: 100%;
@@ -81,8 +85,8 @@ export const PracticesImage = styled.div`
   }
 
   @media (max-width: 1850px) {
-    width: ${rem(260)};
-    height: ${rem(80)};
+    width: 260px;
+    height: 80px;
   }
 `;
 export const PracticesLinks = styled.ul`
@@ -98,7 +102,7 @@ export const PracticesLinks = styled.ul`
     align-items: center;
 
     ::before {
-      content: "•";
+      content: '•';
       color: white;
       margin-right: 0.5em;
     }
@@ -107,7 +111,7 @@ export const PracticesLinks = styled.ul`
       font-size: ${rem(16)};
       font-family: var(--font-poppins), sans-serif;
       font-weight: 400;
-      line-height: ${rem(24)};
+      line-height: 24px;
       color: ${globalColor.white};
       text-decoration: underline;
       transition: all 0.3s ease;

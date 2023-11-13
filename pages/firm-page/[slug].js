@@ -20,16 +20,27 @@ const sanitizeAttorneyProfile = (node) => ({
 });
 
 /** firm page content  WP GRAPHQL query */
-export async function getFirmPageContent(slug) {
+export async function getFirmPageContent(slug, relatedPostsCategoryId) {
   const data = await fetchAPI(firmPagesQuery, {
-    variables: { slug },
+    variables: { slug, categoryId: relatedPostsCategoryId },
   });
-  return data?.pageBy;
+  return data?.page;
 }
+
+const diversityCategoryId = (slug) => {
+  const pagesMap = {
+    diversity: 5789,
+  };
+
+  return pagesMap[slug] || 98;
+};
 
 /** Set firm page data to props */
 export const getServerSideProps = async ({ params }) => {
-  const req = await getFirmPageContent(params.slug);
+  const req = await getFirmPageContent(
+    params.slug,
+    diversityCategoryId(params.slug),
+  );
   const {
     title,
     seo,

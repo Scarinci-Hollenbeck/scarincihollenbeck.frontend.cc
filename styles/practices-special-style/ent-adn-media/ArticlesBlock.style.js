@@ -1,23 +1,25 @@
-import styled from "styled-components";
-import { globalColor, rem } from "styles/global_styles/Global.styles";
-import { LinkToCategory, TitleButtonBox } from "../ArticlesBlock.style";
-import { PaginationBtn } from "styles/PaginationBtn.style";
-import { media_breakpoint_down, media_breakpoint_exactly_down } from "styles/mediaBreakpoints.style";
-import { BottomSection, TextNews } from "styles/FirmNews.style";
+import styled from 'styled-components';
+import { globalColor, rem } from 'styles/global_styles/Global.styles';
+import { LinkToCategory, TitleButtonBox } from '../ArticlesBlock.style';
+import { PaginationBtn } from 'styles/PaginationBtn.style';
+import {
+  media_breakpoint_down,
+  media_breakpoint_exactly_down,
+} from 'styles/mediaBreakpoints.style';
+import { BottomSection, TextNews } from 'styles/FirmNews.style';
 
 export const ArticlesSection = styled.section`
-  padding: ${rem(140)} 0;
-
+  padding: 140px 0;
 
   ${TitleButtonBox} {
-
     h3 {
       color: ${globalColor.black};
-      font-family: var(--font-poppins), sans-serif;
+      font-family: var(--font-carilo);
       font-size: ${rem(84)};
       font-weight: 400;
       line-height: ${rem(100)};
       font-style: italic;
+      text-transform: capitalize;
 
       @media (max-width: 1850px) {
         font-size: ${rem(64)};
@@ -32,6 +34,10 @@ export const ArticlesSection = styled.section`
       @media (max-width: 768px) {
         font-size: ${rem(32)};
         line-height: ${rem(48)};
+      }
+
+      ${media_breakpoint_down('sm')} {
+        margin-bottom: 20px;
       }
     }
 
@@ -80,7 +86,7 @@ export const ArticlesSection = styled.section`
       color: ${globalColor.black};
     }
   }
-  
+
   .entertainment-news {
     padding: 0;
     width: 32%;
@@ -135,7 +141,6 @@ export const ArticlesSection = styled.section`
         font-weight: 600;
         color: ${globalColor.black};
 
-
         @media (max-width: 1850px) {
           font-size: ${rem(20)};
           line-height: ${rem(30)};
@@ -152,5 +157,9 @@ export const ArticlesSection = styled.section`
         }
       }
     }
+  }
+
+  ${media_breakpoint_down('sm')} {
+    padding: 70px 0 0;
   }
 `;

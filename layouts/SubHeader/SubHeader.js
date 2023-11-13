@@ -20,6 +20,7 @@ const SubHeader = ({
   isBlog,
   isHoliday,
   handleClickAnchor,
+  anchorId,
   isFilter = false,
   authors = [],
   date = '',
@@ -27,7 +28,6 @@ const SubHeader = ({
   setActiveTab,
   activeTab,
   backgroundImage,
-  anchorId,
   article,
   backgroundVideo,
   slidesData,
@@ -41,7 +41,7 @@ const SubHeader = ({
   const slug = getSlugFromUrl(pathname);
 
   const subHeaderProps = {
-    title: title.replace(/Law/i, 'law'),
+    title,
     subtitle,
     isBlog,
     isHoliday,
@@ -52,9 +52,9 @@ const SubHeader = ({
     setActiveTab,
     activeTab,
     backgroundImage,
-    anchorId,
     article,
     backgroundVideo,
+    anchorId,
     handleClickAnchor,
     slidesData,
     sliderCfg,

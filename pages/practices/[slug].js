@@ -1,125 +1,20 @@
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import { PRODUCTION_URL, ScarinciHollenbeckKeyContact } from 'utils/constants';
+import { PRODUCTION_URL } from 'utils/constants';
 import PracticePage from 'components/pages/PracticePage';
 import ApolloWrapper from 'layouts/ApolloWrapper';
 import empty from 'is-empty';
-import {
-  getDataForPractice,
-  getJustClientAlertOnePost,
-} from '../../requests/graphql-queries';
+import { getJustClientAlertOnePost } from '../../requests/graphql-queries';
 import { fetchAPI } from '../../requests/api';
+import { getPracticeAttorneys } from '../../requests/practices/practice-default';
 
 const SiteLoader = dynamic(() => import('components/shared/SiteLoader'));
-
-const attorneysSanitize = (attorneysArr) => {
-  const designationOrder = [
-    'Firm Managing Partner',
-    'Deputy Managing Partner',
-    'Partner',
-    'Counsel',
-    'Of Counsel',
-    'Senior Associate',
-    'Associate',
-  ];
-
-  return attorneysArr
-    .map((attorney) => {
-      attorney.attorneyMainInformation.profileImage = attorney.attorneyMainInformation.profileImage.sourceUrl;
-      return {
-        databaseId: attorney.databaseId,
-        link: attorney.uri,
-        title: attorney.title,
-        ...attorney.attorneyMainInformation,
-      };
-    })
-    .sort((a, b) => {
-      const indexA = designationOrder.indexOf(a.designation);
-      const indexB = designationOrder.indexOf(b.designation);
-
-      if (indexA !== indexB) {
-        return indexA - indexB; // Sort by designation order first
-      }
-      return a.lastName.localeCompare(b.lastName); // If designations are the same, sort by last name
-    });
-};
 
 export const postsSanitize = (posts) => posts.map((post) => {
   post.featuredImage = post.featuredImage?.node.sourceUrl
       || '/images/no-image-found-diamond-750x350.png';
   return post;
 });
-
-const getPracticeAttorneys = async (uri) => {
-  const data = await fetchAPI(getDataForPractice, {
-    variables: {
-      id: uri,
-    },
-  });
-
-  if (!data) {
-    return {
-      practice: undefined,
-    };
-  }
-
-  if (data.practice) {
-    if (!data.practice?.practicesIncluded?.childPractice) {
-      data.practice.practicesIncluded.childPractice = [];
-    }
-
-    if (!data.practice?.practicesIncluded?.relatedBlogCategory) {
-      data.practice.practicesIncluded.relatedBlogCategory = [];
-    }
-
-    if (!data.practice.practicesIncluded.keyContactByPractice) {
-      data.practice.practicesIncluded.keyContactByPractice = [];
-    }
-  }
-
-  let includeAttorney = data.practice?.practicesIncluded.includeAttorney
-    ? attorneysSanitize(data.practice.practicesIncluded.includeAttorney)
-    : [];
-
-  const practiceChief = data.practice?.practicesIncluded.sectionChief
-    ? attorneysSanitize(data.practice.practicesIncluded.sectionChief)
-    : [];
-
-  const keyContactsArr = data.practice?.practicesIncluded.keyContactByPractice
-    ? attorneysSanitize(data.practice.practicesIncluded.keyContactByPractice)
-    : [];
-
-  const postsForSidebar = data.posts?.nodes
-    ? postsSanitize(data.posts.nodes)
-    : [];
-
-  const corePractices = data.practices.nodes.filter(
-    (practice) => !empty(practice.practicesIncluded.childPractice) && practice,
-  );
-
-  if (includeAttorney && practiceChief) {
-    includeAttorney = includeAttorney.filter((attorney) => {
-      const isDuplicate = practiceChief.some(
-        (sectionAttorney) => attorney.databaseId === sectionAttorney.databaseId,
-      );
-      return !isDuplicate;
-    });
-  }
-
-  const concatAttorneys = [...practiceChief, ...keyContactsArr];
-  const keyContacts = concatAttorneys.length > 0
-    ? concatAttorneys
-    : [ScarinciHollenbeckKeyContact];
-
-  return {
-    practice: data.practice,
-    includeAttorney,
-    practiceChief,
-    keyContactsList: keyContacts,
-    corePractices,
-    posts: postsForSidebar,
-  };
-};
 
 const getClientAlertPost = async () => {
   const data = await fetchAPI(getJustClientAlertOnePost);

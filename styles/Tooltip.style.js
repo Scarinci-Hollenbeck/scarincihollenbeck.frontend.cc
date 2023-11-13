@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { globalColor, rem } from "./global_styles/Global.styles";
+import styled from 'styled-components';
+import { globalColor, rem } from './global_styles/Global.styles';
 
 export const ContentTooltip = styled.div`
   position: absolute;

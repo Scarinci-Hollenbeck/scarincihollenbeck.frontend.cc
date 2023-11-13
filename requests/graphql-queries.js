@@ -465,6 +465,37 @@ export const postQuery = `query FirmPageQuery($id: ID!) {
   }
 }`;
 
+export const getClientsQuery = `query FirmPageQuery(
+  $after: String, 
+  $before: String, 
+  $first: Int, 
+  $last: Int
+) {
+  clients(after: $after, before: $before, first: $first, last: $last) {
+     edges {
+      node {
+        databaseId
+        title
+        clientsFields {
+          clientImage {
+            sourceUrl
+            title
+          }
+          entertainmentSubcategory
+          lineColor
+          proffesion
+        }
+      }
+    }
+    pageInfo {
+      endCursor
+      startCursor
+      hasNextPage
+      hasPreviousPage
+    }
+  }
+}`;
+
 // , order by: {field: DATE, order: DESC}
 export const categoryPostsByIdQuery = `query categoryPostsById(
   $first: Int
@@ -816,203 +847,6 @@ export const getPracticesQuery = `query NewQuery {
   }
 }`;
 
-export const getDataForPractice = `query FirmPageQuery($id: ID!) {
-  practice(id: $id, idType: URI) {
-    databaseId
-    slug
-    title
-    practicesIncluded {
-      contentSection {
-        title
-        content
-      }
-      description
-      includeAttorney {
-        ... on AttorneyProfile {
-          databaseId
-          uri
-          title
-          attorneyMainInformation {
-            designation
-            email
-            phoneNumber
-            lastName
-            profileImage {
-              sourceUrl
-            }
-          }
-          attorneyPrimaryRelatedPracticesLocationsGroups {
-            officeLocation {
-              ... on OfficeLocation {
-                databaseId
-                uri
-                title
-              }
-            }
-          }
-        }
-      }
-      sectionChief {
-        ... on AttorneyProfile {
-          databaseId
-          uri
-          title
-          attorneyMainInformation {
-            designation
-            email
-            phoneNumber
-            lastName
-            profileImage {
-              sourceUrl
-            }
-          }
-          attorneyPrimaryRelatedPracticesLocationsGroups {
-            officeLocation {
-              ... on OfficeLocation {
-                databaseId
-                uri
-                title
-              }
-            }
-          }
-        }
-      }
-      childPractice {
-        ... on Practice {
-          databaseId
-          title
-          slug
-        }
-      }
-      relatedBlogCategory {
-        databaseId
-      }
-      keyContactByPractice {
-        ... on AttorneyProfile {
-          databaseId
-          uri
-          title
-          attorneyMainInformation {
-            designation
-            email
-            phoneNumber
-            profileImage {
-              sourceUrl
-            }
-          }
-          attorneyPrimaryRelatedPracticesLocationsGroups {
-            officeLocation {
-              ... on OfficeLocation {
-                databaseId
-                uri
-                title
-              }
-            }
-          }
-        }
-      }
-    }
-    seo {
-      title
-      metaDesc
-    }
-    practiceContentByCategory {
-      cannabisLaw {
-        cardsInfo {
-          cards {
-            title
-            paragraph
-          }
-        }
-        descriptionSubheader
-        subTitle
-        attorneysArticleBlock {
-          paragraph
-          title
-        }
-        keycontactsblock {
-          article
-          listOfLegalGuidanceRegarding {
-            issue
-          }
-          underlay {
-            altText
-            sourceUrl
-          }
-        }
-        helpArticleBlock {
-          title
-          paragraphs {
-            paragraph
-          }
-        }
-        newspaperBlock {
-          article {
-            paragraph
-            title
-          }
-          newspaperBox {
-            newspaperArticle
-            newspaperPhotoBox {
-              altText
-              sourceUrl
-              caption
-            }
-          }
-        }
-        subheaderBackgroundVideo {
-          link
-        }
-        photoBlock {
-          articleBox {
-            paragraph
-            title
-          }
-          cannabisClients {
-            clientLink {
-              title
-              url
-            }
-            clientLogo {
-              databaseId
-              sourceUrl
-              title
-            }
-            clientTitle
-          }
-        }
-      }
-    }
-  }
-  practices(first: 100) {
-    nodes {
-      title
-      uri
-      databaseId
-      practicesIncluded {
-        childPractice {
-          ... on Practice {
-            databaseId
-          }
-        }
-      }
-    }
-  }
-  posts(where: {categoryIn: [99, 98]}, first: 2) {
-    nodes {
-      uri
-      title
-      databaseId
-      featuredImage {
-        node {
-          sourceUrl
-        }
-      }
-    }
-  }
-}
-`;
-
 export const getJustClientAlertOnePost = `query FirmPageQuery {
   posts(where: {categoryIn: [20098]}, first: 1) {
     nodes {
@@ -1222,8 +1056,11 @@ export const holidayPageQuery = `query BasicPageQuery {
 `;
 
 /** querying firm pages content */
-export const firmPagesQuery = `query FirmPageQuery($slug: String) {
-  pageBy(uri: $slug) {
+export const firmPagesQuery = `query FirmPageQuery(
+	$slug: ID!,
+  $categoryId: Int
+  ) {
+  page(idType: URI, id: $slug) {
     title
     seo {
       metaDesc
@@ -1267,7 +1104,7 @@ export const firmPagesQuery = `query FirmPageQuery($slug: String) {
         }
       }
       relatedPosts {
-        posts(first: 3) {
+        posts(first: 3, where: {categoryId: $categoryId}) {
           edges {
             node {
               id
@@ -1275,15 +1112,15 @@ export const firmPagesQuery = `query FirmPageQuery($slug: String) {
               date
               excerpt
               title(format: RENDERED)
-              featuredImage{
-                node{
+              featuredImage {
+                node {
                   sourceUrl
                 }
               }
               author {
-                 node {
-                   name
-                 }
+                node {
+                  name
+                }
               }
             }
           }

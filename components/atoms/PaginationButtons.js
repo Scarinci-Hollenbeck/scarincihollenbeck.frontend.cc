@@ -1,6 +1,9 @@
 import { GrNext, GrPrevious } from 'react-icons/gr';
 import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
-import { PaginationBtn } from '../../styles/PaginationBtn.style';
+import {
+  PaginationBtn,
+  PaginationContainer,
+} from '../../styles/PaginationBtn.style';
 
 const PaginationButtons = ({
   handleNextPagination,
@@ -10,14 +13,7 @@ const PaginationButtons = ({
   disabledNextBtn,
   justArrow,
 }) => (
-  <div
-    className="d-flex flex-row justify-content-between"
-    style={{
-      position: 'relative',
-      top: '-20px',
-      left: '-10px',
-    }}
-  >
+  <PaginationContainer>
     <PaginationBtn
       variant="link"
       disabled={disablePrevBtn}
@@ -27,17 +23,8 @@ const PaginationButtons = ({
       {justArrow ? (
         <BsArrowLeft />
       ) : (
-        <strong
-          style={{
-            fontSize: '20px',
-            position: 'relative',
-            left: '6px',
-            top: '1px',
-          }}
-        >
-          <GrPrevious
-            style={{ fontSize: '15px', position: 'relative', right: '6px' }}
-          />
+        <strong className="arrows-bold">
+          <GrPrevious />
           Previous
         </strong>
       )}
@@ -51,15 +38,13 @@ const PaginationButtons = ({
       {justArrow ? (
         <BsArrowRight />
       ) : (
-        <strong style={{ fontSize: '20px', position: 'relative', top: '1px' }}>
+        <strong className="arrows-bold">
           Next
-          <GrNext
-            style={{ fontSize: '15px', position: 'relative', left: '6px' }}
-          />
+          <GrNext />
         </strong>
       )}
     </PaginationBtn>
-  </div>
+  </PaginationContainer>
 );
 
 export default PaginationButtons;

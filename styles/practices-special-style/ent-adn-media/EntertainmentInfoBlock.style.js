@@ -1,5 +1,9 @@
-import styled from "styled-components";
-import { entAndMediaColors, globalColor, rem } from "styles/global_styles/Global.styles";
+import styled from 'styled-components';
+import {
+  entAndMediaColors,
+  globalColor,
+  rem,
+} from 'styles/global_styles/Global.styles';
 
 export const EntertainmentInfoSection = styled.section`
   padding: ${rem(140)} 0;
@@ -30,7 +34,7 @@ export const EnterntainmentTabNumber = styled.span`
   column-gap: ${rem(10)};
 
   :before {
-    content: "";
+    content: '';
     display: flex;
     width: 0;
     height: 0;
@@ -52,7 +56,7 @@ export const EnterntainmentTabHeader = styled.div`
 
   .delimiter {
     margin: ${rem(40)} ${rem(100)} 0;
-    
+
     svg {
       width: 100%;
     }
@@ -86,7 +90,7 @@ export const EnterntainmentTabTitleWrapper = styled.div`
 export const EnterntainmentTabTitle = styled.h2`
   margin: 0;
   color: ${globalColor.black};
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-carilo), sans-serif;
   font-size: ${rem(84)};
   line-height: ${rem(100)};
   font-weight: 400;
@@ -121,7 +125,6 @@ export const EnterntainmentTabTitle = styled.h2`
       margin-left: ${rem(30)};
     }
   }
-
 `;
 export const EnterntainmentTabBtns = styled.div`
   margin-top: ${rem(20)};
@@ -218,7 +221,7 @@ export const EnterntainmentTabNavbarItem = styled.div`
   transition: all 0.5s ease;
 
   ::before {
-    content: "";
+    content: '';
     display: flex;
     width: 0;
     height: 0;
@@ -228,7 +231,8 @@ export const EnterntainmentTabNavbarItem = styled.div`
     transition: all 0.5s ease;
   }
 
-  &.active, &:hover {
+  &.active,
+  &:hover {
     color: ${globalColor.black};
 
     ::before {
@@ -265,9 +269,8 @@ export const EnterntainmentTabContent = styled.div`
             grid-template-columns: 1fr;
           }
         }
-      `
+      `;
     }}
-    
   }
 
   &.right-image {
@@ -294,9 +297,9 @@ export const EnterntainmentTabContent = styled.div`
           order: 2;
           margin-left: auto;
         }
-      `
+      `;
     }}
-    
+
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
     }
@@ -360,7 +363,7 @@ export const EnterntainmentTabListItem = styled.li`
   display: flex;
 
   ::before {
-    content: "•";
+    content: '•';
     color: ${globalColor.black};
     margin-right: 0.5em;
   }

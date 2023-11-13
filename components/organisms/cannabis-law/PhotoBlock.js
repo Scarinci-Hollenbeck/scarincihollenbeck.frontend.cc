@@ -58,6 +58,7 @@ const PhotoBlock = ({ photoBlockData, anchorIdBlock }) => {
                   />
                   {!empty(clientLink) ? (
                     <PhotoCardLink
+                      key={clientLogo.title}
                       href={clientLink.url}
                       target="_blank"
                       rel="noreferrer"
@@ -69,12 +70,13 @@ const PhotoBlock = ({ photoBlockData, anchorIdBlock }) => {
                     >
                       <PhotoCardPolaroid
                         capture={clientTitle}
-                        imgUrl={clientLogo.sourceUrl}
-                        imgAlt={clientLogo.title}
+                        imgUrl={clientLogo?.sourceUrl}
+                        imgAlt={clientLogo?.title}
                       />
                     </PhotoCardLink>
                   ) : (
                     <motion.div
+                      key={clientLogo.title}
                       initial={{ opacity: 0, scale: 0.5 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.5 }}
@@ -94,13 +96,13 @@ const PhotoBlock = ({ photoBlockData, anchorIdBlock }) => {
 
             {photoBlockData.cannabisClients.map(({ clientLogo }, index) => (
               <PhotoClient
-                key={clientLogo.databaseId}
+                key={clientLogo?.databaseId}
                 onClick={() => setActiveIndex(index)}
                 className={activeIndex === index ? 'active' : ''}
               >
                 <Image
-                  src={clientLogo.sourceUrl}
-                  alt={clientLogo.title}
+                  src={clientLogo?.sourceUrl}
+                  alt={clientLogo?.title}
                   width="300"
                   height="300"
                 />

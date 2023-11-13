@@ -17,14 +17,6 @@ const KeyContactsBlock = ({ keyContactsData, keyContacts }) => (
             <li key={useId()}>{issue}</li>
           ))}
         </ul>
-        <div className="smoker">
-          <Image
-            width={500}
-            height={404}
-            src={keyContactsData.underlay.sourceUrl}
-            alt={keyContactsData.underlay.altText}
-          />
-        </div>
       </div>
       <KeyContactsWrapper>
         <h3 className="key-contacts-title">Key Contacts</h3>

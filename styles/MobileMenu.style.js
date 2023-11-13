@@ -61,9 +61,29 @@ export const OffcanvasContainer = styled(Offcanvas)`
 			fill: ${variants.buttonsColors.color};
     }
     border: 1.5px solid ${variants.buttonsColors.color};
-		
+    ${
+      !empty(variants.buttonsColors.bgColor) &&
+      `
+        background-color: ${variants.buttonsColors.bgColor};
+      `
+    }
+	
 		:hover {
       color: ${variants.buttonsColors.hover};
+      ${
+        !empty(variants.buttonsColors.btnHoverColor) &&
+        `
+          background-color: ${variants.buttonsColors.btnHoverBgColor};
+        `
+      };
+      
+      ${
+        !empty(variants.buttonsColors.borderColor) &&
+        `
+          border: 1.5px solid ${variants.buttonsColors.borderColor};
+        `
+      };
+
       svg {
         fill: ${variants.buttonsColors.hover};
       }

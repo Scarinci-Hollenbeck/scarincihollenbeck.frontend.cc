@@ -1,11 +1,15 @@
 import styled from 'styled-components';
-import { cannabisLawColors, globalColor, rem } from '../../global_styles/Global.styles';
+import {
+  cannabisLawColors,
+  globalColor,
+  rem,
+} from '../../global_styles/Global.styles';
 import {
   media_breakpoint_down,
   media_breakpoint_exactly_down,
   media_breakpoint_range_exacly,
 } from '../../mediaBreakpoints.style';
-import { PhotoCardFigure, PhotoCardImageWrapper } from 'styles/PhotoCardPolaroid.style';
+import { PhotoCardFigure } from 'styles/PhotoCardPolaroid.style';
 import { motion } from 'framer-motion';
 
 export const PhotoBlockContainer = styled.section`
@@ -54,7 +58,8 @@ export const PhotoCannabisBox = styled.div`
   gap: ${rem(20)};
   position: relative;
 
-  .prev-arrow, .next-arrow {
+  .prev-arrow,
+  .next-arrow {
     display: none;
     position: absolute;
     top: 280px;
@@ -105,7 +110,8 @@ export const PhotoCannabisBox = styled.div`
   }
 
   @media (max-width: 992px) {
-    .prev-arrow, .next-arrow {
+    .prev-arrow,
+    .next-arrow {
       font-size: 44px;
       color: ${globalColor.white};
       display: block;
@@ -118,7 +124,8 @@ export const PhotoCannabisBox = styled.div`
     gap: ${rem(8)};
     justify-items: center;
 
-    .prev-arrow, .next-arrow {
+    .prev-arrow,
+    .next-arrow {
       top: 193px;
       font-size: 30px;
     }
@@ -150,7 +157,7 @@ export const PhotoCardLink = styled(motion.a)`
   &:hover {
     ${PhotoCardFigure} {
       figcaption {
-        color: #314AF5;
+        color: #314af5;
       }
     }
   }

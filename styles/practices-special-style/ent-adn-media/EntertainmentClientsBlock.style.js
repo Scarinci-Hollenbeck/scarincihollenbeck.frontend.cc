@@ -1,6 +1,10 @@
-import styled, { keyframes } from "styled-components";
-import { ContentTooltip } from "styles/Tooltip.style";
-import { entAndMediaColors, globalColor, rem } from "styles/global_styles/Global.styles";
+import styled, { keyframes } from 'styled-components';
+import { ContentTooltip } from 'styles/Tooltip.style';
+import {
+  entAndMediaColors,
+  globalColor,
+  rem,
+} from 'styles/global_styles/Global.styles';
 
 const fadeIn = keyframes`
   0% {
@@ -14,82 +18,81 @@ const fadeIn = keyframes`
 `;
 
 export const EntertainmentClientsSection = styled.section`
-  padding: ${rem(140)} 0;
+  padding: 140px 0;
   background-color: ${globalColor.black};
 
   @media (max-width: 1850px) {
-    padding: ${rem(120)} 0;
+    padding: 120px 0;
   }
 
   @media (max-width: 1440px) {
-    padding: ${rem(100)} 0;
+    padding: 100px 0;
   }
 
   @media (max-width: 768px) {
-    padding: ${rem(80)} 0;
+    padding: 80px 0;
   }
 `;
 export const EntertainmentClientsSubtitle = styled.h5`
-  margin: 0 0 ${rem(28)} 0;
+  margin: 0 0 28px 0;
   color: ${entAndMediaColors.entAndMediaColorMediumGray};
   font-family: var(--font-poppins), sans-serif;
   font-size: ${rem(16)};
   font-weight: 400;
-  line-height: ${rem(24)};
-  letter-spacing: ${rem(1.6)};
+  line-height: 24px;
+  letter-spacing: 1.6px;
 
   @media (max-width: 1440px) {
-    margin: 0 0 ${rem(20)} 0;
+    margin: 0 0 20px 0;
     font-size: ${rem(14)};
-    line-height: ${rem(21)};
-    letter-spacing: ${rem(1.4)};
+    line-height: 21px;
+    letter-spacing: 1.4px;
   }
 
   @media (max-width: 768px) {
-    margin: 0 0 ${rem(16)} 0;
+    margin: 0 0 16px 0;
   }
 `;
 export const EntertainmentClientsTitle = styled.h2`
-  margin: 0 0 ${rem(48)} 0;
+  margin: 0 0 48px 0;
   color: ${entAndMediaColors.entAndMediaColorGold};
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-carilo);
   font-style: italic;
   font-size: ${rem(84)};
   font-weight: 400;
-  line-height: ${rem(100)};
-  text-transform: uppercase;
+  line-height: 100px;
 
   @media (max-width: 1850px) {
-    margin: 0 0 ${rem(40)} 0;
+    margin: 0 0 40px 0;
     font-size: ${rem(64)};
-    line-height: ${rem(80)};
+    line-height: 80px;
   }
 
   @media (max-width: 1440px) {
-    margin: 0 0 ${rem(32)} 0;
+    margin: 0 0 32px 0;
     font-size: ${rem(48)};
-    line-height: ${rem(72)};
+    line-height: 72px;
   }
 
   @media (max-width: 768px) {
-    margin: 0 0 ${rem(24)} 0;
-    font-size: ${rem(32)};
-    line-height: ${rem(48)};
+    margin: 0 0 24px 0;
+    font-size: 32px;
+    line-height: 48px;
   }
 `;
 export const EntertainmentClientsDescription = styled.p`
-  margin: 0 0 ${rem(64)} auto;
+  margin: 0 0 64px auto;
   max-width: 50%;
   color: ${globalColor.white};
   font-family: var(--font-poppins), sans-serif;
   font-size: ${rem(16)};
   font-weight: 400;
-  line-height: ${rem(24)};
+  line-height: 24px;
   text-transform: uppercase;
   text-align: start;
 
   @media (max-width: 1850px) {
-    margin: 0 0 ${rem(48)} auto;
+    margin: 0 0 48px auto;
     max-width: 60%;
   }
 
@@ -97,7 +100,7 @@ export const EntertainmentClientsDescription = styled.p`
     max-width: 80%;
     font-size: ${rem(14)};
     font-weight: 400;
-    line-height: ${rem(21)};
+    line-height: 21px;
   }
 
   @media (max-width: 768px) {
@@ -105,17 +108,16 @@ export const EntertainmentClientsDescription = styled.p`
   }
 `;
 export const EntertainmentClientsList = styled.div`
-
   .pagination {
-    margin: 0 0 ${rem(20)} 0;
-    column-gap: ${rem(16)};
+    margin: 0 0 20px 0;
+    column-gap: 16px;
   }
 
   .page-item {
-    width: ${rem(43)};
-    height: ${rem(12)};
-    border-radius: ${rem(20)};
-    border: ${rem(1)} solid ${entAndMediaColors.entAndMediaColorGold};
+    width: 43px;
+    height: 12px;
+    border-radius: 20px;
+    border: 1px solid ${entAndMediaColors.entAndMediaColorGold};
     background-color: transparent;
     overflow: hidden;
 
@@ -135,15 +137,15 @@ export const EntertainmentClientsList = styled.div`
 
   @media (max-width: 1850px) {
     .page-item {
-      width: ${rem(30)};
-      height: ${rem(10)};
+      width: 30px;
+      height: 10px;
     }
   }
 
   @media (max-width: 1440px) {
     .page-item {
-      width: ${rem(35)};
-      height: ${rem(12)};
+      width: 35px;
+      height: 12px;
     }
   }
 `;
@@ -155,17 +157,15 @@ export const EntertainmentClientsListItems = styled.div`
 `;
 
 export const EntertainmentClientsItem = styled.div`
-
-  ${({color}) => {
-      return `background-color: ${color};`
-    }
-  }
+  ${({ color }) => {
+    return `background-color: ${color};`;
+  }}
   cursor: pointer;
   animation: ${fadeIn} 1s ease;
 
   &.open {
-    ${props => {
-        return `
+    ${(props) => {
+      return `
           ${EntertainmentClientsItemOpener} {
             padding: 0;
             display: grid;
@@ -209,11 +209,11 @@ export const EntertainmentClientsItemOpenerWrapper = styled.div`
 `;
 
 export const EntertainmentClientsItemOpener = styled.div`
-  padding: ${rem(25)};
+  padding: 25px;
   font-family: var(--font-poppins), sans-serif;
   font-size: ${rem(16)};
   font-weight: 400;
-  line-height: ${rem(24)};
+  line-height: 24px;
   color: ${globalColor.black};
   position: relative;
   display: grid;
@@ -224,15 +224,15 @@ export const EntertainmentClientsItemOpener = styled.div`
   transition: all 0.5s ease;
 
   @media (max-width: 1850px) {
-    padding: ${rem(20)} ${rem(25)};
+    padding: 20px 25px;
   }
 
   @media (max-width: 1440px) {
-    padding: ${rem(16)};
+    padding: 16px;
   }
 `;
 export const EntertainmentClientsItemCategory = styled.div`
-  padding: 0 2.5% 0 ${rem(20)};
+  padding: 0 2.5% 0 20px;
   width: 33.33%;
   column-gap: 7.5%;
   display: flex;
@@ -241,20 +241,20 @@ export const EntertainmentClientsItemCategory = styled.div`
   font-family: var(--font-poppins), sans-serif;
   font-size: ${rem(16)};
   font-weight: 400;
-  line-height: ${rem(24)};
+  line-height: 24px;
   color: ${globalColor.black};
-  
+
   :before {
     content: '';
     position: absolute;
-    left: ${rem(25)};
+    left: 25px;
     top: 50%;
     transform: translateY(-50%);
     width: 0;
     height: 0;
-    border-left: ${rem(5)} solid ${globalColor.black};
-    border-bottom: ${rem(5)} solid transparent;
-    border-top: ${rem(5)} solid transparent;
+    border-left: 5px solid ${globalColor.black};
+    border-bottom: 5px solid transparent;
+    border-top: 5px solid transparent;
     transition: all 0.5s ease;
   }
 
@@ -264,12 +264,12 @@ export const EntertainmentClientsItemCategory = styled.div`
 
   @media (max-width: 1850px) {
     font-size: ${rem(14)};
-    line-height: ${rem(21)};
+    line-height: 21px;
   }
 
   @media (max-width: 768px) {
     font-size: ${rem(12)};
-    line-height: ${rem(18)};
+    line-height: 18px;
   }
 `;
 export const EntertainmentClientsItemName = styled.div`
@@ -277,7 +277,7 @@ export const EntertainmentClientsItemName = styled.div`
   font-family: var(--font-poppins), sans-serif;
   font-size: ${rem(18)};
   font-weight: 600;
-  line-height: ${rem(27)};
+  line-height: 27px;
   color: ${globalColor.black};
   display: flex;
   justify-content: center;
@@ -289,12 +289,12 @@ export const EntertainmentClientsItemName = styled.div`
 
   @media (max-width: 1850px) {
     font-size: ${rem(16)};
-    line-height: ${rem(24)};
+    line-height: 24px;
   }
 
   @media (max-width: 768px) {
     font-size: ${rem(14)};
-    line-height: ${rem(21)};
+    line-height: 21px;
   }
 `;
 export const EntertainmentClientsItemProfession = styled.div`
@@ -304,7 +304,7 @@ export const EntertainmentClientsItemProfession = styled.div`
   font-family: var(--font-poppins), sans-serif;
   font-size: ${rem(16)};
   font-weight: 400;
-  line-height: ${rem(24)};
+  line-height: 24px;
   color: ${globalColor.black};
   display: flex;
   justify-content: space-between;
@@ -320,7 +320,7 @@ export const EntertainmentClientsItemProfession = styled.div`
 
   @media (max-width: 768px) {
     font-size: ${rem(12)};
-    line-height: ${rem(18)};
+    line-height: 18px;
   }
 `;
 export const EntertainmentClientsItemContent = styled.div`
@@ -340,39 +340,38 @@ export const EntertainmentClientsItemContentWrapper = styled.div`
   @media (max-width: 768px) {
     align-items: center;
     flex-wrap: wrap;
-    row-gap: ${rem(12)};
+    row-gap: 12px;
   }
 `;
 export const EntertainmentClientsItemContentCategory = styled.div`
   width: 25%;
-  font-family: var(--font-poppins), sans-serif;
+  font-family: var(--font-carilo), sans-serif;
   font-size: ${rem(40)};
   font-weight: 400;
-  line-height: ${rem(60)};
+  line-height: 60px;
   color: ${globalColor.black};
-  text-transform: uppercase;
   font-style: italic;
 
   @media (max-width: 1850px) {
     font-size: ${rem(32)};
-    line-height: ${rem(48)};
+    line-height: 48px;
   }
 
   @media (max-width: 1440px) {
     font-size: ${rem(20)};
-    line-height: ${rem(30)};
+    line-height: 30px;
   }
 
   @media (max-width: 768px) {
     width: 50%;
     font-size: ${rem(16)};
-    line-height: ${rem(24)};
+    line-height: 24px;
     order: 1;
   }
 `;
 export const EntertainmentActionBlockContentImage = styled.div`
-  width: ${rem(240)};
-  height: ${rem(240)};
+  width: 240px;
+  height: 240px;
 
   img {
     width: 100%;
@@ -381,8 +380,8 @@ export const EntertainmentActionBlockContentImage = styled.div`
   }
 
   @media (max-width: 1850px) {
-    width: ${rem(200)};
-    height: ${rem(200)};
+    width: 200px;
+    height: 200px;
   }
 
   @media (max-width: 1440px) {
@@ -391,8 +390,8 @@ export const EntertainmentActionBlockContentImage = styled.div`
   }
 
   @media (max-width: 768px) {
-    width: ${rem(100)};
-    height: ${rem(100)};
+    width: 100px;
+    height: 100px;
     order: 3;
   }
 `;
@@ -401,14 +400,14 @@ export const EntertainmentClientsItemContentName = styled.div`
   font-family: var(--font-poppins), sans-serif;
   font-size: ${rem(24)};
   font-weight: 600;
-  line-height: ${rem(36)};
+  line-height: 36px;
   color: ${globalColor.black};
   display: flex;
   justify-content: center;
 
   @media (max-width: 1850px) {
     font-size: ${rem(18)};
-    line-height: ${rem(27)};
+    line-height: 27px;
   }
 
   @media (max-width: 768px) {
@@ -416,7 +415,7 @@ export const EntertainmentClientsItemContentName = styled.div`
     text-align: end;
     width: 50%;
     font-size: ${rem(14)};
-    line-height: ${rem(21)};
+    line-height: 21px;
     order: 2;
   }
 `;
@@ -426,20 +425,20 @@ export const EntertainmentClientsItemContentProfession = styled.div`
   font-family: var(--font-poppins), sans-serif;
   font-size: ${rem(18)};
   font-weight: 400;
-  line-height: ${rem(27)};
+  line-height: 27px;
   display: flex;
   justify-content: flex-end;
 
   @media (max-width: 1850px) {
     font-size: ${rem(14)};
-    line-height: ${rem(21)};
+    line-height: 21px;
   }
 
   @media (max-width: 768px) {
     text-align: end;
     width: 50%;
     font-size: ${rem(12)};
-    line-height: ${rem(18)};
+    line-height: 18px;
     order: 4;
   }
 `;

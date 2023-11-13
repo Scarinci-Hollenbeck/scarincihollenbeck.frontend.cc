@@ -19,7 +19,7 @@ export const FooterContainer = styled.footer`
     color: #fff;
   }
 
-  ${media_breakpoint_down('md')} {
+  ${media_breakpoint_down('lg')} {
     flex-direction: column;
     padding: 2vw 6vw 2vw 8vw;
   }
@@ -32,7 +32,7 @@ export const DetailsContainer = styled.section`
   align-items: flex-start;
   gap: 10px;
 
-  ${media_breakpoint_down('md')} {
+  ${media_breakpoint_down('lg')} {
     flex-direction: column;
   }
 `;
@@ -41,7 +41,7 @@ export const ContactsContainer = styled.section`
   display: flex;
   gap: 25px;
 
-  ${media_breakpoint_down('md')} {
+  ${media_breakpoint_down('lg')} {
     width: 100%;
     gap: 25px;
     padding: 0 12vw;

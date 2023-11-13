@@ -1,11 +1,11 @@
 import dynamic from 'next/dynamic';
 import empty from 'is-empty';
-import { useEffect, useState } from 'react';
 import BasicSiteHead from '../../shared/head/BasicSiteHead';
 import SubHeader from '../../../layouts/SubHeader/SubHeader';
 import useApolloQuery from '../../../hooks/useApolloQuery';
 import { categoryPostsByIdQuery } from '../../../requests/graphql-queries';
 import ArticlesBlock from '../../organisms/cannabis-law/ArticlesBlock';
+import useAnchorLink from '../../../hooks/useAnchorLink';
 
 const PhotoBlock = dynamic(() => import('../../organisms/cannabis-law/PhotoBlock'));
 const CardsBlock = dynamic(() => import('../../organisms/cannabis-law/CardsBlock'));
@@ -25,16 +25,9 @@ const CannabisLawPage = ({
   keyContactsList,
   cannabisLawData,
 }) => {
-  const [hrefToId, setHref] = useState('');
+  const { setHref, hrefToId } = useAnchorLink();
   const anchorIdBlock = 'photoBlock';
-  const handleClickByAnchor = () => setHref(anchorIdBlock);
-
-  useEffect(() => {
-    const clearId = setTimeout(() => {
-      setHref('');
-    }, 100);
-    return () => clearTimeout(clearId);
-  }, [hrefToId]);
+  const handleClickByAnchorToPhotoBlock = () => setHref(anchorIdBlock);
 
   const {
     handleNextPagination, handlePrevPagination, data, loading, error,
@@ -67,7 +60,7 @@ const CannabisLawPage = ({
         personDataForSchema={attorneysSchemaData}
       />
       <SubHeader
-        handleClickAnchor={handleClickByAnchor}
+        handleClickAnchor={handleClickByAnchorToPhotoBlock}
         backgroundVideo={cannabisLawData.subheaderBackgroundVideo.link}
         anchorId={anchorIdBlock}
         title={practice.title}

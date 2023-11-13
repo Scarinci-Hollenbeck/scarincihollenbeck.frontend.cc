@@ -11,18 +11,22 @@ import {
   PracticesTitle,
 } from 'styles/practices-special-style/ent-adn-media/PracticesLinksBlock';
 
-const PracticesLinksBlock = ({ practices, practicesFooterImage }) => (
+const PracticesLinksBlock = ({
+  practices,
+  practicesFooterImage,
+  practicesListTitle,
+}) => (
   <PracticesSection>
     <ContainerContent>
       <PracticesContent>
         <PracticesPreview>
-          <PracticesTitle>Practices</PracticesTitle>
+          <PracticesTitle>{practicesListTitle}</PracticesTitle>
           <PracticesImage>
             <Image
               src={practicesFooterImage?.sourceUrl}
-              alt={practicesFooterImage?.altText}
-              width={practicesFooterImage?.width}
-              height={practicesFooterImage?.height}
+              alt={practicesFooterImage?.title}
+              width={practicesFooterImage?.mediaDetails.width}
+              height={practicesFooterImage?.mediaDetails.height}
             />
           </PracticesImage>
         </PracticesPreview>

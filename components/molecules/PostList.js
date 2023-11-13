@@ -14,7 +14,6 @@ const PostList = ({
   const disableNextBtn = !data?.posts?.pageInfo.hasNextPage;
 
   const memoData = useMemo(() => data?.posts?.edges, [data]);
-
   return (
     <>
       {loading ? (

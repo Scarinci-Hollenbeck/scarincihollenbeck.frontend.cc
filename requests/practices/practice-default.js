@@ -1,7 +1,7 @@
 import empty from 'is-empty';
 import { fetchAPI } from '../api';
-import { getDataForPractice } from '../graphql-queries';
 import { ScarinciHollenbeckKeyContact } from '../../utils/constants';
+import { practicesQueryGenerator } from './practicesQueryGenerator';
 
 export const postsSanitize = (posts) => posts.map((post) => {
   post.featuredImage = post.featuredImage?.node.sourceUrl
@@ -42,7 +42,7 @@ export const attorneysSanitize = (attorneysArr) => {
 };
 
 export const getPracticeAttorneys = async (uri) => {
-  const data = await fetchAPI(getDataForPractice, {
+  const data = await fetchAPI(practicesQueryGenerator(uri), {
     variables: {
       id: uri,
     },

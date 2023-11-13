@@ -34,7 +34,7 @@ export const getServerSideProps = async ({ res, resolvedUrl }) => {
   return {
     props: {
       practice,
-      cannabisLawData: practice.practiceContentByCategory.cannabisLaw,
+      cannabisLawData: practice.practiceContentForeCannabisLaw.cannabisLaw,
       chairPractice: practiceChief || [],
       attorneyListPractice: includeAttorney || [],
       keyContactsList,

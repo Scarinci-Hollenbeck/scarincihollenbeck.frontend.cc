@@ -14,7 +14,7 @@ const ArticlesBlock = ({ paginationData }) => (
     <ContainerContent>
       <TitleButtonBox>
         <h3>Related Articles</h3>
-        <LinkToCategory href="/library/category/cannabis-law">
+        <LinkToCategory href="/library/category/entertainment-and-sports">
           Read more
         </LinkToCategory>
       </TitleButtonBox>
