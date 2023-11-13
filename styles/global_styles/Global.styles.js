@@ -88,6 +88,7 @@ export const cyberSecurityColors = {
   cyberSecurityColorDarkGray: '#646464',
   cyberSecurityColorDark: '#222222',
   cyberSecurityColorGray300: '#949494',
+  cyberSecurityColorBlue: '#4062EF',
 }
 
 export const globalGradient = {

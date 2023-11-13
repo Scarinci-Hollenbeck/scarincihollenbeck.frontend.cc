@@ -3,8 +3,8 @@ import { cyberSecurityColors, rem } from 'styles/global_styles/Global.styles';
 
 export const CyberSecuritySubHeaderSection = styled.section`
   padding: ${rem(32)} 0 ${rem(80)} 0;
-  ${({ backgroundGif }) =>
-    backgroundGif && `background: url(${backgroundGif}) center/cover no-repeat;`}
+  position: relative;
+  overflow: hidden;
 
   @media (max-width: 1440px) {
     padding: ${rem(32)} 0 ${rem(60)} 0;
@@ -12,6 +12,26 @@ export const CyberSecuritySubHeaderSection = styled.section`
 
   @media (max-width: 768px) {
     padding: ${rem(20)} 0 ${rem(100)} 0;
+  }
+`;
+
+export const CyberSecuritySubHeaderBg = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+
+  :after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    opacity: 0.7;
   }
 `;
 export const CyberSecuritySubHeaderContent = styled.div`

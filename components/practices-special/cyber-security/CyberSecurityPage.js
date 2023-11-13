@@ -1,12 +1,13 @@
 import dynamic from 'next/dynamic';
 import AboutUsBlock from 'components/organisms/cyber-security/AboutUsBlock';
+import RepresentativeBlock from 'components/organisms/cyber-security/RepresentativeBlock';
 import BasicSiteHead from '../../shared/head/BasicSiteHead';
 import SubHeader from '../../../layouts/SubHeader/SubHeader';
 import useApolloQuery from '../../../hooks/useApolloQuery';
 import { categoryPostsByIdQuery } from '../../../requests/graphql-queries';
 
 const AttorneysBlock = dynamic(() => import('../../organisms/common-practices-specials/AttorneysBlock'));
-const ArticlesBlock = dynamic(() => import('../../organisms/ent-and-media/ArticlesBlock'));
+const ArticlesBlock = dynamic(() => import('../../organisms/cyber-security/ArticlesBlock'));
 const PracticesLinksBlock = dynamic(() => import('../../organisms/ent-and-media/PracticesLinksBlock'));
 
 const CyberSecurityPage = ({
@@ -69,12 +70,14 @@ const CyberSecurityPage = ({
         maxAttorneys={3}
       />
 
+      <RepresentativeBlock representativeData={cyberSecurityData.representativeData} />
+
       <ArticlesBlock paginationData={paginationDataProps} />
 
-      <PracticesLinksBlock
+      {/* <PracticesLinksBlock
         practices={practices}
         practicesFooterImage={cyberSecurityData.practicesFooterImage}
-      />
+      /> */}
     </>
   );
 };

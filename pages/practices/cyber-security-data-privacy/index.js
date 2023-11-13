@@ -42,6 +42,7 @@ export const getServerSideProps = async ({ res, resolvedUrl }) => {
 
   const practices = await getPractices();
 
+  practice.practiceContentByCategory = {};
   practice.practiceContentByCategory.cyberSecurity = {
     backgroundGif: '/images/SubHeaderCyberSecurity.gif',
     subTitle: [
@@ -91,6 +92,23 @@ export const getServerSideProps = async ({ res, resolvedUrl }) => {
         'Drafting and implementing employee policies, handbooks, and training',
         'Addressing issues concerning consumer privacy, online advertising, behavioral marketing, social media, and data sharing.',
       ],
+    },
+    representativeData: {
+      title: 'Representative Matters',
+      text: 'Our Cybersecurity & Data Privacy Practice Group has the experience to handle the most complex matters. We also play an important role in the development of public policy regarding the future regulation of cyber issues and are recognized as authorities in the field. For example, our team includes the editor-in-chief of the treatise <a href="#"> “Intellectual Property Law in Cyberspace” </a>, who is a leading figure in the development of cyber-privacy-related initiatives for both the Intellectual Property Owners Association and the American Intellectual Property Law Association.',
+      list: [
+        'Advised clients on data privacy and data transfer restrictions affecting the review and use of customer data from various European and Asian jurisdictions in the context of civil litigations and U.S. Department of Justice investigations.',
+        'Researched issuer obligations related to data security breaches exposing customer data under the federal securities laws and implications for consequent class action litigations.',
+        'Prepared and negotiated agreements involving data privacy issues.',
+        'Maintains currency with federal and state data privacy regulations and statutes.',
+        'Assisted clients in the development and implementation of Cybersecurity and Data Privacy policies/procedures, including data breach response plans, risk assessments, providing advice on breach notification requirements under state and federal law, training programs and coordination of breach notices with client staff.',
+      ],
+      bg: {
+        sourceUrl: '/images/representative-bg.png',
+        alt: 'representative-bg',
+        width: 1000,
+        height: 1000,
+      },
     },
     practicesFooterImage: {
       sourceUrl: '/images/practicesFooterImage.jpg',

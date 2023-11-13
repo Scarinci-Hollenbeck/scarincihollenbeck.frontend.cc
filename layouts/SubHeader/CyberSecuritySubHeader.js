@@ -5,6 +5,7 @@ import Image from 'next/image';
 import React, { useEffect } from 'react';
 import { ContainerContent } from 'styles/practices-special-style/commonForSpecial.style';
 import {
+  CyberSecuritySubHeaderBg,
   CyberSecuritySubHeaderContent,
   CyberSecuritySubHeaderFooter,
   CyberSecuritySubHeaderSection,
@@ -25,6 +26,9 @@ const CyberSecuritySubHeader = ({
 
   return (
     <CyberSecuritySubHeaderSection backgroundGif={backgroundGif}>
+      <CyberSecuritySubHeaderBg>
+        <Image src={backgroundGif} alt="bg" width={1920} height={1080} />
+      </CyberSecuritySubHeaderBg>
       <ContainerContent>
         <PostBreadCrumbs />
         <CyberSecuritySubHeaderContent subHeaderBgLogo={subHeaderBgLogo}>
@@ -40,7 +44,7 @@ const CyberSecuritySubHeader = ({
           </CyberSecuritySubHeaderText>
         </CyberSecuritySubHeaderContent>
         <CyberSecuritySubHeaderFooter>
-          <SmallRoundPhotos photos={photos} maxPhotos={3} />
+          <SmallRoundPhotos attorneyListPractice={attorneyListPractice} photos={photos} maxPhotos={4} />
           <ScrollDownSwitch />
         </CyberSecuritySubHeaderFooter>
       </ContainerContent>

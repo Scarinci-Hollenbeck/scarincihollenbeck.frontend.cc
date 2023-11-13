@@ -1,28 +1,37 @@
 import Image from 'next/image';
-import React from 'react';
+import React, { Fragment, useState } from 'react';
 import { Photo, PhotoCount, PhotoList } from 'styles/practices-special-style/subheader/SmallRoundPhotos.style';
 
-const SmallRoundPhotos = ({ photos, maxPhotos }) => {
-  const visiblePhotos = photos.slice(0, maxPhotos + 1);
-  let countHidenPhotos = photos.length - visiblePhotos.length + 1;
+const SmallRoundPhotos = ({ attorneyListPractice, maxPhotos }) => {
+  const [showAll, setShowAll] = useState(false);
 
-  if (photos.length <= maxPhotos) {
-    countHidenPhotos = 0;
-  }
+  const visibleItems = showAll ? attorneyListPractice : attorneyListPractice.slice(0, maxPhotos);
+  const countHidenItems = attorneyListPractice.length - visibleItems.length;
+
+  const handleShowAll = () => {
+    setShowAll(!showAll);
+  };
 
   return (
-    photos.length > 0 && maxPhotos > 0 && (
+    attorneyListPractice.length > 0 && maxPhotos > 0 && (
       <PhotoList>
-        {visiblePhotos.map((photo, index) => (
-          <Photo key={photo} style={{ zIndex: maxPhotos - index }}>
-            <Image src={photo} alt="photo" width={100} height={100} />
-            {index === visiblePhotos.length - 1 && countHidenPhotos > 0 && (
-            <PhotoCount>
-              {`+${countHidenPhotos}`}
+        {visibleItems.map(({
+          databaseId, designation, phoneNumber, profileImage, title,
+        }, index) => (
+          <Photo key={databaseId}>
+            <Image src={profileImage} alt="photo" width={100} height={100} />
+            {index === visibleItems.length - 1 && countHidenItems > 0 && (
+            <PhotoCount onClick={handleShowAll}>
+              {`+${countHidenItems}`}
             </PhotoCount>
             )}
           </Photo>
         ))}
+        {showAll && (
+          <button onClick={handleShowAll}>
+            Hide photos
+          </button>
+        )}
       </PhotoList>
     )
   );
