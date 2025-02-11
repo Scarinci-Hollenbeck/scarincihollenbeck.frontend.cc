@@ -17,6 +17,7 @@ import empty from 'is-empty';
 import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
 import { changePostLink, formatDate } from 'utils/helpers';
 import { LibraryTag, LibraryTagLink } from 'styles/library/LibraryTags.style';
+import SHDiamond from '../../../public/images/sh-mini-diamond-PNG.svg';
 
 const LibraryCard = ({
   title,
@@ -29,9 +30,9 @@ const LibraryCard = ({
 }) => (
   <LibraryCardBox>
     {!empty(title) && (
-      <LibraryCardImage>
+      <LibraryCardImage $isEmptyImage={!image || empty(image)}>
         <Image
-          src={image}
+          src={image || SHDiamond}
           alt={`${title} post image`}
           width={500}
           height={240}
@@ -49,9 +50,9 @@ const LibraryCard = ({
       )}
       {!empty(tags) && (
         <LibraryCardTags>
-          {tags.map((tag, index) => (
-            <LibraryTag key={tag?.databaseId}>
-              <LibraryTagLink href={`/library${tag?.uri}`}>
+          {tags.slice(0, 3).map((tag) => (
+            <LibraryTag key={tag?.databaseId || tag?.id}>
+              <LibraryTagLink href={`/library${tag?.uri || tag?.url}`}>
                 {tag?.name}
               </LibraryTagLink>
             </LibraryTag>

@@ -33,8 +33,7 @@ const buttonVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 };
 
-const LibraryTags = ({ tags, handleClickTag, maxLengthTags = 10 }) => {
-  if (empty(tags)) return null;
+const LibraryTags = ({ tags = [], handleClickTag, maxLengthTags = 10 }) => {
   const dispatch = useDispatch();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -47,9 +46,9 @@ const LibraryTags = ({ tags, handleClickTag, maxLengthTags = 10 }) => {
   );
 
   const visibleTags = useMemo(() => {
-    const selectedTagsList = tags.filter((tag) => selectedTagIds.has(tag.databaseId));
+    const selectedTagsList = tags.filter((tag) => selectedTagIds.has(tag?.databaseId));
     const unselectedTagsList = tags.filter(
-      (tag) => !selectedTagIds.has(tag.databaseId),
+      (tag) => !selectedTagIds.has(tag?.databaseId),
     );
     return [...selectedTagsList, ...unselectedTagsList].slice(
       0,
@@ -93,6 +92,7 @@ const LibraryTags = ({ tags, handleClickTag, maxLengthTags = 10 }) => {
     dispatch(setSelectedTags([]));
   }, []);
 
+  if (empty(tags)) return null;
   return (
     <LibraryTagsSection>
       <LibraryTagsList>
@@ -103,7 +103,7 @@ const LibraryTags = ({ tags, handleClickTag, maxLengthTags = 10 }) => {
             return (
               <LibraryTag
                 as={motion.li}
-                key={tag?.databaseId}
+                key={tag?.url}
                 custom={isNew ? index - maxLengthTags : 0}
                 initial={isNew ? 'hidden' : 'visible'}
                 animate="visible"

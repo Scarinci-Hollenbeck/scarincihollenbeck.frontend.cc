@@ -6,7 +6,7 @@ import {
 } from 'requests/graphql-queries';
 import LibraryCategoryPage from 'components/pages/LibraryCategoryPage';
 import empty from 'is-empty';
-import { getLibraryFiltersAndSubheaderData } from 'requests/getLibraryFiltersData';
+import { getLibraryFiltersData } from 'requests/getLibraryFiltersData';
 
 /** get the current category's latest post WP GRAPHQL API */
 async function getCategoryContent(variables) {
@@ -39,14 +39,14 @@ export const getStaticPaths = async () => {
 };
 
 export const getStaticProps = async ({ params }) => {
-  const pageContent = await getCategoryContent({
-    variables: {
-      slug: params.slug,
-    },
-  });
-  const { filters, subHeaderSlides } = await getLibraryFiltersAndSubheaderData(
-    categoriesQuery,
-  );
+  const [pageContent, { filters, subHeaderSlides }] = await Promise.all([
+    getCategoryContent({
+      variables: {
+        slug: params.slug,
+      },
+    }),
+    getLibraryFiltersData(categoriesQuery),
+  ]);
 
   if (empty(pageContent)) {
     return {

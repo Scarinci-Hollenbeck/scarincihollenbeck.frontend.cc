@@ -13,8 +13,8 @@ const LibrarySearchResultsPage = ({
   description,
   filters,
   subHeaderSlides,
-  filtersParams,
-  posts,
+  postsData,
+  tags,
 }) => (
   <>
     <BasicSiteHead
@@ -43,7 +43,7 @@ const LibrarySearchResultsPage = ({
       categories={filters?.categories}
     />
 
-    <LibraryResults />
+    <LibraryResults postsData={postsData} tags={tags} />
 
     <SubscriptionBanner />
   </>

@@ -12,9 +12,12 @@ export const getServerSideProps = async ({ params, res }) => {
   );
   const { slug } = params;
 
-  const authorContent = await fetchAPI(authorContentQuery, {
-    variables: { id: slug },
-  });
+  const [authorContent, mainCategories] = await Promise.all([
+    fetchAPI(authorContentQuery, {
+      variables: { id: slug },
+    }),
+    fetchAPI(categoriesQuery),
+  ]);
 
   if (empty(authorContent) || empty(authorContent?.user)) {
     return {
@@ -22,8 +25,6 @@ export const getServerSideProps = async ({ params, res }) => {
     };
   }
   const { user } = authorContent;
-
-  const mainCategories = await fetchAPI(categoriesQuery);
 
   return {
     props: {

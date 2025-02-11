@@ -19,11 +19,6 @@ export const SelectOpener = styled.button`
   position: relative;
   z-index: ${({ $selectActive }) => ($selectActive ? '3' : '1')};
   cursor: pointer;
-  border: 1px solid transparent;
-
-  &:focus-visible {
-    border: 1px solid ${globalColor.blue.ultramarine};
-  }
 `;
 
 export const SelectInput = styled.input`
@@ -83,7 +78,7 @@ export const SelectOptions = styled.ul`
   width: 100%;
   display: flex;
   flex-direction: column;
-  z-index: 2;
+  z-index: 3;
   background-color: ${globalColor.gray.gray300};
   border-radius: 0px 0px 4px 4px;
   max-height: 30dvh;

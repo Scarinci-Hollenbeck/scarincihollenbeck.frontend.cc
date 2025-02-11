@@ -104,7 +104,7 @@ const useLibraryFilters = (optionsMap) => {
         }
       }
 
-      const query = Object.entries(selectedValues).reduce(
+      const queryValues = Object.entries(selectedValues).reduce(
         (acc, [key, { id }]) => {
           if (id) {
             acc[key] = id;
@@ -114,10 +114,19 @@ const useLibraryFilters = (optionsMap) => {
         {},
       );
 
-      push({
-        pathname: '/library/search',
-        query,
-      });
+      const queryLimit = query?.limit;
+
+      push(
+        {
+          pathname: '/library/search',
+          query: {
+            ...queryValues,
+            ...(queryLimit && { limit: queryLimit }),
+          },
+        },
+        undefined,
+        { scroll: false },
+      );
     },
     [selectedValues, push],
   );

@@ -1,25 +1,24 @@
-import Link from "next/link";
-import styled from "styled-components";
-import { globalBorderRadius, globalColor, globalTransition } from "../global_styles/Global.styles";
-import { Title20 } from "../common/Typography.style";
-import { media_breakpoint_down } from "../mediaBreakpoints.style";
-
+import Link from 'next/link';
+import styled from 'styled-components';
+import {
+  globalBorderRadius,
+  globalColor,
+  globalTransition,
+} from '../global_styles/Global.styles';
+import { Title20 } from '../common/Typography.style';
+import { media_breakpoint_down } from '../mediaBreakpoints.style';
 
 export const LibraryCardImage = styled.picture`
   width: 100%;
-  max-height: 240px;
+  height: 240px;
   border-radius: ${globalBorderRadius.middle};
   overflow: hidden;
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: ${({ $isEmptyImage }) => ($isEmptyImage ? 'contain' : 'cover')};
     transition: ${globalTransition.default};
-  }
-
-  ${media_breakpoint_down("lg")} {
-    max-height: 100%;
   }
 `;
 
@@ -89,7 +88,7 @@ export const LibraryCardAuthor = styled.p`
   a {
     position: relative;
     z-index: 2;
-    
+
     &:hover {
       color: ${globalColor.blue.skyBlue};
     }

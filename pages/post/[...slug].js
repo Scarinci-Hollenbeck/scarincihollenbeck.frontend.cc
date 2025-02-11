@@ -32,9 +32,14 @@ const attorneysSanitize = (attorneysArr) => attorneysArr.map((attorney) => {
 });
 
 const getPostContentData = async (slug, categorySlug) => {
-  const { post } = await fetchAPI(postQuery, {
-    variables: { id: slug },
-  });
+  const [{ post }, postMainCategoryContent] = await Promise.all([
+    fetchAPI(postQuery, {
+      variables: { id: slug },
+    }),
+    fetchAPI(postMainCategoryContentQuery, {
+      variables: { id: categorySlug },
+    }),
+  ]);
 
   if (
     empty(post)
@@ -43,10 +48,6 @@ const getPostContentData = async (slug, categorySlug) => {
   ) {
     return undefined;
   }
-
-  const postMainCategoryContent = await fetchAPI(postMainCategoryContentQuery, {
-    variables: { id: categorySlug },
-  });
 
   const selectedAuthors = !empty(post?.selectAuthors?.authorDisplayOrder)
     ? attorneysSanitize(post.selectAuthors.authorDisplayOrder)

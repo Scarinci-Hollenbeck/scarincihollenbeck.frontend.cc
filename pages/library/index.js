@@ -7,17 +7,20 @@ import {
 } from 'requests/graphql-queries';
 import LibraryPage from 'components/pages/LibraryPage';
 import useNotFoundNotification from 'hooks/useNotFoundNotification';
-import { getLibraryFiltersAndSubheaderData } from 'requests/getLibraryFiltersData';
+import { getLibraryFiltersData } from 'requests/getLibraryFiltersData';
 
 export async function getStaticProps() {
-  const {
-    pageBy: { title, seo, pagesFields },
-  } = await fetchAPI(libraryPageContentQuery);
-  const { posts } = await fetchAPI(postsForRandomComponentQuery);
-
-  const { filters, subHeaderSlides } = await getLibraryFiltersAndSubheaderData(
-    mainCategoriesQuery,
-  );
+  const [
+    {
+      pageBy: { title, seo, pagesFields },
+    },
+    { posts },
+    { filters, subHeaderSlides },
+  ] = await Promise.all([
+    fetchAPI(libraryPageContentQuery),
+    fetchAPI(postsForRandomComponentQuery),
+    getLibraryFiltersData(mainCategoriesQuery),
+  ]);
 
   return {
     props: {

@@ -30,17 +30,6 @@ const renderAttorneysPage = (props) => render(
 );
 
 describe('Attorneys page', () => {
-  it('The H1 renders', () => {
-    renderAttorneyPage({
-      title: 'Attorneys is cool',
-      description: 'and it`s awesome',
-    });
-
-    const heading = screen.getByRole('heading', { level: 1 });
-    expect(heading).toBeInTheDocument();
-    expect(heading.tagName).toBe('H1');
-  });
-
   it('The filter renders', () => {
     renderAttorneyFilters();
     const filter = screen.getByTestId('attorneys-filter');

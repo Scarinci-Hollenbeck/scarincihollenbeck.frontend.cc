@@ -8,33 +8,35 @@ import { getIndustries } from './getIndustries';
 import { getPractices } from './getPractices';
 import { firstCreatedPostQuery } from './graphql-queries';
 
-export const getLibraryFiltersData = async () => {
-  const practices = await getPractices();
-
-  const industries = await getIndustries();
-
-  const { locations } = await fetchRestAPI('locations');
-
-  const { authors } = await fetchRestAPI('authors');
+export const getLibraryFiltersData = async (categoriesQuery) => {
+  const [
+    practices,
+    industries,
+    { locations },
+    { authors },
+    firstPost,
+    mainCategories,
+  ] = await Promise.all([
+    getPractices(),
+    getIndustries(),
+    fetchRestAPI('locations'),
+    fetchRestAPI('authors'),
+    fetchAPI(firstCreatedPostQuery),
+    fetchAPI(categoriesQuery),
+  ]);
   const sortedAuthors = sortByKey(authors, 'title');
 
-  const firstPost = await fetchAPI(firstCreatedPostQuery);
   const dateFirstPost = new Date(firstPost?.posts?.nodes[0]?.date).getFullYear() || 2013;
 
-  return {
+  const categories = sanitizeCategories(mainCategories?.categories?.nodes);
+
+  const filters = {
     practices,
     locations,
     authors: sortedAuthors,
     industries,
     years: generateYearOptions(dateFirstPost),
   };
-};
-
-export const getLibraryFiltersAndSubheaderData = async (categoriesQuery) => {
-  const filters = await getLibraryFiltersData();
-
-  const mainCategories = await fetchAPI(categoriesQuery);
-  const categories = sanitizeCategories(mainCategories?.categories?.nodes);
 
   return {
     filters: {

@@ -1,14 +1,17 @@
-import styled from "styled-components";
-import { sectionPadding } from "styles/Article.style";
-import { SelectInput, SelectWrapper } from "styles/CustomSelect.style";
-import { globalColor, rem } from "styles/global_styles/Global.styles";
-
+import styled from 'styled-components';
+import { sectionPadding } from 'styles/Article.style';
+import { SelectInput, SelectWrapper } from 'styles/CustomSelect.style';
+import { globalColor, rem } from 'styles/global_styles/Global.styles';
 
 export const LibraryResultsSection = styled.section`
   ${sectionPadding};
 
   .separator-big {
     margin-bottom: 0;
+  }
+
+  .pagination {
+    margin: 0;
   }
 `;
 
@@ -44,4 +47,3 @@ export const LibraryResultsPostsCount = styled.span`
   font-size: ${rem(16)};
   line-height: 1.5;
 `;
-
