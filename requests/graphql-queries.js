@@ -1331,6 +1331,10 @@ query IndustryQuery($id: ID!) {
           }
         }
       }
+      clients {
+        title
+        description
+      }
     }
     contentTabs {
       tabs {

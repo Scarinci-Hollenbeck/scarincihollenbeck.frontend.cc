@@ -4,6 +4,7 @@ import empty from 'is-empty';
 import IndustryPage from 'components/pages/IndustryPage';
 import { PRODUCTION_URL } from 'utils/constants';
 import { getIndustryContent } from 'requests/industries/industry-default';
+import ApolloWrapper from 'layouts/ApolloWrapper';
 
 const industriesSlugsQuery = `
 query industriesSlugs {
@@ -38,16 +39,11 @@ const sanitizeSlides = (slides) => {
   }));
 };
 
-const excludedSlugs = ['entertainment-and-media', 'cannabis'];
-
 export const getStaticPaths = async () => {
   const listId = await fetchAPI(industriesSlugsQuery);
   const paths = [];
 
   listId?.industries?.nodes?.forEach((node) => {
-    if (excludedSlugs.includes(node?.slug)) {
-      return;
-    }
     paths.push(`/industries/${node?.slug}`);
   });
 
@@ -81,6 +77,7 @@ export const getStaticProps = async ({ params }) => {
       ? industryChief.map((item) => ({ ...item, isChair: true }))
       : [],
     attorneyListIndustry: includeAttorney || [],
+    clients: industry?.industryContent?.clients,
   };
 
   return {
@@ -99,7 +96,11 @@ const Industry = ({ content, seo, canonicalLink }) => {
     seo,
     canonicalLink,
   };
-  return <IndustryPage {...industryProps} />;
+  return (
+    <ApolloWrapper>
+      <IndustryPage {...industryProps} />
+    </ApolloWrapper>
+  );
 };
 
 export default Industry;

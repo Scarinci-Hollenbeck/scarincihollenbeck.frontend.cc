@@ -57,8 +57,6 @@ export function sortByKey(list, key) {
   return list;
 }
 
-export const convertBooleanToString = (booleanArg) => (booleanArg ? 'true' : '');
-
 // create mark up
 export const createMarkup = (content) => ({ __html: content });
 
@@ -212,17 +210,6 @@ export const changeTitle = (title, isH1) => {
 
   title = `<h1>${title}</h1>`;
   return title;
-};
-
-export const getSlugFromUrl = (inputString) => {
-  const pattern = /\/([^/]+)$/; // Match the last slash and capture non-slash characters after it
-  const match = pattern.exec(inputString);
-
-  if (match && match[1]) {
-    return match[1];
-  }
-
-  return inputString;
 };
 
 export const cutSlashFromTheEnd = (url) => (url.endsWith('/') ? url.slice(0, -1) : url);

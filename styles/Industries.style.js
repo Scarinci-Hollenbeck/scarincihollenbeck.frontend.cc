@@ -25,6 +25,18 @@ export const IndustryPageWrapper = styled.div`
   .separator-big {
     --separator-line-color: ${globalColor.gray.gray800} !important;
     margin-block: 0 !important;
+
+    &:first-child {
+      margin-top: 60px !important;
+
+      ${media_breakpoint_down('xxl')} {
+        margin-top: 40px !important;
+      }
+
+      ${media_breakpoint_down('md')} {
+        margin-top: 24px !important;
+      }
+    }
   }
 
   .margin-scroll {

@@ -109,29 +109,3 @@ export const getPracticeAttorneys = async (uri) => {
     practices,
   };
 };
-
-export const headMetaData = (practiceChiefArg, includeAttorneyArg) => {
-  const attorneysSchemaChair = practiceChiefArg?.length > 0
-    ? practiceChiefArg?.map((attorney) => ({
-      '@type': 'Person',
-      name: attorney.title,
-      image: attorney.profileImage,
-      url: attorney.link,
-      telephone: attorney.phoneNumber,
-      jobTitle: 'Attorney',
-    }))
-    : [];
-
-  const attorneysSchemaAttorneyList = includeAttorneyArg?.length > 0
-    ? includeAttorneyArg?.map((attorney) => ({
-      '@type': 'Person',
-      name: attorney.title,
-      image: attorney.profileImage,
-      url: attorney.link,
-      telephone: attorney.phoneNumber,
-      jobTitle: 'Attorney',
-    }))
-    : [];
-
-  return [...attorneysSchemaChair, ...attorneysSchemaAttorneyList];
-};

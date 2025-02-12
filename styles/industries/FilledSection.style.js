@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { ContentContainer, ContentWrapper } from "styles/Content.style";
-import { globalColor, rem } from "styles/global_styles/Global.styles";
-import { media_breakpoint_down } from "styles/mediaBreakpoints.style";
+import styled from 'styled-components';
+import { ContentContainer, ContentWrapper } from 'styles/Content.style';
+import { globalColor, rem } from 'styles/global_styles/Global.styles';
+import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const FilledSectionBox = styled.section`
   padding-block: 80px;
@@ -33,6 +33,18 @@ export const FilledSectionBox = styled.section`
 
     ${media_breakpoint_down('md')} {
       font-size: ${rem(14)};
+    }
+  }
+
+  + .separator-big {
+    margin-top: 60px !important;
+
+    ${media_breakpoint_down('xxl')} {
+      margin-top: 40px !important;
+    }
+
+    ${media_breakpoint_down('md')} {
+      margin-top: 24px !important;
     }
   }
 
