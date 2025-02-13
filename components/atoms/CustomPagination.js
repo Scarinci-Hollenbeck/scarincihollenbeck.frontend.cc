@@ -103,18 +103,21 @@ const CustomPagination = ({
 
   const handleChangePage = (event, page) => {
     event.preventDefault();
-    if (empty(page)) {
-      router.push(pageRoute, undefined, { scroll: scrollAfterChange });
-    } else {
-      router.push(
-        {
-          pathname: pageRoute,
-          query: { ...routerQueries, [queryParam]: page },
-        },
-        undefined,
-        { scroll: scrollAfterChange },
-      );
-    }
+
+    const updatedQuery = page === 1
+      ? { ...routerQueries, [queryParam]: undefined }
+      : { ...routerQueries, [queryParam]: page };
+
+    router.push(
+      {
+        pathname: pageRoute,
+        query: Object.fromEntries(
+          Object.entries(updatedQuery).filter(([_, v]) => v != null),
+        ),
+      },
+      undefined,
+      { scroll: scrollAfterChange },
+    );
   };
 
   const renderItemsBeforeEllipsis = () => {

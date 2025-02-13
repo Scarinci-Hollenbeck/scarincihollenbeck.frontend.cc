@@ -35,6 +35,10 @@ export const LibraryCardBox = styled.article`
           transform: scale(1.1);
         }
       }
+
+      ${Title20} {
+        color: ${globalColor.blue.skyBlue};
+      }
     }
   }
 `;
@@ -46,11 +50,17 @@ export const LibraryCardContent = styled.div`
   row-gap: 8px;
 
   ${Title20} {
+    min-height: 64px;
     text-transform: uppercase;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    transition: ${globalTransition.default};
+
+    ${media_breakpoint_down('md')} {
+      min-height: auto;
+    }
   }
 `;
 
@@ -74,7 +84,6 @@ export const LibraryCardTags = styled.ul`
 `;
 
 export const LibraryCardFooter = styled.div`
-  margin-top: auto;
   display: flex;
   flex-wrap: wrap;
   column-gap: 8px;
@@ -84,6 +93,10 @@ export const LibraryCardFooter = styled.div`
 export const LibraryCardAuthor = styled.p`
   margin: 0;
   color: ${globalColor.gray.gray110};
+  flex: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 
   a {
     position: relative;
@@ -101,7 +114,7 @@ export const LibraryCardAuthorLink = styled(Link)`
 `;
 
 export const LibraryCardDate = styled.time`
-  margin-left: auto;
+  width: fit-content;
   color: ${globalColor.gray.gray700};
   font-weight: 600;
 `;

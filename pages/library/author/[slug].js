@@ -1,11 +1,11 @@
 import { PRODUCTION_URL } from 'utils/constants';
-import { fetchAPI } from 'requests/api';
+import { fetchAPI, fetchRestAPI } from 'requests/api';
 import LibraryAuthorPage from 'components/pages/LibraryAuthorPage';
 import { authorContentQuery, categoriesQuery } from 'requests/graphql-queries';
-import { sanitizeCategories } from 'utils/helpers';
+import { sanitizeCategories, sanitizeLibraryQueryParams } from 'utils/helpers';
 import empty from 'is-empty';
 
-export const getServerSideProps = async ({ params, res }) => {
+export const getServerSideProps = async ({ params, query, res }) => {
   res.setHeader(
     'Cache-Control',
     'max-age=0, s-maxage=60, stale-while-revalidate',
@@ -25,6 +25,20 @@ export const getServerSideProps = async ({ params, res }) => {
     };
   }
   const { user } = authorContent;
+  const filtersParams = sanitizeLibraryQueryParams(query);
+  const {
+    posts, found_posts, paged, posts_per_page, tags,
+  } = await fetchRestAPI('library_filters', {
+    ...filtersParams,
+    author: user?.databaseId,
+  });
+
+  const postsData = {
+    posts: posts || [],
+    total: found_posts || 0,
+    currentPage: paged || 1,
+    postsPerPage: posts_per_page || 10,
+  };
 
   return {
     props: {
@@ -39,6 +53,8 @@ export const getServerSideProps = async ({ params, res }) => {
         ...mainCategories?.categories?.nodes,
         mainCategories?.pageBy,
       ]),
+      postsData,
+      tags,
     },
   };
 };
@@ -49,6 +65,8 @@ const LibraryAuthor = ({
   authorId,
   seo,
   subHeaderSlides,
+  postsData,
+  tags,
 }) => {
   const authorProps = {
     title,
@@ -56,6 +74,8 @@ const LibraryAuthor = ({
     authorId,
     seo,
     subHeaderSlides,
+    postsData,
+    tags,
   };
 
   return <LibraryAuthorPage {...authorProps} />;

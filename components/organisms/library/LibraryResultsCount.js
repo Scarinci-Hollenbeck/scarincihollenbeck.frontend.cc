@@ -72,18 +72,33 @@ const LibraryResultsCount = memo(({ limit, currentPage, total }) => {
 
   const handleChangePerPage = useCallback(
     (value) => {
-      setPerPage(value);
+      const currentLimit = Number(perPage);
+      const newLimit = Number(value);
+      const currentPage = Number(router.query.page || 1);
 
-      router.push(
-        {
-          pathname: router.pathname,
-          query: { ...router.query, limit: value, page: 1 },
-        },
-        undefined,
-        { scroll: false },
-      );
+      if (currentLimit === newLimit && currentPage >= 1) {
+        return;
+      }
+
+      setPerPage(newLimit);
+
+      const updatedQuery = { ...router.query, limit: newLimit };
+      delete updatedQuery.page;
+      const currentQueryString = new URLSearchParams(router.query).toString();
+      const updatedQueryString = new URLSearchParams(updatedQuery).toString();
+
+      if (currentQueryString !== updatedQueryString) {
+        router.push(
+          {
+            pathname: router.pathname,
+            query: updatedQuery,
+          },
+          undefined,
+          { scroll: false },
+        );
+      }
     },
-    [router.query],
+    [router.query, perPage, router.pathname],
   );
 
   return (

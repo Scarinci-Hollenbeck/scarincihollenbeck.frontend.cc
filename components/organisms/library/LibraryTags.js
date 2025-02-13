@@ -16,6 +16,8 @@ import empty from 'is-empty';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsXLg } from 'react-icons/bs';
+import { changeTitle } from 'utils/helpers';
+import { useRouter } from 'next/router';
 import { setSelectedTags } from '../../../redux/slices/library.slice';
 
 const tagVariants = {
@@ -33,15 +35,16 @@ const buttonVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
 };
 
-const LibraryTags = ({ tags = [], handleClickTag, maxLengthTags = 10 }) => {
+const LibraryTags = ({ tags = [], maxLengthTags = 10, handleClickTag }) => {
   const dispatch = useDispatch();
+  const { query } = useRouter();
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const { selectedTags } = useSelector((state) => state.library);
   const animationCount = useRef(0);
 
   const selectedTagIds = useMemo(
-    () => new Set(selectedTags.map((tag) => tag.id)),
+    () => new Set(selectedTags.map((tag) => tag.databaseId)),
     [selectedTags],
   );
 
@@ -59,7 +62,7 @@ const LibraryTags = ({ tags = [], handleClickTag, maxLengthTags = 10 }) => {
   const handleClickCollapse = useCallback(() => {
     setIsAnimating(true);
     setIsCollapsed((prev) => !prev);
-  }, [maxLengthTags, tags.length]);
+  }, []);
 
   const handleAnimationStart = useCallback(() => {
     animationCount.current += 1;
@@ -75,22 +78,47 @@ const LibraryTags = ({ tags = [], handleClickTag, maxLengthTags = 10 }) => {
   const onClickTag = useCallback(
     (tag, isSelected) => {
       const { databaseId, name, uri } = tag;
-      const newSelectedTags = isSelected
-        ? selectedTags.filter((selectedTag) => selectedTag.id !== databaseId)
-        : [...selectedTags, { value: name, id: databaseId, slug: uri }];
+      const updatedSelectedTags = isSelected
+        ? selectedTags.filter(
+          (selectedTag) => selectedTag.databaseId !== databaseId,
+        )
+        : [...selectedTags, { value: name, databaseId, slug: uri }];
 
       if (handleClickTag) {
-        handleClickTag(tag, isSelected);
+        handleClickTag(updatedSelectedTags);
       }
 
-      dispatch(setSelectedTags(newSelectedTags));
+      dispatch(setSelectedTags(updatedSelectedTags));
     },
-    [dispatch, selectedTags],
+    [dispatch, selectedTags, handleClickTag],
   );
 
   useEffect(() => {
-    dispatch(setSelectedTags([]));
-  }, []);
+    const newTags = [];
+
+    if (!empty(query.tag)) {
+      query.tag.split(',').forEach((id) => {
+        const option = tags?.find(
+          (item) => item?.databaseId?.toString() === id,
+        );
+        if (option) {
+          newTags.push(option);
+        }
+      });
+    }
+
+    const newTagIds = new Set(newTags.map((tag) => tag.databaseId));
+    const selectedTagIdsSet = new Set(
+      selectedTags.map((tag) => tag.databaseId),
+    );
+
+    if (
+      newTagIds.size !== selectedTagIdsSet.size
+      || [...newTagIds].some((id) => !selectedTagIdsSet.has(id))
+    ) {
+      dispatch(setSelectedTags(newTags));
+    }
+  }, [query, tags]);
 
   if (empty(tags)) return null;
   return (
@@ -103,7 +131,7 @@ const LibraryTags = ({ tags = [], handleClickTag, maxLengthTags = 10 }) => {
             return (
               <LibraryTag
                 as={motion.li}
-                key={tag?.url}
+                key={tag?.databaseId}
                 custom={isNew ? index - maxLengthTags : 0}
                 initial={isNew ? 'hidden' : 'visible'}
                 animate="visible"
@@ -111,8 +139,11 @@ const LibraryTags = ({ tags = [], handleClickTag, maxLengthTags = 10 }) => {
                   opacity: 0,
                   y: -10,
                   transition: {
-                    duration: 0.3,
-                    delay: (tags?.length - maxLengthTags - index) * 0.05,
+                    duration: isCollapsed || !isSelected ? 0.3 : 0,
+                    delay:
+                      isCollapsed || !isSelected
+                        ? (tags?.length - maxLengthTags - index) * 0.05
+                        : 0,
                   },
                   transitionEnd: {
                     display: 'none',
@@ -127,7 +158,7 @@ const LibraryTags = ({ tags = [], handleClickTag, maxLengthTags = 10 }) => {
                   onClick={() => onClickTag(tag, isSelected)}
                   className={isSelected ? 'selected' : ''}
                 >
-                  {`${tag?.name}${
+                  {`${changeTitle(tag?.name, false)}${
                     !empty(tag?.count) ? ` (${tag?.count})` : ''
                   }`}
                   {isSelected && <BsXLg />}

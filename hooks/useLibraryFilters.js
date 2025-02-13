@@ -94,12 +94,18 @@ const useLibraryFilters = (optionsMap) => {
         const selectedAuthors = selectedValues?.authors?.slug;
 
         if (!empty(selectedCategories)) {
-          push(selectedCategories);
+          const newUrl = selectedCategories;
+          if (asPath !== newUrl) {
+            push(newUrl);
+          }
           return;
         }
 
         if (!empty(selectedAuthors)) {
-          push(`/library${selectedAuthors}`);
+          const newUrl = `/library${selectedAuthors}`;
+          if (asPath !== newUrl) {
+            push(newUrl);
+          }
           return;
         }
       }
@@ -116,19 +122,21 @@ const useLibraryFilters = (optionsMap) => {
 
       const queryLimit = query?.limit;
 
-      push(
-        {
-          pathname: '/library/search',
-          query: {
-            ...queryValues,
-            ...(queryLimit && { limit: queryLimit }),
-          },
+      const newQuery = {
+        pathname: '/library/search',
+        query: {
+          ...queryValues,
+          ...(queryLimit && { limit: queryLimit }),
         },
-        undefined,
-        { scroll: false },
-      );
+      };
+
+      if (
+        asPath !== `${newQuery.pathname}?${new URLSearchParams(newQuery.query)}`
+      ) {
+        push(newQuery, undefined, { scroll: false });
+      }
     },
-    [selectedValues, push],
+    [selectedValues, push, asPath, query],
   );
 
   const handleClearAll = useCallback(() => {

@@ -7,25 +7,10 @@ import {
 import { getLibraryFiltersData } from 'requests/getLibraryFiltersData';
 import LibrarySearchResultsPage from 'components/pages/LibrarySearchResultsPage';
 import empty from 'is-empty';
+import { sanitizeLibraryQueryParams } from 'utils/helpers';
 
 export async function getServerSideProps({ query }) {
-  const filtersParams = {
-    keyword: query.keyword || '',
-    category: query.categories || '',
-    location: query.offices || '',
-    author: query.authors || '',
-    practices: query.practices || '',
-    industries: query.industries || '',
-    year: query.years || '',
-    posts_per_page: query.limit || '',
-    paged: query.page || '',
-  };
-
-  Object.keys(filtersParams).forEach((key) => {
-    if (!filtersParams[key]) {
-      delete filtersParams[key];
-    }
-  });
+  const filtersParams = sanitizeLibraryQueryParams(query);
 
   if (empty(filtersParams)) {
     return {
