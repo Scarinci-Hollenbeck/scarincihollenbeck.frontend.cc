@@ -6,47 +6,24 @@ import {
 } from 'requests/graphql-queries';
 import LibraryCategoryPage from 'components/pages/LibraryCategoryPage';
 import empty from 'is-empty';
-import { getLibraryFiltersData } from 'requests/getLibraryFiltersData';
+import { getLibraryPageData } from 'requests/getLibraryPageData';
+import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 
-/** get the current category's latest post WP GRAPHQL API */
-async function getCategoryContent(variables) {
-  const data = await fetchAPI(categoryPageContentQuery, variables);
-  return data?.category;
-}
-
-const categoriesSlugsQuery = `
-query categoriesSlugs {
-  categories(first: 100) {
-    nodes {
-      slug
-    }
-  }
-}`;
-
-export const getStaticPaths = async () => {
-  const listId = await fetchAPI(categoriesSlugsQuery);
-
-  const paths = [];
-
-  listId.categories.nodes.forEach((node) => {
-    paths.push(`/library/category/${node?.slug}`);
-  });
-
-  return {
-    paths,
-    fallback: 'blocking',
-  };
-};
-
-export const getStaticProps = async ({ params }) => {
-  const [pageContent, { filters, subHeaderSlides }] = await Promise.all([
-    getCategoryContent({
+export const getServerSideProps = async ({ params, query, res }) => {
+  res.setHeader(
+    'Cache-Control',
+    'max-age=0, s-maxage=60, stale-while-revalidate',
+  );
+  const [data, { filters, subHeaderSlides }] = await Promise.all([
+    fetchAPI(categoryPageContentQuery, {
       variables: {
         slug: params.slug,
       },
     }),
-    getLibraryFiltersData(categoriesQuery),
+    getLibraryPageData(categoriesQuery),
   ]);
+
+  const pageContent = data?.category;
 
   if (empty(pageContent)) {
     return {
@@ -56,6 +33,10 @@ export const getStaticProps = async ({ params }) => {
       },
     };
   }
+
+  const { postsData, tags } = await getFilteredLibraryData(query, {
+    category: pageContent?.databaseId,
+  });
 
   return {
     props: {
@@ -68,8 +49,9 @@ export const getStaticProps = async ({ params }) => {
       categoryId: pageContent?.databaseId,
       filters,
       subHeaderSlides,
+      postsData,
+      tags,
     },
-    revalidate: 3600,
   };
 };
 
@@ -81,6 +63,8 @@ const LibraryCategory = ({
   categoryId,
   filters,
   subHeaderSlides,
+  postsData,
+  tags,
 }) => {
   const libraryProps = {
     title,
@@ -89,6 +73,8 @@ const LibraryCategory = ({
     categoryId,
     filters,
     subHeaderSlides,
+    postsData,
+    tags,
   };
 
   return <LibraryCategoryPage {...libraryProps} />;

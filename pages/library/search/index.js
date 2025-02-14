@@ -1,43 +1,30 @@
 import { PRODUCTION_URL } from 'utils/constants';
-import { fetchAPI, fetchRestAPI } from 'requests/api';
+import { fetchAPI } from 'requests/api';
 import {
+  categoriesQuery,
   libraryPageContentQuery,
-  mainCategoriesQuery,
 } from 'requests/graphql-queries';
-import { getLibraryFiltersData } from 'requests/getLibraryFiltersData';
+import { getLibraryPageData } from 'requests/getLibraryPageData';
 import LibrarySearchResultsPage from 'components/pages/LibrarySearchResultsPage';
-import empty from 'is-empty';
-import { sanitizeLibraryQueryParams } from 'utils/helpers';
+import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 
-export async function getServerSideProps({ query }) {
-  const filtersParams = sanitizeLibraryQueryParams(query);
+export async function getServerSideProps({ query, res }) {
+  res.setHeader(
+    'Cache-Control',
+    'max-age=0, s-maxage=60, stale-while-revalidate',
+  );
 
-  if (empty(filtersParams)) {
-    return {
-      redirect: {
-        destination: '/library',
-        permanent: true,
-      },
-    };
-  }
   const [
-    data,
+    { postsData, tags },
     {
       pageBy: { title, seo, pagesFields },
     },
     { filters, subHeaderSlides },
   ] = await Promise.all([
-    fetchRestAPI('library_filters', filtersParams),
+    getFilteredLibraryData(query),
     fetchAPI(libraryPageContentQuery),
-    getLibraryFiltersData(mainCategoriesQuery),
+    getLibraryPageData(categoriesQuery),
   ]);
-
-  const postsData = {
-    posts: data?.posts || [],
-    total: data?.found_posts || 0,
-    currentPage: data?.paged || 1,
-    postsPerPage: data?.posts_per_page || 10,
-  };
 
   return {
     props: {
@@ -50,8 +37,7 @@ export async function getServerSideProps({ query }) {
       description: pagesFields?.description,
       filters,
       subHeaderSlides,
-      filtersParams,
-      tags: data?.tags || [],
+      tags,
     },
   };
 }
@@ -62,7 +48,6 @@ const LibrarySearch = ({
   description,
   filters,
   subHeaderSlides,
-  filtersParams,
   postsData,
   tags,
 }) => {
@@ -72,7 +57,6 @@ const LibrarySearch = ({
     description,
     filters,
     subHeaderSlides,
-    filtersParams,
     postsData,
     tags,
   };

@@ -76,6 +76,7 @@ const getPostContentData = async (slug, categorySlug) => {
     date: post?.date,
     mainCategory: postMainCategoryContent?.category,
     tags: post?.tags?.nodes,
+    postTypeConnections: post?.linksToOtherPostTypes,
   };
 };
 
@@ -106,6 +107,7 @@ export const getServerSideProps = async ({ params, res, query }) => {
     selectedHeroes,
     seo,
     tags,
+    postTypeConnections,
   } = postData;
 
   const post = {
@@ -113,6 +115,7 @@ export const getServerSideProps = async ({ params, res, query }) => {
     title,
     date,
     tags,
+    postTypeConnections,
   };
 
   return {

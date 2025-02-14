@@ -814,9 +814,4 @@ export const LIBRARY_NAV = [
     title: 'Podcasts',
     href: '/podcasts',
   },
-  {
-    id: 'filters-nav-07',
-    title: 'Subscribe',
-    href: '/subscribe',
-  },
 ];

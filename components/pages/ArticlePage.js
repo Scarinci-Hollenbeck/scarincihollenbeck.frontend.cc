@@ -48,6 +48,7 @@ const ArticlePage = ({
       backLink={`/library${mainCategory?.uri}`}
       content={post.content}
       tags={post.tags}
+      postTypeConnections={post.postTypeConnections}
     />
 
     <ArticleSecondaryContent>

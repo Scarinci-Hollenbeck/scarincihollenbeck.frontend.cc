@@ -56,7 +56,7 @@ const LibraryFilters = ({
 
   const {
     selectedValues,
-    asPath,
+    pathname,
     handleChangeSelect,
     handleInputChange,
     handleSearch,
@@ -85,7 +85,7 @@ const LibraryFilters = ({
               <LibraryFiltersNavItem key={item?.id}>
                 <LibraryFiltersNavLink
                   href={item?.href}
-                  $active={asPath === item?.href}
+                  $active={pathname === item?.href}
                 >
                   {item?.title}
                 </LibraryFiltersNavLink>

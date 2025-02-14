@@ -8,7 +8,7 @@ import { getIndustries } from './getIndustries';
 import { getPractices } from './getPractices';
 import { firstCreatedPostQuery } from './graphql-queries';
 
-export const getLibraryFiltersData = async (categoriesQuery) => {
+export const getLibraryPageData = async (categoriesQuery) => {
   const [
     practices,
     industries,

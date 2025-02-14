@@ -4,10 +4,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import empty from 'is-empty';
 import { setSelectedValues } from '../redux/slices/library.slice';
 
+const getPathnameFromAsPath = (path) => path.split('?')[0].split('#')[0];
+
 const useLibraryFilters = (optionsMap) => {
   const dispatch = useDispatch();
   const { asPath, push, query } = useRouter();
   const { selectedValues } = useSelector((state) => state.library);
+  const pathname = getPathnameFromAsPath(asPath);
 
   useEffect(() => {
     const newSelectedValues = {};
@@ -95,7 +98,7 @@ const useLibraryFilters = (optionsMap) => {
 
         if (!empty(selectedCategories)) {
           const newUrl = selectedCategories;
-          if (asPath !== newUrl) {
+          if (getPathnameFromAsPath(asPath) !== newUrl) {
             push(newUrl);
           }
           return;
@@ -103,7 +106,7 @@ const useLibraryFilters = (optionsMap) => {
 
         if (!empty(selectedAuthors)) {
           const newUrl = `/library${selectedAuthors}`;
-          if (asPath !== newUrl) {
+          if (getPathnameFromAsPath(asPath) !== newUrl) {
             push(newUrl);
           }
           return;
@@ -154,7 +157,7 @@ const useLibraryFilters = (optionsMap) => {
 
   return {
     selectedValues,
-    asPath,
+    pathname,
     handleChangeSelect,
     handleInputChange,
     handleSearch,

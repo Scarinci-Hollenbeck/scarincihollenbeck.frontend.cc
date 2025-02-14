@@ -441,6 +441,26 @@ query PostContentQuery($id: ID!) {
         databaseId
       }
     }
+    linksToOtherPostTypes {
+      practices {
+        ... on Practice {
+          databaseId
+          title
+        }
+      }
+      location {
+        ... on OfficeLocation {
+          databaseId
+          title
+        }
+      }
+      industries {
+        ... on Industry {
+          databaseId
+          title
+        }
+      }
+    }
   }
 }`;
 
@@ -1509,6 +1529,20 @@ query AuthorContentQuery($id: ID!) {
     seo {
       title
       metaDesc
+    }
+  }
+}`;
+
+export const podcastsPageContentQuery = `
+query PodcastsPageContentQuery {
+  pageBy(pageId: 169286) {
+    title
+    pagesFields {
+      description
+    }
+    seo {
+      metaDesc
+      title
     }
   }
 }`;

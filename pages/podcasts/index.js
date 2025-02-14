@@ -1,25 +1,21 @@
 import { PRODUCTION_URL } from 'utils/constants';
 import { fetchAPI } from 'requests/api';
 import {
-  libraryPageContentQuery,
-  mainCategoriesQuery,
-  postsForRandomComponentQuery,
+  categoriesQuery,
+  podcastsPageContentQuery,
 } from 'requests/graphql-queries';
-import LibraryPage from 'components/pages/LibraryPage';
-import useNotFoundNotification from 'hooks/useNotFoundNotification';
 import { getLibraryPageData } from 'requests/getLibraryPageData';
+import PodcastsPage from 'components/pages/PodcastsPage';
 
 export async function getStaticProps() {
   const [
     {
       pageBy: { title, seo, pagesFields },
     },
-    { posts },
     { filters, subHeaderSlides },
   ] = await Promise.all([
-    fetchAPI(libraryPageContentQuery),
-    fetchAPI(postsForRandomComponentQuery),
-    getLibraryPageData(mainCategoriesQuery),
+    fetchAPI(podcastsPageContentQuery),
+    getLibraryPageData(categoriesQuery),
   ]);
 
   return {
@@ -27,7 +23,6 @@ export async function getStaticProps() {
       seo,
       title,
       description: pagesFields?.description,
-      posts: posts?.nodes || [],
       filters,
       subHeaderSlides,
     },
@@ -36,27 +31,19 @@ export async function getStaticProps() {
 }
 
 const Library = ({
-  seo,
-  title,
-  description,
-  posts,
-  filters,
-  subHeaderSlides,
+  seo, title, description, filters, subHeaderSlides,
 }) => {
-  const canonicalUrl = `${PRODUCTION_URL}/library`;
+  const canonicalUrl = `${PRODUCTION_URL}/podcasts`;
 
-  useNotFoundNotification("Category doesn't exist!");
-
-  const libraryProps = {
+  const podcastsProps = {
     seo,
     title,
     description,
     canonicalUrl,
-    posts,
     filters,
     subHeaderSlides,
   };
-  return <LibraryPage {...libraryProps} />;
+  return <PodcastsPage {...podcastsProps} />;
 };
 
 export default Library;

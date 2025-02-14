@@ -1,9 +1,10 @@
 import { PRODUCTION_URL } from 'utils/constants';
-import { fetchAPI, fetchRestAPI } from 'requests/api';
+import { fetchAPI } from 'requests/api';
 import LibraryAuthorPage from 'components/pages/LibraryAuthorPage';
 import { authorContentQuery, categoriesQuery } from 'requests/graphql-queries';
-import { sanitizeCategories, sanitizeLibraryQueryParams } from 'utils/helpers';
+import { sanitizeCategories } from 'utils/helpers';
 import empty from 'is-empty';
+import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 
 export const getServerSideProps = async ({ params, query, res }) => {
   res.setHeader(
@@ -25,20 +26,10 @@ export const getServerSideProps = async ({ params, query, res }) => {
     };
   }
   const { user } = authorContent;
-  const filtersParams = sanitizeLibraryQueryParams(query);
-  const {
-    posts, found_posts, paged, posts_per_page, tags,
-  } = await fetchRestAPI('library_filters', {
-    ...filtersParams,
+
+  const { postsData, tags } = await getFilteredLibraryData(query, {
     author: user?.databaseId,
   });
-
-  const postsData = {
-    posts: posts || [],
-    total: found_posts || 0,
-    currentPage: paged || 1,
-    postsPerPage: posts_per_page || 10,
-  };
 
   return {
     props: {
