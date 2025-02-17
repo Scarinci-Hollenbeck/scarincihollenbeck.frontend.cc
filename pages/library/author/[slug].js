@@ -4,7 +4,13 @@ import { getBaseUrl, sanitizeCategories } from 'utils/helpers';
 import empty from 'is-empty';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 
-export const getServerSideProps = async ({ params, query, req }) => {
+export const getServerSideProps = async ({
+  params, query, req, res,
+}) => {
+  res.setHeader(
+    'Cache-Control',
+    'max-age=0, s-maxage=60, stale-while-revalidate=120',
+  );
   const { slug } = params;
 
   const response = await fetch(

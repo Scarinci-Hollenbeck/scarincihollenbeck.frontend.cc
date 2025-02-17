@@ -4,7 +4,13 @@ import empty from 'is-empty';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 import { getBaseUrl } from 'utils/helpers';
 
-export const getServerSideProps = async ({ params, query, req }) => {
+export const getServerSideProps = async ({
+  params, query, req, res,
+}) => {
+  res.setHeader(
+    'Cache-Control',
+    'max-age=0, s-maxage=60, stale-while-revalidate=120',
+  );
   const response = await fetch(
     `${getBaseUrl(req.headers.host)}/api/library/category-static?slug=${
       query.slug

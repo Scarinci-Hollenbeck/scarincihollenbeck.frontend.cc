@@ -3,7 +3,11 @@ import LibrarySearchResultsPage from 'components/pages/LibrarySearchResultsPage'
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 import { getBaseUrl } from 'utils/helpers';
 
-export async function getServerSideProps({ query, req }) {
+export async function getServerSideProps({ query, req, res }) {
+  res.setHeader(
+    'Cache-Control',
+    'max-age=0, s-maxage=60, stale-while-revalidate=120',
+  );
   const [{ postsData, tags }, response] = await Promise.all([
     getFilteredLibraryData(query),
     fetch(`${getBaseUrl(req.headers.host)}/api/library/search-static`),
