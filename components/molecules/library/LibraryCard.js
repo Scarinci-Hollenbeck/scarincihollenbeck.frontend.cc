@@ -40,17 +40,15 @@ const LibraryCard = ({
   );
   return (
     <LibraryCardBox>
-      {!empty(title) && (
-        <LibraryCardImage $isEmptyImage={!image || empty(image)}>
-          <Image
-            src={image || SHDiamond}
-            alt={`${title} post image`}
-            width={500}
-            height={240}
-            sizes="500px"
-          />
-        </LibraryCardImage>
-      )}
+      <LibraryCardImage $isEmptyImage={!image || empty(image)}>
+        <Image
+          src={image || SHDiamond}
+          alt={`${title} post image`}
+          width={500}
+          height={240}
+          sizes="500px"
+        />
+      </LibraryCardImage>
 
       <LibraryCardContent>
         {!empty(title) && <Title20 title={title}>{title}</Title20>}
@@ -80,7 +78,7 @@ const LibraryCard = ({
           )}
 
           {!empty(date) && (
-            <LibraryCardDate dateTime={date}>
+            <LibraryCardDate datetime={date}>
               {formatDate(date)}
             </LibraryCardDate>
           )}

@@ -139,9 +139,9 @@ const LibraryTags = ({ tags = [], maxLengthTags = 10, handleClickTag }) => {
                   opacity: 0,
                   y: -10,
                   transition: {
-                    duration: isCollapsed || !isSelected ? 0.3 : 0,
+                    duration: (isCollapsed || !isSelected) && isNew ? 0.3 : 0,
                     delay:
-                      isCollapsed || !isSelected
+                      (isCollapsed || !isSelected) && isNew
                         ? (tags?.length - maxLengthTags - index) * 0.05
                         : 0,
                   },
