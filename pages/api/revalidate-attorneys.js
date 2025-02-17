@@ -1,6 +1,7 @@
 import { getAttorneysFromRestApi } from 'requests/getAttorneys';
 
 export default async function handler(req, res) {
+  res.setHeader('Vercel-CDN-Cache-Control', 'max-age=3600');
   res.setHeader(
     'Cache-Control',
     'max-age=0, s-maxage=8600, stale-while-revalidate=120',
