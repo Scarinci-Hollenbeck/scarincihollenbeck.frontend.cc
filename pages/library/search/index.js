@@ -1,30 +1,17 @@
 import { PRODUCTION_URL } from 'utils/constants';
-import { fetchAPI } from 'requests/api';
-import {
-  categoriesQuery,
-  libraryPageContentQuery,
-} from 'requests/graphql-queries';
-import { getLibraryPageData } from 'requests/getLibraryPageData';
 import LibrarySearchResultsPage from 'components/pages/LibrarySearchResultsPage';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
+import { getBaseUrl } from 'utils/helpers';
 
-export async function getServerSideProps({ query, res }) {
-  res.setHeader(
-    'Cache-Control',
-    'max-age=0, s-maxage=60, stale-while-revalidate',
-  );
-
-  const [
-    { postsData, tags },
-    {
-      pageBy: { title, seo, pagesFields },
-    },
-    { filters, subHeaderSlides },
-  ] = await Promise.all([
+export async function getServerSideProps({ query, req }) {
+  const [{ postsData, tags }, response] = await Promise.all([
     getFilteredLibraryData(query),
-    fetchAPI(libraryPageContentQuery),
-    getLibraryPageData(categoriesQuery),
+    fetch(`${getBaseUrl(req.headers.host)}/api/library/search-static`),
   ]);
+
+  const { pageBy, filters, subHeaderSlides } = await response.json();
+
+  const { title, seo, pagesFields } = pageBy;
 
   return {
     props: {

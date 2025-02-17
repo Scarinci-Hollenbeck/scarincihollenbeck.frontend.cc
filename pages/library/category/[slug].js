@@ -1,27 +1,16 @@
 import { PRODUCTION_URL } from 'utils/constants';
-import { fetchAPI } from 'requests/api';
-import {
-  categoriesQuery,
-  categoryPageContentQuery,
-} from 'requests/graphql-queries';
 import LibraryCategoryPage from 'components/pages/LibraryCategoryPage';
 import empty from 'is-empty';
-import { getLibraryPageData } from 'requests/getLibraryPageData';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
+import { getBaseUrl } from 'utils/helpers';
 
-export const getServerSideProps = async ({ params, query, res }) => {
-  res.setHeader(
-    'Cache-Control',
-    'max-age=0, s-maxage=60, stale-while-revalidate',
+export const getServerSideProps = async ({ params, query, req }) => {
+  const response = await fetch(
+    `${getBaseUrl(req.headers.host)}/api/library/category-static?slug=${
+      query.slug
+    }`,
   );
-  const [data, { filters, subHeaderSlides }] = await Promise.all([
-    fetchAPI(categoryPageContentQuery, {
-      variables: {
-        slug: params.slug,
-      },
-    }),
-    getLibraryPageData(categoriesQuery),
-  ]);
+  const { data, filters, subHeaderSlides } = await response.json();
 
   const pageContent = data?.category;
 

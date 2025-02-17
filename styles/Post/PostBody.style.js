@@ -55,6 +55,10 @@ export const PostConnections = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  &:empty {
+    display: none;
+  }
 `;
 
 export const PostConnection = styled.li`

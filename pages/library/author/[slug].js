@@ -1,24 +1,19 @@
 import { PRODUCTION_URL } from 'utils/constants';
-import { fetchAPI } from 'requests/api';
 import LibraryAuthorPage from 'components/pages/LibraryAuthorPage';
-import { authorContentQuery, categoriesQuery } from 'requests/graphql-queries';
-import { sanitizeCategories } from 'utils/helpers';
+import { getBaseUrl, sanitizeCategories } from 'utils/helpers';
 import empty from 'is-empty';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 
-export const getServerSideProps = async ({ params, query, res }) => {
-  res.setHeader(
-    'Cache-Control',
-    'max-age=0, s-maxage=60, stale-while-revalidate',
-  );
+export const getServerSideProps = async ({ params, query, req }) => {
   const { slug } = params;
 
-  const [authorContent, mainCategories] = await Promise.all([
-    fetchAPI(authorContentQuery, {
-      variables: { id: slug },
-    }),
-    fetchAPI(categoriesQuery),
-  ]);
+  const response = await fetch(
+    `${getBaseUrl(req.headers.host)}/api/library/author-static?slug=${
+      query.slug
+    }`,
+  );
+
+  const { authorContent, mainCategories } = await response.json();
 
   if (empty(authorContent) || empty(authorContent?.user)) {
     return {

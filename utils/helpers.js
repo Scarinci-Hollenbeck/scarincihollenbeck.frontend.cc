@@ -325,15 +325,6 @@ export const sortAttorneysByCategory = (attorneys, titles) => {
   return results;
 };
 
-export const setResponseHeaders = (res, revalidateTime, cacheStatus) => {
-  res.setHeader(
-    'Cache-Control',
-    `public, s-maxage=${revalidateTime}, stale-while-revalidate`,
-  );
-  res.setHeader('Content-Type', 'application/json');
-  res.setHeader('X-Cache-Status', cacheStatus);
-};
-
 export const debounce = (func, delay) => {
   let timeoutId;
   return (...args) => {
@@ -642,3 +633,7 @@ export const generateYearOptions = (startYear) => {
 
   return yearOptions;
 };
+
+export const getBaseUrl = (pathname) => (pathname.startsWith('localhost')
+  ? `http://${pathname}`
+  : `https://${pathname}`);
