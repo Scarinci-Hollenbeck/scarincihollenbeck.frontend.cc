@@ -1,12 +1,22 @@
-import {
-  generateYearOptions,
-  sanitizeCategories,
-  sortByKey,
-} from 'utils/helpers';
+import { sanitizeCategories, sortByKey } from 'utils/helpers';
 import { fetchAPI, fetchRestAPI } from './api';
 import { getIndustries } from './getIndustries';
 import { getPractices } from './getPractices';
 import { firstCreatedPostQuery } from './graphql-queries';
+
+const generateYearOptions = (startYear) => {
+  const currentYear = new Date().getFullYear();
+  const yearOptions = [];
+
+  for (let year = currentYear; year >= startYear; year--) {
+    yearOptions.push({
+      databaseId: year,
+      title: year,
+    });
+  }
+
+  return yearOptions;
+};
 
 export const getLibraryPageData = async (categoriesQuery) => {
   const [

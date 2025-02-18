@@ -37,7 +37,7 @@ export const LibraryCardBox = styled.article`
       }
 
       ${Title20} {
-        color: ${globalColor.blue.skyBlue};
+        color: ${globalColor.blue.blue400};
       }
     }
   }

@@ -115,9 +115,14 @@ export const SelectOption = styled.button`
   color: ${globalColor.blue.darkBlue};
   cursor: pointer;
   text-align: start;
+  transition: ${globalTransition.default};
 
   &:focus-visible {
     color: ${globalColor.blue.ultramarine};
+  }
+
+  &:hover {
+    color: ${globalColor.blue.blue400};
   }
 
   ${media_breakpoint_down('md')} {

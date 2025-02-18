@@ -192,13 +192,22 @@ export const RandomSliderCard = styled.div`
 `;
 
 export const RandomSliderCardImage = styled.picture`
+  height: 206px;
   max-width: 440px;
   width: 100%;
+  display: flex;
 
   img {
-    width: 100%;
+    margin: 0 auto;
+    width: fit-content;
     height: 100%;
-    object-fit: contain;
+    object-fit: cover;
+    border-radius: ${globalBorderRadius.small};
+    overflow: hidden;
+
+    ${media_breakpoint_down('xl')} {
+      object-fit: contain;
+    }
   }
 
   ${media_breakpoint_down('xl')} {
@@ -206,8 +215,8 @@ export const RandomSliderCardImage = styled.picture`
     height: 300px;
   }
 
-  ${media_breakpoint_down('md')} {
-    height: 100%;
+  ${media_breakpoint_down('sm')} {
+    height: 150px;
   }
 `;
 
@@ -279,7 +288,7 @@ export const RandomSliderControlPanel = styled.div`
   align-items: center;
   justify-content: space-between;
   column-gap: 12px;
-  border-radius: 4px;
+  border-radius: ${globalBorderRadius.small};
   background-color: ${globalColor.blue.blue500};
   box-shadow: 0px 20px 24px -4px rgba(16, 24, 40, 0.08),
     0px 8px 8px -4px rgba(16, 24, 40, 0.03);

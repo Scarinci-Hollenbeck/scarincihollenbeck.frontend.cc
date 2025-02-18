@@ -1,14 +1,12 @@
 import { fetchRestAPI } from 'requests/api';
 
 export default async function handler(req, res) {
-  res.setHeader('Vercel-CDN-Cache-Control', 'max-age=8600');
-  res.setHeader(
-    'Cache-Control',
-    'max-age=0, s-maxage=8600, stale-while-revalidate=120',
-  );
-
   try {
     const { categories } = await fetchRestAPI('subscriptions');
+    res.setHeader(
+      'Cache-Control',
+      'max-age=0, s-maxage=86400, stale-while-revalidate=3600',
+    );
     return res.status(200).json({ data: categories });
   } catch (err) {
     return res.status(500).json({

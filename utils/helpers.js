@@ -620,20 +620,6 @@ export const sanitizeCategories = (categories) => categories?.map((category) => 
   posts: category?.posts?.nodes || [],
 }));
 
-export const generateYearOptions = (startYear) => {
-  const currentYear = new Date().getFullYear();
-  const yearOptions = [];
-
-  for (let year = startYear; year <= currentYear; year++) {
-    yearOptions.push({
-      databaseId: year,
-      title: year,
-    });
-  }
-
-  return yearOptions;
-};
-
 export const getBaseUrl = (pathname) => (pathname.startsWith('localhost')
   ? `http://${pathname}`
   : `https://${pathname}`);

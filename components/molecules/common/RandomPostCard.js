@@ -14,6 +14,7 @@ import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDyn
 import empty from 'is-empty';
 import { PRODUCTION_URL } from 'utils/constants';
 import Image from 'next/image';
+import SHDiamond from '../../../public/images/sh-mini-diamond-PNG.svg';
 
 const RandomPostCard = memo(({ displayedCard, randomIndex }) => {
   if (empty(displayedCard)) {
@@ -32,7 +33,7 @@ const RandomPostCard = memo(({ displayedCard, randomIndex }) => {
         <RandomSliderCard>
           <RandomSliderCardImage>
             <Image
-              src={displayedCard?.featuredImage?.node?.sourceUrl}
+              src={displayedCard?.featuredImage?.node?.sourceUrl || SHDiamond}
               alt={displayedCard?.title}
               width={440}
               height={200}
