@@ -64,13 +64,13 @@ const LibraryCard = ({
               <span>Author: </span>
               <LibraryCardAuthorLink
                 as={author?.uri.includes('scarinci-hollenbeck') && 'span'}
-                aria-label={author?.name}
-                title={author?.name}
                 href={
                   !author?.uri.includes('scarinci-hollenbeck')
                     ? `/library${author?.uri}`
                     : undefined
                 }
+                aria-label={author?.name}
+                title={author?.name}
               >
                 {author?.name}
               </LibraryCardAuthorLink>

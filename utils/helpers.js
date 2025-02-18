@@ -106,8 +106,8 @@ export function formatDate(date) {
     'December',
   ];
   return `${
-    month[dateObj.getMonth()]
-  } ${dateObj.getDate()}, ${dateObj.getFullYear()}`;
+    month[dateObj.getUTCMonth()]
+  } ${dateObj.getUTCDate()}, ${dateObj.getUTCFullYear()}`;
 }
 
 // print screen event
