@@ -36,7 +36,7 @@ const LibraryResults = ({ tags, postsData }) => {
   const handleClearFilters = useCallback(() => {
     dispatch(setSelectedValues({}));
     dispatch(setSelectedTags([]));
-    router.push('/library/search');
+    router.push('/library/search', undefined, { scroll: false });
   }, []);
 
   const debounceTagClick = useCallback(

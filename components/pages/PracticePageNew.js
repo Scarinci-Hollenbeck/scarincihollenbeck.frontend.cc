@@ -14,6 +14,7 @@ const PracticeAttorneys = dynamic(() => import('components/organisms/practices/P
 const WhyChooseUs = dynamic(() => import('components/organisms/practices/WhyChooseUs'));
 const WhatWeDoSection = dynamic(() => import('components/organisms/home/WhatWeDoSection'));
 const Awards = dynamic(() => import('components/organisms/home/Awards'));
+const LatestPostsSection = dynamic(() => import('components/organisms/home/LatestPostsSection'));
 // const GoogleReviews = dynamic(() => import('components/organisms/common/GoogleReviews'));
 
 const anchorDataDefault = {
@@ -24,6 +25,10 @@ const anchorDataDefault = {
   awards: {
     id: 'awards-section',
     title: 'Awards',
+  },
+  posts: {
+    id: 'posts-section',
+    title: 'Posts',
   },
   attorneys: {
     id: 'attorneys-section',
@@ -56,6 +61,7 @@ const PracticePageNew = ({
   practices,
   googleReviews,
   awards,
+  posts,
 }) => {
   const anchorData = useMemo(() => {
     let updatedAnchorData = {};
@@ -77,6 +83,10 @@ const PracticePageNew = ({
       delete copyAnchorData.awards;
     }
 
+    if (empty(posts)) {
+      delete copyAnchorData.posts;
+    }
+
     if (empty(googleReviews)) {
       delete copyAnchorData.googleReviews;
     }
@@ -85,7 +95,7 @@ const PracticePageNew = ({
       ...copyAnchorData,
       ...updatedAnchorData,
     };
-  }, [googleReviews, awards, tabs, anchorDataDefault]);
+  }, [googleReviews, awards, tabs, posts, anchorDataDefault]);
 
   const printPageProps = {
     title: practice?.title,
@@ -131,6 +141,12 @@ const PracticePageNew = ({
           handlePrint={handlePrint}
         />
         <Awards anchorId={anchorData?.awards?.id} awards={awards} />
+
+        <LatestPostsSection
+          title="Read more about this practice in our library"
+          posts={posts}
+          anchorId={anchorData?.posts?.id}
+        />
 
         <PracticeAttorneys
           attorneys={attorneyListPractice}

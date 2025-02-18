@@ -1,10 +1,10 @@
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { PRODUCTION_URL } from 'utils/constants';
-import ApolloWrapper from 'layouts/ApolloWrapper';
 import empty from 'is-empty';
 import PracticePageNew from 'components/pages/PracticePageNew';
 import { formateAwards } from 'utils/helpers';
+import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 import { fetchAPI } from '../../requests/api';
 import { getPracticeData } from '../../requests/practices/practice-default';
 
@@ -58,6 +58,11 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
+  const { postsData } = await getFilteredLibraryData({
+    practices: practice?.databaseId,
+    limit: '8',
+  });
+
   const attorneysSchemaChair = practiceChief?.length > 0
     ? practiceChief?.map((attorney) => ({
       '@type': 'Person',
@@ -96,6 +101,7 @@ export const getStaticProps = async ({ params }) => {
       whyChooseUsData: practice?.practicesIncluded?.whyChooseUs,
       practices,
       awards: formateAwards(practice?.practicesIncluded?.awards),
+      posts: postsData?.posts || [],
       // googleReviews: deleteReviewsWithoutComment(googleReviews.flat()),
     },
     revalidate: 8600,
@@ -114,6 +120,7 @@ const SinglePractice = ({
   practices,
   googleReviews,
   awards,
+  posts,
 }) => {
   const router = useRouter();
   const canonicalUrl = `${PRODUCTION_URL}/practices/${practice.slug}`;
@@ -152,13 +159,10 @@ const SinglePractice = ({
     practices,
     googleReviews,
     awards,
+    posts,
   };
 
-  return (
-    <ApolloWrapper>
-      <PracticePageNew {...practiceProps} />
-    </ApolloWrapper>
-  );
+  return <PracticePageNew {...practiceProps} />;
 };
 
 export default SinglePractice;

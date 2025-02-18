@@ -82,7 +82,7 @@ export const footerNavList = [
   },
   {
     linkTitle: 'Library',
-    link: '/library/category/client-alert',
+    link: '/library',
     id: 6,
   },
   {
