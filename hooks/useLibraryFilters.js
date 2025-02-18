@@ -144,15 +144,23 @@ const useLibraryFilters = (optionsMap) => {
 
   const handleClearAll = useCallback(() => {
     dispatch(setSelectedValues({}));
-  }, [dispatch]);
+
+    if (asPath !== '/library/search') {
+      push('/library/search', undefined, { scroll: false });
+    }
+  }, [dispatch, asPath]);
 
   const handleClearSelection = useCallback(
     (key) => {
       const newSelectedValues = { ...selectedValues };
       delete newSelectedValues[key];
       dispatch(setSelectedValues(newSelectedValues));
+
+      if (empty(newSelectedValues) && asPath !== '/library/search') {
+        push('/library/search', undefined, { scroll: false });
+      }
     },
-    [dispatch, selectedValues],
+    [dispatch, selectedValues, asPath],
   );
 
   return {

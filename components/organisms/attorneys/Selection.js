@@ -51,7 +51,7 @@ const Selection = ({
       </SelectionList>
       {selections?.length > 0 && (
         <ClearButton variant="Primary" onClick={clearAll}>
-          Clear All
+          Reset Filters
         </ClearButton>
       )}
     </SelectionWrapper>

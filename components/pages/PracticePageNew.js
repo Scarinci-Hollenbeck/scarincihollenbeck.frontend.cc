@@ -115,7 +115,11 @@ const PracticePageNew = ({
             practice?.practicesIncluded?.practiceImage?.sourceUrl
           }
           RightContentComponent={SubHeaderKeyContacts}
-          rightContentProps={{ keyContacts: keyContactsList, handlePrint }}
+          rightContentProps={{
+            keyContacts: keyContactsList,
+            handlePrint,
+            printButtonText: 'Print practice page',
+          }}
         />
         <PracticeAnchors anchorData={anchorData} title={practice?.title} />
         <PracticeContent

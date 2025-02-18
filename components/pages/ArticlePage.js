@@ -41,6 +41,7 @@ const ArticlePage = ({
         keyContacts,
         isPrint: true,
         handlePrint: () => printScreen(),
+        printButtonText: 'Print post page',
       }}
     />
 

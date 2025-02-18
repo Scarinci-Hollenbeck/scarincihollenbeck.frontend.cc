@@ -6,7 +6,7 @@ import empty from 'is-empty';
 import PracticePageNew from 'components/pages/PracticePageNew';
 import { formateAwards } from 'utils/helpers';
 import { fetchAPI } from '../../requests/api';
-import { getPracticeAttorneys } from '../../requests/practices/practice-default';
+import { getPracticeData } from '../../requests/practices/practice-default';
 
 const SiteLoader = dynamic(() => import('components/shared/SiteLoader'));
 
@@ -42,7 +42,7 @@ export const getStaticProps = async ({ params }) => {
     keyContactsList,
     faq,
     practices,
-  } = await getPracticeAttorneys(`/practices/${params.slug}`);
+  } = await getPracticeData(`/practices/${params.slug}`);
 
   // 04.04.2024 Google reviews temporarily disabled
   // const googleReviews = await getGoogleReviewsForPalaces(

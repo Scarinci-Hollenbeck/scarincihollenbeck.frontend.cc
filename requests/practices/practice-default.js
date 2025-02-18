@@ -8,7 +8,7 @@ import {
   practicesQuery,
 } from './practicesQueryGenerator';
 
-export const getPracticeAttorneys = async (uri) => {
+export const getPracticeData = async (uri) => {
   const data = await fetchAPI(practicesQuery, {
     variables: {
       id: uri,

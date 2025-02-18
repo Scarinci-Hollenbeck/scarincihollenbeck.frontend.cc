@@ -1,7 +1,14 @@
-import styled from "styled-components";
-import { UnderlinedLink } from "styles/common/Typography.style";
-import { globalColor, globalTransition, rem } from "styles/global_styles/Global.styles";
-import { media_breakpoint_down, media_breakpoint_exactly_down } from "styles/mediaBreakpoints.style";
+import styled from 'styled-components';
+import { UnderlinedLink } from 'styles/common/Typography.style';
+import {
+  globalColor,
+  globalTransition,
+  rem,
+} from 'styles/global_styles/Global.styles';
+import {
+  media_breakpoint_down,
+  media_breakpoint_exactly_down,
+} from 'styles/mediaBreakpoints.style';
 
 export const SubHeaderSlider = styled.div`
   padding-right: 80px;
@@ -99,7 +106,7 @@ export const SubHeaderSlideDescription = styled.div`
   margin-top: 8px;
   font-size: ${rem(14)};
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
 
