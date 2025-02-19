@@ -786,7 +786,7 @@ export const desiredOrder = [
 export const LIBRARY_NAV = [
   {
     id: 'filters-nav-01',
-    title: 'All',
+    title: 'Overview',
     href: '/library',
   },
   {

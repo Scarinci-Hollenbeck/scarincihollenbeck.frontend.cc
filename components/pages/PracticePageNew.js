@@ -26,10 +26,6 @@ const anchorDataDefault = {
     id: 'awards-section',
     title: 'Awards',
   },
-  posts: {
-    id: 'posts-section',
-    title: 'Posts',
-  },
   attorneys: {
     id: 'attorneys-section',
     title: 'Attorneys',
@@ -45,6 +41,10 @@ const anchorDataDefault = {
   googleReviews: {
     id: 'reviews-section',
     title: 'Reviews',
+  },
+  posts: {
+    id: 'posts-section',
+    title: 'Posts',
   },
 };
 
@@ -142,12 +142,6 @@ const PracticePageNew = ({
         />
         <Awards anchorId={anchorData?.awards?.id} awards={awards} />
 
-        <LatestPostsSection
-          title="Read more about this practice in our library"
-          posts={posts}
-          anchorId={anchorData?.posts?.id}
-        />
-
         <PracticeAttorneys
           attorneys={attorneyListPractice}
           chairs={chairPractice}
@@ -160,6 +154,12 @@ const PracticePageNew = ({
         <WhatWeDoSection
           practices={practices}
           anchorId={anchorData.whatWeDo.id}
+        />
+
+        <LatestPostsSection
+          title="Read more about this practice in our library"
+          posts={posts}
+          anchorId={anchorData?.posts?.id}
         />
         {/* {!empty(googleReviews) && (
           <GoogleReviews

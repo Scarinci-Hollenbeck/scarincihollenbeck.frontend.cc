@@ -26,7 +26,10 @@ const PostSidebar = ({ content, contentRef }) => {
     const anchors = Array.from(
       contentRef.current.querySelectorAll('.wp-block-heading'),
     );
-    if (empty(anchors)) return;
+    if (empty(anchors)) {
+      setAnchorsList([]);
+      return;
+    }
 
     anchors.forEach((anchor, index) => (anchor.id = `title-${index + 1}`));
 
