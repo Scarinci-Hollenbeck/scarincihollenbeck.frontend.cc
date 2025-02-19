@@ -12,7 +12,6 @@ import {
 import { getPaginationData } from 'requests/getPaginationData';
 import NewsCard from '../organisms/home/FirmNews/NewsCard';
 import LibrarySideBar from '../organisms/library/LibrarySideBar';
-import { useGetAuthorsQuery } from '../../redux/services/project-api';
 
 const PostList = dynamic(import('components/molecules/PostList'));
 
@@ -26,8 +25,6 @@ const LibraryDirectory = ({
   profileUrl,
   categoryId,
 }) => {
-  const { data: authorsData, isLoading: authorsIsLoading } = useGetAuthorsQuery();
-
   const router = useRouter();
   const logoImage = '/images/no-image-found-diamond-750x350.png';
   const memoDataPosts = useMemo(() => news, [news]);
@@ -92,8 +89,6 @@ const LibraryDirectory = ({
               profileUrl={profileUrl}
               childrenOfCurrentCategory={childrenOfCurrentCategory}
               popularCategories={popularCategories}
-              authors={authorsData?.data}
-              authorsIsLoading={authorsIsLoading}
             />
           </Col>
         </Row>
