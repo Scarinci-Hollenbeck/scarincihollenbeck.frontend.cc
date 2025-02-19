@@ -36,7 +36,6 @@ export const VerticalTabsContainer = styled(ContainerDefault)`
 `;
 
 export const VerticalTabsHolder = styled.div`
-  min-height: 725px;
   display: flex;
   gap: 40px;
 
@@ -171,7 +170,11 @@ export const TabContent = styled(ContentContainer)`
     display: block;
   }
 
-  h2, h3, h4, h5, h6 {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     ${headingStyles};
   }
 

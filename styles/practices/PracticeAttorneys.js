@@ -21,12 +21,12 @@ export const PracticeAttorneysSection = styled.section`
     column-gap: 16px;
 
     > button {
+      margin-bottom: 5px;
       height: 100%;
       display: flex;
       color: ${globalColor.blue.blue600};
       font-family: var(--font-poppins);
       font-size: ${rem(16)};
-      line-height: 24px;
       font-weight: 700;
       text-decoration: underline;
       transition: all 0.2s ease-out;
@@ -40,7 +40,12 @@ export const PracticeAttorneysSection = styled.section`
         color: ${globalColor.blue.blue500};
       }
 
+      ${media_breakpoint_down('md')} {
+        margin-bottom: 0;
+      }
+
       ${media_breakpoint_down('sm')} {
+        align-self: center;
         font-size: ${rem(14)};
         line-height: 20px;
       }

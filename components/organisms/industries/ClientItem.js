@@ -31,7 +31,7 @@ const ClientItem = ({
       <ClientContentWrapper>
         <ClientTexts>
           <ClientLabel>{label}</ClientLabel>
-          <ClientTitle>{title}</ClientTitle>
+          <ClientTitle as="p">{title}</ClientTitle>
         </ClientTexts>
 
         <ClientImage>

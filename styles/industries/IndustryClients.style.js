@@ -45,16 +45,16 @@ export const IndustryClientsBlock = styled.div`
       width: 44px;
       height: 44px;
       border-radius: 50px;
-      border: 1px solid ${globalColor.blue.skyBlue};
+      border: 1px solid ${globalColor.blue.blue400};
       background-color: transparent;
       overflow: hidden;
       a,
       span {
-        color: ${globalColor.blue.skyBlue};
+        color: ${globalColor.blue.blue400};
       }
 
       &.active {
-        background-color: ${globalColor.blue.skyBlue};
+        background-color: ${globalColor.blue.blue400};
         span {
           color: ${globalColor.white};
         }
@@ -71,7 +71,7 @@ export const IndustryClientsBlock = styled.div`
         a,
         span,
         svg {
-          color: ${globalColor.blue.blue400};
+          color: ${globalColor.blue.blue500};
         }
       }
     }
@@ -83,17 +83,17 @@ export const IndustryClientsBlock = styled.div`
 
       span {
         svg {
-          color: ${globalColor.blue.skyBlue};
+          color: ${globalColor.blue.blue400};
           transition: ${globalTransition.default};
         }
       }
 
       &:hover,
       &:focus {
-        color: ${globalColor.blue.blue400};
+        color: ${globalColor.blue.blue500};
 
         svg {
-          color: ${globalColor.blue.blue400};
+          color: ${globalColor.blue.blue500};
           transition: inherit;
         }
       }
@@ -188,6 +188,29 @@ export const IndustryClientsItem = styled.div`
   }
 `;
 
+export const ClientLabel = styled.p`
+  margin: 0;
+  font-size: ${rem(16)};
+  line-height: 1.5;
+  color: ${globalColor.blue.darkBlue};
+
+  ${media_breakpoint_down('md')} {
+    font-size: ${rem(14)};
+  }
+`;
+
+export const ClientTitle = styled.h3`
+  margin: 0;
+  font-size: ${rem(24)};
+  line-height: 1.5;
+  font-weight: 600;
+  color: ${globalColor.blue.darkBlue};
+
+  ${media_breakpoint_down('md')} {
+    font-size: ${rem(20)};
+  }
+`;
+
 export const ClientOpener = styled.div`
   display: grid;
   grid-template-rows: 1fr;
@@ -195,6 +218,12 @@ export const ClientOpener = styled.div`
   opacity: 1;
   visibility: visible;
   transition: all 0.5s ease;
+
+  ${ClientTitle}, ${ClientLabel} {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
 `;
 
 export const ClientOpenerWrapper = styled.div`
@@ -220,29 +249,6 @@ export const ClientTexts = styled.div`
   display: flex;
   flex-direction: column;
   gap: 12px;
-`;
-
-export const ClientLabel = styled.p`
-  margin: 0;
-  font-size: ${rem(16)};
-  line-height: 1.5;
-  color: ${globalColor.blue.darkBlue};
-
-  ${media_breakpoint_down('md')} {
-    font-size: ${rem(14)};
-  }
-`;
-
-export const ClientTitle = styled.h3`
-  margin: 0;
-  font-size: ${rem(24)};
-  line-height: 1.5;
-  font-weight: 600;
-  color: ${globalColor.blue.darkBlue};
-
-  ${media_breakpoint_down('md')} {
-    font-size: ${rem(20)};
-  }
 `;
 
 export const ClientContent = styled.div`
