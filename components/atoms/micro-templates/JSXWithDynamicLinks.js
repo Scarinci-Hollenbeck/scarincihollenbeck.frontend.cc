@@ -1,6 +1,5 @@
 import parse, { domToReact } from 'html-react-parser';
 import Link from 'next/link';
-import * as ImageLegacy from 'next/legacy/image';
 import Image from 'next/image';
 import empty from 'is-empty';
 import {
@@ -99,7 +98,7 @@ export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
               {domNode.children[0]?.data
                 || domNode.children[0]?.children[0]?.data}
               {domNode.children[0]?.name === 'img' && (
-                <ImageLegacy
+                <Image
                   src={getWikiLink(imageSrc)}
                   alt={domNode.children[0]?.attribs?.alt}
                   width={domNode.children[0]?.attribs?.width || 750}
@@ -126,33 +125,16 @@ export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
           );
         }
 
-        if (
-          domNode.parent?.parent?.attribs?.class?.includes('wp-block-image')
-        ) {
-          return (
-            <Image
-              className="floated-image"
-              placeholder="blur"
-              blurDataURL={imageSrc}
-              loading="lazy"
-              src={getWikiLink(imageSrc)}
-              alt={domNode.attribs.alt}
-              width={domNode.attribs?.width || 1000}
-              height={domNode.attribs?.height || 500}
-            />
-          );
-        }
-
         return (
-          <ImageLegacy
+          <Image
+            className="floated-image"
             placeholder="blur"
             blurDataURL={imageSrc}
             loading="lazy"
             src={getWikiLink(imageSrc)}
             alt={domNode.attribs.alt}
-            width={domNode.attribs.width || 1000}
-            height={domNode.attribs.height || 500}
-            layout={isHoliday ? '' : 'responsive'}
+            width={domNode.attribs?.width || 1000}
+            height={domNode.attribs?.height || 500}
             quality={90}
           />
         );
@@ -187,10 +169,21 @@ export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
       }
 
       if (domNode.name === 'table') {
-        const { class: className, ...restAttribs } = domNode.attribs;
+        const {
+          class: className,
+          cellpadding: cellPadding,
+          cellspacing: cellSpacing,
+          ...restAttribs
+        } = domNode.attribs;
+
         return (
           <div className="table-wrapper">
-            <table className={className} {...restAttribs}>
+            <table
+              className={className}
+              cellPadding={cellPadding}
+              cellSpacing={cellSpacing}
+              {...restAttribs}
+            >
               {domToReact(domNode.children, options)}
             </table>
           </div>

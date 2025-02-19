@@ -19,7 +19,7 @@ export const ContentContainer = styled.div`
 
   p,
   ul,
-  ol, 
+  ol,
   blockquote {
     &:last-child {
       margin: 0;
@@ -27,6 +27,10 @@ export const ContentContainer = styled.div`
 
     &:has(+ *:empty) {
       margin: 0;
+    }
+
+    &:empty {
+      display: none;
     }
   }
 
@@ -38,7 +42,8 @@ export const ContentContainer = styled.div`
     }
   }
 
-  ul, ol {
+  ul,
+  ol {
     margin: 0 0 16px 0;
     list-style: disc;
 
@@ -56,11 +61,16 @@ export const ContentContainer = styled.div`
     }
   }
 
-  strong, b {
+  strong,
+  b {
     font-weight: 600;
   }
 
-  h2, h3, h4, h5, h6 {
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     margin: 32px 0 4px;
     color: ${globalColor.blue.darkBlue};
     font-weight: 600;
@@ -81,7 +91,7 @@ export const ContentContainer = styled.div`
   h2 {
     font-size: ${rem(32)};
     line-height: 1.38;
-    
+
     ${media_breakpoint_down('md')} {
       font-size: ${rem(20)};
       line-height: 1.4;
@@ -133,8 +143,19 @@ export const ContentContainer = styled.div`
     overflow-x: auto;
 
     table {
-      min-width: 500px;
+      white-space: nowrap;
     }
+
+    tbody {
+      display: table;
+      width: 100%;
+    }
+  }
+
+  table {
+    width: 100%;
+    border-color: ${globalColor.blue.darkBlue};
+    table-layout: fixed;
   }
 
   &.two-columns {
@@ -150,6 +171,23 @@ export const ContentContainer = styled.div`
     }
   }
 
+  .size-large,
+  .size-full {
+    display: grid;
+  }
+
+  img {
+    width: fit-content;
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  video {
+    width: 100%;
+    height: 100%;
+  }
+
   &.grid-two-columns {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -161,16 +199,15 @@ export const ContentContainer = styled.div`
   }
 
   ${media_breakpoint_down('sm')} {
-    .floated-image {
-      width: 100vw;
-      height: 70%;
-    }
-
     .alignleft,
     .alignright {
       float: none;
       margin: 0;
       max-width: 100%;
+
+      img {
+        margin: 0 auto;
+      }
     }
   }
 `;

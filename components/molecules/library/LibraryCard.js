@@ -47,6 +47,7 @@ const LibraryCard = ({
           width={500}
           height={240}
           sizes="500px"
+          quality={80}
         />
       </LibraryCardImage>
 

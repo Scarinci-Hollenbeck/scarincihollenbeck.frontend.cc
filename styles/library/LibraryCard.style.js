@@ -9,10 +9,9 @@ import { Title20 } from '../common/Typography.style';
 import { media_breakpoint_down } from '../mediaBreakpoints.style';
 
 export const LibraryCardImage = styled.picture`
-  width: 100%;
-  height: 240px;
   border-radius: ${globalBorderRadius.middle};
   overflow: hidden;
+  aspect-ratio: 2.15;
 
   img {
     width: 100%;

@@ -32,6 +32,10 @@ const anchorLocationsData = {
     id: 'attorneys-section',
     title: 'Attorneys',
   },
+  posts: {
+    id: 'posts-section',
+    title: 'Posts',
+  },
   faq: {
     id: 'faq-section',
     title: 'FAQs',
@@ -47,10 +51,6 @@ const anchorLocationsData = {
   reviews: {
     id: 'reviews',
     title: 'Reviews',
-  },
-  posts: {
-    id: 'posts-section',
-    title: 'Posts',
   },
 };
 
@@ -139,6 +139,12 @@ const LocationPage = ({
         />
       )}
 
+      <LatestPostsSection
+        title="Read more about this location in our library"
+        posts={posts}
+        anchorId={anchorData?.posts?.id}
+      />
+
       <FaqContainer>
         <FAQ
           anchorId={anchorData.faq.id}
@@ -158,12 +164,6 @@ const LocationPage = ({
           anchorId={anchorData?.reviews?.id}
         />
       )}
-
-      <LatestPostsSection
-        title="Read more about this location in our library"
-        posts={posts}
-        anchorId={anchorData?.posts?.id}
-      />
     </>
   );
 };

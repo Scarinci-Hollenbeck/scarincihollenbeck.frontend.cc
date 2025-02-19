@@ -397,7 +397,9 @@ export const GlobalStyle = createGlobalStyle`
 
       // FireFox
       @supports not selector(::-webkit-scrollbar-thumb) {
-        scrollbar-color: ${globalColor.blue.blue400} ${globalColor.blue.blue6002};
+        scrollbar-color: ${globalColor.blue.blue400} ${
+  globalColor.blue.blue6002
+};
         scrollbar-width: thin;
       }
     }
@@ -470,8 +472,8 @@ export const GlobalStyle = createGlobalStyle`
     flex: 1;
   }
 
-  .wp-block-table {
-    td {
+  .wp-block-table, .table-wrapper {
+    td, th {
       padding: 0 10px;
       border: 1px solid ${globalColor.grayExtraLite.grayExtraLite100};
     }

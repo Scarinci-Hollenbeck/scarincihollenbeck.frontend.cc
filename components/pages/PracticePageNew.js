@@ -30,6 +30,10 @@ const anchorDataDefault = {
     id: 'attorneys-section',
     title: 'Attorneys',
   },
+  posts: {
+    id: 'posts-section',
+    title: 'Posts',
+  },
   whyChooseUs: {
     id: 'why-choose-us-section',
     title: 'Why choose us',
@@ -41,10 +45,6 @@ const anchorDataDefault = {
   googleReviews: {
     id: 'reviews-section',
     title: 'Reviews',
-  },
-  posts: {
-    id: 'posts-section',
-    title: 'Posts',
   },
 };
 
@@ -147,6 +147,11 @@ const PracticePageNew = ({
           chairs={chairPractice}
           anchorId={anchorData.attorneys.id}
         />
+        <LatestPostsSection
+          title="Read more about this practice in our library"
+          posts={posts}
+          anchorId={anchorData?.posts?.id}
+        />
         <WhyChooseUs
           anchorId={anchorData.whyChooseUs.id}
           data={whyChooseUsData}
@@ -156,11 +161,6 @@ const PracticePageNew = ({
           anchorId={anchorData.whatWeDo.id}
         />
 
-        <LatestPostsSection
-          title="Read more about this practice in our library"
-          posts={posts}
-          anchorId={anchorData?.posts?.id}
-        />
         {/* {!empty(googleReviews) && (
           <GoogleReviews
             reviews={googleReviews}
