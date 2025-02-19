@@ -234,8 +234,6 @@ export const convertUnixTimestampToISO = (unixTimestamp) => {
   return date.toISOString(); // Convert to ISO 8601 string
 };
 
-export const deleteReviewsWithoutComment = (reviews) => reviews.filter((review) => !empty(review.text));
-
 export const changePostLink = (url) => {
   if (empty(url)) return null;
   const parts = url?.replace(`${PRODUCTION_URL}/`, '').split('/');
@@ -623,3 +621,12 @@ export const sanitizeCategories = (categories) => categories?.map((category) => 
 export const getBaseUrl = (pathname) => (pathname.startsWith('localhost')
   ? `http://${pathname}`
   : `https://${pathname}`);
+
+export const setResponseHeaders = (res, revalidateTime, cacheStatus) => {
+  res.setHeader(
+    'Cache-Control',
+    `public, s-maxage=${revalidateTime}, stale-while-revalidate=120`,
+  );
+  res.setHeader('Content-Type', 'application/json');
+  res.setHeader('X-Cache-Status', cacheStatus);
+};

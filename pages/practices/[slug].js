@@ -44,11 +44,6 @@ export const getStaticProps = async ({ params }) => {
     practices,
   } = await getPracticeData(`/practices/${params.slug}`);
 
-  // 04.04.2024 Google reviews temporarily disabled
-  // const googleReviews = await getGoogleReviewsForPalaces(
-  //   Object.values(googleLocationIds),
-  // );
-
   if (empty(practice)) {
     return {
       redirect: {
@@ -102,7 +97,6 @@ export const getStaticProps = async ({ params }) => {
       practices,
       awards: formateAwards(practice?.practicesIncluded?.awards),
       posts: postsData?.posts || [],
-      // googleReviews: deleteReviewsWithoutComment(googleReviews.flat()),
     },
     revalidate: 8600,
   };
@@ -118,7 +112,6 @@ const SinglePractice = ({
   faq,
   whyChooseUsData,
   practices,
-  googleReviews,
   awards,
   posts,
 }) => {
@@ -136,28 +129,17 @@ const SinglePractice = ({
     }),
   );
 
-  const fullTabs = [
-    ...siteTabs,
-    // related articles not used on new pages practices 02.01.2024
-    // {
-    //   id: 99,
-    //   title: 'Related Articles',
-    //   content: '<h4>Related Articles</h4>',
-    // },
-  ];
-
   const practiceProps = {
     practice,
     canonicalUrl,
     attorneysSchemaData,
     keyContactsList,
-    tabs: fullTabs,
+    tabs: siteTabs,
     chairPractice,
     attorneyListPractice,
     faq,
     whyChooseUsData,
     practices,
-    googleReviews,
     awards,
     posts,
   };

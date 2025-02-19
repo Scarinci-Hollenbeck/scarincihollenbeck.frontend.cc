@@ -4,7 +4,6 @@ import empty from 'is-empty';
 import dynamic from 'next/dynamic';
 import SubHeaderDefault from 'layouts/SubHeader/SubHeaderDefault';
 import PracticeContent from 'components/organisms/practices/PracticeContent';
-import AnchorTop from 'components/atoms/AnchorTop';
 import PracticePrintPage from 'components/organisms/practices/PracticePrintPage';
 import usePrintLogic from 'hooks/usePrintLogic';
 import SubHeaderKeyContacts from 'layouts/SubHeader/SubHeaderKeyContacts';
@@ -15,7 +14,6 @@ const WhyChooseUs = dynamic(() => import('components/organisms/practices/WhyChoo
 const WhatWeDoSection = dynamic(() => import('components/organisms/home/WhatWeDoSection'));
 const Awards = dynamic(() => import('components/organisms/home/Awards'));
 const LatestPostsSection = dynamic(() => import('components/organisms/home/LatestPostsSection'));
-// const GoogleReviews = dynamic(() => import('components/organisms/common/GoogleReviews'));
 
 const anchorDataDefault = {
   faq: {
@@ -42,10 +40,6 @@ const anchorDataDefault = {
     id: 'What-we-do',
     title: 'What we do',
   },
-  googleReviews: {
-    id: 'reviews-section',
-    title: 'Reviews',
-  },
 };
 
 const PracticePageNew = ({
@@ -59,7 +53,6 @@ const PracticePageNew = ({
   faq,
   whyChooseUsData,
   practices,
-  googleReviews,
   awards,
   posts,
 }) => {
@@ -86,16 +79,11 @@ const PracticePageNew = ({
     if (empty(posts)) {
       delete copyAnchorData.posts;
     }
-
-    if (empty(googleReviews)) {
-      delete copyAnchorData.googleReviews;
-    }
-
     return {
       ...copyAnchorData,
       ...updatedAnchorData,
     };
-  }, [googleReviews, awards, tabs, posts, anchorDataDefault]);
+  }, [awards, tabs, posts, anchorDataDefault]);
 
   const printPageProps = {
     title: practice?.title,
@@ -160,14 +148,6 @@ const PracticePageNew = ({
           practices={practices}
           anchorId={anchorData.whatWeDo.id}
         />
-
-        {/* {!empty(googleReviews) && (
-          <GoogleReviews
-            reviews={googleReviews}
-            anchorId={anchorData?.googleReviews?.id}
-          />
-        )} */}
-        <AnchorTop />
       </div>
 
       {isRenderPdf && (
