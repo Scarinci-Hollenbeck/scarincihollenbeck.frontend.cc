@@ -1,37 +1,6 @@
 import styled from 'styled-components';
-import { globalColor, globalShadow, rem } from './global_styles/Global.styles';
+import { globalColor, globalShadow } from './global_styles/Global.styles';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
-import Link from 'next/link';
-
-export const MainVirtualizeContainer = styled.nav`
-  height: 600px;
-  width: 100%;
-  overflow: auto;
-  background-color: ${globalColor.graySmoke.liteWhiteSmoke};
-  border-radius: 5px;
-`;
-
-export const VirtualizeListBox = styled.ul`
-  height: ${(props) => props?.height}px;
-  width: 100%;
-  position: relative;
-`;
-
-export const VirtualListItem = styled.li`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 28px;
-  transform: ${(props) => props?.transform};
-  font-size: ${rem(16)};
-`;
-
-export const LinkWithEllipsis = styled(Link)`
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-`;
 
 export const SideBarContainer = styled.nav`
   display: flex;
@@ -75,8 +44,9 @@ export const SideBarContainer = styled.nav`
       gap: 5px;
       color: ${globalColor.gray.gray60};
     }
-  }
 
-  ${media_breakpoint_down('lg')} {
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 `;
