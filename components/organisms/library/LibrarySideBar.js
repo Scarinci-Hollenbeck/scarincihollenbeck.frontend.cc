@@ -4,7 +4,6 @@ import { BsFacebook, BsLinkedin } from 'react-icons/bs';
 import PopularList from './PopularList';
 import { CLIENT_ALERTS, SOCIAL_MEDIA_LINKS } from '../../../utils/constants';
 import { SideBarContainer } from '../../../styles/LibraryArticles.style';
-import FirmAuthors from './FirmAuthors';
 import { ShareSocialBox } from '../../../styles/Post/SocialShare.style';
 
 const LibrarySideBar = ({
@@ -12,8 +11,6 @@ const LibrarySideBar = ({
   profileUrl,
   childrenOfCurrentCategory,
   popularCategories,
-  authors,
-  authorsIsLoading,
 }) => (
   <SideBarContainer>
     <ShareSocialBox>
@@ -51,7 +48,6 @@ const LibrarySideBar = ({
     )}
     <PopularList term="Popular Categories" list={popularCategories} />
     <PopularList term="Client Alerts" list={CLIENT_ALERTS} />
-    <FirmAuthors authors={authors} authorsIsLoading={authorsIsLoading} />
   </SideBarContainer>
 );
 
