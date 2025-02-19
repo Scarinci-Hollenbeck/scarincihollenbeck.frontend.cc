@@ -1,5 +1,5 @@
-import styled from "styled-components";
-import { media_breakpoint_down } from "styles/mediaBreakpoints.style";
+import styled from 'styled-components';
+import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const SubHeaderLocationsHolder = styled.div`
   width: 100%;

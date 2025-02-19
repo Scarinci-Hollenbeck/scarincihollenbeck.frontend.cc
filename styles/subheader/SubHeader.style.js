@@ -497,4 +497,3 @@ export const SubHeaderHolder = styled.section`
     }
   }
 `;
-

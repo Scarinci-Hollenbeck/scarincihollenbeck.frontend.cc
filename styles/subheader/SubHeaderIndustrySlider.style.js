@@ -1,7 +1,10 @@
-import styled from "styled-components";
-import { globalColor, globalTransition, rem } from "styles/global_styles/Global.styles";
-import { media_breakpoint_down } from "styles/mediaBreakpoints.style";
-
+import styled from 'styled-components';
+import {
+  globalColor,
+  globalTransition,
+  rem,
+} from 'styles/global_styles/Global.styles';
+import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const SubHeaderIndustrySliderWrapper = styled.div`
   --width-cards-container: 800px;
@@ -81,6 +84,10 @@ export const SubHeaderIndustrySliderNavigationButton = styled.button`
   }
 `;
 
-export const SubHeaderIndustrySliderNavigationPrev = styled(SubHeaderIndustrySliderNavigationButton)``;
+export const SubHeaderIndustrySliderNavigationPrev = styled(
+  SubHeaderIndustrySliderNavigationButton,
+)``;
 
-export const SubHeaderIndustrySliderNavigationNext = styled(SubHeaderIndustrySliderNavigationButton)``;
+export const SubHeaderIndustrySliderNavigationNext = styled(
+  SubHeaderIndustrySliderNavigationButton,
+)``;
