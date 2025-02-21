@@ -1,6 +1,6 @@
 import ModalWindow from 'components/common/ModalWindow';
 import Image from 'next/image';
-import React, { useId, useState } from 'react';
+import React, { useId, useRef, useState } from 'react';
 import { FormContainer } from 'styles/attorney-page/GetInTouchForm.styles';
 import {
   CheckBoxesList,
@@ -31,12 +31,14 @@ const isArraysIdentical = (chosenIds, originalIds) => {
   }
   return chosenIds.every((element, index) => element === originalIds[index]);
 };
+
 const originalCategoriesIds = (categoryArr) => categoryArr?.map((category) => category.id);
 
 const SubscriptionModal = ({ categoriesFromWP }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const useIdVar = useId();
+  const fieldsetRef = useRef(null);
   const [categoriesChosen, setCategories] = useState([]);
   const { isActiveSubscriptionModal, customSubscriptionModalClassName } = useSelector((store) => store.modals);
   const setIsShowContactModal = (value) => dispatch(handleSubscriptionModalOpener({ active: value }));
@@ -54,12 +56,22 @@ const SubscriptionModal = ({ categoriesFromWP }) => {
   };
 
   const handleChooseAllClearAll = (isAllChosen) => {
-    if (isAllChosen) {
-      setCategories(originalCategoriesIds(categoriesFromWP));
-    } else {
-      setCategories([]);
-    }
+    const newCategories = isAllChosen
+      ? originalCategoriesIds(categoriesFromWP)
+      : [];
+    setCategories(newCategories);
+
+    setTimeout(() => {
+      if (fieldsetRef.current) {
+        fieldsetRef.current
+          .querySelectorAll('.form-checkbox__input')
+          .forEach((checkbox) => {
+            checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+          });
+      }
+    }, 0);
   };
+
   return (
     <SubscriptionModalWrapper className={customSubscriptionModalClassName}>
       <ModalWindow
@@ -99,6 +111,7 @@ const SubscriptionModal = ({ categoriesFromWP }) => {
               <fieldset
                 className="form-checkboxes"
                 data-kw-group="true"
+                ref={fieldsetRef}
                 // eslint-disable-next-line react/no-unknown-property
                 rules="required"
               >
