@@ -102,9 +102,10 @@ export const StandardBlueButton = styled.button`
     width: 100%;
     height: 100%;
     z-index: -1;
-    background-image: ${({ $isLightHover }) => $isLightHover ? 
-      'linear-gradient(89deg, #377ec4 2.36%, #afdcf5 107.09%)' : 
-      'linear-gradient(87deg, #164587 -9.15%, #060b2a 100%)'};
+    background-image: ${({ $isLightHover }) =>
+      $isLightHover
+        ? 'linear-gradient(89deg, #377ec4 2.36%, #afdcf5 107.09%)'
+        : 'linear-gradient(87deg, #164587 -9.15%, #060b2a 100%)'};
     opacity: 0;
     transition: opacity 0.3s ease;
   }
@@ -225,7 +226,7 @@ export const OutlinedButton = styled.button`
   background-color: transparent;
   transition: ${globalTransition.default};
 
-  @media (hover:hover) {
+  @media (hover: hover) {
     &:hover {
       border-color: ${globalColor.blue.blue400};
 

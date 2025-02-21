@@ -1,8 +1,11 @@
-import styled from "styled-components";
-import { Title20, UnderlinedLink } from "styles/common/Typography.style";
-import { globalBorderRadius, globalColor, rem } from "styles/global_styles/Global.styles";
-import { media_breakpoint_down } from "styles/mediaBreakpoints.style";
-
+import styled from 'styled-components';
+import { Title20, UnderlinedLink } from 'styles/common/Typography.style';
+import {
+  globalBorderRadius,
+  globalColor,
+  rem,
+} from 'styles/global_styles/Global.styles';
+import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const Card = styled.div`
   min-height: 205px;
@@ -12,7 +15,7 @@ export const Card = styled.div`
 
   ${media_breakpoint_down('md')} {
     gap: 0;
-    column-gap: 8px; 
+    column-gap: 8px;
     flex-wrap: wrap;
   }
 `;

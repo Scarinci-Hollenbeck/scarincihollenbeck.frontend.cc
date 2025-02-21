@@ -208,7 +208,6 @@ export const LawyerCardWrapper = styled.div`
     }
 
     &:has(${LawyerCardChair}) {
-
       ${LawyerCardChair} {
         margin: -16px -8px -4px -12px;
 

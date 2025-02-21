@@ -1,9 +1,8 @@
-import styled from "styled-components";
-import { LogoSeparatorWrapper } from "../Separators.style";
-import { media_breakpoint_down } from "../mediaBreakpoints.style";
+import styled from 'styled-components';
+import { LogoSeparatorWrapper } from '../Separators.style';
+import { media_breakpoint_down } from '../mediaBreakpoints.style';
 
 export const LibraryCategoriesWrapper = styled.div`
-
   ${LogoSeparatorWrapper} {
     margin: 0;
   }

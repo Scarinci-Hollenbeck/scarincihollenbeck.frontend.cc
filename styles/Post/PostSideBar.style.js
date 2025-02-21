@@ -1,6 +1,12 @@
 import Link from 'next/link';
 import styled from 'styled-components';
-import { globalBorderRadius, globalColor, globalShadow, globalTransition, rem } from 'styles/global_styles/Global.styles';
+import {
+  globalBorderRadius,
+  globalColor,
+  globalShadow,
+  globalTransition,
+  rem,
+} from 'styles/global_styles/Global.styles';
 import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const PostSidebarAnchors = styled.ul`
@@ -37,7 +43,7 @@ export const PostSidebarAnchorLink = styled(Link)`
   color: ${globalColor.gray.gray700};
   font-size: ${rem(16)};
   line-height: 1.5;
-  
+
   &:hover {
     color: ${globalColor.gray.gray700};
   }
@@ -62,7 +68,7 @@ export const PostSidebarWrapper = styled.div`
   transition: ${globalTransition.default};
   display: flex;
   flex-direction: column;
-  
+
   &:has(${PostSidebarAnchors}:empty) {
     width: 0;
 
@@ -78,12 +84,12 @@ export const PostSidebarWrapper = styled.div`
 
 export const PostSidebarAnchorsWrapper = styled.div`
   max-height: calc(100dvh - 32px - var(--header-height));
-  margin-top: ${({ $active }) => $active ? '16px' : '0'};
-  padding: ${({ $active }) => $active ? '20px' : '0 20px'};
+  margin-top: ${({ $active }) => ($active ? '16px' : '0')};
+  padding: ${({ $active }) => ($active ? '20px' : '0 20px')};
   display: grid;
-  grid-template-rows: ${({ $active }) => $active ? '1fr' : '0fr'};
-  opacity: ${({ $active }) => $active ? '1' : '0'};
-  pointer-events: ${({ $active }) => $active ? 'all' : 'none'};
+  grid-template-rows: ${({ $active }) => ($active ? '1fr' : '0fr')};
+  opacity: ${({ $active }) => ($active ? '1' : '0')};
+  pointer-events: ${({ $active }) => ($active ? 'all' : 'none')};
   position: sticky;
   top: calc(var(--header-height) + 16px);
   left: 0;
@@ -98,7 +104,7 @@ export const PostSidebarAnchorsWrapper = styled.div`
   }
 
   ${media_breakpoint_down('md')} {
-    padding: ${({ $active }) => $active ? '16px 12px' : '0 12px'};
+    padding: ${({ $active }) => ($active ? '16px 12px' : '0 12px')};
   }
 
   &:has(${PostSidebarAnchors}:empty) {
@@ -109,7 +115,7 @@ export const PostSidebarAnchorsWrapper = styled.div`
 export const PostSidebarAnchorsOpener = styled.button`
   width: 100%;
   padding: 20px;
-  display: ${({$hideOpener}) => $hideOpener ? 'none' : 'flex'};
+  display: ${({ $hideOpener }) => ($hideOpener ? 'none' : 'flex')};
   align-items: center;
   gap: 8px;
   background-color: ${globalColor.white};

@@ -237,9 +237,10 @@ export const SubHeaderInfo = styled.div`
 
 export const SubHeaderCategory = styled.div`
   padding: 4px 12px;
-  background: ${({$lineColor}) => $lineColor 
-    ? `linear-gradient(90deg, ${$lineColor} 0%, rgba(242, 242, 242, 0.00) 100%)` 
-    : `linear-gradient(90deg, ${globalColor.blue.dirtyBlue} 0%, rgba(242, 242, 242, 0.00) 100%)`};
+  background: ${({ $lineColor }) =>
+    $lineColor
+      ? `linear-gradient(90deg, ${$lineColor} 0%, rgba(242, 242, 242, 0.00) 100%)`
+      : `linear-gradient(90deg, ${globalColor.blue.dirtyBlue} 0%, rgba(242, 242, 242, 0.00) 100%)`};
   color: ${globalColor.white};
   font-style: italic;
   font-weight: 900;
@@ -575,7 +576,7 @@ export const SubHeaderHolder = styled.section`
     @media print {
       display: none;
     }
-    
+
     ${SubHeaderInfo} {
       flex: 1;
       padding: 16px 0 8px 0;

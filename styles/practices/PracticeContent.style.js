@@ -1,9 +1,6 @@
 import styled from 'styled-components';
 import { FaqWrapper } from 'styles/Faq.style';
-import {
-  globalColor,
-  rem,
-} from 'styles/global_styles/Global.styles';
+import { globalColor, rem } from 'styles/global_styles/Global.styles';
 import { MapWrapper } from 'styles/LocationCard.style';
 import {
   media_breakpoint_down,
@@ -36,7 +33,7 @@ export const PracticeContentSection = styled.section`
         margin-right: -12px;
       }
     }
-    
+
     ${SocialLabel} {
       font-size: ${rem(14)};
     }

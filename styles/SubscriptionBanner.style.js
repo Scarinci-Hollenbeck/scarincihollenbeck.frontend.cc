@@ -1,7 +1,7 @@
-import styled from "styled-components";
-import { globalColor, rem } from "./global_styles/Global.styles";
-import { media_breakpoint_down } from "./mediaBreakpoints.style";
-import { StandardBlueButton } from "./Buttons.style";
+import styled from 'styled-components';
+import { globalColor, rem } from './global_styles/Global.styles';
+import { media_breakpoint_down } from './mediaBreakpoints.style';
+import { StandardBlueButton } from './Buttons.style';
 
 export const SubscriptionBannerHolder = styled.div`
   --banner-gap: 64px;
@@ -94,7 +94,11 @@ export const SubscriptionBannerSection = styled.section`
   }
 
   &.subscription-industry {
-    background: linear-gradient(0deg, ${globalColor.blue.darkBlue} 0%, ${globalColor.blue.blue6002} 100%);
+    background: linear-gradient(
+      0deg,
+      ${globalColor.blue.darkBlue} 0%,
+      ${globalColor.blue.blue6002} 100%
+    );
 
     ${SubscriptionBannerTitle} {
       width: 525px;
@@ -104,11 +108,11 @@ export const SubscriptionBannerSection = styled.section`
       ${media_breakpoint_down('xxl')} {
         width: 400px;
       }
-    
+
       ${media_breakpoint_down('xl')} {
         width: 340px;
       }
-    
+
       ${media_breakpoint_down('lg')} {
         width: 100%;
       }
@@ -167,7 +171,11 @@ export const SubscriptionBannerSection = styled.section`
       }
 
       &::after {
-        background-image: linear-gradient(89deg, #377ec4 2.36%, ${globalColor.blue.blue200} 107.09%);
+        background-image: linear-gradient(
+          89deg,
+          #377ec4 2.36%,
+          ${globalColor.blue.blue200} 107.09%
+        );
       }
 
       ${media_breakpoint_down('lg')} {

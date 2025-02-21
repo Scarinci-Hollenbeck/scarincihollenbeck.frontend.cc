@@ -1,9 +1,13 @@
-import Link from "next/link";
-import styled from "styled-components";
-import { globalColor, globalTransition, rem } from "../global_styles/Global.styles";
-import { UnderlinedLink } from "../common/Typography.style";
-import { SelectInput, SelectOption } from "../CustomSelect.style";
-import { media_breakpoint_down } from "../mediaBreakpoints.style";
+import Link from 'next/link';
+import styled from 'styled-components';
+import {
+  globalColor,
+  globalTransition,
+  rem,
+} from '../global_styles/Global.styles';
+import { UnderlinedLink } from '../common/Typography.style';
+import { SelectInput, SelectOption } from '../CustomSelect.style';
+import { media_breakpoint_down } from '../mediaBreakpoints.style';
 
 export const SearchButton = styled.button`
   padding: 14px;
@@ -90,15 +94,17 @@ export const LibraryFiltersNavItem = styled.li`
 
 export const LibraryFiltersNavLink = styled(Link)`
   padding: 4px 0;
-  color: ${({$active}) => $active ? globalColor.blue.blue200 : globalColor.white};
+  color: ${({ $active }) =>
+    $active ? globalColor.blue.blue200 : globalColor.white};
   font-family: var(--font-lato);
   font-size: ${rem(24)};
   line-height: 1.5;
-  font-weight: ${({$active}) => $active ? 900 : 500};
+  font-weight: ${({ $active }) => ($active ? 900 : 500)};
   border-bottom: 3px solid;
-  border-color: ${({$active}) => $active ? globalColor.blue.blue200 : 'transparent'};
+  border-color: ${({ $active }) =>
+    $active ? globalColor.blue.blue200 : 'transparent'};
   transition: ${globalTransition.default};
-  pointer-events: ${({$active}) => $active ? 'none' : 'all'};
+  pointer-events: ${({ $active }) => ($active ? 'none' : 'all')};
 
   &:hover {
     color: ${globalColor.white};
@@ -133,7 +139,7 @@ export const LibraryFiltersLine = styled.div`
         color: ${globalColor.blue.blue400};
       }
     }
-    
+
     &:active {
       color: ${globalColor.blue.skyBlue};
     }

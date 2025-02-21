@@ -170,7 +170,8 @@ export const TabContent = styled(ContentContainer)`
     display: block;
   }
 
-  h2, h3 {
+  h2,
+  h3 {
     ${headingStyles};
   }
 
