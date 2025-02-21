@@ -6,7 +6,16 @@ import {
   BreadcrumbsListContainer,
   ButtonBreadcrumb,
 } from '../../../styles/Breadcrumbs.style';
-import { cutAnchorUrl } from '../../../utils/helpers';
+
+const cutAnchorUrl = (slug) => {
+  const index = slug.indexOf('#');
+
+  if (index !== -1) {
+    return slug.substring(0, index);
+  }
+
+  return slug;
+};
 
 const convertPath = (path) => path.replace(/-/g, ' ');
 const convertSlug = (slug) => slug

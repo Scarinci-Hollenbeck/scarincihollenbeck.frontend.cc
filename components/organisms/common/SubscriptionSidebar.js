@@ -12,7 +12,7 @@ import {
 } from 'styles/SubscriptionSidebar.style';
 import { FIRM_BLOG_PAGES, FIRM_PAGES } from 'utils/constants';
 import Link from 'next/link';
-import { getIcon } from 'utils/helpers';
+import { getIcon } from 'utils/getIcon';
 import { handleSubscriptionModalOpener } from '../../../redux/slices/modals.slice';
 
 const SubscriptionSidebar = ({ isFirmLinks = false }) => {

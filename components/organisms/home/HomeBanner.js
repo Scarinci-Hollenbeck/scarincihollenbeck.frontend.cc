@@ -1,7 +1,6 @@
 import { ContainerDefault } from 'styles/Containers.style';
 import { Fragment } from 'react';
 import { slogans } from 'utils/constants';
-import { getIcon } from 'utils/helpers';
 import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
 import {
   Banner,
@@ -20,6 +19,7 @@ import {
 } from 'styles/HomeBanner.style';
 import { FaDiamond } from 'react-icons/fa6';
 import empty from 'is-empty';
+import { getIcon } from 'utils/getIcon';
 import { DiamondSeparator } from '../../../styles/Separators.style';
 
 const HomeBanner = ({ title, subtitle, infoCards }) => (

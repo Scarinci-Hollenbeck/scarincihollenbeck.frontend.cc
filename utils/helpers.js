@@ -1,44 +1,11 @@
 import empty from 'is-empty';
-import FirmIcon from 'components/common/icons/FirmIcon';
-import LibraryIcon from 'components/common/icons/LibraryIcon';
-import LocationsIcon from 'components/common/icons/LocationsIcon';
-import IndustriesIcon from 'components/common/icons/IndustriesIcon';
-import PracticesIcon from 'components/common/icons/PracticesIcon';
-import AttorneysIcon from 'components/common/icons/AttorneysIcon';
-import HomeIcon from 'components/common/icons/HomeIcon';
-import CareersIcon from 'components/common/icons/CareersIcon';
-import CannabisIcon from 'components/common/icons/CannabisIcon';
-import FoodIcon from 'components/common/icons/FoodIcon';
-import MailingListIcon from 'components/common/icons/MailingListIcon';
-import MediaIcon from 'components/common/icons/MediaIcon';
-import PaymentIcon from 'components/common/icons/PaymentIcon';
-import PostsIcon from 'components/common/icons/PostsIcon';
-import RealEstateIcon from 'components/common/icons/RealEstateIcon';
-import TransportationIcon from 'components/common/icons/TransportationIcon';
-import BankingIcon from 'components/common/icons/BankingIcon';
-import BrainIcon from 'components/common/icons/BrainIcon';
-import BriefcaseIcon from 'components/common/icons/BriefcaseIcon';
-import DocumentsIcon from 'components/common/icons/DocumentsIcon';
-import EnvironmentalIcon from 'components/common/icons/EnvironmentalIcon';
-import TaxIcon from 'components/common/icons/TaxIcon';
-import GlobeIcon from 'components/common/icons/GlobeIcon';
-import BulbIcon from 'components/common/icons/BulbIcon';
-import GovernmentIcon from 'components/common/icons/GovernmentIcon';
-import GamingIcon from 'components/common/icons/GamingIcon';
-import CultureIcon from 'components/common/icons/CultureIcon';
-import BalanceIcon from 'components/common/icons/BalanceIcon';
-import BenefitsIcon from 'components/common/icons/BenefitsIcon';
-import CollaborativeIcon from 'components/common/icons/CollaborativeIcon';
+
 import {
   CLOUDINARY_BASE_URL,
   IMAGE_UPLOAD_CLOUDINARY,
-  FIRM_PAGES,
   PRODUCTION_URL,
   readyIndustriesUrls,
 } from './constants';
-import CheckIcon from '../components/common/icons/CheckIcon';
-import MapIcon from '../components/common/icons/MapIcon';
-import ScopeIcon from '../components/common/icons/ScopeIcon';
 
 // sort a list by its key
 export function sortByKey(list, key) {
@@ -61,18 +28,6 @@ export const convertBooleanToString = (booleanArg) => (booleanArg ? 'true' : '')
 
 // create mark up
 export const createMarkup = (content) => ({ __html: content });
-
-export const cutDomain = (url) => url.replace(PRODUCTION_URL, '');
-
-export const cutAnchorUrl = (slug) => {
-  const index = slug.indexOf('#');
-
-  if (index !== -1) {
-    return slug.substring(0, index);
-  }
-
-  return slug;
-};
 
 // filter by key
 export function filterByKey(list, key) {
@@ -333,104 +288,6 @@ export const debounce = (func, delay) => {
   };
 };
 
-export const createMenuData = (practices, locations, industries) => [
-  {
-    databaseId: 'menu-01',
-    title: 'Homepage',
-    icon: <HomeIcon />,
-    href: '/',
-  },
-  {
-    databaseId: 'menu-02',
-    title: 'Attorneys',
-    icon: <AttorneysIcon />,
-    href: '/attorneys',
-  },
-  {
-    databaseId: 'menu-03',
-    title: 'Legal Practices',
-    icon: <PracticesIcon />,
-    href: '/services',
-    list: [
-      {
-        databaseId: 'menu-all-practices',
-        uri: '/services',
-        title: 'View all practices',
-        additionalClass: 'bolder',
-      },
-      ...practices,
-    ],
-  },
-  {
-    databaseId: 'menu-04',
-    title: 'Industries',
-    icon: <IndustriesIcon />,
-    href: '/services',
-    list: [
-      {
-        databaseId: 'menu-all-industries',
-        uri: '/services#industries',
-        title: 'View all industries',
-        additionalClass: 'bolder',
-      },
-      ...industries,
-    ],
-  },
-  {
-    databaseId: 'menu-05',
-    title: 'Locations',
-    icon: <LocationsIcon />,
-    href: '/location/new-york',
-    list: !empty(locations) ? [...locations] : [],
-  },
-  {
-    databaseId: 'menu-06',
-    title: 'Library',
-    icon: <LibraryIcon />,
-    href: '/',
-    list: [
-      {
-        databaseId: 'menu-lib-00',
-        title: 'Library overview',
-        uri: '/library',
-      },
-      {
-        databaseId: 'menu-lib-01',
-        title: 'Client Alerts',
-        uri: '/library/category/client-alert',
-      },
-      {
-        databaseId: 'menu-lib-02',
-        title: 'Firm News',
-        uri: '/library/category/firm-news',
-      },
-      {
-        databaseId: 'menu-lib-03',
-        title: 'Firm Events',
-        uri: '/library/category/firm-events',
-      },
-      {
-        databaseId: 'menu-lib-04',
-        title: 'Firm Insights',
-        uri: '/library/category/law-firm-insights',
-      },
-    ],
-  },
-  {
-    databaseId: 'menu-07',
-    title: 'The Firm',
-    icon: <FirmIcon />,
-    href: '/',
-    list: FIRM_PAGES,
-  },
-  {
-    databaseId: 'menu-08',
-    title: 'Careers',
-    icon: <CareersIcon />,
-    href: '/careers',
-  },
-];
-
 export const createOverviewLinks = (practices, isAllLinks) => {
   if (empty(practices)) return null;
 
@@ -450,46 +307,6 @@ export const createOverviewLinks = (practices, isAllLinks) => {
       childPractice: updatedChildPractice,
     };
   });
-};
-
-export const getIcon = (name) => {
-  const icons = {
-    Attorneys: <AttorneysIcon />,
-    Banking: <BankingIcon />,
-    Cannabis: <CannabisIcon />,
-    Careers: <CareersIcon />,
-    Firm: <FirmIcon />,
-    Food: <FoodIcon />,
-    Home: <HomeIcon />,
-    Industries: <IndustriesIcon />,
-    'News paper': <LibraryIcon />,
-    Locations: <LocationsIcon />,
-    MailingList: <MailingListIcon />,
-    Media: <MediaIcon />,
-    Payment: <PaymentIcon />,
-    Posts: <PostsIcon />,
-    Practices: <PracticesIcon />,
-    'Real Estate': <RealEstateIcon />,
-    Transportation: <TransportationIcon />,
-    Brain: <BrainIcon />,
-    Briefcase: <BriefcaseIcon />,
-    Documents: <DocumentsIcon />,
-    Environmental: <EnvironmentalIcon />,
-    Tax: <TaxIcon />,
-    Check: <CheckIcon />,
-    Map: <MapIcon />,
-    Scope: <ScopeIcon />,
-    Globe: <GlobeIcon />,
-    Bulb: <BulbIcon />,
-    Government: <GovernmentIcon />,
-    Gaming: <GamingIcon />,
-    Culture: <CultureIcon />,
-    Balance: <BalanceIcon />,
-    Benefits: <BenefitsIcon />,
-    Collaborative: <CollaborativeIcon />,
-  };
-
-  return icons[name];
 };
 
 export const filterAttorneysByDesignation = (attorneys) => {
