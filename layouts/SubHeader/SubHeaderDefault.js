@@ -88,9 +88,11 @@ const SubHeaderDefault = ({
               {authors.map(({ databaseId, display_name, author }, index) => (
                 <Fragment key={databaseId}>
                   <SubHeaderAuthorName
-                    as={empty(author?.uri) ? 'span' : Link}
+                    as={Link}
                     href={
-                      empty(author?.uri) ? undefined : `/library${author.uri}`
+                      empty(author?.uri)
+                        ? '/firm-overview'
+                        : `/library${author.uri}`
                     }
                   >
                     {display_name}

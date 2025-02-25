@@ -57,4 +57,10 @@ export const LibraryTagLink = styled(Link)`
   }
 `;
 
-export const LibraryTagsCollapseOpener = styled(UnderlinedLink)``;
+export const LibraryTagsCollapseOpener = styled(UnderlinedLink)`
+  font-size: ${rem(16)};
+
+  ${media_breakpoint_down('md')} {
+    font-size: ${rem(14)};
+  }
+`;

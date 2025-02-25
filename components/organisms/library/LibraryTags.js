@@ -158,9 +158,7 @@ const LibraryTags = ({ tags = [], maxLengthTags = 10, handleClickTag }) => {
                   onClick={() => onClickTag(tag, isSelected)}
                   className={isSelected ? 'selected' : ''}
                 >
-                  {`${changeTitle(tag?.name, false)}${
-                    !empty(tag?.count) ? ` (${tag?.count})` : ''
-                  }`}
+                  {changeTitle(tag?.name, false)}
                   {isSelected && <BsXLg />}
                 </LibraryTagLink>
               </LibraryTag>

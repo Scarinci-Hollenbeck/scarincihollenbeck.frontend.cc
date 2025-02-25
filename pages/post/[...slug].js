@@ -49,8 +49,12 @@ const getPostContentData = async (slug, categorySlug) => {
     return undefined;
   }
 
-  const selectedAuthors = !empty(post?.selectAuthors?.authorDisplayOrder)
-    ? attorneysSanitize(post.selectAuthors.authorDisplayOrder)
+  const filteredAuthors = post?.selectAuthors?.authorDisplayOrder?.filter(
+    (item) => item?.uri && !item.uri.includes('post_type'),
+  );
+
+  const selectedAuthors = !empty(filteredAuthors)
+    ? attorneysSanitize(filteredAuthors)
     : ScarinciHollenbeckAuthor;
 
   const selectedHeroes = !empty(post?.selectHeroes?.selectAttorneys)
@@ -67,8 +71,7 @@ const getPostContentData = async (slug, categorySlug) => {
   };
 
   return {
-    authors: selectedAuthors.filter(({ uri }) => !uri.includes('post_type')),
-    keyContacts: selectedAuthors,
+    authors: selectedAuthors,
     selectedHeroes,
     seo,
     content: post?.content,
@@ -103,7 +106,6 @@ export const getServerSideProps = async ({ params, res, query }) => {
     date,
     mainCategory,
     authors,
-    keyContacts,
     selectedHeroes,
     seo,
     tags,
@@ -123,7 +125,7 @@ export const getServerSideProps = async ({ params, res, query }) => {
       post,
       seo,
       authors,
-      keyContacts: keyContacts || authors,
+      keyContacts: authors,
       relatedPosts: mainCategory?.posts?.nodes,
       mainCategory,
       selectedHeroes,

@@ -171,6 +171,11 @@ export const LibraryFiltersField = styled.li`
 
   ${SelectOption} {
     text-transform: capitalize;
+    font-size: ${rem(16)};
+
+    ${media_breakpoint_down('md')} {
+      font-size: ${rem(14)};
+    }
   }
 
   ${media_breakpoint_down('xxl')} {

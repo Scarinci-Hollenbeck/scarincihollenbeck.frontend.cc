@@ -53,6 +53,10 @@ const useLibraryFilters = (optionsMap) => {
 
       if (isDefault) {
         delete newSelectedValues[key];
+
+        if (empty(newSelectedValues) && asPath !== '/library/search') {
+          push('/library/search', undefined, { scroll: false });
+        }
       } else if (
         newSelectedValues[key]?.value !== title
         || newSelectedValues[key]?.id !== itemId
