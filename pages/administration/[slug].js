@@ -23,7 +23,7 @@ const getAdminData = async (slug) => {
   const administration = data?.administration?.administration;
   const seo = data?.administration?.seo;
 
-  if (empty(administration)) {
+  if (empty(administration) || data?.administration?.status !== 'publish') {
     return undefined;
   }
 

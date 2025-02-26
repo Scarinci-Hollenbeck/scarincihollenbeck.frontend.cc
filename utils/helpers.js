@@ -235,8 +235,9 @@ export const convertUnixTimestampToISO = (unixTimestamp) => {
 export const deleteReviewsWithoutComment = (reviews) => reviews.filter((review) => !empty(review.text));
 
 export const changePostLink = (url) => {
-  const parts = url.replace(`${PRODUCTION_URL}/`, '').split('/');
-  if (empty(parts[0])) return url;
+  if (empty(url)) return null;
+  const parts = url?.replace(`${PRODUCTION_URL}/`, '').split('/');
+  if (empty(parts?.[0])) return url;
   const result = `/${parts[0]}/${parts[parts.length - 1]}`;
   return result;
 };
