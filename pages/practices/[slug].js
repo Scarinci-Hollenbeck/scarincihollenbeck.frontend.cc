@@ -49,7 +49,7 @@ export const getStaticProps = async ({ params }) => {
   //   Object.values(googleLocationIds),
   // );
 
-  if (empty(practice)) {
+  if (empty(practice) || practice?.status !== 'publish') {
     return {
       redirect: {
         destination: '/services?notFound=true',

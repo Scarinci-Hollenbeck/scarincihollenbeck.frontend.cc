@@ -3,6 +3,7 @@ export const practicesQuery = `query PracticeQuery($id: ID!) {
     databaseId
     slug
     title
+    status
     practicesIncluded {
 			practiceImage {
 					sourceUrl
