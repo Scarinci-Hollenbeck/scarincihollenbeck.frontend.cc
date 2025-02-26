@@ -111,13 +111,12 @@ export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
       }
 
       if (domNode.name === 'img') {
-        const imageSrc = createImageSrc(domNode?.attribs);
+        const imageSrc = getWikiLink(createImageSrc(domNode?.attribs));
         if (print) {
           return (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              // blurDataURL={domNode.attribs['data-srcset'] || domNode.attribs.src}
-              src={getWikiLink(imageSrc)}
+              src={imageSrc}
               alt={domNode.attribs.alt}
               width={domNode.attribs.width || 750}
               height={domNode.attribs.height || 350}
@@ -129,12 +128,12 @@ export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
           <Image
             className="floated-image"
             placeholder="blur"
-            blurDataURL={imageSrc}
+            blurDataURL={domNode?.attribs?.src || imageSrc}
             loading="lazy"
-            src={getWikiLink(imageSrc)}
+            src={imageSrc}
             alt={domNode.attribs.alt}
-            width={domNode.attribs?.width || 1000}
-            height={domNode.attribs?.height || 500}
+            width={domNode.attribs?.width || 750}
+            height={domNode.attribs?.height || 350}
             quality={90}
           />
         );

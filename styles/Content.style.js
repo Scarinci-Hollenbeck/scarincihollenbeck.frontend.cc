@@ -158,6 +158,19 @@ export const ContentContainer = styled.div`
     table-layout: fixed;
   }
 
+  iframe,
+  video {
+    margin: 16px 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
   &.two-columns {
     columns: 2;
     gap: 40px;
@@ -177,7 +190,6 @@ export const ContentContainer = styled.div`
   }
 
   img {
-    width: fit-content;
     max-width: 100%;
     height: 100%;
     object-fit: contain;
