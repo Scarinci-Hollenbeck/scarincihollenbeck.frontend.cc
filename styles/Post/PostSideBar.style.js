@@ -63,11 +63,12 @@ export const PostSidebarAnchorLink = styled(Link)`
   }
 `;
 
-export const PostSidebarWrapper = styled.div`
+export const PostSidebarWrapper = styled.aside`
   width: 420px;
   transition: ${globalTransition.default};
   display: flex;
   flex-direction: column;
+  flex-shrink: 0;
 
   &:has(${PostSidebarAnchors}:empty) {
     width: 0;

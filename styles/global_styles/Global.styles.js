@@ -290,6 +290,10 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
 
+  ol {
+    padding: 0;
+  }
+
   h1 {
     font-family: var(--font-poppins), sans-serif;
   }
@@ -664,7 +668,7 @@ export const GlobalStyle = createGlobalStyle`
     list-style: disc;
 
     li {
-      margin: 0 0 0 24px;
+      margin-left: 24px;
 
       &::marker {
         color: currentColor;
@@ -674,6 +678,12 @@ export const GlobalStyle = createGlobalStyle`
           font-size: smaller;
         }
       }
+    }
+  }
+
+  .numbers-list {
+    li {
+      margin-left: 24px;
     }
   }
 `;

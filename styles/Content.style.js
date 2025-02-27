@@ -21,6 +21,8 @@ export const ContentContainer = styled.div`
   ul,
   ol,
   blockquote {
+    margin: 0 0 16px 0;
+
     &:last-child {
       margin: 0;
     }
@@ -35,29 +37,9 @@ export const ContentContainer = styled.div`
   }
 
   p {
-    margin: 0 0 16px 0;
-
-    &:has(+ ul) {
+    &:has(+ ul),
+    &:has(+ ol) {
       margin-bottom: 4px;
-    }
-  }
-
-  ul,
-  ol {
-    margin: 0 0 16px 0;
-    list-style: disc;
-
-    li {
-      margin: 0 0 0 24px;
-
-      &::marker {
-        color: currentColor;
-        font-size: small;
-
-        ${media_breakpoint_down('md')} {
-          font-size: smaller;
-        }
-      }
     }
   }
 
@@ -143,19 +125,15 @@ export const ContentContainer = styled.div`
     overflow-x: auto;
 
     table {
-      white-space: nowrap;
-    }
-
-    tbody {
-      display: table;
       width: 100%;
-    }
-  }
+      border-color: ${globalColor.blue.darkBlue};
 
-  table {
-    width: 100%;
-    border-color: ${globalColor.blue.darkBlue};
-    table-layout: fixed;
+      th,
+      td {
+        padding: 8px 16px;
+        min-width: 150px;
+      }
+    }
   }
 
   iframe,

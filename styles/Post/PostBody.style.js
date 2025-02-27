@@ -40,6 +40,7 @@ export const PostContent = styled.div`
   display: flex;
   flex-direction: column;
   gap: 32px;
+  overflow: auto;
 
   .disclaimer {
     margin: 0;

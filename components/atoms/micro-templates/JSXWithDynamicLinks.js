@@ -189,8 +189,12 @@ export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
         );
       }
 
-      if (domNode.name === 'ul' || domNode.name === 'ol') {
+      if (domNode.name === 'ul') {
         domNode.attribs.class = 'text-list';
+      }
+
+      if (domNode.name === 'ol') {
+        domNode.attribs.class = 'numbers-list';
       }
     },
   };
