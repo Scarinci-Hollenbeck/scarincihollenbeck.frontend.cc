@@ -8,6 +8,11 @@ const getBasicPageContent = async (slug) => {
   const data = await fetchAPI(basicPagesQuery, {
     variables: { slug },
   });
+
+  if (data?.pageBy?.status !== 'publish') {
+    return null;
+  }
+
   return data?.pageBy;
 };
 

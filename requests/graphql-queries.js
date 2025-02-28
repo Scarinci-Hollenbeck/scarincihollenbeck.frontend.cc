@@ -1,5 +1,6 @@
 export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
   attorneyProfileBy(slug: $slug) {
+    status
     seo {
       title
       metaDesc
@@ -503,12 +504,14 @@ query PostMainCategoryContentQuery($id: ID!) {
   }
 }`;
 
-export const getClientsQuery = `query FirmPageQuery(
+export const getClientsQuery = `
+query ClientsQuery(
   $offsetPosts: Int, 
-  $postsPerPage: Int
+  $postsPerPage: Int,
+  $id: [Int]
   ) {
   clients(
-    where: {offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
+    where: {clientsConnections: $id, offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
   ) {
     edges {
       node {
@@ -873,6 +876,7 @@ query FirmPageQuery($id: ID!) {
   administration(id: $id, idType: SLUG) {
     databaseId
     uri
+    status
     administration {
       name
       biography
@@ -910,6 +914,7 @@ query FirmPageQuery($id: ID!) {
 export const basicPagesQuery = `query BasicPageQuery($slug: String) {
   pageBy(uri: $slug) {
     title
+    status
     seo {
       metaDesc
       title
@@ -1308,6 +1313,13 @@ query IndustryQuery($id: ID!) {
           }
         }
       }
+      clients {
+        title
+        description
+        clientsConnection {
+          databaseId
+        }
+      }
     }
     contentTabs {
       tabs {
@@ -1373,6 +1385,7 @@ query MemorialPageQuery($slug: String) {
       title
     }
     title
+    status
     memorialFields {
       additionalInformation {
         columns {

@@ -255,19 +255,3 @@ export const OutlinedButton = styled.button`
     }
   }
 `;
-
-export const ContactNowBtn = styled.button`
-  ${ButtonLinkCss};
-  width: 100%;
-  height: 55px;
-
-  ${buttonsHoverActive};
-
-  ${media_breakpoint_down('lg')} {
-    width: 80%;
-
-    span {
-      display: flex;
-    }
-  }
-`;

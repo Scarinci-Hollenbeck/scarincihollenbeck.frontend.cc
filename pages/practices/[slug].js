@@ -44,7 +44,7 @@ export const getStaticProps = async ({ params }) => {
     practices,
   } = await getPracticeData(`/practices/${params.slug}`);
 
-  if (empty(practice)) {
+  if (empty(practice) || practice?.status !== 'publish') {
     return {
       redirect: {
         destination: '/services?notFound=true',

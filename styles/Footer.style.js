@@ -8,10 +8,7 @@ import { media_breakpoint_down } from './mediaBreakpoints.style';
 
 export const FooterWrapper = styled.footer`
   padding-top: 12px;
-  background-color: ${({ $backgroundFooterColor }) =>
-    $backgroundFooterColor
-      ? $backgroundFooterColor
-      : globalColor.blue.darkBlue};
+  background-color: ${globalColor.blue.darkBlue};
   color: ${globalColor.white};
 
   @media print {

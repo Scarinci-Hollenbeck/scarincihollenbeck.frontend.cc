@@ -44,24 +44,12 @@ const validateData = (data) => {
   };
 };
 
-export const getSpecialIndustryContent = async (query) => {
-  const data = await fetchAPI(query, {});
-
-  if (!data) {
-    return {
-      industry: undefined,
-    };
-  }
-
-  return validateData(data);
-};
-
 export const getIndustryContent = async (slug) => {
   const data = await fetchAPI(industryQuery, {
     variables: { id: slug },
   });
 
-  if (!data) {
+  if (!data || data?.industry?.status !== 'publish') {
     return {
       industry: undefined,
     };

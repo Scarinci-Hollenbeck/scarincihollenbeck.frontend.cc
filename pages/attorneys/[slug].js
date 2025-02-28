@@ -20,6 +20,11 @@ export async function attorneyBySlug(slug) {
   const data = await fetchAPI(attorneyBySlugQuery, {
     variables: { slug },
   });
+
+  if (data?.attorneyProfileBy?.status !== 'publish') {
+    return null;
+  }
+
   return data?.attorneyProfileBy;
 }
 

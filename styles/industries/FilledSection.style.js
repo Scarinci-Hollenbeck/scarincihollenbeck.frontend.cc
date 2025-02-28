@@ -36,6 +36,18 @@ export const FilledSectionBox = styled.section`
     }
   }
 
+  + .separator-big {
+    margin-top: 60px !important;
+
+    ${media_breakpoint_down('xxl')} {
+      margin-top: 40px !important;
+    }
+
+    ${media_breakpoint_down('md')} {
+      margin-top: 24px !important;
+    }
+  }
+
   ${media_breakpoint_down('lg')} {
     padding-block: 40px;
   }

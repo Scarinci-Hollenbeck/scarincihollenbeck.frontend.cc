@@ -36,7 +36,6 @@ export const VerticalTabsContainer = styled(ContainerDefault)`
 `;
 
 export const VerticalTabsHolder = styled.div`
-  min-height: 725px;
   display: flex;
   gap: 40px;
 

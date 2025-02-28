@@ -161,7 +161,7 @@ export const SubHeaderIndustryDescription = styled.div`
 `;
 
 export const SubHeaderIndustryAnchors = styled.div`
-  max-width: 535px;
+  max-width: 620px;
   flex: 1;
   display: flex;
   flex-direction: column;
