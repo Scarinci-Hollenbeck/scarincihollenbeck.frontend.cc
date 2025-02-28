@@ -107,10 +107,6 @@ export const globalColor = {
   },
 };
 
-export const globalGradient = {
-  award: 'linear-gradient(180deg, #101113 68.23%, #60191b 94.79%)',
-};
-
 export const globalShadow = {
   allSideShadow: `-10px 10px 19px 0px rgba(0, 0, 0, 0.06), 0px -7px 16px 0px rgba(0, 0, 0, 0.06)`,
   hoveredShadow: `-2px 0px 18px rgb(99 98 98 / 90%)`,
@@ -140,14 +136,6 @@ export const buttonsHoverActive = `
   &:active {
     background-color: ${globalColor.red.burgundy};
   }
-`;
-
-// this function adds rules with three dots after overfilling a container.
-export const threeDots = (lines) => `
--webkit-line-clamp: ${lines};
-display: -webkit-box;
--webkit-box-orient: vertical;
-overflow: hidden;
 `;
 
 export const rem = (sizeInPx) => {

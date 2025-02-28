@@ -538,45 +538,6 @@ query ClientsQuery(
   }
 }`;
 
-export const postsForPaginationByCategoryIdQuery = `
-  query postsForPaginationByCategoryId(
-    $categoryId: Int, 
-    $offsetPosts: Int, 
-    $postsPerPage: Int
-  ) {
-    posts(
-      where: {categoryId: $categoryId, offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
-    ) {
-      pageInfo {
-        offsetPagination {
-          total
-          hasPrevious
-          hasMore
-        }
-      }
-      edges {
-        node {
-          date
-          featuredImage {
-            node {
-              sourceUrl
-            }
-          }
-          uri
-          title(format: RENDERED)
-          excerpt(format: RENDERED)
-          author {
-            node {
-              name
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-`;
-
 export const postsForPaginationByAuthorIdQuery = `
   query postsForPaginationByAuthorId(
     $categoryId: [ID],
