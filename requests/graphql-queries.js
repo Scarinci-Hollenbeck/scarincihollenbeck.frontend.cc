@@ -1,5 +1,6 @@
 export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
   attorneyProfileBy(slug: $slug) {
+    status
     seo {
       title
       metaDesc
@@ -886,6 +887,7 @@ query FirmPageQuery($id: ID!) {
   administration(id: $id, idType: SLUG) {
     databaseId
     uri
+    status
     administration {
       name
       biography
@@ -923,6 +925,7 @@ query FirmPageQuery($id: ID!) {
 export const basicPagesQuery = `query BasicPageQuery($slug: String) {
   pageBy(uri: $slug) {
     title
+    status
     seo {
       metaDesc
       title
@@ -1400,6 +1403,7 @@ query MemorialPageQuery($slug: String) {
       title
     }
     title
+    status
     memorialFields {
       additionalInformation {
         columns {

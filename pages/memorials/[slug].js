@@ -8,6 +8,11 @@ export async function memorialBySlug(slug) {
   const data = await fetchAPI(memorialPageQuery, {
     variables: { slug },
   });
+
+  if (data?.memorialBy?.status !== 'publish') {
+    return null;
+  }
+
   return data?.memorialBy;
 }
 

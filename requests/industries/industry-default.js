@@ -49,7 +49,7 @@ export const getIndustryContent = async (slug) => {
     variables: { id: slug },
   });
 
-  if (!data) {
+  if (!data || data?.industry?.status !== 'publish') {
     return {
       industry: undefined,
     };
