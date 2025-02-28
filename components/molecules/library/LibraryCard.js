@@ -28,6 +28,7 @@ const LibraryCard = ({
   date,
   tags,
   onTagClick,
+  isDarker = false,
 }) => {
   const handleTagClick = useCallback(
     (e, tag) => {
@@ -39,7 +40,7 @@ const LibraryCard = ({
     [onTagClick],
   );
   return (
-    <LibraryCardBox>
+    <LibraryCardBox className={isDarker ? 'darker' : ''}>
       <LibraryCardImage $isEmptyImage={!image || empty(image)}>
         <Image
           src={image || SHDiamond}
@@ -59,31 +60,33 @@ const LibraryCard = ({
           </LibraryCardText>
         )}
 
-        <LibraryCardFooter>
-          {!empty(author?.name) && (
-            <LibraryCardAuthor>
-              <span>Author: </span>
-              <LibraryCardAuthorLink
-                as={author?.uri.includes('scarinci-hollenbeck') && 'span'}
-                href={
-                  !author?.uri.includes('scarinci-hollenbeck')
-                    ? `/library${author?.uri}`
-                    : undefined
-                }
-                aria-label={author?.name}
-                title={author?.name}
-              >
-                {author?.name}
-              </LibraryCardAuthorLink>
-            </LibraryCardAuthor>
-          )}
+        {(!empty(author?.name) || !empty(date)) && (
+          <LibraryCardFooter>
+            {!empty(author?.name) && (
+              <LibraryCardAuthor>
+                <span>Author: </span>
+                <LibraryCardAuthorLink
+                  as={author?.uri.includes('scarinci-hollenbeck') && 'span'}
+                  href={
+                    !author?.uri.includes('scarinci-hollenbeck')
+                      ? `/library${author?.uri}`
+                      : undefined
+                  }
+                  aria-label={author?.name}
+                  title={author?.name}
+                >
+                  {author?.name}
+                </LibraryCardAuthorLink>
+              </LibraryCardAuthor>
+            )}
 
-          {!empty(date) && (
-            <LibraryCardDate datetime={date}>
-              {formatDate(date)}
-            </LibraryCardDate>
-          )}
-        </LibraryCardFooter>
+            {!empty(date) && (
+              <LibraryCardDate datetime={date}>
+                {formatDate(date)}
+              </LibraryCardDate>
+            )}
+          </LibraryCardFooter>
+        )}
 
         {!empty(tags) && (
           <LibraryCardTags>

@@ -40,6 +40,44 @@ export const LibraryCardBox = styled.article`
       }
     }
   }
+
+  &.darker {
+    padding: 8px 8px 20px;
+    background-color: ${globalColor.blue.blue550};
+    border-radius: 20px;
+    row-gap: 24px;
+
+    ${Title20} {
+      color: ${globalColor.white};
+      text-transform: unset;
+    }
+
+    ${(props) => {
+      return `
+        ${LibraryCardContent} {
+          padding: 0 8px;
+          row-gap: 12px;
+
+          ${media_breakpoint_down('md')} {
+            row-gap: 8px;
+          }
+        }
+
+        ${LibraryCardText} {
+          color: ${globalColor.gray.gray300};
+        }
+
+        ${LibraryCardImage} {
+          border-radius: 20px;
+        }
+      `;
+    }}
+
+    ${media_breakpoint_down('md')} {
+      row-gap: 4px;
+      padding: 4px 4px 12px;
+    }
+  }
 `;
 
 export const LibraryCardContent = styled.div`
@@ -64,6 +102,7 @@ export const LibraryCardContent = styled.div`
 `;
 
 export const LibraryCardText = styled.div`
+  margin: 0;
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;

@@ -1198,6 +1198,7 @@ query IndustryQuery($id: ID!) {
   industry(id: $id, idType: SLUG) {
     title
     status
+    databaseId
     seo {
       metaDesc
       title

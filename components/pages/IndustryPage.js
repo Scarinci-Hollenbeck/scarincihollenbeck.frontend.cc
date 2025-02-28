@@ -17,6 +17,7 @@ const IndustryFaq = dynamic(() => import('components/organisms/industries/Indust
 const IndustryWhyChooseUs = dynamic(() => import('components/organisms/industries/IndustryWhyChooseUs'));
 const SubscriptionBanner = dynamic(() => import('components/organisms/common/SubscriptionBanner'));
 const IndustryClients = dynamic(() => import('components/organisms/industries/IndustryClients'));
+const IndustryPostsSlider = dynamic(() => import('components/organisms/industries/IndustryPostsSlider'));
 
 const anchorDataDefault = {
   filledSection: {
@@ -57,13 +58,13 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
     featuredImage,
     contentSection,
     contentTabs,
+    slides,
     faq,
     whyChooseUs,
     chairIndustry,
     attorneyListIndustry,
-    relatedPosts,
-    slides,
     clients,
+    relatedPosts,
   } = content;
 
   const clientsPaginationData = getPaginationData(getClientsQuery, {
@@ -168,6 +169,11 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
         />
 
         <SubscriptionBanner isIndustry TitleComponent={Title60} />
+
+        <IndustryPostsSlider
+          posts={relatedPosts}
+          anchorId={anchorLinks?.articles?.id}
+        />
       </IndustryPageWrapper>
     </>
   );
