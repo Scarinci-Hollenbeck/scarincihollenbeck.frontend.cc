@@ -51,11 +51,6 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
   const [activeTab, setActiveTab] = useState(0);
   const { query } = useRouter();
 
-  const clientsPaginationData = getPaginationData(getClientsQuery, {
-    currentPage: query?.['client-page'] || 1,
-    itemsPerPage: 12,
-  });
-
   const {
     title,
     description,
@@ -70,6 +65,12 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
     slides,
     clients,
   } = content;
+
+  const clientsPaginationData = getPaginationData(getClientsQuery, {
+    currentPage: query?.['client-page'] || 1,
+    itemsPerPage: 12,
+    id: [clients?.clientsConnection?.[0]?.databaseId],
+  });
 
   const concatenatedAttorneys = [...chairIndustry, ...attorneyListIndustry];
 

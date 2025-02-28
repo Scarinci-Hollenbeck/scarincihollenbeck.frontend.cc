@@ -475,12 +475,14 @@ query getThreePostsQuery {
   }
 }`;
 
-export const getClientsQuery = `query FirmPageQuery(
+export const getClientsQuery = `
+query ClientsQuery(
   $offsetPosts: Int, 
-  $postsPerPage: Int
+  $postsPerPage: Int,
+  $id: [Int]
   ) {
   clients(
-    where: {offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
+    where: {clientsConnections: $id, offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
   ) {
     edges {
       node {
@@ -1337,6 +1339,9 @@ query IndustryQuery($id: ID!) {
       clients {
         title
         description
+        clientsConnection {
+          databaseId
+        }
       }
     }
     contentTabs {
