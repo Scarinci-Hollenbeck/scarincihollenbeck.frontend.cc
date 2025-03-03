@@ -1,7 +1,7 @@
-import Link from "next/link";
-import styled from "styled-components";
-import { globalColor, rem } from "styles/global_styles/Global.styles";
-import { media_breakpoint_down } from "styles/mediaBreakpoints.style";
+import Link from 'next/link';
+import styled from 'styled-components';
+import { globalColor, rem } from 'styles/global_styles/Global.styles';
+import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const SubHeaderMenuList = styled.ul`
   margin: 0;

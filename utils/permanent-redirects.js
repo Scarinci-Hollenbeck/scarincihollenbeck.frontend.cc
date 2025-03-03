@@ -257,6 +257,104 @@ const PERMANENT_REDIRECTS = [
     destination: '/services#industries',
     permanent: true,
   },
+  {
+    source: '/law-firm-insights/entertainment-and-sports/nba-fear-the-brow',
+    destination: '/library/category/law-firm-insights',
+    permanent: true,
+  },
+  {
+    source: '/Attorneys/Oxley.htm',
+    destination: '/attorneys',
+    permanent: true,
+  },
+  {
+    source: '/Attorneys/Brunetti.htm',
+    destination: '/attorneys',
+    permanent: true,
+  },
+  {
+    source: '/Attorneys/Surgent.htm',
+    destination: '/attorneys',
+    permanent: true,
+  },
+  {
+    source: '/locations',
+    destination: '/location/new-york',
+    permanent: true,
+  },
+  {
+    source: '/contact-attorney',
+    destination: '/contact-us',
+    permanent: true,
+  },
+  {
+    source: '/category/law-firm-insights',
+    destination: '/library/category/law-firm-insights',
+    permanent: true,
+  },
+  {
+    source: '/location/%28City%29',
+    destination: '/location/new-york',
+    permanent: true,
+  },
+  {
+    source: '/the-tax-abatement-process-in-jersey-city-nj-the-basics',
+    destination: '/library/category/tax-abatement',
+    permanent: true,
+  },
+  {
+    source:
+      '/law-firm-insights/entertainment-and-sports/why-would-an-nfls-antitrust-exemption-matter',
+    destination: '/library/category/law-firm-insights',
+    permanent: true,
+  },
+  {
+    source: '/scarinci-hollenbeck-partner-appointed-judge-superior-court',
+    destination: '/library/category/firm-news',
+    permanent: true,
+  },
+  {
+    source: '/practice/intellectual-property',
+    destination: '/practices/intellectual-property',
+    permanent: true,
+  },
+  {
+    source: '/spokeo-decision-affect-nj-businesses',
+    destination: '/library/category/law-firm-insights',
+    permanent: true,
+  },
+  {
+    source: '/about-us/diversity',
+    destination: '/diversity',
+    permanent: true,
+  },
+  {
+    source: '/firm-news/summer-associates-volunteer-prisoner-rehab',
+    destination: '/library/category/firm-news',
+    permanent: true,
+  },
+  {
+    source: '/peter-s-moeller-top-professionals-under-40',
+    destination: '/library/category/firm-news',
+    permanent: true,
+  },
+  {
+    source:
+      '/new-jersey-state-league-municipalities-names-john-m-scagnelli-environmental-counsel',
+    destination: '/attorneys/john-m-scagnelli',
+    permanent: true,
+  },
+  {
+    source: '/lgbtq-scholarships',
+    destination:
+      '/law-firm-insights/second-circuit-rejects-appeal-of-employee-terminated-for-refusal-to-attend-lgbtq-bias-sensitivity-training',
+    permanent: true,
+  },
+  {
+    source: '/firm-news/congratulations/welcome-2017-summer-associates',
+    destination: '/library/category/firm-news',
+    permanent: true,
+  },
 ];
 
 module.exports = {

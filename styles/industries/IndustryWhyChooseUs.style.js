@@ -1,8 +1,13 @@
-import styled from "styled-components";
-import { ContainerDefault } from "styles/Containers.style";
-import { ContentContainer } from "styles/Content.style";
-import { globalBorderRadius, globalColor, industrySectionContainer, industrySectionPaddingBlock } from "styles/global_styles/Global.styles";
-import { media_breakpoint_down } from "styles/mediaBreakpoints.style";
+import styled from 'styled-components';
+import { ContainerDefault } from 'styles/Containers.style';
+import { ContentContainer } from 'styles/Content.style';
+import {
+  globalBorderRadius,
+  globalColor,
+  industrySectionContainer,
+  industrySectionPaddingBlock,
+} from 'styles/global_styles/Global.styles';
+import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const IndustryChooseUsSection = styled.section`
   background-color: ${globalColor.white};

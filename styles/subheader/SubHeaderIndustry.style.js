@@ -1,10 +1,10 @@
-import Image from "next/image";
-import Link from "next/link";
-import styled from "styled-components";
-import { ButtonBreadcrumb } from "styles/Breadcrumbs.style";
-import { ContainerDefault } from "styles/Containers.style";
-import { globalColor, rem } from "styles/global_styles/Global.styles";
-import { media_breakpoint_down } from "styles/mediaBreakpoints.style";
+import Image from 'next/image';
+import Link from 'next/link';
+import styled from 'styled-components';
+import { ButtonBreadcrumb } from 'styles/Breadcrumbs.style';
+import { ContainerDefault } from 'styles/Containers.style';
+import { globalColor, rem } from 'styles/global_styles/Global.styles';
+import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const SubHeaderIndustrySection = styled.section`
   padding: 24px 0 40px;
@@ -57,7 +57,11 @@ export const SubHeaderIndustryBgImage = styled.picture`
     inset: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(0deg, rgba(36, 41, 68, 0.70) 0%, rgba(36, 41, 68, 0.70));
+    background: linear-gradient(
+      0deg,
+      rgba(36, 41, 68, 0.7) 0%,
+      rgba(36, 41, 68, 0.7)
+    );
     /* backdrop-filter: blur(2px); */
     z-index: 1;
   }
@@ -209,7 +213,7 @@ export const SubHeaderIndustryAnchorsLink = styled(Link)`
     color: ${globalColor.white};
   }
 
-  @media (hover:hover) {
+  @media (hover: hover) {
     &:hover {
       color: ${globalColor.blue.skyBlue};
     }
@@ -256,7 +260,7 @@ export const SubHeaderIndustryAttorneysAvatars = styled.ul`
       inset: -2px;
       width: calc(100% + 4px);
       height: calc(100% + 4px);
-      background: linear-gradient(90deg, #FFFFFF00 0%, #99A6FF 100%);
+      background: linear-gradient(90deg, #ffffff00 0%, #99a6ff 100%);
       z-index: -1;
       border-radius: 50%;
     }
