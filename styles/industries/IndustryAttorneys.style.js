@@ -1,7 +1,14 @@
-import styled from "styled-components";
-import { ContainerDefault } from "styles/Containers.style";
-import { globalColor, industrySectionContainer, industrySectionPaddingBlock } from "styles/global_styles/Global.styles";
-import { LawyerCardContact, LawyerCardDesignation } from "styles/LawyerCard.style";
+import styled from 'styled-components';
+import { ContainerDefault } from 'styles/Containers.style';
+import {
+  globalColor,
+  industrySectionContainer,
+  industrySectionPaddingBlock,
+} from 'styles/global_styles/Global.styles';
+import {
+  LawyerCardContact,
+  LawyerCardDesignation,
+} from 'styles/LawyerCard.style';
 
 export const IndustryAttorneysSection = styled(ContainerDefault)`
   ${industrySectionContainer};

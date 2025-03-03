@@ -1,6 +1,13 @@
-import styled from "styled-components";
-import { globalColor, globalTransition, rem } from "styles/global_styles/Global.styles";
-import { media_breakpoint_down, media_breakpoint_exactly_down } from "styles/mediaBreakpoints.style";
+import styled from 'styled-components';
+import {
+  globalColor,
+  globalTransition,
+  rem,
+} from 'styles/global_styles/Global.styles';
+import {
+  media_breakpoint_down,
+  media_breakpoint_exactly_down,
+} from 'styles/mediaBreakpoints.style';
 
 export const SubHeaderSlider = styled.div`
   padding-right: 80px;

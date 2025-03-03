@@ -10,9 +10,7 @@ import {
   media_breakpoint_down,
   media_breakpoint_exactly_down,
 } from '../../mediaBreakpoints.style';
-import {
-  ContactNowBtn,
-} from 'styles/AboutAuthorFormCard.style';
+import { ContactNowBtn } from 'styles/AboutAuthorFormCard.style';
 
 export const KeyContactsBlockContainer = styled.section`
   display: flex;

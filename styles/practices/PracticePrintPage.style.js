@@ -10,7 +10,10 @@ import {
 } from 'styles/AttorneyCard.style';
 import { WhyChooseUsSection } from './WhyChooseUs.style';
 import { SubHeaderKeyContactsCards } from 'styles/subheader/SubHeaderKeyContacts.style';
-import { SubHeaderDescription, SubHeaderInteractive } from 'styles/subheader/SubHeader.style';
+import {
+  SubHeaderDescription,
+  SubHeaderInteractive,
+} from 'styles/subheader/SubHeader.style';
 
 export const PracticePrintPageContainer = styled.div`
   display: flex;

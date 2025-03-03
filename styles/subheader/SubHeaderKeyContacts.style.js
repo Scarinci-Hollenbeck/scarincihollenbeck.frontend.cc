@@ -1,6 +1,9 @@
-import styled from "styled-components";
-import { media_breakpoint_down, media_breakpoint_exactly_down } from "styles/mediaBreakpoints.style";
-import { attorneyCardForPractices } from "styles/subheader/SubHeader.style";
+import styled from 'styled-components';
+import {
+  media_breakpoint_down,
+  media_breakpoint_exactly_down,
+} from 'styles/mediaBreakpoints.style';
+import { attorneyCardForPractices } from 'styles/subheader/SubHeader.style';
 
 export const SubHeaderKeyContactsCards = styled.div`
   width: 100%;
