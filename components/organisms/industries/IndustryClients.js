@@ -31,7 +31,7 @@ const IndustryClients = ({
 
   const memoData = useMemo(() => clients?.edges, [clientsPaginationData]);
 
-  if (error || (!loading && empty(memoData))) {
+  if ((!loading && empty(memoData)) || error) {
     return null;
   }
 
