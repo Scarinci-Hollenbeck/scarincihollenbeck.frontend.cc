@@ -7,6 +7,7 @@ import {
   rem,
 } from 'styles/global_styles/Global.styles';
 import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
+import { CustomPaginationWrapper } from 'styles/Pagination';
 
 const fadeIn = keyframes`
   0% {
@@ -37,55 +38,57 @@ export const IndustryClientsBlock = styled.div`
   flex-direction: column;
   gap: 20px;
 
-  .pagination {
-    margin: 0;
-    gap: 16px;
-    --bs-pagination-color: ${globalColor.blue.blue400};
-    --bs-pagination-bg: transparent;
-    --bs-pagination-border-color: ${globalColor.blue.blue400};
-    --bs-pagination-active-color: ${globalColor.white};
-    --bs-pagination-active-border-color: transparent;
-    --bs-pagination-active-bg: ${globalColor.blue.blue400};
-    --bs-pagination-hover-color: ${globalColor.blue.blue500};
-    --bs-pagination-hover-bg: transparent;
-    --bs-pagination-hover-border-color: ${globalColor.blue.blue400};
-    --bs-pagination-disabled-color: ${globalColor.gray.gray130};
-    --bs-pagination-disabled-bg: transparent;
-    --bs-pagination-disabled-border-color: ${globalColor.gray.gray130};
-    --bs-pagination-focus-color: ${globalColor.blue.blue500};
-    --bs-pagination-focus-bg: transparent;
-    --bs-pagination-focus-box-shadow: none;
-
-    .page-item {
-      width: 44px;
-      height: 44px;
-    }
-
-    .page-link {
-      border-radius: 50px;
-
-      span {
-        svg {
-          color: inherit;
-        }
-      }
-    }
-
-    ${media_breakpoint_down('md')} {
-      gap: 8px;
+  ${CustomPaginationWrapper} {
+    .pagination {
+      margin: 0;
+      gap: 16px;
+      --bs-pagination-color: ${globalColor.blue.blue400};
+      --bs-pagination-bg: transparent;
+      --bs-pagination-border-color: ${globalColor.blue.blue400};
+      --bs-pagination-active-color: ${globalColor.white};
+      --bs-pagination-active-border-color: transparent;
+      --bs-pagination-active-bg: ${globalColor.blue.blue400};
+      --bs-pagination-hover-color: ${globalColor.blue.blue500};
+      --bs-pagination-hover-bg: transparent;
+      --bs-pagination-hover-border-color: ${globalColor.blue.blue400};
+      --bs-pagination-disabled-color: ${globalColor.gray.gray130};
+      --bs-pagination-disabled-bg: transparent;
+      --bs-pagination-disabled-border-color: ${globalColor.gray.gray130};
+      --bs-pagination-focus-color: ${globalColor.blue.blue500};
+      --bs-pagination-focus-bg: transparent;
+      --bs-pagination-focus-box-shadow: none;
 
       .page-item {
-        width: 28px;
-        height: 28px;
+        width: 44px;
+        height: 44px;
       }
 
       .page-link {
-        font-size: ${rem(14)};
-      }
-    }
+        border-radius: 50px;
 
-    ${media_breakpoint_down('sm')} {
-      gap: 4px;
+        span {
+          svg {
+            color: inherit;
+          }
+        }
+      }
+
+      ${media_breakpoint_down('md')} {
+        gap: 8px;
+
+        .page-item {
+          width: 28px;
+          height: 28px;
+        }
+
+        .page-link {
+          font-size: ${rem(14)};
+        }
+      }
+
+      ${media_breakpoint_down('sm')} {
+        gap: 4px;
+      }
     }
   }
 `;
