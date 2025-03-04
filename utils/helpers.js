@@ -135,18 +135,6 @@ export const concatNameUser = (name, abbreviation) => {
   return name;
 };
 
-export const getSubTitleFromHTML = (htmlContent) => {
-  const extractSubTitle = htmlContent.match(/<h2(.*?)>(.*?)<\/h2>/g);
-  const subTitle = extractSubTitle !== null
-    ? extractSubTitle[0].replace(/<[^>]*>?/gm, '')
-    : '';
-  const bodyContentCutSubTitle = htmlContent.replace(subTitle, '');
-  return {
-    clearBody: bodyContentCutSubTitle.replace(/<h2(.*?)><\/h2>/gim, ''),
-    subTitle,
-  };
-};
-
 export const changeTitle = (title, isH1) => {
   if (!title) return '';
   const symbolCheckObject = {

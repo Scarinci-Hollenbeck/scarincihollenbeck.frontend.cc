@@ -1087,6 +1087,7 @@ export const getOfficeAndMoreData = `query FirmPageQuery($id: ID!) {
   officeLocation(id: $id, idType: SLUG) {
     databaseId
     title
+    status
     officeMainInformation {
       autoMap {
         mediaItemUrl

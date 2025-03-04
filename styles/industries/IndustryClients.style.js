@@ -40,61 +40,33 @@ export const IndustryClientsBlock = styled.div`
   .pagination {
     margin: 0;
     gap: 16px;
+    --bs-pagination-color: ${globalColor.blue.blue400};
+    --bs-pagination-bg: transparent;
+    --bs-pagination-border-color: ${globalColor.blue.blue400};
+    --bs-pagination-active-color: ${globalColor.white};
+    --bs-pagination-active-border-color: transparent;
+    --bs-pagination-active-bg: ${globalColor.blue.blue400};
+    --bs-pagination-hover-color: ${globalColor.blue.blue500};
+    --bs-pagination-hover-bg: transparent;
+    --bs-pagination-hover-border-color: ${globalColor.blue.blue400};
+    --bs-pagination-disabled-color: ${globalColor.gray.gray130};
+    --bs-pagination-disabled-bg: transparent;
+    --bs-pagination-disabled-border-color: ${globalColor.gray.gray130};
+    --bs-pagination-focus-color: ${globalColor.blue.blue500};
+    --bs-pagination-focus-bg: transparent;
+    --bs-pagination-focus-box-shadow: none;
 
     .page-item {
       width: 44px;
       height: 44px;
-      border-radius: 50px;
-      border: 1px solid ${globalColor.blue.blue400};
-      background-color: transparent;
-      overflow: hidden;
-      a,
-      span {
-        color: ${globalColor.blue.blue400};
-      }
-
-      &.active {
-        background-color: ${globalColor.blue.blue400};
-        span {
-          color: ${globalColor.white};
-        }
-      }
-
-      &.disabled {
-        border-color: ${globalColor.gray.gray130};
-        .pagination-icon {
-          color: ${globalColor.gray.gray130};
-        }
-      }
-
-      &:hover {
-        a,
-        span,
-        svg {
-          color: ${globalColor.blue.blue500};
-        }
-      }
     }
 
     .page-link {
-      padding: 0;
-      background-color: transparent;
-      border: 0;
+      border-radius: 50px;
 
       span {
         svg {
-          color: ${globalColor.blue.blue400};
-          transition: ${globalTransition.default};
-        }
-      }
-
-      &:hover,
-      &:focus {
-        color: ${globalColor.blue.blue500};
-
-        svg {
-          color: ${globalColor.blue.blue500};
-          transition: inherit;
+          color: inherit;
         }
       }
     }

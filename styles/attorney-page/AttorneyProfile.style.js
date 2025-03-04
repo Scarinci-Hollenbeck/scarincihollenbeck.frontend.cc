@@ -163,6 +163,7 @@ export const CardImageVideoContainer = styled.div`
 
 export const CardImageWrapper = styled.div`
   width: 100%;
+  height: 500px;
   border-radius: ${globalBorderRadius.small};
   overflow: hidden;
 
@@ -171,6 +172,10 @@ export const CardImageWrapper = styled.div`
     height: 100%;
     object-fit: cover;
     object-position: top;
+  }
+
+  ${media_breakpoint_down('xxl')} {
+    height: 400px;
   }
 
   ${media_breakpoint_down('lg')} {

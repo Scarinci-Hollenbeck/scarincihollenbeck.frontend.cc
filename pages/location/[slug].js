@@ -19,7 +19,7 @@ const getOfficeData = async (slug) => {
     },
   );
 
-  if (empty(officeLocation)) return null;
+  if (empty(officeLocation) || officeLocation?.status !== 'publish') return null;
 
   if (
     officeLocation?.officeMainInformation?.autoMap?.mediaItemUrl?.length > 0
