@@ -89,12 +89,7 @@ const SubHeaderDefault = ({
                 <Fragment key={databaseId}>
                   <SubHeaderAuthorName
                     as={Link}
-                    href={
-                      empty(author?.uri)
-                      || display_name?.includes('Scarinci Hollenbeck')
-                        ? '/firm-overview'
-                        : `/library${author.uri}`
-                    }
+                    href={author?.uri || '/firm-overview'}
                   >
                     {display_name}
                   </SubHeaderAuthorName>
