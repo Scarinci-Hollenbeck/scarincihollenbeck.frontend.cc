@@ -1,105 +1,138 @@
+import Link from 'next/link';
 import styled from 'styled-components';
 import {
-  buttonsHoverActive,
+  globalBorderRadius,
   globalColor,
-  globalGradient,
+  globalShadow,
+  globalTransition,
   rem,
-} from '../global_styles/Global.styles';
+} from 'styles/global_styles/Global.styles';
+import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
-export const ContactLinksBox = styled.section`
+export const PostSidebarAnchors = styled.ul`
+  min-height: 0;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  padding: 8%;
+  gap: 12px;
+  overflow: auto;
 
-  > h3 {
-    font-weight: 400;
-  }
-
-  img {
-    width: 100px;
-    height: 120px;
-  }
-
-  article {
-    width: 100%;
-    min-width: 200px;
-    padding: 10px 0 10px 10px;
-    margin-top: 10px;
-    border: none;
-    box-shadow: none;
-
-    > div,
-    section {
-      gap: 10px;
-    }
-
-    h3 {
-      font-size: ${rem(17.6)};
-    }
-
-    p {
-      margin-bottom: 0;
-    }
-
-    address {
-      margin-bottom: 0;
-    }
-  }
-
-  > a {
-    margin-top: 30px;
-    width: 100%;
-    height: 50px;
-    cursor: pointer;
+  ${media_breakpoint_down('lg')} {
+    overflow: unset;
   }
 `;
 
-export const GradientPracticeBox = styled.nav`
+export const PostSidebarAnchor = styled.li`
+  border-left: 2px solid ${globalColor.gray.gray10};
+  transition: ${globalTransition.default};
+
+  &.active {
+    color: ${globalColor.blue.blue500};
+    border-color: ${globalColor.blue.blue400};
+
+    a {
+      color: currentColor;
+      font-weight: 600;
+    }
+  }
+`;
+
+export const PostSidebarAnchorLink = styled(Link)`
+  display: inline-flex;
+  padding: 4px 0 4px 12px;
+  color: ${globalColor.gray.gray700};
+  font-size: ${rem(16)};
+  line-height: 1.5;
+
+  &:hover {
+    color: ${globalColor.gray.gray700};
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      color: ${globalColor.blue.blue400};
+    }
+  }
+
+  &:active {
+    color: ${globalColor.blue.blue400};
+  }
+
+  ${media_breakpoint_down('md')} {
+    font-size: ${rem(14)};
+  }
+`;
+
+export const PostSidebarWrapper = styled.aside`
+  width: 420px;
+  transition: ${globalTransition.default};
   display: flex;
   flex-direction: column;
-  padding: 20px 8%;
-  align-items: start;
-  justify-content: center;
+  flex-shrink: 0;
+
+  &:has(${PostSidebarAnchors}:empty) {
+    width: 0;
+
+    ${media_breakpoint_down('lg')} {
+      display: none;
+    }
+  }
+
+  ${media_breakpoint_down('lg')} {
+    width: 100%;
+  }
+`;
+
+export const PostSidebarAnchorsWrapper = styled.div`
+  max-height: calc(100dvh - 32px - var(--header-height));
+  margin-top: ${({ $active }) => ($active ? '16px' : '0')};
+  padding: ${({ $active }) => ($active ? '20px' : '0 20px')};
+  display: grid;
+  grid-template-rows: ${({ $active }) => ($active ? '1fr' : '0fr')};
+  opacity: ${({ $active }) => ($active ? '1' : '0')};
+  pointer-events: ${({ $active }) => ($active ? 'all' : 'none')};
+  position: sticky;
+  top: calc(var(--header-height) + 16px);
+  left: 0;
+  background-color: ${globalColor.white};
+  border-radius: ${globalBorderRadius.middle};
+  box-shadow: ${globalShadow.shadowM};
+  transition: all 0.3s ease-in-out;
+
+  ${media_breakpoint_down('lg')} {
+    position: static;
+    max-height: 100%;
+  }
+
+  ${media_breakpoint_down('md')} {
+    padding: ${({ $active }) => ($active ? '16px 12px' : '0 12px')};
+  }
+
+  &:has(${PostSidebarAnchors}:empty) {
+    padding: 0;
+  }
+`;
+
+export const PostSidebarAnchorsOpener = styled.button`
   width: 100%;
-  background: ${globalGradient.award};
-
-  h3 {
-    font-weight: 400;
-    color: ${globalColor.white};
-    margin-bottom: 10px;
-  }
-
-  ul {
-    height: 295px;
-    overflow-y: auto;
-
-    li {
-      a {
-        color: ${globalColor.grayLite.grayLite50};
-        font-size: ${rem(17.6)};
-        :before {
-          content: '☞';
-          margin-right: 5px;
-        }
-        :hover {
-          color: ${globalColor.white};
-        }
-      }
-    }
-  }
-`;
-
-export const SubscriptionPart = styled.div`
-  display: flex;
-  justify-content: center;
+  padding: 20px;
+  display: ${({ $hideOpener }) => ($hideOpener ? 'none' : 'flex')};
   align-items: center;
-  padding: 40px 8%;
+  gap: 8px;
+  background-color: ${globalColor.white};
+  box-sizing: ${globalShadow.shadowM};
+  border-radius: ${globalBorderRadius.middle};
+  font-size: ${rem(16)};
+  line-height: 1.5;
+  font-weight: 600;
+  color: ${globalColor.blue.darkBlue};
 
-  > button {
-    border: 1px solid ${globalColor.red.darkRed};
-    background-color: ${globalColor.white};
-    color: ${globalColor.red.darkRed};
+  ${media_breakpoint_down('lg')} {
+    display: flex;
+  }
 
-    ${buttonsHoverActive}
+  ${media_breakpoint_down('md')} {
+    padding: 16px 12px;
+    font-size: ${rem(14)};
   }
 `;

@@ -148,19 +148,3 @@ export const FormSubscriptionHeaderText = styled.p`
     font-size: ${rem(16)};
   }
 `;
-
-export const SubscribeBtn = styled.button`
-  ${ButtonLinkCss};
-  width: 100%;
-  height: 55px;
-
-  ${buttonsHoverActive};
-
-  ${media_breakpoint_down('lg')} {
-    width: 50%;
-
-    span {
-      display: flex;
-    }
-  }
-`;

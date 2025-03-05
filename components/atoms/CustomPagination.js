@@ -73,9 +73,9 @@ const CustomPagination = ({
   showFirstAndLastButtons = true,
   showPreviousAndNextButtons = true,
   showCount = true,
+  scrollAfterChange = false,
 }) => {
   const totalPages = Math.ceil(totalItems / limit);
-  if (empty(totalPages) || totalPages < 2) return null;
   const { isMobileScreen } = useStateScreen();
   const linkQueryParam = `?${queryParam}=`;
   const router = useRouter();
@@ -103,18 +103,21 @@ const CustomPagination = ({
 
   const handleChangePage = (event, page) => {
     event.preventDefault();
-    if (empty(page)) {
-      router.push(pageRoute, undefined, { scroll: false });
-    } else {
-      router.push(
-        {
-          pathname: pageRoute,
-          query: { ...routerQueries, [queryParam]: page },
-        },
-        undefined,
-        { scroll: false },
-      );
-    }
+
+    const updatedQuery = page === 1
+      ? { ...routerQueries, [queryParam]: undefined }
+      : { ...routerQueries, [queryParam]: page };
+
+    router.push(
+      {
+        pathname: pageRoute,
+        query: Object.fromEntries(
+          Object.entries(updatedQuery).filter(([_, v]) => v != null),
+        ),
+      },
+      undefined,
+      { scroll: scrollAfterChange },
+    );
   };
 
   const renderItemsBeforeEllipsis = () => {
@@ -209,6 +212,8 @@ const CustomPagination = ({
     }
   };
 
+  if (empty(totalPages) || totalPages < 2) return null;
+
   return (
     <CustomPaginationWrapper>
       {showCount && (
@@ -221,10 +226,10 @@ const CustomPagination = ({
       <Pagination>
         {showFirstAndLastButtons && (
           <Pagination.First
-            href={currentPage > 1 ? pageRoute : null}
+            href={currentPage > 1 ? `${pageRoute}${linkQueryParam}1` : null}
             disabled={currentPage <= 1}
             className="pagination-first"
-            onClick={(e) => (currentPage > 1 ? handleChangePage(e, null) : {})}
+            onClick={(e) => (currentPage > 1 ? handleChangePage(e, 1) : {})}
           >
             <MdKeyboardDoubleArrowLeft className="pagination-icon" />
           </Pagination.First>

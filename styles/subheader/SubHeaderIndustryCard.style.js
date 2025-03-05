@@ -79,6 +79,7 @@ export const CardImage = styled.picture`
   display: flex;
   position: relative;
   pointer-events: none;
+  filter: grayscale(1);
 
   img {
     width: 100%;

@@ -9,6 +9,16 @@ import { sortByKey } from 'utils/helpers';
 import { getPractices } from 'requests/getPractices';
 import { PRODUCTION_URL } from 'utils/constants';
 
+const sanitizeIndustries = (industries) => industries.map((industry) => ({
+  databaseId: industry?.databaseId,
+  title: industry?.title,
+  description: industry?.industryContent?.description || '',
+  uri: industry?.uri,
+  selectedIcon: industry?.industryContent?.industryIcon?.selectedIcon,
+  uploadedIcon: industry?.industryContent?.industryIcon?.uploadedIcon,
+  image: industry?.industryContent?.industryImage?.sourceUrl,
+}));
+
 const getServicesContent = async () => {
   const data = await fetchAPI(getServicesQuery);
   return data?.page;
@@ -36,7 +46,7 @@ export const getStaticProps = async () => {
     props: {
       title: data?.title,
       content: data?.pagesFields,
-      industries: sortByKey(industries, 'title'),
+      industries: sanitizeIndustries(sortByKey(industries, 'title')),
       practices: practicesSorted,
       seo: data?.seo,
     },

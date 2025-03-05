@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ShareSocialBox } from 'styles/Post/SocialShare.style';
+import { ShareSocialBox, SocialHr } from 'styles/library/SocialShare.style';
 import {
   globalBorderRadius,
   globalColor,
@@ -20,37 +20,13 @@ export const GetInTouchHolder = styled.div`
   transition: all 0.3s ease-in-out;
 
   ${ShareSocialBox} {
-    margin: 0;
-    width: 100%;
-    padding: 8px 0;
-    gap: 4px;
+    --main-socials-color: ${globalColor.white};
+    --socials-svg-size: 20px;
   }
 
-  .second-hr {
-    color: ${globalColor.white};
+  ${SocialHr} {
     width: calc(100% + 16px);
     margin-left: -16px;
-    height: 1px;
-    opacity: 1;
-  }
-
-  .react-share__ShareButton,
-  .copy-button {
-    margin: 0 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    svg {
-      color: ${globalColor.white};
-      transition: ${globalTransition.default};
-      width: 20px;
-      height: 20px;
-    }
-
-    &:last-of-type {
-      margin-right: 0;
-    }
   }
 `;
 

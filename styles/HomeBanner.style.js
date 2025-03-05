@@ -258,15 +258,6 @@ export const BannerCardContent = styled.div`
     }
   }
 
-  .bullets-li {
-    padding-left: 0;
-    position: static;
-
-    &::before {
-      content: none;
-    }
-  }
-
   ${media_breakpoint_down('sm')} {
     margin-bottom: 8px;
     row-gap: 12px;

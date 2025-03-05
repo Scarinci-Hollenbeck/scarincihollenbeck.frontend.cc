@@ -84,15 +84,6 @@ export const AboutDescription = styled.div`
     }
   }
 
-  .bullets-li {
-    padding-left: 0;
-    position: static;
-
-    &::before {
-      content: none;
-    }
-  }
-
   ${media_breakpoint_down('md')} {
     row-gap: 12px;
   }

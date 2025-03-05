@@ -1,40 +1,23 @@
 import styled from 'styled-components';
-import { globalColor, globalShadow, rem } from '../global_styles/Global.styles';
+import { ContainerDefault } from 'styles/Containers.style';
+import { sectionPadding } from 'styles/Article.style';
 
-export const RelatedPostsContainer = styled.div`
-  padding-top: 60px;
-
-  h3 {
-    font-size: ${rem(32)};
-    font-weight: 500;
-    line-height: 1.2;
-  }
-`;
-export const RelatedPostsList = styled.ul`
+export const RelatedPostsContainer = styled(ContainerDefault)`
+  ${sectionPadding};
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding-top: 20px;
+  gap: 24px;
+
+  .disclaimer {
+    margin: 0;
+    text-align: center;
+  }
 `;
-export const RelatedPostItem = styled.li`
-  a {
-    display: flex;
-    padding: 10px;
-    box-shadow: ${globalShadow.allSideShadow};
-    gap: 10px;
-    color: ${globalColor.black};
-    align-items: center;
 
-    :hover {
-      color: ${globalColor.black};
-      cursor: pointer;
-      transition: 0.8s;
-      box-shadow: ${globalShadow.hoveredShadow};
-    }
-
-    h4 {
-      font-size: ${rem(16)};
-      margin-bottom: 0;
+export const RelatedPostsSliderWrapper = styled.div`
+  .slide {
+    > article {
+      height: 100%;
     }
   }
 `;

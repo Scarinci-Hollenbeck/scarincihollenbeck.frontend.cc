@@ -35,6 +35,7 @@ export const LatestPostsHeader = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 24px;
 
   > a {
     flex-shrink: 0;

@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { globalColor } from './global_styles/Global.styles';
+import { ContentContainer } from './Content.style';
 
-export const CollapseContentWrapper = styled.div`
+export const CollapseContentWrapper = styled(ContentContainer)`
   &.collapse:not(.show) {
     height: 500px;
     overflow: hidden;

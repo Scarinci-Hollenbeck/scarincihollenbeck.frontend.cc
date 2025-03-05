@@ -7,30 +7,32 @@ import {
   SelectionWrapper,
 } from 'styles/Filters.style';
 import { createMarkup } from 'utils/helpers';
-import { useSelector } from 'react-redux';
 
-const Selection = ({ clearAll, clearQuery }) => {
-  const { userInput, select } = useSelector((state) => state.attorneys);
-  const nonUserInputResults = select?.filter((a) => a.key !== 'query');
+const Selection = ({
+  keyword, selections, clearAll, clearQuery,
+}) => {
+  const selectionsWithoutKeyword = selections?.filter(
+    (a) => a.key !== 'keyword',
+  );
   return (
     <SelectionWrapper>
       <SelectionList>
-        {userInput?.length > 0 && (
+        {keyword?.length > 0 && (
           <SelectionItem>
             <SelectionButton
               variant="Primary"
-              id={userInput}
-              onClick={() => clearQuery('query')}
+              id={keyword}
+              onClick={() => clearQuery('keyword')}
               data-toggle="tooltip"
               data-placement="top"
               title="Click on link to remove filter"
             >
-              <span dangerouslySetInnerHTML={createMarkup(userInput)} />
+              <span dangerouslySetInnerHTML={createMarkup(keyword)} />
               <BsXLg />
             </SelectionButton>
           </SelectionItem>
         )}
-        {nonUserInputResults?.map((selection) => (
+        {selectionsWithoutKeyword?.map((selection) => (
           <SelectionItem key={selection.key}>
             <SelectionButton
               variant="Primary"
@@ -47,9 +49,9 @@ const Selection = ({ clearAll, clearQuery }) => {
           </SelectionItem>
         ))}
       </SelectionList>
-      {select?.length > 0 && (
+      {selections?.length > 0 && (
         <ClearButton variant="Primary" onClick={clearAll}>
-          Clear All
+          Reset Filters
         </ClearButton>
       )}
     </SelectionWrapper>

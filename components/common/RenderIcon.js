@@ -5,7 +5,7 @@ import {
   RenderSelectedIcon,
   RenderUploadedImage,
 } from 'styles/RenderIcon.style';
-import { getIcon } from 'utils/helpers';
+import { getIcon } from 'utils/getIcon';
 
 const RenderIcon = ({
   image = null,

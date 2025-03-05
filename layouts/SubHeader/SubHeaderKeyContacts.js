@@ -13,7 +13,12 @@ import { useDispatch } from 'react-redux';
 import { SubHeaderInteractive } from 'styles/subheader/SubHeader.style';
 import { handleModalOpener } from '../../redux/slices/modals.slice';
 
-const SubHeaderKeyContacts = ({ keyContacts, isPrint, handlePrint }) => {
+const SubHeaderKeyContacts = ({
+  keyContacts,
+  isPrint,
+  handlePrint,
+  printButtonText = 'Print page',
+}) => {
   if (empty(keyContacts)) return null;
   const dispatch = useDispatch();
 
@@ -78,7 +83,7 @@ const SubHeaderKeyContacts = ({ keyContacts, isPrint, handlePrint }) => {
         {handlePrint && (
           <OutlinedButton onClick={handlePrint}>
             <FaFilePdf size={24} />
-            Print practice page
+            {printButtonText}
           </OutlinedButton>
         )}
       </SubHeaderKeyContactsButtons>

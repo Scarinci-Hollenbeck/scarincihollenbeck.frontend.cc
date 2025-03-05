@@ -70,6 +70,10 @@ export const FaqWrapper = styled.section`
       border-radius: 0;
       color: #231e1e;
 
+      &::after {
+        align-self: flex-start;
+      }
+
       ${media_breakpoint_exactly_down(1850)} {
         padding: 16px 16px 12px 16px;
       }

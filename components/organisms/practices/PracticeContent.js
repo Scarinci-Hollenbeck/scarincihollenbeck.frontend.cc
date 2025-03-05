@@ -1,5 +1,4 @@
 import FAQ from 'components/atoms/FAQ';
-import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
 import CollapseContent from 'components/molecules/practice/CollapseContent';
 import React from 'react';
 import {
@@ -10,7 +9,7 @@ import {
 } from 'styles/practices/PracticeContent.style';
 import { ContainerDefault } from 'styles/Containers.style';
 import GetInTouchSidebar from '../common/GetInTouchSidebar';
-import SocialShare from '../post/SocialShare';
+import SocialShare from '../library/SocialShare';
 
 const PracticeContent = ({
   data,
@@ -27,7 +26,6 @@ const PracticeContent = ({
   >
     <ContainerDefault>
       <SocialShare
-        isGetInTouch
         isPrintBtn
         customClass="social-share"
         handlePrint={handlePrint}
@@ -38,7 +36,7 @@ const PracticeContent = ({
             <CollapseContent
               key={item.id}
               title={item.title}
-              content={<JSXWithDynamicLinks HTML={item.content} />}
+              content={item.content}
               id={item.id}
             />
           ))}

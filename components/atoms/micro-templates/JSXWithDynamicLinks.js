@@ -1,6 +1,5 @@
 import parse, { domToReact } from 'html-react-parser';
 import Link from 'next/link';
-import * as ImageLegacy from 'next/legacy/image';
 import Image from 'next/image';
 import empty from 'is-empty';
 import {
@@ -37,80 +36,87 @@ const getWikiLink = (href) => {
   }
   return href;
 };
+
+const productionUrls = [
+  PRODUCTION_URL,
+  HTTP_PRODUCTION_URL,
+  HTTP_WWW_PRODUCTION_URL,
+  BASE_API_URL,
+];
 // Parsing HTML and replace a hardcode-domain to dynamic href for <Link/>. This function returns React jsx components.
 export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
+  if (empty(HTML)) return null;
+
   const options = {
     replace: (domNode) => {
-      if (domNode.type === 'tag' && domNode.name === 'h1') {
+      if (domNode.type !== 'tag') return;
+
+      if (domNode.attribs?.style) {
+        delete domNode.attribs.style;
+      }
+
+      if (domNode.name === 'h1') {
         domNode.attribs.class = 'animate__animated animate__fadeInDown animate__fast';
       }
-      const productionUrls = [
-        PRODUCTION_URL,
-        HTTP_PRODUCTION_URL,
-        HTTP_WWW_PRODUCTION_URL,
-        BASE_API_URL,
-      ];
-      if (
-        domNode.type === 'tag'
-        && domNode.name === 'a'
-        && productionUrls.some((url) => domNode.attribs.href?.includes(url))
-        && !domNode.attribs.href.includes('/wp-content/')
-      ) {
-        const uri = domNode.attribs.href?.split('/');
-        const uriSliced = `/${uri.slice(3).join('/')}`;
-        const urlCutPossibleSlash = cutSlashFromTheEnd(uriSliced);
-        const href = !urlCutPossibleSlash ? '/' : urlCutPossibleSlash;
-        // Using default tag <a> because with Next component <Link> don't work redirects from next config.
-        // Example redirect - from /practices/sports-and-entertainment-law to /practices/entertainment-and-media
-        return (
-          <a href={href}>
-            {domNode.children[0]?.data
-              || domNode.children[0]?.children[0]?.data}
-          </a>
-        );
-      }
-      if (
-        domNode.type === 'tag'
-        && domNode.name === 'a'
-        && !empty(domNode.attribs.href)
-      ) {
-        const alienUrl = domNode.attribs.href;
-        const modifiedAlienUrl = alienUrl.startsWith('http:')
-          ? `https:${alienUrl.slice(5)}`
-          : alienUrl;
-        const modifiedAlienUrlCutSlash = !modifiedAlienUrl.includes(PRODUCTION_URL)
-          && modifiedAlienUrl.endsWith('/')
-          ? cutSlashFromTheEnd(modifiedAlienUrl)
-          : modifiedAlienUrl;
-        const hrefTarget = modifiedAlienUrlCutSlash.includes('http')
-          && !modifiedAlienUrlCutSlash.includes('scarincihollenbeck.com')
-          ? '_blank'
-          : domNode.attribs?.target;
-        const imageSrc = createImageSrc(domNode?.children[0]?.attribs);
 
-        return (
-          <Link href={modifiedAlienUrlCutSlash} target={hrefTarget}>
-            {domNode.children[0]?.data
-              || domNode.children[0]?.children[0]?.data}
-            {domNode.children[0]?.name === 'img' && (
-              <ImageLegacy
-                src={getWikiLink(imageSrc)}
-                alt={domNode.children[0]?.attribs?.alt}
-                width={domNode.children[0]?.attribs?.width || 750}
-                height={domNode.children[0]?.attribs?.height || 350}
-              />
-            )}
-          </Link>
-        );
+      if (domNode.name === 'a') {
+        if (
+          productionUrls.some((url) => domNode.attribs.href?.includes(url))
+          && !domNode.attribs.href.includes('/wp-content/')
+        ) {
+          const uri = domNode.attribs.href?.split('/');
+          const uriSliced = `/${uri.slice(3).join('/')}`;
+          const urlCutPossibleSlash = cutSlashFromTheEnd(uriSliced);
+          const href = !urlCutPossibleSlash ? '/' : urlCutPossibleSlash;
+          // Using default tag <a> because with Next component <Link> don't work redirects from next config.
+          // Example redirect - from /practices/sports-and-entertainment-law to /practices/entertainment-and-media
+          return (
+            <a href={href}>
+              {domNode.children[0]?.data
+                || domNode.children[0]?.children[0]?.data}
+            </a>
+          );
+        }
+
+        if (!empty(domNode.attribs.href)) {
+          const alienUrl = domNode.attribs.href;
+          const modifiedAlienUrl = alienUrl.startsWith('http:')
+            ? `https:${alienUrl.slice(5)}`
+            : alienUrl;
+          const modifiedAlienUrlCutSlash = !modifiedAlienUrl.includes(PRODUCTION_URL)
+            && modifiedAlienUrl.endsWith('/')
+            ? cutSlashFromTheEnd(modifiedAlienUrl)
+            : modifiedAlienUrl;
+          const hrefTarget = modifiedAlienUrlCutSlash.includes('http')
+            && !modifiedAlienUrlCutSlash.includes('scarincihollenbeck.com')
+            ? '_blank'
+            : domNode.attribs?.target;
+          const imageSrc = createImageSrc(domNode?.children[0]?.attribs);
+
+          return (
+            <Link href={modifiedAlienUrlCutSlash} target={hrefTarget}>
+              {domNode.children[0]?.data
+                || domNode.children[0]?.children[0]?.data}
+              {domNode.children[0]?.name === 'img' && (
+                <Image
+                  src={getWikiLink(imageSrc)}
+                  alt={domNode.children[0]?.attribs?.alt}
+                  width={domNode.children[0]?.attribs?.width || 750}
+                  height={domNode.children[0]?.attribs?.height || 350}
+                />
+              )}
+            </Link>
+          );
+        }
       }
-      if (domNode.type === 'tag' && domNode.name === 'img') {
-        const imageSrc = createImageSrc(domNode?.attribs);
+
+      if (domNode.name === 'img') {
+        const imageSrc = getWikiLink(createImageSrc(domNode?.attribs));
         if (print) {
           return (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              // blurDataURL={domNode.attribs['data-srcset'] || domNode.attribs.src}
-              src={getWikiLink(imageSrc)}
+              src={imageSrc}
               alt={domNode.attribs.alt}
               width={domNode.attribs.width || 750}
               height={domNode.attribs.height || 350}
@@ -118,51 +124,29 @@ export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
           );
         }
 
-        if (
-          domNode.parent?.parent?.attribs?.class?.includes('wp-block-image')
-        ) {
-          return (
-            <Image
-              className="floated-image"
-              placeholder="blur"
-              blurDataURL={imageSrc}
-              loading="lazy"
-              src={getWikiLink(imageSrc)}
-              alt={domNode.attribs.alt}
-              width={domNode.attribs?.width || 750}
-              height={domNode.attribs?.height || 350}
-            />
-          );
-        }
-
         return (
-          <ImageLegacy
+          <Image
+            className="floated-image"
             placeholder="blur"
-            blurDataURL={imageSrc}
+            blurDataURL={domNode?.attribs?.src || imageSrc}
             loading="lazy"
-            src={getWikiLink(imageSrc)}
+            src={imageSrc}
             alt={domNode.attribs.alt}
-            width={domNode.attribs.width || 750}
-            height={domNode.attribs.height || 350}
-            layout={isHoliday ? '' : 'responsive'}
+            width={domNode.attribs?.width || 750}
+            height={domNode.attribs?.height || 350}
+            quality={90}
           />
         );
       }
 
-      if (domNode.type === 'tag' && domNode.name === 'li') {
-        if (domNode.children[0]?.name === 'a') {
-          return (domNode.attribs.class = 'bullets-li');
-        }
-      }
-
-      if (domNode.type === 'tag' && domNode.name === 'iframe') {
+      if (domNode.name === 'iframe') {
         domNode.attribs.width = '100%';
         domNode.attribs.height = '300';
 
         return domNode;
       }
 
-      if (domNode.type === 'tag' && domNode.attribs.class === 'wp-video') {
+      if (domNode.attribs.class === 'wp-video') {
         let video;
 
         domNode.children.forEach((child) => {
@@ -183,19 +167,34 @@ export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
         );
       }
 
-      if (domNode.type === 'tag' && domNode.name === 'li') {
-        domNode.attribs.class = 'bullets-li';
-      }
+      if (domNode.name === 'table') {
+        const {
+          class: className,
+          cellpadding: cellPadding,
+          cellspacing: cellSpacing,
+          ...restAttribs
+        } = domNode.attribs;
 
-      if (domNode.type === 'tag' && domNode.name === 'table') {
-        const { class: className, ...restAttribs } = domNode.attribs;
         return (
           <div className="table-wrapper">
-            <table className={className} {...restAttribs}>
+            <table
+              className={className}
+              cellPadding={cellPadding}
+              cellSpacing={cellSpacing}
+              {...restAttribs}
+            >
               {domToReact(domNode.children, options)}
             </table>
           </div>
         );
+      }
+
+      if (domNode.name === 'ul') {
+        domNode.attribs.class = 'text-list';
+      }
+
+      if (domNode.name === 'ol') {
+        domNode.attribs.class = 'numbers-list';
       }
     },
   };

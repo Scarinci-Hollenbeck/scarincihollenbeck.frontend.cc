@@ -24,7 +24,7 @@ const attorneysSlice = createSlice({
       const rQuery = current(state).select.filter(
         (a) => a.key !== action.payload,
       );
-      if (action.payload === 'query') {
+      if (action.payload === 'keyword') {
         state.userInput = '';
       }
       state.select = rQuery;
@@ -35,13 +35,13 @@ const attorneysSlice = createSlice({
 
       if (value?.length === 0) {
         state.userInput = '';
-        state.select = current(state).select.filter((a) => a.key !== 'query');
+        state.select = current(state).select.filter((a) => a.key !== 'keyword');
       } else {
         const input = value.replace(
           /\w\S*/g,
           (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
         );
-        const results = { selected: state.userInput, key: 'query' };
+        const results = { selected: state.userInput, key: 'keyword' };
         const concatResults = state.select.concat(results);
         state.userInput = input;
         state.select = concatResults;

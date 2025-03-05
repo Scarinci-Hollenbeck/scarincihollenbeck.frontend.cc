@@ -37,7 +37,7 @@ const getLatestArticlesTabsData = async () => {
 
   return {
     allPosts: {
-      categoryLink: '/library/category/client-alert',
+      categoryLink: '/library',
       articles: [...chunkArray(posts.nodes, 4)],
     },
     clientAlertsPosts: {

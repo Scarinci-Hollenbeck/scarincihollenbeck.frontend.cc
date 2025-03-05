@@ -1,5 +1,5 @@
+import { getIcon } from 'utils/getIcon';
 import { FocusedCardBox } from '../../styles/home-page/WhyChooseUs.style';
-import { getIcon } from '../../utils/helpers';
 import { JSXWithDynamicLinks } from './micro-templates/JSXWithDynamicLinks';
 
 const FocusedCard = ({ icon, title, text }) => (

@@ -5,6 +5,9 @@ import SubHeaderIndustry from 'layouts/SubHeader/SubHeaderIndustry';
 import { Title60 } from 'styles/common/Typography.style';
 import { IndustryPageWrapper } from 'styles/Industries.style';
 import empty from 'is-empty';
+import { useRouter } from 'next/router';
+import { getPaginationData } from 'requests/getPaginationData';
+import { getClientsQuery } from 'requests/graphql-queries';
 
 const FilledSection = dynamic(() => import('components/organisms/industries/FilledSection'));
 const VerticalTabs = dynamic(() => import('components/organisms/locations/VerticalTabs'));
@@ -13,6 +16,8 @@ const IndustryAttorneys = dynamic(() => import('components/organisms/industries/
 const IndustryFaq = dynamic(() => import('components/organisms/industries/IndustryFaq'));
 const IndustryWhyChooseUs = dynamic(() => import('components/organisms/industries/IndustryWhyChooseUs'));
 const SubscriptionBanner = dynamic(() => import('components/organisms/common/SubscriptionBanner'));
+const IndustryClients = dynamic(() => import('components/organisms/industries/IndustryClients'));
+const IndustryPostsSlider = dynamic(() => import('components/organisms/industries/IndustryPostsSlider'));
 
 const anchorDataDefault = {
   filledSection: {
@@ -21,6 +26,9 @@ const anchorDataDefault = {
   verticalTabs: {
     id: 'tabs-section',
     title: 'Areas of Service',
+  },
+  clients: {
+    id: 'clients-section',
   },
   attorneys: {
     id: 'attorneys-section',
@@ -42,51 +50,63 @@ const anchorDataDefault = {
 
 const IndustryPage = ({ content, seo, canonicalLink }) => {
   const [activeTab, setActiveTab] = useState(0);
+  const { query } = useRouter();
+
   const {
     title,
     description,
     featuredImage,
     contentSection,
     contentTabs,
+    slides,
     faq,
     whyChooseUs,
     chairIndustry,
     attorneyListIndustry,
+    clients,
     relatedPosts,
-    slides,
   } = content;
+
+  const clientsPaginationData = getPaginationData(getClientsQuery, {
+    currentPage: query?.['client-page'] || 1,
+    itemsPerPage: 12,
+    id: [clients?.clientsConnection?.[0]?.databaseId],
+  });
 
   const concatenatedAttorneys = [...chairIndustry, ...attorneyListIndustry];
 
   const anchorLinks = useMemo(() => {
     const copyAnchorData = { ...anchorDataDefault };
 
-    if (empty(contentSection?.description)) {
-      delete copyAnchorData.filledSection;
-    } else {
-      copyAnchorData.filledSection.title = contentSection?.title;
-    }
-
-    if (empty(contentTabs)) {
-      delete copyAnchorData.verticalTabs;
-    }
-
-    if (empty(concatenatedAttorneys)) {
-      delete copyAnchorData.attorneys;
-    }
-
-    if (empty(relatedPosts)) {
-      delete copyAnchorData.articles;
-    }
-
-    return {
-      ...copyAnchorData,
+    const conditions = {
+      filledSection: {
+        check: empty(contentSection?.description),
+        onFalse: () => (copyAnchorData.filledSection.title = contentSection?.title),
+      },
+      verticalTabs: { check: empty(contentTabs) },
+      attorneys: { check: empty(concatenatedAttorneys) },
+      articles: { check: empty(relatedPosts) },
+      clients: {
+        check: empty(clientsPaginationData?.clients?.edges),
+        onFalse: () => (copyAnchorData.clients.title = clients?.title || 'Attorneys in Actions'),
+      },
     };
+
+    Object.entries(conditions).forEach(([key, { check, onFalse }]) => {
+      if (check) {
+        delete copyAnchorData[key];
+      } else if (onFalse) {
+        onFalse();
+      }
+    });
+
+    return copyAnchorData;
   }, [
     contentSection,
     contentTabs,
     concatenatedAttorneys,
     relatedPosts,
+    clientsPaginationData,
     anchorDataDefault,
   ]);
 
@@ -122,6 +142,13 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
           setActiveTab={setActiveTab}
         />
 
+        <IndustryClients
+          title={clients?.title}
+          description={clients?.description}
+          clientsPaginationData={clientsPaginationData}
+          anchorId={anchorLinks?.clients?.id}
+        />
+
         {!empty(concatenatedAttorneys) && (
           <>
             <LogoSeparator direction="row" isBig isContainer />
@@ -142,6 +169,11 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
         />
 
         <SubscriptionBanner isIndustry TitleComponent={Title60} />
+
+        <IndustryPostsSlider
+          posts={relatedPosts}
+          anchorId={anchorLinks?.articles?.id}
+        />
       </IndustryPageWrapper>
     </>
   );

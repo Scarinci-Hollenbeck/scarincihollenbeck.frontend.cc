@@ -24,6 +24,7 @@ import InitFonts from 'styles/global_styles/InitFonts';
 import 'react-toastify/dist/ReactToastify.css';
 import { ReCaptchaProvider } from 'next-recaptcha-v3';
 import CommonModals from 'components/shared/CommonModals';
+import AnchorTop from 'components/atoms/AnchorTop';
 import { store } from '../redux/store';
 // need update to new firebase version
 // import PushNotificationLayout from '../hoks/notifications';
@@ -55,6 +56,7 @@ const SHSite = ({ Component, pageProps }) => (
         <Header />
         <main>
           <Component {...pageProps} />
+          <AnchorTop />
         </main>
         <SiteFooter />
         <CommonModals />

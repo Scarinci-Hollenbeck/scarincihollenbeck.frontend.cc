@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { UnderlinedLink } from 'styles/common/Typography.style';
 import {
   globalColor,
   globalTransition,
@@ -70,6 +71,10 @@ export const SubHeaderSlideContent = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 4px;
+
+  ${UnderlinedLink} {
+    margin-top: auto;
+  }
 `;
 
 export const SubHeaderSlideTitle = styled.h2`
@@ -98,11 +103,10 @@ export const SubHeaderSlideLabel = styled.span`
 `;
 
 export const SubHeaderSlideDescription = styled.div`
-  min-height: 120px;
-  margin: 8px 0 26px;
+  margin-top: 8px;
   font-size: ${rem(14)};
   display: -webkit-box;
-  -webkit-line-clamp: 5;
+  -webkit-line-clamp: 6;
   -webkit-box-orient: vertical;
   overflow: hidden;
 
@@ -110,25 +114,17 @@ export const SubHeaderSlideDescription = styled.div`
     margin: 0;
   }
 
-  ${media_breakpoint_exactly_down('xxl')} {
-    min-height: 105px;
-  }
-
   ${media_breakpoint_exactly_down(1279)} {
-    margin: 8px 0 16px;
-    min-height: 60px;
     -webkit-line-clamp: 3;
   }
 
   ${media_breakpoint_down('md')} {
     -webkit-line-clamp: 4;
-    min-height: 84px;
   }
 
   ${media_breakpoint_down('sm')} {
     font-size: ${rem(12)};
     line-height: 1.34;
-    min-height: 64px;
   }
 `;
 
@@ -164,14 +160,6 @@ export const SubHeaderSlideNavigationButton = styled.button`
     text-overflow: ellipsis;
     text-align: end;
     padding-right: 8px;
-  }
-
-  &.next {
-    margin-top: auto;
-  }
-
-  &.prev {
-    margin-bottom: auto;
   }
 
   @media (hover: hover) {

@@ -1,5 +1,15 @@
 import styled from 'styled-components';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
+import { LogoSeparatorWrapper } from './Separators.style';
+import { PracticeAttorneysSection } from './practices/PracticeAttorneys';
+
+export const sectionPadding = `
+  padding-block: 40px;
+
+  ${media_breakpoint_down('md')} {
+    padding-block: 32px;
+  }
+`;
 
 export const ArticleContent = styled.section`
   padding: 60px 0;
@@ -46,5 +56,22 @@ export const ArticleContentSidebar = styled.div`
 
   ${media_breakpoint_down('xl')} {
     width: 100%;
+  }
+`;
+
+export const ArticleSecondaryContent = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  ${LogoSeparatorWrapper} {
+    margin: 0;
+  }
+
+  ${PracticeAttorneysSection} {
+    ${sectionPadding};
+  }
+
+  @media print {
+    display: none;
   }
 `;

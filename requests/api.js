@@ -36,17 +36,28 @@ export async function fetchAPI(query, { variables } = {}) {
   }
 }
 
-export async function fetchRestAPI(query) {
+export async function fetchRestAPI(query, params = {}) {
   try {
-    const res = await fetch(
-      `${BASE_API_URL}/wp-json/wcra/v1/${query}/?secret_key=${NEXT_PUBLIC_WP_REST_KEY}`,
-      restApiHeaders,
-    );
+    const searchParams = new URLSearchParams({
+      secret_key: NEXT_PUBLIC_WP_REST_KEY,
+      ...params,
+    });
+
+    const url = `${BASE_API_URL}/wp-json/wcra/v1/${query}/?${searchParams}`;
+
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: restApiHeaders,
+    });
+
+    if (!res.ok) {
+      console.error(`Error: Failed to fetch. Status code: ${res.status}`);
+      throw new Error(`Failed to fetch from ${query} rest API`);
+    }
 
     const decodedRes = await decodeResponse(res);
     return decodedRes?.data;
   } catch (error) {
-    console.error(error);
     throw new Error(`Failed to fetch from ${query} rest API`);
   }
 }

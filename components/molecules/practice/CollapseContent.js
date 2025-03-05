@@ -1,9 +1,11 @@
+import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
 import React, { useEffect, useRef, useState } from 'react';
 import { Collapse } from 'react-bootstrap';
 import {
   CollapseButton,
   CollapseContentWrapper,
 } from 'styles/CollapseContent.style';
+import { ContentContainer } from 'styles/Content.style';
 
 const CollapseContent = ({ title, content, id }) => {
   const [open, setOpen] = useState(false);
@@ -26,14 +28,14 @@ const CollapseContent = ({ title, content, id }) => {
 
   if (isContentShort) {
     return (
-      <div
+      <ContentContainer
         ref={contentRef}
         className="content-block margin-scroll"
         id={`${id}-section`}
       >
         <h2>{title}</h2>
-        {content}
-      </div>
+        <JSXWithDynamicLinks HTML={content} />
+      </ContentContainer>
     );
   }
 
@@ -42,7 +44,9 @@ const CollapseContent = ({ title, content, id }) => {
       <Collapse in={open}>
         <CollapseContentWrapper>
           <h2>{title}</h2>
-          <div ref={contentRef}>{content}</div>
+          <div ref={contentRef}>
+            <JSXWithDynamicLinks HTML={content} />
+          </div>
         </CollapseContentWrapper>
       </Collapse>
       <CollapseButton
