@@ -1,7 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import {
   globalColor,
-  globalTransition,
   industrySectionContainer,
   industrySectionPaddingBlock,
   rem,

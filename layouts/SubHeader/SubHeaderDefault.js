@@ -91,6 +91,7 @@ const SubHeaderDefault = ({
                     as={Link}
                     href={
                       empty(author?.uri)
+                      || display_name?.includes('Scarinci Hollenbeck')
                         ? '/firm-overview'
                         : `/library${author.uri}`
                     }
