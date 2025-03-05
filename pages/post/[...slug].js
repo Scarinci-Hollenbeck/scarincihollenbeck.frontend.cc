@@ -1,226 +1,134 @@
-import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
 import {
+  CURRENT_DOMAIN,
   PRODUCTION_URL,
   ScarinciHollenbeckAuthor,
-  SITE_TITLE,
 } from 'utils/constants';
-import PostPage from 'components/pages/SinglePost';
 import { fetchAPI } from 'requests/api';
-import { getThreePostsQuery, postQuery } from 'requests/graphql-queries';
-import empty from 'is-empty';
-import parse from 'html-react-parser';
-import { getPractices } from 'requests/getPractices';
 import {
-  cutDomain,
-  cutSlashFromTheEnd,
-  getSubTitleFromHTML,
+  postMainCategoryContentQuery,
+  postQuery,
+} from 'requests/graphql-queries';
+import empty from 'is-empty';
+import ArticlePage from 'components/pages/ArticlePage';
+import {
+  changePostLink,
+  attorneysSanitize as attorneysSanitizeHelper,
 } from '../../utils/helpers';
 
-const SiteLoader = dynamic(() => import('components/shared/SiteLoader'));
-/** fetch all the post data and map it the page props.
- * */
-
-const attorneysSanitize = (attorneysArr) => attorneysArr.map((attorneyAuthor) => {
-  attorneyAuthor.profileImage = attorneyAuthor.attorneyMainInformation.profileImage?.sourceUrl
+const attorneysSanitize = (attorneysArr) => attorneysArr.map((attorney) => {
+  attorney.profileImage = attorney.attorneyMainInformation.profileImage?.sourceUrl
       || '/images/no-image-found-diamond-750x350.png';
   return {
-    uri: attorneyAuthor.uri,
-    display_name: attorneyAuthor.title,
-    databaseId: attorneyAuthor.databaseId,
-    authorDescription: attorneyAuthor.attorneyBiography.miniBio,
-    profileImage: attorneyAuthor.profileImage,
-    email: attorneyAuthor.attorneyMainInformation.email,
-    phoneNumber: attorneyAuthor.attorneyMainInformation.phoneNumber,
-    designation: attorneyAuthor.attorneyMainInformation.designation,
+    uri: attorney.uri,
+    display_name: attorney.title,
+    databaseId: attorney.databaseId,
+    description: attorney.attorneyBiography.miniBio,
+    profileImage: attorney.profileImage,
+    email: attorney.attorneyMainInformation.email,
+    phoneNumber: attorney.attorneyMainInformation.phoneNumber,
+    designation: attorney.attorneyMainInformation.designation,
+    author: attorney.attorneyAuthorId?.authorId || null,
   };
 });
 
-const getPostContentData = async (slug) => {
-  const data = await fetchAPI(postQuery, {
-    variables: { id: slug },
-  });
+const getPostContentData = async (slug, categorySlug) => {
+  const [{ post }, postMainCategoryContent] = await Promise.all([
+    fetchAPI(postQuery, {
+      variables: { id: slug },
+    }),
+    fetchAPI(postMainCategoryContentQuery, {
+      variables: { id: categorySlug },
+    }),
+  ]);
 
-  const practices = await getPractices();
-  const { posts } = await fetchAPI(getThreePostsQuery);
-
-  if (empty(data.post)) {
+  if (
+    empty(post)
+    || post?.status?.toLowerCase() !== 'publish'
+    || empty(post?.content)
+  ) {
     return undefined;
   }
 
-  if (
-    !data.post.selectAuthors.authorDisplayOrder
-    || data.post.selectAuthors.authorDisplayOrder.length === 0
-  ) {
-    data.post.selectAuthors.authorDisplayOrder = ScarinciHollenbeckAuthor;
-  }
-
-  data.post.selectAuthors.authorDisplayOrder = attorneysSanitize(
-    data.post.selectAuthors.authorDisplayOrder,
+  const filteredAuthors = post?.selectAuthors?.authorDisplayOrder?.filter(
+    (item) => item?.uri && !item.uri.includes('post_type'),
   );
 
-  if (data.post.selectHeroes?.selectAttorneys?.length > 0) {
-    data.post.selectHeroes.selectAttorneys = attorneysSanitize(
-      data.post.selectHeroes.selectAttorneys,
-    );
-    data.post.keyContacts = data.post.selectAuthors.authorDisplayOrder.concat(
-      data.post.selectHeroes.selectAttorneys,
-    );
-  }
+  const selectedAuthors = !empty(filteredAuthors)
+    ? attorneysSanitize(filteredAuthors)
+    : ScarinciHollenbeckAuthor;
 
-  let seoImageFromPostByParse = '/images/no-image-found-diamond.png';
-  parse(data.post.content, {
-    replace: (domNode) => {
-      if (
-        domNode.type === 'tag'
-        && domNode.name === 'img'
-        && !empty(domNode.attribs.href)
-      ) {
-        return (seoImageFromPostByParse = domNode.attribs.href);
-      }
-    },
-  });
+  const selectedHeroes = !empty(post?.selectHeroes?.selectAttorneys)
+    ? attorneysSanitizeHelper(post.selectHeroes.selectAttorneys)
+    : [];
 
-  data.post.seo = {
-    metaTitle: data.post.seo.title,
-    metaDescription: data.post.seo.opengraphDescription,
-    opengraphImage: !empty(data.post.seo.opengraphImage?.sourceUrl)
-      ? data.post.seo.opengraphImage?.sourceUrl
-      : seoImageFromPostByParse,
+  const seo = {
+    metaTitle: post?.seo?.title,
+    metaDescription: post?.seo?.opengraphDescription,
+    opengraphImage: !empty(post?.seo?.opengraphImage?.sourceUrl)
+      ? post.seo.opengraphImage.sourceUrl
+      : `${CURRENT_DOMAIN}/images/no-image-found-diamond.png`,
+    canonicalUrl: `${PRODUCTION_URL}${changePostLink(post?.link)}`,
   };
 
-  data.post?.categories?.nodes.forEach(({ contentNodes }) => {
-    if (contentNodes.length > 1) {
-      contentNodes.splice(0, 1);
-    }
-  });
-
-  const relatedPosts = [];
-
-  if (data.post?.categories?.nodes.length === 1) {
-    data.post?.categories?.nodes.forEach(({ contentNodes }) => {
-      contentNodes.nodes.forEach((contentNodesItem) => {
-        relatedPosts.push({
-          title: contentNodesItem.title,
-          uri: contentNodesItem.uri,
-          featuredImage:
-            contentNodesItem.featuredImage?.node.sourceUrl
-            || '/images/no-image-found-diamond-750x350.png',
-          databaseId: contentNodesItem.databaseId,
-        });
-      });
-    });
-  }
-  if (data.post?.categories?.nodes.length === 2) {
-    data.post?.categories?.nodes.forEach(({ contentNodes }, idx) => {
-      if (idx === 0 && !empty(contentNodes.nodes[0]?.title)) {
-        relatedPosts.push({
-          title: contentNodes.nodes[0]?.title,
-          uri: contentNodes.nodes[0]?.uri,
-          featuredImage: !empty(
-            contentNodes.nodes[0]?.featuredImage?.node.sourceUrl,
-          )
-            ? contentNodes.nodes[0]?.featuredImage?.node.sourceUrl
-            : '/images/no-image-found-diamond-750x350.png',
-          databaseId: contentNodes.nodes[0]?.databaseId,
-        });
-      }
-
-      if (idx === 1) {
-        contentNodes.nodes.forEach((contentNodesItem, idx) => {
-          if (idx < 2) {
-            relatedPosts.push({
-              title: contentNodesItem?.title,
-              uri: contentNodesItem?.uri,
-              featuredImage: !empty(
-                contentNodesItem.featuredImage?.node?.sourceUrl,
-              )
-                ? contentNodesItem.featuredImage?.node?.sourceUrl
-                : '/images/no-image-found-diamond-750x350.png',
-              databaseId: contentNodesItem?.databaseId,
-            });
-          }
-        });
-      }
-    });
-  }
-  if (data.post?.categories?.nodes.length >= 3) {
-    data.post?.categories?.nodes.forEach(({ contentNodes }, idx) => {
-      if (idx <= 2 && contentNodes.nodes[idx]?.title) {
-        relatedPosts.push({
-          title: contentNodes.nodes[idx]?.title,
-          uri: contentNodes.nodes[idx]?.uri,
-          featuredImage:
-            contentNodes.nodes[idx]?.featuredImage?.node.sourceUrl
-            || '/images/no-image-found-diamond-750x350.png',
-          databaseId: contentNodes.nodes[idx]?.databaseId,
-        });
-      }
-    });
-  }
-
-  if (!empty(posts)) {
-    posts?.nodes?.map((post) => {
-      post.featuredImage = post.featuredImage?.node.sourceUrl
-        || '/images/no-image-found-diamond-750x350.png';
-      post.uri = cutDomain(post.uri);
-      post.author = post.author.node.name;
-      return post;
-    });
-  }
-
   return {
-    postContent: data.post,
-    corePractices: practices,
-    relatedPosts,
-    posts: posts?.nodes,
-    status: data.post.status,
+    authors: selectedAuthors,
+    selectedHeroes,
+    seo,
+    content: post?.content,
+    title: post?.title,
+    date: post?.date,
+    mainCategory: postMainCategoryContent?.category,
+    tags: post?.tags?.nodes,
+    postTypeConnections: post?.linksToOtherPostTypes,
   };
 };
 
 export const getServerSideProps = async ({ params, res, query }) => {
   res.setHeader(
     'Cache-Control',
-    'max-age=0, s-maxage=60, stale-while-revalidate',
+    'max-age=0, s-maxage=3600, stale-while-revalidate=120',
   );
   const postSlug = params.slug[params.slug.length - 1];
   const { category } = query;
 
-  const postData = await getPostContentData(postSlug);
+  const postData = await getPostContentData(postSlug, category);
 
-  if (empty(postData) || postData.status.toLowerCase() !== 'publish') {
+  if (!postData) {
     res.statusCode = 404;
     return {
       notFound: true,
     };
   }
 
-  const { clearBody, subTitle } = getSubTitleFromHTML(
-    postData?.postContent.content,
-  );
-  const post = {
-    content: clearBody,
-    title: postData.postContent.title,
-    date: postData.postContent.date,
-    subTitle,
-  };
+  const {
+    content,
+    title,
+    date,
+    mainCategory,
+    authors,
+    selectedHeroes,
+    seo,
+    tags,
+    postTypeConnections,
+  } = postData;
 
-  const authors = postData.postContent.selectAuthors.authorDisplayOrder.filter(
-    ({ uri }) => !uri.includes('post_type'),
-  );
+  const post = {
+    content,
+    title,
+    date,
+    tags,
+    postTypeConnections,
+  };
 
   return {
     props: {
       post,
-      seo: postData.postContent.seo,
-      categories: postData?.postContent?.categories?.nodes,
+      seo,
       authors,
-      keyContacts: postData.postContent.keyContacts || authors,
-      category: category || '',
-      corePractices: postData.corePractices,
-      relatedPosts: postData.relatedPosts,
-      posts: postData.posts,
-      canonicalUrl: cutSlashFromTheEnd(postData.postContent.link),
+      keyContacts: authors,
+      relatedPosts: mainCategory?.posts?.nodes,
+      mainCategory,
+      selectedHeroes,
     },
   };
 };
@@ -229,35 +137,22 @@ export const getServerSideProps = async ({ params, res, query }) => {
 const SinglePost = ({
   post,
   seo,
-  categories,
   authors,
-  category,
-  corePractices,
   relatedPosts,
-  posts,
+  mainCategory,
   keyContacts,
-  canonicalUrl,
+  selectedHeroes,
 }) => {
-  const router = useRouter();
-  const metaAuthorLinks = authors.map((author) => (author.display_name === SITE_TITLE ? PRODUCTION_URL : author.user_url));
-  if (router.isFallback) {
-    return <SiteLoader />;
-  }
-
   const postProps = {
     post,
     seo,
-    categories,
-    canonicalUrl,
-    metaAuthorLinks,
-    category,
     authors,
-    keyContacts,
-    corePractices,
     relatedPosts,
-    posts,
+    mainCategory,
+    keyContacts,
+    selectedHeroes,
   };
-  return <PostPage {...postProps} />;
+  return <ArticlePage {...postProps} />;
 };
 
 export default SinglePost;

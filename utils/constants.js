@@ -82,7 +82,7 @@ export const footerNavList = [
   },
   {
     linkTitle: 'Library',
-    link: '/library/category/client-alert',
+    link: '/library',
     id: 6,
   },
   {
@@ -119,24 +119,18 @@ export const FIRM_BLOG_PAGES = [
 export const ScarinciHollenbeckAuthor = [
   {
     uri: '/attorneys',
-    title: 'Scarinci Hollenbeck, LLC',
+    display_name: 'Scarinci Hollenbeck, LLC',
     databaseId: 10000000000001,
-    attorneyMainInformation: {
-      profileImage: {
-        sourceUrl: SHDiamond,
-      },
-      email: SITE_EMAIL,
-      phoneNumber: SITE_PHONE,
-      designation: 'The Firm',
-    },
-    attorneyPrimaryRelatedPracticesLocationsGroups: {
-      keyContactByPractice: null,
-    },
-    attorneyBiography: {
-      miniBio: `With a growing practice of more than 60 experienced attorneys,
-     Scarinci Hollenbeck, LLC is a regional alternative to a National 250 law firm. With offices in New
-      Jersey, New York City, and the District of Columbia, we serve the niche practice areas most often
-       required by institutions, corporations, entities, and the people who own and control them.`,
+    description: `With a growing practice of more than 60 experienced attorneys,
+      Scarinci Hollenbeck, LLC is a regional alternative to a National 250 law firm. With offices in New 
+      Jersey, New York City, and the District of Columbia, we serve the niche practice areas most often 
+      required by institutions, corporations, entities, and the people who own and control them.`,
+    profileImage: SHDiamond,
+    email: SITE_EMAIL,
+    phoneNumber: SITE_PHONE,
+    designation: 'The Firm',
+    author: {
+      uri: '/firm-overview',
     },
   },
 ];
@@ -571,29 +565,6 @@ export const subscriptionInputs = [
   },
 ];
 
-export const CategoriesButtonsStructure = [
-  {
-    slug: 'client-alert',
-    label: 'Client Alert',
-    databaseId: 20098,
-  },
-  {
-    slug: 'firm-news',
-    label: 'News',
-    databaseId: 98,
-  },
-  {
-    slug: 'firm-events',
-    label: 'Events',
-    databaseId: 99,
-  },
-  {
-    slug: 'law-firm-insights',
-    label: 'Insights',
-    databaseId: 599,
-  },
-];
-
 export const Links404NavArr = [
   {
     id: 1,
@@ -715,19 +686,19 @@ export const SIDEBAR_POLITIC_LINKS = [
 
 export const SOCIAL_LINKS = [
   {
-    id: 'sidebar-linkedin',
+    id: 'linkedin',
     title: 'LinkedIn',
     icon: <FaLinkedin />,
     url: 'https://www.linkedin.com/company/scarinci-hollenbeck-llc/',
   },
   {
-    id: 'sidebar-facebook',
+    id: 'facebook',
     title: 'Facebook',
     icon: <FaFacebookSquare />,
     url: 'https://www.facebook.com/ScarinciHollenbeck',
   },
   {
-    id: 'sidebar-x',
+    id: 'x',
     title: 'X/Twitter',
     icon: <FaSquareXTwitter />,
     url: 'https://twitter.com/S_H_Law',
@@ -810,4 +781,37 @@ export const desiredOrder = [
   'John Palumbo',
   'Peter S. Moeller',
   'Dan Scarpulla',
+];
+
+export const LIBRARY_NAV = [
+  {
+    id: 'filters-nav-01',
+    title: 'Overview',
+    href: '/library',
+  },
+  {
+    id: 'filters-nav-02',
+    title: 'Client Alert',
+    href: '/library/category/client-alert',
+  },
+  {
+    id: 'filters-nav-03',
+    title: 'Firm News',
+    href: '/library/category/firm-news',
+  },
+  {
+    id: 'filters-nav-04',
+    title: 'Firm Events',
+    href: '/library/category/firm-events',
+  },
+  {
+    id: 'filters-nav-05',
+    title: 'Firm Insights',
+    href: '/library/category/law-firm-insights',
+  },
+  {
+    id: 'filters-nav-06',
+    title: 'Podcasts',
+    href: '/podcasts',
+  },
 ];

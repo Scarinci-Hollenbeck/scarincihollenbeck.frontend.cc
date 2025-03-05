@@ -9,7 +9,7 @@ import {
 import { MdTouchApp } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { handleModalOpener } from '../../../redux/slices/modals.slice';
-import SocialShare from '../post/SocialShare';
+import SocialShare from '../library/SocialShare';
 
 const GetInTouchSidebar = ({ handlePrint, isPrintBtn = false }) => {
   const dispatch = useDispatch();
@@ -36,11 +36,7 @@ const GetInTouchSidebar = ({ handlePrint, isPrintBtn = false }) => {
           <p>Contact us today to learn more about how we can assist you.</p>
         </GetInTouchQuote>
 
-        <SocialShare
-          isGetInTouch
-          isPrintBtn={isPrintBtn}
-          handlePrint={handlePrint}
-        />
+        <SocialShare isPrintBtn={isPrintBtn} handlePrint={handlePrint} />
       </GetInTouchDescription>
       <GetInTouchMobileBtn
         onClick={() => dispatch(handleModalOpener({ active: true }))}

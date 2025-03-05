@@ -1,14 +1,11 @@
 import LawyerCard from 'components/shared/LawyerCard';
 import { useAttorneysSearch } from 'hooks/useAttornySearch';
-import { BsExclamationTriangle } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { AttorneyCardsWrapper } from 'styles/Attornyes.style';
-import {
-  FiltersNotFound,
-  FiltersNotFoundButton,
-  FiltersNotFoundMessage,
-} from 'styles/Filters.style';
+import dynamic from 'next/dynamic';
 import { clearAll } from '../../../redux/slices/attorneys.slice';
+
+const FiltersNoResults = dynamic(() => import('../common/FiltersNoResults'));
 
 const Filtered = ({ attorneys, userInput, select }) => {
   const dispatch = useDispatch();
@@ -21,15 +18,10 @@ const Filtered = ({ attorneys, userInput, select }) => {
   return (
     <>
       {attorneysFiltered?.length === 0 ? (
-        <FiltersNotFound>
-          <FiltersNotFoundMessage>
-            <BsExclamationTriangle size={24} />
-            <span>Sorry, no attorneys found according to this query.</span>
-          </FiltersNotFoundMessage>
-          <FiltersNotFoundButton onClick={() => dispatch(clearAll())}>
-            VIEW ALL
-          </FiltersNotFoundButton>
-        </FiltersNotFound>
+        <FiltersNoResults
+          message="Sorry, no attorneys found according to this query."
+          handleClickButton={() => dispatch(clearAll())}
+        />
       ) : (
         <AttorneyCardsWrapper>
           {attorneysFiltered.map((info) => (

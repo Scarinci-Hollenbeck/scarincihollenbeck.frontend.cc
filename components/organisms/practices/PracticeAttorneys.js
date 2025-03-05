@@ -1,6 +1,10 @@
 import empty from 'is-empty';
 import React, {
-  useEffect, useMemo, useRef, useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import { ContainerDefault } from 'styles/Containers.style';
 import {
@@ -12,7 +16,13 @@ import { useSelector } from 'react-redux';
 import { Title32 } from 'styles/common/Typography.style';
 import AttorneysArea from '../attorneys/areas/AttorneysArea';
 
-const PracticeAttorneys = ({ attorneys, chairs = [], anchorId }) => {
+const PracticeAttorneys = ({
+  attorneys,
+  chairs = [],
+  anchorId,
+  title = 'Practice Area Attorneys',
+  isBackground = true,
+}) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [cardWidth, setCardWidth] = useState(0);
@@ -42,9 +52,9 @@ const PracticeAttorneys = ({ attorneys, chairs = [], anchorId }) => {
     setCardGap(gap);
   };
 
-  const handleCollapse = () => {
-    setIsCollapsed(!isCollapsed);
-  };
+  const handleCollapse = useCallback(() => {
+    setIsCollapsed((prev) => !prev);
+  }, []);
 
   if (totalItems === 0 || Number.isNaN(totalItems)) {
     return (
@@ -53,15 +63,17 @@ const PracticeAttorneys = ({ attorneys, chairs = [], anchorId }) => {
         className="margin-scroll"
         data-testid="collapse-attorneys"
       >
-        <PracticeAttorneysBg
-          src="/images/profile-attorney-bg.webp"
-          fill
-          alt="Attorneys background"
-          sizes="100vw"
-          loading="lazy"
-        />
+        {isBackground && (
+          <PracticeAttorneysBg
+            src="/images/profile-attorney-bg.webp"
+            fill
+            alt="Attorneys background"
+            sizes="100vw"
+            loading="lazy"
+          />
+        )}
         <ContainerDefault>
-          <Title32>Practice Area Attorneys</Title32>
+          <Title32>{title}</Title32>
           <PracticeNoAttorneys>Attorneys will appear soon!</PracticeNoAttorneys>
         </ContainerDefault>
       </PracticeAttorneysSection>
@@ -74,16 +86,18 @@ const PracticeAttorneys = ({ attorneys, chairs = [], anchorId }) => {
       id={anchorId}
       data-testid="collapse-attorneys"
     >
-      <PracticeAttorneysBg
-        src="/images/profile-attorney-bg.webp"
-        fill
-        alt="Attorneys background"
-        sizes="100vw"
-        loading="lazy"
-      />
+      {isBackground && (
+        <PracticeAttorneysBg
+          src="/images/profile-attorney-bg.webp"
+          fill
+          alt="Attorneys background"
+          sizes="100vw"
+          loading="lazy"
+        />
+      )}
       <ContainerDefault>
         <div className="attorneys-practice__header">
-          <Title32>Practice Area Attorneys</Title32>
+          <Title32>{title}</Title32>
           {totalItems > calculateItemsPerRow && (
             <button onClick={handleCollapse}>
               {!isCollapsed ? 'See all' : 'HIDE'}

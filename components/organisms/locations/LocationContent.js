@@ -7,13 +7,11 @@ import {
   SplitContentDescription,
   SplitContentHolder,
   SplitContentSidebar,
-  SplitContentText,
 } from 'styles/practices/PracticeContent.style';
 import { Title32 } from 'styles/common/Typography.style';
-import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
-import empty from 'is-empty';
+import ContentRender from 'components/atoms/ContentRender';
 import GetInTouchSidebar from '../common/GetInTouchSidebar';
-import SocialShare from '../post/SocialShare';
+import SocialShare from '../library/SocialShare';
 
 const changeTitle = (title) => title.replace(/(^|\s+)Lawyers(\s+|$)/g, ' ');
 
@@ -26,7 +24,7 @@ const LocationContent = ({
 }) => (
   <LocationPageContainer>
     <ContainerDefault>
-      <SocialShare isGetInTouch customClass="social-share" />
+      <SocialShare customClass="social-share" />
 
       <SplitContentHolder>
         <SplitContentDescription>
@@ -41,11 +39,7 @@ const LocationContent = ({
           />
           <DirectionsFilesLink currentOffice={currentOffice} />
 
-          {!empty(description) && (
-            <SplitContentText>
-              <JSXWithDynamicLinks HTML={description} />
-            </SplitContentText>
-          )}
+          <ContentRender content={description} />
         </SplitContentDescription>
         <SplitContentSidebar>
           <GetInTouchSidebar />

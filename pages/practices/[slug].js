@@ -1,12 +1,12 @@
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { PRODUCTION_URL } from 'utils/constants';
-import ApolloWrapper from 'layouts/ApolloWrapper';
 import empty from 'is-empty';
 import PracticePageNew from 'components/pages/PracticePageNew';
 import { formateAwards } from 'utils/helpers';
+import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 import { fetchAPI } from '../../requests/api';
-import { getPracticeAttorneys } from '../../requests/practices/practice-default';
+import { getPracticeData } from '../../requests/practices/practice-default';
 
 const SiteLoader = dynamic(() => import('components/shared/SiteLoader'));
 
@@ -42,12 +42,7 @@ export const getStaticProps = async ({ params }) => {
     keyContactsList,
     faq,
     practices,
-  } = await getPracticeAttorneys(`/practices/${params.slug}`);
-
-  // 04.04.2024 Google reviews temporarily disabled
-  // const googleReviews = await getGoogleReviewsForPalaces(
-  //   Object.values(googleLocationIds),
-  // );
+  } = await getPracticeData(`/practices/${params.slug}`);
 
   if (empty(practice) || practice?.status !== 'publish') {
     return {
@@ -57,6 +52,11 @@ export const getStaticProps = async ({ params }) => {
       },
     };
   }
+
+  const { postsData } = await getFilteredLibraryData({
+    practices: practice?.databaseId,
+    limit: '8',
+  });
 
   const attorneysSchemaChair = practiceChief?.length > 0
     ? practiceChief?.map((attorney) => ({
@@ -96,7 +96,7 @@ export const getStaticProps = async ({ params }) => {
       whyChooseUsData: practice?.practicesIncluded?.whyChooseUs,
       practices,
       awards: formateAwards(practice?.practicesIncluded?.awards),
-      // googleReviews: deleteReviewsWithoutComment(googleReviews.flat()),
+      posts: postsData?.posts || [],
     },
     revalidate: 8600,
   };
@@ -112,8 +112,8 @@ const SinglePractice = ({
   faq,
   whyChooseUsData,
   practices,
-  googleReviews,
   awards,
+  posts,
 }) => {
   const router = useRouter();
   const canonicalUrl = `${PRODUCTION_URL}/practices/${practice.slug}`;
@@ -129,36 +129,22 @@ const SinglePractice = ({
     }),
   );
 
-  const fullTabs = [
-    ...siteTabs,
-    // related articles not used on new pages practices 02.01.2024
-    // {
-    //   id: 99,
-    //   title: 'Related Articles',
-    //   content: '<h4>Related Articles</h4>',
-    // },
-  ];
-
   const practiceProps = {
     practice,
     canonicalUrl,
     attorneysSchemaData,
     keyContactsList,
-    tabs: fullTabs,
+    tabs: siteTabs,
     chairPractice,
     attorneyListPractice,
     faq,
     whyChooseUsData,
     practices,
-    googleReviews,
     awards,
+    posts,
   };
 
-  return (
-    <ApolloWrapper>
-      <PracticePageNew {...practiceProps} />
-    </ApolloWrapper>
-  );
+  return <PracticePageNew {...practiceProps} />;
 };
 
 export default SinglePractice;

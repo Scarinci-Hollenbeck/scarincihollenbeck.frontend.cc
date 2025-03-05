@@ -6,6 +6,7 @@ import HappyHoliday from 'components/molecules/home/HappyHoliday';
 import { filterAttorneysByDesignation } from 'utils/helpers';
 import { useMemo } from 'react';
 import HomeContactForm from 'components/organisms/home/HomeContactForm';
+import RandomBioCard from 'components/molecules/common/RandomBioCard';
 import { useGetAttorneysQuery } from '../../redux/services/project-api';
 // import InfoModal from '../atoms/InfoModal';
 
@@ -19,7 +20,7 @@ const AboutFirmSection = dynamic(
   { ssr: true },
 );
 const IndustriesSection = dynamic(() => import('components/organisms/home/IndustriesSection'));
-const RandomBioSection = dynamic(() => import('components/organisms/home/RandomBioSection'));
+const RandomCardsSlider = dynamic(() => import('components/organisms/common/RandomCardsSlider'));
 const WhatWeDoSection = dynamic(() => import('components/organisms/home/WhatWeDoSection'));
 const LatestPostsSection = dynamic(() => import('components/organisms/home/LatestPostsSection'));
 const Awards = dynamic(() => import('components/organisms/home/Awards'));
@@ -57,7 +58,13 @@ const HomePage = ({
       <AboutFirmSection {...whoWeAre} />
       <HomeContactForm />
       <IndustriesSection {...industryWeWorkWith} />
-      <RandomBioSection attorneys={filteredAttorneysByDesignation} />
+      <RandomCardsSlider
+        list={filteredAttorneysByDesignation}
+        navigationLabel="next attorney"
+        title="We can help!"
+        subtitle="OUR APPROACH IS AS UNIQUE AS YOUR SITUATION"
+        CardComponent={RandomBioCard}
+      />
       <WhatWeDoSection practices={practices} />
       <WhyChooseUs content={whyChooseUs} />
       <LatestPostsSection tabsData={latestArticlesTabsData} />

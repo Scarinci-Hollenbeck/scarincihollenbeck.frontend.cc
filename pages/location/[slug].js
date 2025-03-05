@@ -7,6 +7,7 @@ import { getOfficeAndMoreData } from 'requests/graphql-queries';
 import empty from 'is-empty';
 import { getAttorneys } from 'requests/getAttorneys';
 import { getPractices } from 'requests/getPractices';
+import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 
 const SiteLoader = dynamic(() => import('components/shared/SiteLoader'));
 
@@ -18,7 +19,7 @@ const getOfficeData = async (slug) => {
     },
   );
 
-  if (empty(officeLocation)) return null;
+  if (empty(officeLocation) || officeLocation?.status !== 'publish') return null;
 
   if (
     officeLocation?.officeMainInformation?.autoMap?.mediaItemUrl?.length > 0
@@ -78,10 +79,6 @@ export const getStaticPaths = async () => {
 
 /** set location data to page props */
 export const getStaticProps = async ({ params }) => {
-  // 04.04.2024 Google reviews temporarily disabled
-  // const googleReviews = await getGoogleReviewsForPalaces(
-  //   Object.values(googleLocationIds),
-  // );
   const slug = params?.slug;
 
   if (!slug) {
@@ -122,6 +119,11 @@ export const getStaticProps = async ({ params }) => {
 
   const practices = await getPractices();
 
+  const { postsData } = await getFilteredLibraryData({
+    offices: currentOffice?.databaseId,
+    limit: '8',
+  });
+
   const attorneysSchema = currentOffice.attorneys.map((attorney) => ({
     '@type': 'Person',
     name: attorney.title,
@@ -138,10 +140,9 @@ export const getStaticProps = async ({ params }) => {
       seo: currentOffice.seo || {},
       currentOffice,
       attorneysSchemaData: attorneysSchema,
-      posts: [],
+      posts: postsData?.posts || [],
       canonicalUrl: `${PRODUCTION_URL}/location/${slug}`,
       practices,
-      // googleReviews: deleteReviewsWithoutComment(googleReviews.flat()),
     },
     revalidate: 86400,
   };
@@ -156,7 +157,6 @@ const SingleLocation = ({
   attorneysSchemaData,
   canonicalUrl,
   practices,
-  googleReviews,
 }) => {
   const router = useRouter();
 
@@ -172,7 +172,6 @@ const SingleLocation = ({
     canonicalUrl,
     locations: offices,
     practices,
-    googleReviews,
   };
 
   return <LocationPage {...locationProps} />;

@@ -6,6 +6,7 @@ import { appApi } from './services/project-api';
 import attorneysReducer from './slices/attorneys.slice';
 import sizesReducer from './slices/sizes.slice';
 import modalsReducer from './slices/modals.slice';
+import libraryReducer from './slices/library.slice';
 
 export const store = configureStore({
   reducer: {
@@ -15,6 +16,7 @@ export const store = configureStore({
     attorneys: attorneysReducer,
     sizes: sizesReducer,
     modals: modalsReducer,
+    library: libraryReducer,
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.

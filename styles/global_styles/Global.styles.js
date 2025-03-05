@@ -90,6 +90,7 @@ export const globalColor = {
     blue800: '#E5F3FC',
     blue900: '#99A6FF',
     blue1000: '#B5CDF0',
+    blue1100: '#73A4EA',
   },
 
   yellow: {
@@ -104,23 +105,6 @@ export const globalColor = {
   transparentBlack: {
     modal: 'rgba(0,0,0,.75)',
   },
-};
-
-export const cannabisLawColors = {
-  cannabisColorGray: '#EBE9E4',
-  cannabisColorDarkGray: '#202020',
-  cannabisTransparentBlack: '#0000009e',
-  cannabisColorDarkGrayLight: '#313131',
-};
-
-export const entAndMediaColors = {
-  entAndMediaColorGold: '#D1C09D',
-  entAndMediaColorMediumGray: '#505050',
-  entAndMediaColorGray: '#4F4F4F',
-};
-
-export const globalGradient = {
-  award: 'linear-gradient(180deg, #101113 68.23%, #60191b 94.79%)',
 };
 
 export const globalShadow = {
@@ -154,34 +138,9 @@ export const buttonsHoverActive = `
   }
 `;
 
-export const globalIndents = {
-  attorneyProfilePaddings: '20px 30px',
-};
-
-// this function adds rules with three dots after overfilling a container.
-export const threeDots = (lines) => `
--webkit-line-clamp: ${lines};
-display: -webkit-box;
--webkit-box-orient: vertical;
-overflow: hidden;
-`;
-
 export const rem = (sizeInPx) => {
   return `${sizeInPx / mainFontSize}rem`;
 };
-
-export const imageCoverBlock = (imgUrl) =>
-  `url(${imgUrl}) center/cover no-repeat;`;
-
-export const paragraphStyles = `
-	font-weight: 500;
-	font-size: ${rem(21.6)};
-	text-align: center;
-  font-family: var(--font-rajdhani), sans-serif;
-  color: ${globalColor.white};
-	text-transform: uppercase;
-  width: 40%;
-`;
 
 export const GlobalStyle = createGlobalStyle`
   html {
@@ -290,6 +249,10 @@ export const GlobalStyle = createGlobalStyle`
     padding: 0;
   }
 
+  ol {
+    padding: 0;
+  }
+
   h1 {
     font-family: var(--font-poppins), sans-serif;
   }
@@ -373,14 +336,6 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-  .slick-list {
-    text-align: center;
-  }
-
-  .fs-1_2rem {
-    font-size: ${rem(19.2)};
-  }
-
   .redTitle {
     color: ${globalColor.red.darkRed};
   }
@@ -413,12 +368,6 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-  /** Button Styling **/
-  .btn-danger {
-    font-weight: bold;
-    background: linear-gradient(360deg, #901918 60%, #dd2624 100%), #333333;
-  }
-
   /** Hide captcha in print **/
   @media print {
     .grecaptcha-badge {
@@ -428,13 +377,6 @@ export const GlobalStyle = createGlobalStyle`
 
   .kw-border-success {
     margin-left: 0;
-  }
-
-  /** Hide captcha in print **/
-  @media print {
-    .grecaptcha-badge {
-      display: none !important;
-    }
   }
 
   /** Handle center button styles from wordpress **/
@@ -493,8 +435,8 @@ export const GlobalStyle = createGlobalStyle`
     flex: 1;
   }
 
-  .wp-block-table {
-    td {
+  .wp-block-table, .table-wrapper {
+    td, th {
       padding: 0 10px;
       border: 1px solid ${globalColor.grayExtraLite.grayExtraLite100};
     }
@@ -605,46 +547,12 @@ export const GlobalStyle = createGlobalStyle`
     }
   }
 
-  .bullets-li {
-    padding-left: 20px;
-    position: relative;
-    
-    ::before {
-      top: 0;
-      left: 0;
-      content: '➤';
-      position: absolute;
-    }
-  }
-
-  .slick-track {
-    display: flex;
-  }
-
   .key-contacts-title {
     color: ${globalColor.white};
     text-transform: uppercase;
     font-size: ${rem(40)};
     font-weight: 700;
     margin-bottom: 40px;
-  }
-
-  .attorneys-article-box {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    h3 {
-      font-size: ${rem(44)};
-      text-transform: uppercase;
-      font-weight: 700;
-      margin-bottom: 38px;
-      color: ${globalColor.white};
-    }
-
-    p {
-      ${paragraphStyles};
-    }
   }
   
   .error-notify {
@@ -696,6 +604,29 @@ export const GlobalStyle = createGlobalStyle`
   .tag-two::before {
     content: ' - ';
   }
+
+  .text-list {
+    list-style: disc;
+
+    li {
+      margin-left: 24px;
+
+      &::marker {
+        color: currentColor;
+        font-size: small;
+
+        ${media_breakpoint_down('md')} {
+          font-size: smaller;
+        }
+      }
+    }
+  }
+
+  .numbers-list {
+    li {
+      margin-left: 24px;
+    }
+  }
 `;
 
 export const ButtonLinkCss = `
@@ -739,99 +670,6 @@ export const ButtonLinkCss = `
       display: block;
       height: 25px;
       width: 25px;
-    }
-  }
-`;
-
-export const beforeDoteStyledList = `
-:before {
-  content: '';
-  width: 3px;
-  height: 5px;
-  margin-right: 5px;
-  background-color: ${globalColor.black};
-  position: absolute;
-  left: -10px;
-  top: 12px;
-  border-radius: 1px;
-}
-`;
-
-export const attorneyCardForCannabis = `
-  border: 0;
-  padding: 0;
-  box-shadow: none;
-
-  :hover {
-    box-shadow: none;
-  }
-
-  > div {
-    img {
-      width: 166px;
-      height: 166px;
-      object-fit: cover;
-
-      ${media_breakpoint_down('sm')} {
-        width: 140px;
-        height: 150px;
-      }
-    }
-
-    section {
-      h3 {
-        margin: 0 0 2px 0;
-        color: ${globalColor.white};
-        font-family: var(--font-poppins);
-        font-size: ${rem(20)};
-        font-weight: 700;
-        line-height: 30px;
-        text-transform: uppercase;
-
-        ${media_breakpoint_down('sm')} {
-          font-size: ${rem(18)};
-          line-height: 27px;
-        }
-      }
-
-      p {
-        margin: 0 0 20px 0;
-        color: ${globalColor.white};
-        font-family: var(--font-rajdhani);
-        font-size: ${rem(16)};
-        line-height: 24px;
-        font-weight: 500;
-
-        ${media_breakpoint_down('md')} {
-          margin: 0 0 16px 0;
-        }
-      }
-
-      address {
-        row-gap: 8px;
-        margin: 0;
-
-        a, .contact-offices {
-          column-gap: 8px;
-
-          svg {
-            fill: ${globalColor.white};
-          }
-
-          span {
-            font-size: ${rem(18)};
-            font-family: var(--font-rajdhani);
-            line-height: 27px;
-            font-weight: 600;
-            text-transform: uppercase;
-
-            ${media_breakpoint_down('sm')} {
-              font-size: ${rem(16)};
-              line-height: 24px;
-            }
-          }
-        }
-      }
     }
   }
 `;

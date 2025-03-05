@@ -4,7 +4,6 @@ import empty from 'is-empty';
 import dynamic from 'next/dynamic';
 import SubHeaderDefault from 'layouts/SubHeader/SubHeaderDefault';
 import PracticeContent from 'components/organisms/practices/PracticeContent';
-import AnchorTop from 'components/atoms/AnchorTop';
 import PracticePrintPage from 'components/organisms/practices/PracticePrintPage';
 import usePrintLogic from 'hooks/usePrintLogic';
 import SubHeaderKeyContacts from 'layouts/SubHeader/SubHeaderKeyContacts';
@@ -14,7 +13,7 @@ const PracticeAttorneys = dynamic(() => import('components/organisms/practices/P
 const WhyChooseUs = dynamic(() => import('components/organisms/practices/WhyChooseUs'));
 const WhatWeDoSection = dynamic(() => import('components/organisms/home/WhatWeDoSection'));
 const Awards = dynamic(() => import('components/organisms/home/Awards'));
-// const GoogleReviews = dynamic(() => import('components/organisms/common/GoogleReviews'));
+const LatestPostsSection = dynamic(() => import('components/organisms/home/LatestPostsSection'));
 
 const anchorDataDefault = {
   faq: {
@@ -29,6 +28,10 @@ const anchorDataDefault = {
     id: 'attorneys-section',
     title: 'Attorneys',
   },
+  posts: {
+    id: 'posts-section',
+    title: 'Posts',
+  },
   whyChooseUs: {
     id: 'why-choose-us-section',
     title: 'Why choose us',
@@ -36,10 +39,6 @@ const anchorDataDefault = {
   whatWeDo: {
     id: 'What-we-do',
     title: 'What we do',
-  },
-  googleReviews: {
-    id: 'reviews-section',
-    title: 'Reviews',
   },
 };
 
@@ -54,8 +53,8 @@ const PracticePageNew = ({
   faq,
   whyChooseUsData,
   practices,
-  googleReviews,
   awards,
+  posts,
 }) => {
   const anchorData = useMemo(() => {
     let updatedAnchorData = {};
@@ -77,15 +76,14 @@ const PracticePageNew = ({
       delete copyAnchorData.awards;
     }
 
-    if (empty(googleReviews)) {
-      delete copyAnchorData.googleReviews;
+    if (empty(posts)) {
+      delete copyAnchorData.posts;
     }
-
     return {
       ...copyAnchorData,
       ...updatedAnchorData,
     };
-  }, [googleReviews, awards, tabs, anchorDataDefault]);
+  }, [awards, tabs, posts, anchorDataDefault]);
 
   const printPageProps = {
     title: practice?.title,
@@ -115,7 +113,11 @@ const PracticePageNew = ({
             practice?.practicesIncluded?.practiceImage?.sourceUrl
           }
           RightContentComponent={SubHeaderKeyContacts}
-          rightContentProps={{ keyContacts: keyContactsList, handlePrint }}
+          rightContentProps={{
+            keyContacts: keyContactsList,
+            handlePrint,
+            printButtonText: 'Print practice page',
+          }}
         />
         <PracticeAnchors anchorData={anchorData} title={practice?.title} />
         <PracticeContent
@@ -133,6 +135,11 @@ const PracticePageNew = ({
           chairs={chairPractice}
           anchorId={anchorData.attorneys.id}
         />
+        <LatestPostsSection
+          title="Read more about this practice in our library"
+          posts={posts}
+          anchorId={anchorData?.posts?.id}
+        />
         <WhyChooseUs
           anchorId={anchorData.whyChooseUs.id}
           data={whyChooseUsData}
@@ -141,13 +148,6 @@ const PracticePageNew = ({
           practices={practices}
           anchorId={anchorData.whatWeDo.id}
         />
-        {/* {!empty(googleReviews) && (
-          <GoogleReviews
-            reviews={googleReviews}
-            anchorId={anchorData?.googleReviews?.id}
-          />
-        )} */}
-        <AnchorTop />
       </div>
 
       {isRenderPdf && (

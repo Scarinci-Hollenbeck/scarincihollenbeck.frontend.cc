@@ -8,7 +8,7 @@ import {
   practicesQuery,
 } from './practicesQueryGenerator';
 
-export const getPracticeAttorneys = async (uri) => {
+export const getPracticeData = async (uri) => {
   const data = await fetchAPI(practicesQuery, {
     variables: {
       id: uri,
@@ -108,30 +108,4 @@ export const getPracticeAttorneys = async (uri) => {
     faq: data.practice?.practicesIncluded?.faq,
     practices,
   };
-};
-
-export const headMetaData = (practiceChiefArg, includeAttorneyArg) => {
-  const attorneysSchemaChair = practiceChiefArg?.length > 0
-    ? practiceChiefArg?.map((attorney) => ({
-      '@type': 'Person',
-      name: attorney.title,
-      image: attorney.profileImage,
-      url: attorney.link,
-      telephone: attorney.phoneNumber,
-      jobTitle: 'Attorney',
-    }))
-    : [];
-
-  const attorneysSchemaAttorneyList = includeAttorneyArg?.length > 0
-    ? includeAttorneyArg?.map((attorney) => ({
-      '@type': 'Person',
-      name: attorney.title,
-      image: attorney.profileImage,
-      url: attorney.link,
-      telephone: attorney.phoneNumber,
-      jobTitle: 'Attorney',
-    }))
-    : [];
-
-  return [...attorneysSchemaChair, ...attorneysSchemaAttorneyList];
 };

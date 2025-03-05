@@ -1,14 +1,21 @@
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { BsChevronRight } from 'react-icons/bs';
 import empty from 'is-empty';
-import { CategoriesButtonsStructure } from 'utils/constants';
 import { useEffect, useState } from 'react';
 import {
   BreadcrumbsListContainer,
   ButtonBreadcrumb,
 } from '../../../styles/Breadcrumbs.style';
-import { cutAnchorUrl } from '../../../utils/helpers';
+
+const cutAnchorUrl = (slug) => {
+  const index = slug.indexOf('#');
+
+  if (index !== -1) {
+    return slug.substring(0, index);
+  }
+
+  return slug;
+};
 
 const convertPath = (path) => path.replace(/-/g, ' ');
 const convertSlug = (slug) => slug
@@ -47,40 +54,33 @@ const delegatePathFunc = (list, router, data) => {
   }
 
   if (list.length > 1 && list.includes('author')) {
+    const changedTitle = !empty(data?.title)
+      ? data?.title.replace('Writings by ', '')
+      : 'no longer';
     return (
       <>
         <li>
-          <ButtonBreadcrumb
-            href={`/library/category/${CategoriesButtonsStructure[0].slug}`}
-          >
+          <ButtonBreadcrumb href="/library">
             {convertPath(list[0])}
           </ButtonBreadcrumb>
           <BsChevronRight />
         </li>
         <li>
-          <span>
-            {`Author - ${
-              !empty(data?.title.replace(/\sArticles$/, ''))
-                ? data?.title.replace(/\sArticles$/, '')
-                : 'no longer'
-            }`}
-          </span>
+          <span>{`Author - ${changedTitle}`}</span>
         </li>
       </>
     );
   }
 
-  if (list.length > 1 && list.includes('library') && !list.includes('author')) {
+  if (
+    list.length > 1
+    && list.includes('library')
+    && list.includes('category')
+  ) {
     return (
       <>
-        <li
-          className={
-            list?.includes(CategoriesButtonsStructure[0].slug) ? 'active' : ''
-          }
-        >
-          <ButtonBreadcrumb
-            href={`/library/category/${CategoriesButtonsStructure[0].slug}`}
-          >
+        <li>
+          <ButtonBreadcrumb href="/library">
             {convertPath(list[0])}
           </ButtonBreadcrumb>
           <BsChevronRight />
@@ -95,6 +95,10 @@ const delegatePathFunc = (list, router, data) => {
   if (router.pathname.includes('/post/')) {
     return (
       <>
+        <li>
+          <ButtonBreadcrumb href="/library">Library</ButtonBreadcrumb>
+          <BsChevronRight />
+        </li>
         {list[0] !== 'post'
           && list?.slice(0, -1)?.map((item) => (
             <li key={`${item} + breadcrumb`}>

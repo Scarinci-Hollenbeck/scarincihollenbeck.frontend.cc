@@ -60,15 +60,6 @@ const sidebarBtnStyle = `
   }
 `;
 
-export const SideBarContainer = styled.div`
-  box-shadow: ${globalShadow.allSideShadow};
-  height: fit-content;
-
-  ${media_breakpoint_down('lg')} {
-    width: 100%;
-  }
-`;
-
 //Styles for sidebar menu in Header
 export const SidebarOpener = styled.button`
   display: flex;

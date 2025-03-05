@@ -144,8 +144,11 @@ export const FiltersLeftColumn = styled.div`
   }
 
   ${SearchInput} {
-    padding-top: 14px;
-    padding-bottom: 14px;
+    padding: 14px 50px 14px 12px;
+
+    ${media_breakpoint_down('md')} {
+      padding: 10px 50px 10px 8px;
+    }
   }
 
   ${media_breakpoint_down('lg')} {
@@ -345,6 +348,7 @@ export const FiltersNotFoundButton = styled.button`
   color: ${globalColor.blue.blue400};
   font-weight: 700;
   text-decoration: underline;
+  text-transform: uppercase;
 
   :hover {
     text-decoration: none;

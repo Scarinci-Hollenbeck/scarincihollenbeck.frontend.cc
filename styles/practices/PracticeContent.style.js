@@ -1,16 +1,12 @@
 import styled from 'styled-components';
-import { title32Styles } from 'styles/common/Typography.style';
 import { FaqWrapper } from 'styles/Faq.style';
-import {
-  globalColor,
-  globalTransition,
-  rem,
-} from 'styles/global_styles/Global.styles';
+import { globalColor, rem } from 'styles/global_styles/Global.styles';
 import { MapWrapper } from 'styles/LocationCard.style';
 import {
   media_breakpoint_down,
   media_breakpoint_exactly_down,
 } from 'styles/mediaBreakpoints.style';
+import { SocialHr, SocialLabel } from 'styles/library/SocialShare.style';
 
 export const PracticeContentSection = styled.section`
   padding: 40px 0;
@@ -21,17 +17,15 @@ export const PracticeContentSection = styled.section`
   }
 
   .social-share {
+    padding: 0;
+    --main-socials-color: ${globalColor.blue.darkBlue};
+    --socials-svg-size: 20px;
     display: none;
     margin: 0 0 32px 0;
-    gap: 4px;
-    font-size: ${rem(14)};
 
-    .second-hr {
+    ${SocialHr} {
       width: calc(100% + 32px);
-      color: ${globalColor.blue.darkBlue};
-      opacity: 1;
       margin-right: -32px;
-      height: 1px;
       order: 3;
 
       ${media_breakpoint_down('md')} {
@@ -40,24 +34,8 @@ export const PracticeContentSection = styled.section`
       }
     }
 
-    .react-share__ShareButton,
-    .copy-button,
-    .print-button {
-      margin: 0 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      svg {
-        color: ${globalColor.blue.darkBlue};
-        transition: ${globalTransition.default};
-        width: 20px;
-        height: 20px;
-      }
-
-      &:last-of-type {
-        margin-right: 0;
-      }
+    ${SocialLabel} {
+      font-size: ${rem(14)};
     }
 
     ${media_breakpoint_down('xl')} {
@@ -94,93 +72,6 @@ export const SplitContentDescription = styled.div`
   flex-direction: column;
   row-gap: 24px;
 
-  .content-block {
-    h2,
-    h3,
-    h4 {
-      ${title32Styles};
-      margin: 0 0 8px 0;
-
-      & * {
-        font-style: normal;
-        color: #000;
-        font-family: var(--font-poppins);
-        font-weight: 600;
-      }
-
-      ${media_breakpoint_down('sm')} {
-        font-size: ${rem(20)};
-        line-height: 28px;
-        font-weight: 700;
-      }
-    }
-
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-size: ${rem(22)};
-      line-height: 30px;
-
-      ${media_breakpoint_down('sm')} {
-        font-size: ${rem(18)};
-        line-height: 26px;
-      }
-    }
-  }
-
-  strong,
-  b {
-    font-weight: 600;
-    color: ${globalColor.black};
-  }
-
-  p {
-    margin: 0 0 16px 0;
-    color: ${globalColor.gray.gray700};
-    line-height: 29px;
-    font-weight: 400;
-
-    &:last-child {
-      margin: 0;
-    }
-
-    ${media_breakpoint_down('sm')} {
-      font-size: ${rem(14)};
-      line-height: 24px;
-    }
-  }
-
-  ul {
-    li {
-      color: ${globalColor.gray.gray700};
-      line-height: 29px;
-      font-weight: 400;
-
-      &:last-child {
-        margin: 0;
-      }
-
-      ${media_breakpoint_down('sm')} {
-        font-size: ${rem(14)};
-        line-height: 24px;
-      }
-    }
-
-    &:last-child {
-      margin: 0;
-    }
-  }
-
-  .table-wrapper {
-    width: 100%;
-    overflow-x: auto;
-
-    table {
-      min-width: 500px;
-    }
-  }
-
   ${MapWrapper} {
     height: auto;
   }
@@ -193,8 +84,6 @@ export const SplitContentDescription = styled.div`
     max-width: calc(100% - 40px);
   }
 `;
-
-export const SplitContentText = styled.div``;
 
 export const SplitContentSidebar = styled.div`
   width: 500px;

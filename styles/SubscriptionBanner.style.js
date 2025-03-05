@@ -9,11 +9,7 @@ export const SubscriptionBannerHolder = styled.div`
   gap: var(--banner-gap);
 
   ${media_breakpoint_down('lg')} {
-    --banner-gap: 32px;
-  }
-
-  ${media_breakpoint_down('md')} {
-    --banner-gap: 24px;
+    --banner-gap: 16px;
     flex-direction: column;
   }
 `;
@@ -25,6 +21,10 @@ export const SubscriptionBannerTitle = styled.h2`
 
   strong {
     font-weight: inherit;
+  }
+
+  ${media_breakpoint_down('lg')} {
+    max-width: 100%;
   }
 `;
 
@@ -40,12 +40,15 @@ export const SubscriptionBannerContent = styled.div`
     max-width: 240px;
   }
 
-  ${media_breakpoint_down('md')} {
-    row-gap: 16px;
+  ${media_breakpoint_down('lg')} {
     border-left: none;
     padding-left: 0;
     border-top: 1px solid ${globalColor.gray.gray500};
     padding-top: var(--banner-gap);
+  }
+
+  ${media_breakpoint_down('md')} {
+    row-gap: 16px;
   }
 `;
 
@@ -86,7 +89,7 @@ export const SubscriptionBannerSection = styled.section`
     padding: 60px 0;
   }
 
-  ${media_breakpoint_down('md')} {
+  ${media_breakpoint_down('lg')} {
     padding: 40px 0;
   }
 

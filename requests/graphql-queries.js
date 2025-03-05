@@ -375,29 +375,8 @@ export const latestFirmInsightsArticles = `query latestFirmInsightsArticles {
 }`;
 
 export const postQuery = `
-query FirmPageQuery($id: ID!) {
+query PostContentQuery($id: ID!) {
   post(id: $id, idType: SLUG) {
-    categories {
-      nodes {
-        databaseId
-        name
-        slug
-        contentNodes(first: 4, where: {dateQuery: {before: {month: 2}}}) {
-          nodes {
-            ... on Post {
-              title
-              uri
-              featuredImage {
-                node {
-                  sourceUrl
-                }
-              }
-              databaseId
-            }
-          }
-        }
-      }
-    }
     content
     title
     link
@@ -427,6 +406,11 @@ query FirmPageQuery($id: ID!) {
           attorneyBiography {
             miniBio
           }
+          attorneyAuthorId {
+            authorId {
+              uri
+            }
+          }
         }
       }
     }
@@ -436,6 +420,7 @@ query FirmPageQuery($id: ID!) {
           uri
           title
           databaseId
+          status
           attorneyMainInformation {
             profileImage {
               sourceUrl
@@ -450,37 +435,83 @@ query FirmPageQuery($id: ID!) {
         }
       }
     }
-  }
-}`;
-
-export const getThreePostsQuery = `
-query getThreePostsQuery {
-  posts(first: 3, where: {categoryId: 98}) {
-    nodes {
-      databaseId
-      uri
-      title
-      date
-      featuredImage {
-        node {
-          sourceUrl
+    tags {
+      nodes {
+        name
+        uri
+        databaseId
+      }
+    }
+    linksToOtherPostTypes {
+      practices {
+        ... on Practice {
+          databaseId
+          title
         }
       }
-      author {
-        node {
-          name
+      location {
+        ... on OfficeLocation {
+          databaseId
+          title
+        }
+      }
+      industries {
+        ... on Industry {
+          databaseId
+          title
         }
       }
     }
   }
 }`;
 
-export const getClientsQuery = `query FirmPageQuery(
+export const postMainCategoryContentQuery = `
+query PostMainCategoryContentQuery($id: ID!) {
+  category(id: $id, idType: SLUG) {
+    databaseId
+    name
+    uri
+    categoryFields {
+      color
+    }
+    posts(first: 6) {
+      nodes {
+        databaseId
+        title
+        uri
+        excerpt
+        author {
+          node {
+            name
+            uri
+          }
+        }
+        featuredImage {
+          node {
+            sourceUrl
+          }
+        }
+        tags(first: 3, where: {orderby: COUNT}) {
+          nodes {
+            uri
+            name
+            databaseId
+          }
+        }
+        date
+      }
+    }
+  }
+}`;
+
+export const getClientsQuery = `
+query ClientsQuery(
   $offsetPosts: Int, 
-  $postsPerPage: Int
+  $postsPerPage: Int,
+  $id: [Int]
   ) {
   clients(
-    where: {offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
+    where: {clientsConnections: $id, offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
   ) {
     edges {
       node {
@@ -506,46 +537,6 @@ export const getClientsQuery = `query FirmPageQuery(
     }
   }
 }`;
-
-// , order by: {field: DATE, order: DESC}
-export const postsForPaginationByCategoryIdQuery = `
-  query postsForPaginationByCategoryId(
-    $categoryId: Int, 
-    $offsetPosts: Int, 
-    $postsPerPage: Int
-  ) {
-    posts(
-      where: {categoryId: $categoryId, offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
-    ) {
-      pageInfo {
-        offsetPagination {
-          total
-          hasPrevious
-          hasMore
-        }
-      }
-      edges {
-        node {
-          date
-          featuredImage {
-            node {
-              sourceUrl
-            }
-          }
-          uri
-          title(format: RENDERED)
-          excerpt(format: RENDERED)
-          author {
-            node {
-              name
-              url
-            }
-          }
-        }
-      }
-    }
-  }
-`;
 
 export const postsForPaginationByAuthorIdQuery = `
   query postsForPaginationByAuthorId(
@@ -588,59 +579,18 @@ export const postsForPaginationByAuthorIdQuery = `
 `;
 
 // Category Landing Page Query
-export const categoryPostQuery = `query CategoryPosts($name:String) {
-  categories(where: {slug: [$name]}) {
-    edges {
-      node {
-        name
-        seo {
-          metaDesc
-          title
-        }
-        children(first: 20) {
-          nodes {
-            slug
-            name
-            count
-            id
-          }
-        }
-        description
-        posts(first: 1) {
-          edges {
-            node {
-              categories(first: 1) {
-                edges {
-                  node {
-                    name
-                    link
-                  }
-                }
-              }
-              uri
-              excerpt(format: RENDERED)
-              title
-              featuredImage {
-                node {
-                  sourceUrl
-                }
-              }
-              date
-              author {
-                node {
-                  userId
-                  name
-                }
-              }
-            }
-          }
-        }
-        databaseId
-      }
+export const categoryPageContentQuery = `
+query CategoryPosts($slug: ID!) {
+  category(id: $slug, idType: SLUG){
+    name
+    databaseId
+    description
+    seo {
+      metaDesc
+      title
     }
   }
-}
-`;
+}`;
 
 export const contactPageQuery = `
 query ContactPageQuery {
@@ -1137,6 +1087,7 @@ export const getOfficeAndMoreData = `query FirmPageQuery($id: ID!) {
   officeLocation(id: $id, idType: SLUG) {
     databaseId
     title
+    status
     officeMainInformation {
       autoMap {
         mediaItemUrl
@@ -1229,16 +1180,6 @@ export const getOfficeAndMoreData = `query FirmPageQuery($id: ID!) {
   }
 }`;
 
-export const getSEOforAuthorPosts = `query FirmOverviewQuery($id: ID!) {
-  user(id: $id, idType: DATABASE_ID) {
-    seo {
-      title
-      canonical
-      metaDesc
-    }
-  }
-}`;
-
 export const getServicesQuery = `
 query ServicesQuery {
   page(id: 168619, idType: DATABASE_ID) {
@@ -1258,6 +1199,7 @@ query IndustryQuery($id: ID!) {
   industry(id: $id, idType: SLUG) {
     title
     status
+    databaseId
     seo {
       metaDesc
       title
@@ -1332,6 +1274,13 @@ query IndustryQuery($id: ID!) {
               }
             }
           }
+        }
+      }
+      clients {
+        title
+        description
+        clientsConnection {
+          databaseId
         }
       }
     }
@@ -1417,6 +1366,158 @@ query MemorialPageQuery($slug: String) {
         sourceUrl
       }
       name
+      title
+    }
+  }
+}`;
+
+export const libraryPageContentQuery = `
+query LibraryPageContentQuery {
+  pageBy(pageId: 169276) {
+    title
+    pagesFields {
+      description
+    }
+    seo {
+      metaDesc
+      title
+    }
+  }
+}`;
+
+export const mainCategoriesQuery = `
+query MainCategoriesQuery {
+  categories(where: {include: [599, 99, 98, 20098]}) {
+    nodes {
+      databaseId
+      name
+      description
+      uri
+      categoryFields {
+        image {
+          sourceUrl
+        }
+      }
+      posts(first: 3) {
+        nodes {
+          databaseId
+          title
+          uri
+          excerpt
+          author {
+            node {
+              name
+              uri
+            }
+          }
+          featuredImage {
+            node {
+              sourceUrl
+            }
+          }
+          tags(first: 3, where: {orderby: COUNT}) {
+            nodes {
+              uri
+              name
+              databaseId
+            }
+          }
+          date
+        }
+      }
+    }
+  }
+  pageBy(pageId: 169286) {
+    databaseId
+    title
+    pagesFields {
+      description
+    }
+    featuredImage {
+      node {
+        sourceUrl
+      }
+    }
+  }
+}`;
+
+export const postsForRandomComponentQuery = `
+query PostsForRandomComponentQuery {
+  posts(first: 20) {
+    nodes {
+      databaseId
+      title
+      excerpt
+      featuredImage {
+        node {
+          sourceUrl
+        }
+      }
+      uri
+    }
+  }
+}`;
+
+export const firstCreatedPostQuery = `
+query FirstCreatedPostQuery {
+  posts(last: 1, where: {orderby: {field: DATE, order: DESC}}) {
+    nodes {
+      date
+    }
+  }
+}`;
+
+export const categoriesQuery = `
+query CategoriesQuery {
+  categories(where: {include: [599, 99, 98, 20098]}) {
+    nodes {
+      databaseId
+      name
+      description
+      uri
+      categoryFields {
+        image {
+          sourceUrl
+        }
+      }
+    }
+  }
+  pageBy(pageId: 169286) {
+    databaseId
+    title
+    pagesFields {
+      description
+    }
+    featuredImage {
+      node {
+        sourceUrl
+      }
+    }
+  }
+}`;
+
+export const authorContentQuery = `
+query AuthorContentQuery($id: ID!) {
+  user(id: $id, idType: SLUG) {
+    name
+    description
+    databaseId
+    seo {
+      title
+      metaDesc
+    }
+  }
+}`;
+
+export const podcastsPageContentQuery = `
+query PodcastsPageContentQuery {
+  pageBy(pageId: 169286) {
+    title
+    pagesFields {
+      description
+    }
+    seo {
+      metaDesc
       title
     }
   }

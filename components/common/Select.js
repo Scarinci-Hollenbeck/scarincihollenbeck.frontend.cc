@@ -1,10 +1,9 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, {
-  forwardRef,
   memo,
   useCallback,
   useEffect,
-  useImperativeHandle,
+  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -17,6 +16,8 @@ import {
   SelectOptions,
   SelectWrapper,
 } from 'styles/CustomSelect.style';
+import empty from 'is-empty';
+import Loader from 'components/atoms/Loader';
 
 const optionsVariants = {
   hidden: {
@@ -25,73 +26,85 @@ const optionsVariants = {
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.05,
-      delayChildren: 0.1,
+      duration: 0.4,
     },
   },
 };
 
 const optionVariants = {
-  hidden: {
-    y: -50,
+  init: {
+    y: -20,
   },
-  visible: {
+  anim: {
     y: 0,
     transition: {
-      duration: 0.2,
-      ease: 'easeOut',
+      duration: 0.3,
+    },
+  },
+  exit: {
+    y: 20,
+    transition: {
+      duration: 0.3,
     },
   },
 };
 
-const CustomSelect = forwardRef(
+const CustomSelect = memo(
   ({
-    placeHolder, onChange, inputValue, options,
-  }, ref) => {
+    placeHolder,
+    onChange,
+    inputValue,
+    options,
+    includeDefault = false,
+    defaultLabel = 'Not selected',
+  }) => {
     const [selectActive, setSelectActive] = useState(false);
     const selectRef = useRef(null);
     const inputRef = useRef(null);
 
-    const handleClickOpener = useCallback(() => {
-      setSelectActive(!selectActive);
-    }, [setSelectActive, selectActive]);
+    const finalOptions = useMemo(
+      () => (includeDefault
+        ? [
+          { databaseId: `${defaultLabel}-id`, title: defaultLabel },
+          ...(options || []),
+        ]
+        : options || []),
+      [includeDefault, defaultLabel, options],
+    );
+
+    const handleClickOpener = useCallback(
+      (e) => {
+        e.preventDefault();
+        setSelectActive(!selectActive);
+      },
+      [setSelectActive, selectActive],
+    );
 
     const handleClickOption = useCallback(
-      (value) => {
+      (e, item) => {
+        e.preventDefault();
         if (inputRef && inputRef.current) {
-          inputRef.current.value = value;
+          inputRef.current.value = item?.title;
         }
-        onChange(value);
+        onChange(item);
         setSelectActive(false);
       },
       [onChange, setSelectActive],
     );
 
-    const handleDocumentClick = useCallback(
-      (e) => {
+    useEffect(() => {
+      const handleDocumentClick = (e) => {
         if (selectRef.current && !selectRef.current.contains(e.target)) {
           setSelectActive(false);
         }
-      },
-      [setSelectActive],
-    );
+      };
 
-    useEffect(() => {
       document.addEventListener('click', handleDocumentClick);
 
       return () => {
         document.removeEventListener('click', handleDocumentClick);
       };
     }, []);
-
-    useImperativeHandle(ref, () => ({
-      clearSelect() {
-        if (inputRef && inputRef.current) {
-          inputRef.current.value = '';
-        }
-        setSelectActive(false);
-      },
-    }));
 
     return (
       <SelectWrapper ref={selectRef}>
@@ -103,6 +116,7 @@ const CustomSelect = forwardRef(
             placeholder={placeHolder}
             $selectActive={selectActive}
             ref={inputRef}
+            tabIndex="-1"
           />
           <SelectIcon $selectActive={selectActive}>
             <BsChevronDown size={24} />
@@ -118,16 +132,23 @@ const CustomSelect = forwardRef(
               exit="hidden"
               variants={optionsVariants}
             >
-              {options?.map((item) => (
-                <SelectOption
-                  as={motion.li}
-                  key={item?.databaseId}
-                  variants={optionVariants}
-                  onClick={() => handleClickOption(item?.title)}
-                >
-                  {item?.title}
-                </SelectOption>
-              ))}
+              {!empty(finalOptions) ? (
+                finalOptions?.map((item) => (
+                  <motion.li
+                    key={item?.databaseId || item?.id}
+                    initial="init"
+                    animate="anim"
+                    exit="exit"
+                    variants={optionVariants}
+                  >
+                    <SelectOption onClick={(e) => handleClickOption(e, item)}>
+                      {item?.title}
+                    </SelectOption>
+                  </motion.li>
+                ))
+              ) : (
+                <Loader />
+              )}
             </SelectOptions>
           )}
         </AnimatePresence>
@@ -136,4 +157,4 @@ const CustomSelect = forwardRef(
   },
 );
 
-export default memo(CustomSelect);
+export default CustomSelect;

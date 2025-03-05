@@ -14,7 +14,7 @@ const LatestSimpleCards = ({ posts }) => {
           key={article?.databaseId}
           link={{ url: changePostLink(article?.uri) }}
           title={article?.title}
-          label={article?.author?.node?.name}
+          label={article?.author?.node?.name || article?.author?.name}
           date={article?.date}
         />
       ))}

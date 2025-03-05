@@ -124,15 +124,6 @@ export const ProfileAccordionBody = styled.div`
       margin: 0 0 0 20px;
       color: ${globalColor.blue.darkBlue};
 
-      &.bullets-li {
-        padding-left: 0;
-        position: static;
-
-        &::before {
-          content: none;
-        }
-      }
-
       &::marker {
         color: ${globalColor.blue.blue400};
       }

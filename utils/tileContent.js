@@ -59,7 +59,7 @@ export const tile404ContentArr = [
 export const tilesErrorContentArr = [
   {
     title: '',
-    textContent: "<a href='/library/category/firm-news'>The posts Library</a>",
+    textContent: "<a href='/library'>The posts Library</a>",
     icon: <GiBookCover />,
     id: 0,
   },

@@ -1,11 +1,12 @@
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import empty from 'is-empty';
 
 export default function useNotFoundNotification(message) {
   const router = useRouter();
   const notifyTime = 5000;
   const searchParams = new URLSearchParams(router.query);
+  const timeoutRef = useRef(null);
 
   useEffect(() => {
     const notFound = searchParams.get('notFound');
@@ -26,7 +27,7 @@ export default function useNotFoundNotification(message) {
 
       searchParams.delete('notFound');
 
-      setTimeout(() => {
+      timeoutRef.current = setTimeout(() => {
         const updatedQueryString = searchParams.toString();
         if (!empty(updatedQueryString)) {
           router.replace(
@@ -43,5 +44,12 @@ export default function useNotFoundNotification(message) {
         }
       }, notifyTime);
     }
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+        timeoutRef.current = null;
+      }
+    };
   }, [router, message]);
 }

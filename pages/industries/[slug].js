@@ -4,6 +4,8 @@ import empty from 'is-empty';
 import IndustryPage from 'components/pages/IndustryPage';
 import { PRODUCTION_URL } from 'utils/constants';
 import { getIndustryContent } from 'requests/industries/industry-default';
+import ApolloWrapper from 'layouts/ApolloWrapper';
+import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 
 const industriesSlugsQuery = `
 query industriesSlugs {
@@ -13,6 +15,18 @@ query industriesSlugs {
     }
   }
 }`;
+
+const sanitizePosts = (posts) => {
+  if (empty(posts)) return [];
+
+  return posts?.map((post) => ({
+    databaseId: post?.databaseId,
+    title: post?.title,
+    uri: post?.uri,
+    featuredImage: post?.featuredImage,
+    excerpt: post?.excerpt,
+  }));
+};
 
 const getDescriptionFromTab = (content) => {
   if (!content) return null;
@@ -38,16 +52,11 @@ const sanitizeSlides = (slides) => {
   }));
 };
 
-const excludedSlugs = ['entertainment-and-media', 'cannabis'];
-
 export const getStaticPaths = async () => {
   const listId = await fetchAPI(industriesSlugsQuery);
   const paths = [];
 
   listId?.industries?.nodes?.forEach((node) => {
-    if (excludedSlugs.includes(node?.slug)) {
-      return;
-    }
     paths.push(`/industries/${node?.slug}`);
   });
 
@@ -68,6 +77,11 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
+  const { postsData } = await getFilteredLibraryData({
+    industries: industry?.databaseId,
+    limit: '6',
+  });
+
   const content = {
     title: industry?.title,
     description: industry?.industryContent?.description,
@@ -81,6 +95,8 @@ export const getStaticProps = async ({ params }) => {
       ? industryChief.map((item) => ({ ...item, isChair: true }))
       : [],
     attorneyListIndustry: includeAttorney || [],
+    clients: industry?.industryContent?.clients,
+    relatedPosts: sanitizePosts(postsData?.posts),
   };
 
   return {
@@ -99,7 +115,11 @@ const Industry = ({ content, seo, canonicalLink }) => {
     seo,
     canonicalLink,
   };
-  return <IndustryPage {...industryProps} />;
+  return (
+    <ApolloWrapper>
+      <IndustryPage {...industryProps} />
+    </ApolloWrapper>
+  );
 };
 
 export default Industry;

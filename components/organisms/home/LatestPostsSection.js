@@ -34,7 +34,7 @@ const LatestPostsSection = ({
           <LatestPostsHeader>
             <Title32>{title}</Title32>
 
-            <StandardBlueButton href="/library/category/client-alert" as={Link}>
+            <StandardBlueButton href="/library" as={Link}>
               Open library
             </StandardBlueButton>
           </LatestPostsHeader>

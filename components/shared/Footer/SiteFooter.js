@@ -21,11 +21,6 @@ import { ContainerDefault } from 'styles/Containers.style';
 import { useGetIndustriesQuery } from '../../../redux/services/project-api';
 import LinksBox from './LinksBox';
 import FooterDetails from './FooterDetails';
-import {
-  cannabisLawColors,
-  globalColor,
-} from '../../../styles/global_styles/Global.styles';
-import { getSlugFromUrl } from '../../../utils/helpers';
 import NavigationAndSubscription from './NavigationAndSubscription';
 import { FooterContent } from '../../../styles/Footer.style';
 import SHDiamond from '../../../public/images/sh-mini-diamond-PNG.svg';
@@ -40,28 +35,14 @@ const sanitizeIndustries = (industries) => {
   }));
 };
 
-const setFooterBackgroundColor = (page) => {
-  const footerColorsMap = {
-    cannabis: cannabisLawColors.cannabisColorDarkGray,
-    'entertainment-and-media': globalColor.black,
-  };
-  return footerColorsMap[page];
-};
-
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const { pathname } = useRouter();
-  const slug = getSlugFromUrl(pathname);
-  const backgroundFooterColor = setFooterBackgroundColor(slug);
   const conditionForPrintFooter = excludedPrintFooter.includes(pathname);
   const { data: industries } = useGetIndustriesQuery();
 
   return (
-    <FooterWrapper
-      $backgroundFooterColor={backgroundFooterColor}
-      data-testid="footer"
-      $isPrint={conditionForPrintFooter}
-    >
+    <FooterWrapper data-testid="footer" $isPrint={conditionForPrintFooter}>
       <NavigationAndSubscription />
 
       <ContainerDefault>

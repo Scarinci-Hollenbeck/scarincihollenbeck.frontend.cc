@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 import { ChildrenBox, ModalContent } from './ModalWindow.style';
 import {
-  cannabisLawColors,
   globalBorderRadius,
   globalColor,
   globalTransition,
@@ -246,50 +245,6 @@ export const ContactModalWrapper = styled.div`
       }
     }
   }
-
-  &.cannabis-modal {
-    .modal-open {
-      background-color: ${cannabisLawColors.cannabisColorGray};
-    }
-
-    .form-checkbox__icon {
-      border-color: ${globalColor.gray.gray110} !important;
-    }
-
-    .form-checkbox__input {
-      &:checked {
-        & + .form-checkbox__icon {
-          border-color: ${globalColor.blue.dirtyBlue} !important;
-        }
-      }
-    }
-
-    .form-button {
-      padding: 14px 24px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: ${cannabisLawColors.cannabisColorDarkGray};
-      border: 2px solid ${cannabisLawColors.cannabisColorDarkGray};
-      color: ${globalColor.white};
-      border-radius: 40px;
-      font-weight: 600;
-      transition: ${globalTransition.default};
-
-      :hover {
-        color: ${cannabisLawColors.cannabisColorDarkGray};
-        background-color: transparent;
-
-        &::after {
-          display: none;
-        }
-      }
-
-      ${media_breakpoint_down('xxl')} {
-        padding: 10px 24px;
-      }
-    }
-  }
 `;
 
 export const SubscriptionModalWrapper = styled.div`
@@ -317,68 +272,6 @@ export const SubscriptionModalWrapper = styled.div`
 
     ${media_breakpoint_down('sm')} {
       padding: 8px;
-    }
-  }
-
-  &.cannabis-modal {
-    .modal-open {
-      background-color: ${cannabisLawColors.cannabisColorGray};
-
-      .form-checkbox__icon {
-        border-color: ${globalColor.gray.gray110} !important;
-      }
-
-      .form-checkbox__input {
-        &:checked {
-          & + .form-checkbox__icon {
-            border-color: ${globalColor.blue.dirtyBlue} !important;
-          }
-        }
-      }
-
-      .form-control {
-        ::placeholder {
-          color: ${globalColor.gray.gray40};
-        }
-      }
-
-      .btn-link {
-        color: ${cannabisLawColors.cannabisColorDarkGray};
-      }
-
-      .form-checkbox__input {
-        &:checked {
-          & + span.form-checkbox__icon {
-            background-color: ${cannabisLawColors.cannabisTransparentBlack};
-          }
-        }
-      }
-
-      #field-error-category {
-        margin-bottom: 10px;
-      }
-
-      .form-button {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: ${cannabisLawColors.cannabisColorDarkGray};
-        border: 2px solid ${cannabisLawColors.cannabisColorDarkGray};
-        color: ${globalColor.white};
-        border-radius: 40px;
-        font-size: inherit;
-        font-weight: 600;
-        transition: ${globalTransition.default};
-
-        :hover {
-          color: ${cannabisLawColors.cannabisColorDarkGray};
-          background-color: transparent;
-
-          :after {
-            opacity: 0;
-          }
-        }
-      }
     }
   }
 `;
