@@ -10,12 +10,9 @@ import {
 } from 'requests/graphql-queries';
 import empty from 'is-empty';
 import ArticlePage from 'components/pages/ArticlePage';
-import {
-  changePostLink,
-  attorneysSanitize as attorneysSanitizeHelper,
-} from '../../utils/helpers';
+import { changePostLink, attorneysSanitize } from '../../utils/helpers';
 
-const attorneysSanitize = (attorneysArr) => attorneysArr.map((attorney) => {
+const authorsSanitize = (attorneysArr) => attorneysArr.map((attorney) => {
   attorney.profileImage = attorney.attorneyMainInformation.profileImage?.sourceUrl
       || '/images/no-image-found-diamond-750x350.png';
   return {
@@ -27,7 +24,12 @@ const attorneysSanitize = (attorneysArr) => attorneysArr.map((attorney) => {
     email: attorney.attorneyMainInformation.email,
     phoneNumber: attorney.attorneyMainInformation.phoneNumber,
     designation: attorney.attorneyMainInformation.designation,
-    author: attorney.attorneyAuthorId?.authorId || null,
+    author: {
+      ...(attorney?.attorneyAuthorId?.authorId ?? {}),
+      uri: attorney?.attorneyAuthorId?.authorId?.uri
+        ? `/library${attorney?.attorneyAuthorId?.authorId?.uri}`
+        : '/firm-overview',
+    },
   };
 });
 
@@ -54,11 +56,11 @@ const getPostContentData = async (slug, categorySlug) => {
   );
 
   const selectedAuthors = !empty(filteredAuthors)
-    ? attorneysSanitize(filteredAuthors)
+    ? authorsSanitize(filteredAuthors)
     : ScarinciHollenbeckAuthor;
 
   const selectedHeroes = !empty(post?.selectHeroes?.selectAttorneys)
-    ? attorneysSanitizeHelper(post.selectHeroes.selectAttorneys)
+    ? attorneysSanitize(post.selectHeroes.selectAttorneys)
     : [];
 
   const seo = {
