@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import {
+  globalBorderRadius,
   globalColor,
   industrySectionContainer,
   industrySectionPaddingBlock,
@@ -114,6 +115,7 @@ export const IndustryClientsItem = styled.div`
   cursor: pointer;
   animation: ${fadeIn} 1s ease;
   background-color: ${globalColor.blue.blue800};
+  border-radius: ${globalBorderRadius.small};
   overflow: hidden;
 
   &:is(:nth-child(9n + 1), :nth-child(9n + 6), :nth-child(9n + 8)) {

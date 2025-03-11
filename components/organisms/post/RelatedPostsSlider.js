@@ -6,7 +6,7 @@ import { RelatedPostsSliderWrapper } from 'styles/Post/RelatedPosts.style';
 import LibraryCard from 'components/molecules/library/LibraryCard';
 
 const breakpoints = {
-  1440: {
+  1280: {
     slidesPerView: 3,
     spaceBetween: 40,
   },
