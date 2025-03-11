@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { globalColor, rem } from 'styles/global_styles/Global.styles';
 import { Title32, Title20 } from './Typography.style';
+import { PostContent } from 'styles/Post/PostBody.style';
 
 export const PrintContainer = styled.div`
   display: none;
@@ -31,6 +32,87 @@ export const PrintContainer = styled.div`
       font-size: ${rem(16)};
       line-height: 1.4;
       margin-bottom: 8px;
+    }
+
+    ${PostContent} {
+      padding-block: 20px;
+      gap: 12px;
+    }
+
+    .post-print-content {
+      columns: 2;
+      gap: 20px;
+
+      p,
+      ul,
+      ol,
+      blockquote {
+        margin: 0 0 8px 0;
+
+        &:last-child {
+          margin: 0;
+        }
+
+        &:has(+ *:empty) {
+          margin: 0;
+        }
+
+        &:empty {
+          display: none;
+        }
+      }
+
+      p {
+        &:has(+ ul),
+        &:has(+ ol) {
+          margin-bottom: 2px;
+        }
+      }
+
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin: 10px 0 2px;
+
+        &:first-child {
+          margin-top: 0;
+        }
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+
+        &:has(+ *:empty) {
+          margin: 0;
+        }
+      }
+
+      h2 {
+        font-size: ${rem(20)};
+        line-height: 1.4;
+      }
+
+      h3 {
+        font-size: ${rem(18)};
+        line-height: 1.56;
+      }
+
+      h4 {
+        font-size: ${rem(16)};
+        line-height: 1.5;
+      }
+
+      h5 {
+        font-size: ${rem(14)};
+        line-height: 1.5;
+      }
+
+      h6 {
+        font-size: ${rem(14)};
+        line-height: 1.5;
+      }
     }
   }
 `;

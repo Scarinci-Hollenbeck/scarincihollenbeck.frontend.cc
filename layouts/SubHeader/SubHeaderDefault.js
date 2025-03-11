@@ -2,21 +2,18 @@ import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDyn
 import PostBreadCrumbs from 'components/organisms/post/PostBreadcrumbs';
 import SocialShare from 'components/organisms/library/SocialShare';
 import Image from 'next/image';
-import { changeTitle, formatDate } from 'utils/helpers';
+import { changeTitle } from 'utils/helpers';
 import empty from 'is-empty';
-import Link from 'next/link';
-import { Fragment } from 'react';
 import {
-  SubHeaderAuthor,
-  SubHeaderAuthorName,
-  SubHeaderCategory,
   SubHeaderContent,
-  SubHeaderDate,
   SubHeaderDescription,
   SubHeaderHolder,
   SubHeaderInfo,
   SubHeaderSocials,
 } from 'styles/subheader/SubHeader.style';
+import SubHeaderAuthors from './SubHeaderAuthors';
+import SubHeaderDate from './SubHeaderDate';
+import SubHeaderCategory from './SubHeaderCategory';
 
 const SubHeaderDefault = ({
   title,
@@ -64,11 +61,10 @@ const SubHeaderDefault = ({
         <PostBreadCrumbs data={{ title }} />
 
         <SubHeaderInfo key={`${title}-subheader-content`}>
-          {!empty(category) && (
-            <SubHeaderCategory $lineColor={category?.categoryFields?.color}>
-              <p>{category?.name}</p>
-            </SubHeaderCategory>
-          )}
+          <SubHeaderCategory
+            categoryTitle={category?.name}
+            categoryColor={category?.categoryFields?.color}
+          />
 
           {title && <JSXWithDynamicLinks HTML={changeTitle(title, true)} />}
 
@@ -78,33 +74,9 @@ const SubHeaderDefault = ({
             </SubHeaderDescription>
           )}
 
-          {!empty(authors) && (
-            <SubHeaderAuthor>
-              {authors.length > 1 ? (
-                <span>Authors: </span>
-              ) : (
-                <span>Author: </span>
-              )}
-              {authors.map(({ databaseId, display_name, author }, index) => (
-                <Fragment key={databaseId}>
-                  <SubHeaderAuthorName
-                    as={Link}
-                    href={author?.uri || '/firm-overview'}
-                  >
-                    {display_name}
-                  </SubHeaderAuthorName>
-                  {index !== authors.length - 1 && ', '}
-                </Fragment>
-              ))}
-            </SubHeaderAuthor>
-          )}
+          <SubHeaderAuthors authors={authors} />
 
-          {!empty(date) && (
-            <SubHeaderDate>
-              <span>Date: </span>
-              {formatDate(date)}
-            </SubHeaderDate>
-          )}
+          <SubHeaderDate date={date} />
         </SubHeaderInfo>
 
         {isSocials && (

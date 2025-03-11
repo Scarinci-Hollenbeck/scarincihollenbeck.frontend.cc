@@ -20,6 +20,7 @@ const AttorneyPracticeCard = ({
   handleSetCardParams,
   officeLocations,
   cardTag = null,
+  isPrint,
 }) => {
   const [isActive, setIsActive] = useState(false);
   const { isBigTabletScreen } = useStateScreen();
@@ -47,12 +48,22 @@ const AttorneyPracticeCard = ({
     >
       <Link href={link} className="attorney__link" aria-label={name} />
       <div className="attorney__image">
-        <Image
-          src={image}
-          width={width}
-          height={height}
-          alt={`Attorney, ${name}`}
-        />
+        {isPrint ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={image}
+            width={width}
+            height={height}
+            alt={`Attorney, ${name}`}
+          />
+        ) : (
+          <Image
+            src={image}
+            width={width}
+            height={height}
+            alt={`Attorney, ${name}`}
+          />
+        )}
       </div>
       <ContentTag
         className="attorney__content"

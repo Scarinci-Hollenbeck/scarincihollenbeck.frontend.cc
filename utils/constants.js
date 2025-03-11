@@ -774,7 +774,11 @@ export const defaultWhyChooseUsData = [
   },
 ];
 
-export const excludedPrintFooter = ['/attorneys/[slug]', '/practices/[slug]'];
+export const excludedPrintFooter = [
+  '/attorneys/[slug]',
+  '/practices/[slug]',
+  '/post/[...slug]',
+];
 
 export const desiredOrder = [
   'Katerin Traugh',

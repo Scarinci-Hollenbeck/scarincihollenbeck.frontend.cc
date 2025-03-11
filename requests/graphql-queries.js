@@ -522,8 +522,6 @@ query ClientsQuery(
             sourceUrl
             title
           }
-          entertainmentSubcategory
-          lineColor
           proffesion
         }
       }
