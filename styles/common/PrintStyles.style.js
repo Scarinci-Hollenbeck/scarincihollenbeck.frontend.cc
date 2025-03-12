@@ -40,9 +40,6 @@ export const PrintContainer = styled.div`
     }
 
     .post-print-content {
-      columns: 2;
-      gap: 20px;
-
       p,
       ul,
       ol,

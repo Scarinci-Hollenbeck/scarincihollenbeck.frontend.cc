@@ -55,7 +55,7 @@ const ArticlePage = ({
           keyContacts,
           isPrint: true,
           handlePrint,
-          printButtonText: 'Print post page',
+          printButtonText: 'Print article page',
         }}
       />
 
