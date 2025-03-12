@@ -110,6 +110,10 @@ export const PrintContainer = styled.div`
         font-size: ${rem(14)};
         line-height: 1.5;
       }
+
+      .table-wrapper {
+        overflow: unset;
+      }
     }
   }
 `;
