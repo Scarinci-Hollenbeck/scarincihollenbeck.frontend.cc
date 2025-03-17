@@ -11,6 +11,7 @@ import {
 import { WhyChooseUsSection } from './WhyChooseUs.style';
 import { SubHeaderKeyContactsCards } from 'styles/subheader/SubHeaderKeyContacts.style';
 import {
+  SubHeaderCategory,
   SubHeaderDescription,
   SubHeaderInteractive,
 } from 'styles/subheader/SubHeader.style';
@@ -33,6 +34,27 @@ export const SubHeaderPrintVersionContainer = styled.div`
   max-width: 100%;
   display: flex;
   gap: 12px;
+
+  &.post-print-container {
+    padding-bottom: 20px;
+
+    ${(props) => {
+      return `
+        ${SubHeaderMain} {
+          align-self: center;
+        }
+      `;
+    }}
+
+    ${SubHeaderCategory} {
+      padding: 4px 8px;
+      font-size: ${rem(14)};
+
+      p {
+        font-size: inherit;
+      }
+    }
+  }
 
   ${SubHeaderKeyContactsCards} {
     gap: 12px;

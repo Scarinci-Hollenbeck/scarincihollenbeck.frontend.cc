@@ -38,7 +38,7 @@ const HeaderPrintVersion = ({ locations }) => (
             </Link>
           ))}
       </div>
-      <Link className="locations-item" href={CURRENT_DOMAIN}>
+      <Link className="locations-item" href={`${CURRENT_DOMAIN}/`}>
         {CURRENT_DOMAIN.replace(/^https?:\/\//, '')}
       </Link>
     </div>

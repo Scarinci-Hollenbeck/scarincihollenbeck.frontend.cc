@@ -149,19 +149,6 @@ export const ContentContainer = styled.div`
     }
   }
 
-  &.two-columns {
-    columns: 2;
-    gap: 40px;
-
-    ${media_breakpoint_down('xxl')} {
-      gap: 32px;
-    }
-
-    ${media_breakpoint_down('lg')} {
-      columns: 1;
-    }
-  }
-
   .size-large,
   .size-full {
     display: grid;
@@ -176,6 +163,19 @@ export const ContentContainer = styled.div`
   video {
     width: 100%;
     height: 100%;
+  }
+
+  &.two-columns {
+    columns: 2;
+    gap: 40px;
+
+    ${media_breakpoint_down('xxl')} {
+      gap: 32px;
+    }
+
+    ${media_breakpoint_down('lg')} {
+      columns: 1;
+    }
   }
 
   &.grid-two-columns {

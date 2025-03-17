@@ -11,6 +11,7 @@ import Logo from '../../organisms/Navbar/Logo';
 
 const FooterPrintVersion = ({ locations }) => {
   const qrCodeProduction = '/images/qrCodeHome.png';
+
   return (
     <FooterPrintVersionContainer>
       <div className="advertising-block">
@@ -41,7 +42,7 @@ const FooterPrintVersion = ({ locations }) => {
                 ))}
             </div>
             <div className="location-print-list">
-              <Link className="location-print-item" href={CURRENT_DOMAIN}>
+              <Link className="location-print-item" href={`${CURRENT_DOMAIN}/`}>
                 {CURRENT_DOMAIN.replace(/^https?:\/\//, '')}
               </Link>
               <a className="location-print-item" href={`tel:${SITE_PHONE}`}>
