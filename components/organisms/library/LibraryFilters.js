@@ -102,6 +102,7 @@ const LibraryFilters = ({
                     placeholder="Keyword"
                     value={selectedValues?.keyword?.value || ''}
                     onChange={handleInputChange}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)}
                   />
                 </LibraryFiltersField>
                 {selects.map(({ key, placeHolder, defaultValue }, index) => (
