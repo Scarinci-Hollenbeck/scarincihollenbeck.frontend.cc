@@ -65,7 +65,10 @@ const SubHeaderIndustry = ({
             <SubHeaderIndustryAnchorsList>
               {anchors.map((anchor) => (
                 <li key={anchor?.id}>
-                  <SubHeaderIndustryAnchorsLink href={`#${anchor?.id}`}>
+                  <SubHeaderIndustryAnchorsLink
+                    title={anchor?.title}
+                    href={`#${anchor?.id}`}
+                  >
                     {anchor?.title}
                   </SubHeaderIndustryAnchorsLink>
                 </li>

@@ -1281,6 +1281,13 @@ query IndustryQuery($id: ID!) {
           databaseId
         }
       }
+      spotlight {
+        description
+        title
+        image {
+          sourceUrl
+        }
+      }
     }
     contentTabs {
       tabs {
@@ -1296,6 +1303,20 @@ query IndustryQuery($id: ID!) {
         image {
           sourceUrl
         }
+      }
+    }
+    awards {
+      awardsItems {
+        image {
+          sourceUrl
+          altText
+        }
+        link {
+          url
+          target
+        }
+        title
+        year
       }
     }
   }

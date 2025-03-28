@@ -749,6 +749,7 @@ export const readyIndustriesUrls = [
   '/industries/cannabis',
   '/industries/entertainment-and-media',
   '/industries/government-strategies',
+  '/industries/real-estate',
 ];
 
 export const defaultWhyChooseUsData = [

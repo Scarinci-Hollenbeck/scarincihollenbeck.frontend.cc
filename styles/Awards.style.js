@@ -9,7 +9,8 @@ import { media_breakpoint_down } from './mediaBreakpoints.style';
 
 export const AwardsWrapper = styled.section`
   padding: 60px 0;
-  background-color: ${globalColor.blue.darkBlue};
+  background-color: ${({ $isLightVariant }) =>
+    $isLightVariant ? 'transparent' : globalColor.blue.darkBlue};
 
   ${media_breakpoint_down('md')} {
     padding: 40px 0;
@@ -23,10 +24,11 @@ export const AwardsHolder = styled.div`
 
   .custom-prev-button,
   .custom-next-button {
-    color: ${globalColor.white};
+    color: ${({ $isLightVariant }) => !$isLightVariant && globalColor.white};
 
     &:disabled {
-      color: ${globalColor.blue.blue550};
+      color: ${({ $isLightVariant }) =>
+        !$isLightVariant && globalColor.blue.blue550};
       background-color: transparent;
     }
   }
