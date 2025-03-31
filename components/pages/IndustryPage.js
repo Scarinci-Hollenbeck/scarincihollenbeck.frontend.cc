@@ -184,18 +184,18 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
         )}
 
         {!empty(awards) && (
-          <>
-            <LogoSeparator direction="row" isBig isContainer />
-            <Awards
-              anchorId={anchorLinks?.awards?.id}
-              awards={awards}
-              title={`${title} Awards`}
-              isLightVariant
-            />
-          </>
+          <Awards
+            anchorId={anchorLinks?.awards?.id}
+            awards={awards}
+            title={`${title} Awards`}
+            isLightVariant
+          />
         )}
 
-        <IndustryFaq faqList={faq} anchorId={anchorLinks?.faq?.id} />
+        <>
+          <LogoSeparator direction="row" isBig isContainer />
+          <IndustryFaq faqList={faq} anchorId={anchorLinks?.faq?.id} />
+        </>
 
         <IndustryWhyChooseUs
           data={whyChooseUs}
