@@ -1,12 +1,7 @@
 import FirmOverviewPage from 'components/pages/FirmOverview';
-import {
-  firmOverViewTitles,
-  SITE_PHONE,
-  PRODUCTION_URL,
-} from 'utils/constants';
+import { SITE_PHONE, PRODUCTION_URL } from 'utils/constants';
 import { fetchAPI } from 'requests/api';
 import { firmOverviewQuery } from 'requests/graphql-queries';
-import { sortAttorneysByCategory, sortByKey } from 'utils/helpers';
 import empty from 'is-empty';
 
 /** Fetch the firm overview page content WP GRAPHQL API */
@@ -29,14 +24,9 @@ const sanitizeMembers = (members) => members.map((member) => ({
   email:
       member.attorneyMainInformation?.email || member.administration?.email,
   designation:
-      (member.attorneyMainInformation?.designation
-        !== 'Firm Managing Partner'
-      && member.attorneyMainInformation?.designation
-        !== 'Deputy Managing Partner'
-      && member.attorneyMainInformation?.designation !== 'NYC Managing Partner'
-        ? member.attorneyChairCoChair
-        : member.attorneyMainInformation.designation)
-      || member.administration?.title,
+      member?.attorneyChairCoChair
+      || member?.attorneyMainInformation?.designation
+      || member?.administration?.title,
   location_array: !empty(
     member.attorneyPrimaryRelatedPracticesLocationsGroups,
   )
@@ -65,17 +55,15 @@ export const getStaticProps = async () => {
 
   const { directors, firmLeaders } = firmOverviewTabs;
 
-  const restFirmMembers = [
-    ...sanitizeMembers(firmLeaders),
-    ...sanitizeMembers(directors),
+  const firmOverViewTitles = [
+    { name: 'Firm management', attorneys: firmLeaders },
+    { name: 'Directors', attorneys: directors },
   ];
 
-  const sortedTitlesByOrder = sortByKey(firmOverViewTitles, 'order');
-
-  const sortedFirmMembers = sortAttorneysByCategory(
-    restFirmMembers,
-    sortedTitlesByOrder,
-  );
+  const firmMembers = firmOverViewTitles?.reduce((acc, { name, attorneys }) => {
+    acc[name] = { attorneys: sanitizeMembers(attorneys) };
+    return acc;
+  }, {});
 
   return {
     props: {
@@ -84,7 +72,7 @@ export const getStaticProps = async () => {
       description: pagesFields?.description,
       sections: pagesFields?.sections,
       firmOverviewTabs,
-      firmMembers: sortedFirmMembers,
+      firmMembers: firmMembers || {},
       subHeaderImage: featuredImage.node.sourceUrl,
     },
     revalidate: 86400,

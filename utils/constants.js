@@ -410,11 +410,6 @@ export const ATTORNEYS_FAQ = [
   },
 ];
 
-export const firmOverViewTitles = [
-  { name: 'Firm management', order: 1 },
-  { name: 'Directors', order: 2 },
-];
-
 export const inputsCareerForm = [
   {
     type: 'text',

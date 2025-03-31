@@ -225,7 +225,7 @@ export const sortAttorneysByCategory = (attorneys, titles) => {
     }
     Object.keys(results).forEach((key) => {
       if (
-        attorney.designation[0] === key[0]
+        attorney.designation?.[0] === key[0]
         && attorney.designation[0]
         && !attorney.designation.includes('Deputy Managing Partner')
         && !attorney.designation.includes('NYC Managing Partner')
