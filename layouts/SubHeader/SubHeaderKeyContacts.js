@@ -27,7 +27,7 @@ const SubHeaderKeyContacts = ({
       <h2>Key Contacts</h2>
 
       <SubHeaderKeyContactsCards>
-        {keyContacts?.slice(0, 1)?.map((keyContact) => (
+        {keyContacts?.slice(0, 2)?.map((keyContact) => (
           <Fragment key={keyContact.databaseId}>
             <AttorneyCard
               link={keyContact.uri || keyContact.link}

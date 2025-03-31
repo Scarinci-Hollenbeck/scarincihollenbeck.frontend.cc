@@ -18,10 +18,15 @@ const IndustryWhyChooseUs = dynamic(() => import('components/organisms/industrie
 const SubscriptionBanner = dynamic(() => import('components/organisms/common/SubscriptionBanner'));
 const IndustryClients = dynamic(() => import('components/organisms/industries/IndustryClients'));
 const IndustryPostsSlider = dynamic(() => import('components/organisms/industries/IndustryPostsSlider'));
+const Awards = dynamic(() => import('components/organisms/home/Awards'));
+const IndustrySpotlight = dynamic(() => import('components/organisms/industries/IndustrySpotlight'));
 
 const anchorDataDefault = {
   filledSection: {
     id: 'filled-section',
+  },
+  spotlight: {
+    id: 'spotlight-section',
   },
   verticalTabs: {
     id: 'tabs-section',
@@ -33,6 +38,10 @@ const anchorDataDefault = {
   attorneys: {
     id: 'attorneys-section',
     title: 'Attorneys',
+  },
+  awards: {
+    id: 'awards-section',
+    title: 'Awards',
   },
   faq: {
     id: 'faq-section',
@@ -65,6 +74,8 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
     attorneyListIndustry,
     clients,
     relatedPosts,
+    awards,
+    spotlight,
   } = content;
 
   const clientsPaginationData = getPaginationData(getClientsQuery, {
@@ -85,6 +96,11 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
       },
       verticalTabs: { check: empty(contentTabs) },
       attorneys: { check: empty(concatenatedAttorneys) },
+      awards: { check: empty(awards) },
+      spotlight: {
+        check: empty(spotlight?.title) && empty(spotlight?.description),
+        onFalse: () => (copyAnchorData.spotlight.title = spotlight?.title || 'Spotlight'),
+      },
       articles: { check: empty(relatedPosts) },
       clients: {
         check: empty(clientsPaginationData?.clients?.edges),
@@ -108,6 +124,8 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
     relatedPosts,
     clientsPaginationData,
     anchorDataDefault,
+    awards,
+    spotlight,
   ]);
 
   return (
@@ -132,6 +150,10 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
           title={contentSection?.title}
           content={contentSection?.description}
           anchorId={anchorLinks?.filledSection?.id}
+        />
+        <IndustrySpotlight
+          spotlight={spotlight}
+          anchorId={anchorLinks?.spotlight?.id}
         />
         <VerticalTabs
           title={anchorLinks?.verticalTabs?.title}
@@ -161,7 +183,19 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
           </>
         )}
 
-        <IndustryFaq faqList={faq} anchorId={anchorLinks?.faq?.id} />
+        {!empty(awards) && (
+          <Awards
+            anchorId={anchorLinks?.awards?.id}
+            awards={awards}
+            title={`${title} Awards`}
+            isLightVariant
+          />
+        )}
+
+        <>
+          <LogoSeparator direction="row" isBig isContainer />
+          <IndustryFaq faqList={faq} anchorId={anchorLinks?.faq?.id} />
+        </>
 
         <IndustryWhyChooseUs
           data={whyChooseUs}

@@ -105,6 +105,10 @@ export const SubscriptionBannerSection = styled.section`
       max-width: 100%;
       text-transform: unset;
 
+      strong {
+        color: ${globalColor.blue.blue200};
+      }
+
       ${media_breakpoint_down('xxl')} {
         width: 400px;
       }
@@ -137,12 +141,6 @@ export const SubscriptionBannerSection = styled.section`
 
       ${media_breakpoint_down('lg')} {
         gap: 8px;
-      }
-    }
-
-    ${SubscriptionBannerTitle} {
-      strong {
-        color: ${globalColor.blue.blue200};
       }
     }
 

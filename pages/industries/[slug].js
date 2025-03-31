@@ -6,6 +6,7 @@ import { PRODUCTION_URL } from 'utils/constants';
 import { getIndustryContent } from 'requests/industries/industry-default';
 import ApolloWrapper from 'layouts/ApolloWrapper';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
+import { formateAwards } from 'utils/helpers';
 
 const industriesSlugsQuery = `
 query industriesSlugs {
@@ -97,6 +98,8 @@ export const getStaticProps = async ({ params }) => {
     attorneyListIndustry: includeAttorney || [],
     clients: industry?.industryContent?.clients,
     relatedPosts: sanitizePosts(postsData?.posts),
+    awards: formateAwards(industry?.awards?.awardsItems),
+    spotlight: industry?.industryContent?.spotlight,
   };
 
   return {

@@ -410,11 +410,6 @@ export const ATTORNEYS_FAQ = [
   },
 ];
 
-export const firmOverViewTitles = [
-  { name: 'Firm management', order: 1 },
-  { name: 'Directors', order: 2 },
-];
-
 export const inputsCareerForm = [
   {
     type: 'text',
@@ -749,6 +744,7 @@ export const readyIndustriesUrls = [
   '/industries/cannabis',
   '/industries/entertainment-and-media',
   '/industries/government-strategies',
+  '/industries/real-estate',
 ];
 
 export const defaultWhyChooseUsData = [

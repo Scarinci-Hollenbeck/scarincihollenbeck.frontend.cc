@@ -201,13 +201,17 @@ export const SubHeaderIndustryAnchorsList = styled.ul`
 `;
 
 export const SubHeaderIndustryAnchorsLink = styled(Link)`
-  display: inline-flex;
+  max-width: 200px;
   padding: 4px 20px;
   border-radius: 40px;
   border: 1px solid currentColor;
   font-size: ${rem(18)};
   color: ${globalColor.white};
   font-weight: 500;
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 
   &:hover {
     color: ${globalColor.white};

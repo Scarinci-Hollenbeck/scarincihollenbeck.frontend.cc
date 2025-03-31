@@ -225,7 +225,7 @@ export const sortAttorneysByCategory = (attorneys, titles) => {
     }
     Object.keys(results).forEach((key) => {
       if (
-        attorney.designation[0] === key[0]
+        attorney.designation?.[0] === key[0]
         && attorney.designation[0]
         && !attorney.designation.includes('Deputy Managing Partner')
         && !attorney.designation.includes('NYC Managing Partner')
@@ -380,20 +380,25 @@ export const formateAwards = (awards) => {
           year,
           awardTitle,
           awardLink,
+          title,
+          image,
+          link,
         },
         index,
       ) => ({
-        id: label || awardTitle,
+        id: label || awardTitle || title,
         order: appearanceOrder || index,
         year,
-        label: label || awardTitle,
+        label: label || awardTitle || title,
         image: {
-          src: formatSrcToCloudinaryUrl(awardImage.sourceUrl),
-          alt: label || awardTitle,
+          src: !empty(awardImage?.sourceUrl)
+            ? formatSrcToCloudinaryUrl(awardImage.sourceUrl)
+            : formatSrcToCloudinaryUrl(image?.sourceUrl),
+          alt: label || awardTitle || title,
           width: imageWidth || 200,
           height: imageHeight || 200,
         },
-        link: awardLink || null,
+        link: awardLink || link?.url || null,
       }),
     )
     .sort((a, b) => (a.order > b.order ? 1 : -1));

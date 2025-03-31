@@ -8,13 +8,14 @@ import {
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 import { OpenersList, VerticalTabsSection } from './VerticalTabs.style';
 import { ContainerDefault } from './Containers.style';
+import { AwardsWrapper } from './Awards.style';
 
 export const IndustryPageWrapper = styled.div`
   display: flex;
   flex-direction: column;
   background-color: ${globalColor.gray.gray300};
 
-  ${VerticalTabsSection} {
+  ${VerticalTabsSection}, ${AwardsWrapper} {
     ${industrySectionPaddingBlock};
   }
 

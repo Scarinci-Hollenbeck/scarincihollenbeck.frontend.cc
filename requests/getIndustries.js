@@ -12,6 +12,5 @@ const sanitizeIndustries = (data) => {
 
 export const getIndustries = async () => {
   const { industries } = await fetchRestAPI('industries');
-
   return sanitizeIndustries(industries);
 };
