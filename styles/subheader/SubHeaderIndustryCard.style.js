@@ -111,6 +111,7 @@ export const CardLink = styled(UnderlinedLink)`
   margin-top: 35px;
   color: ${globalColor.white};
   font-size: ${rem(16)};
+  text-shadow: 0 0 1em #191d30, 0 0 0.2em ${globalColor.black};
 
   &:hover {
     color: ${globalColor.white};

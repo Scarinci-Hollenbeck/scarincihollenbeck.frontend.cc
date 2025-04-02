@@ -94,11 +94,7 @@ export const SubscriptionBannerSection = styled.section`
   }
 
   &.subscription-industry {
-    background: linear-gradient(
-      0deg,
-      ${globalColor.blue.darkBlue} 0%,
-      ${globalColor.blue.blue6002} 100%
-    );
+    background-color: ${globalColor.blue.blue6002};
 
     ${SubscriptionBannerTitle} {
       width: 525px;
