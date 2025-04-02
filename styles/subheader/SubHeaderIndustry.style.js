@@ -137,6 +137,7 @@ export const SubHeaderIndustryDescription = styled.div`
   line-height: 1.5;
   text-transform: uppercase;
   font-weight: 400;
+  text-shadow: 0 0 1em #191d30, 0 0 0.2em ${globalColor.black};
 
   > p {
     &:last-child {

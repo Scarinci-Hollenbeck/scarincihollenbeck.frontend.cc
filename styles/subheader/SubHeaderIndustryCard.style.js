@@ -38,6 +38,7 @@ export const CardTitle = styled(Title20)`
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+  text-shadow: 0 0 1em #191d30, 0 0 0.2em ${globalColor.black};
 
   ${media_breakpoint_down('md')} {
     width: calc(50% - 4px);
@@ -55,6 +56,7 @@ export const CardDescription = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   font-size: ${rem(16)};
+  text-shadow: 0 0 1em #191d30, 0 0 0.2em ${globalColor.black};
 
   * {
     margin: 0;
@@ -109,6 +111,7 @@ export const CardLink = styled(UnderlinedLink)`
   margin-top: 35px;
   color: ${globalColor.white};
   font-size: ${rem(16)};
+  text-shadow: 0 0 1em #191d30, 0 0 0.2em ${globalColor.black};
 
   &:hover {
     color: ${globalColor.white};

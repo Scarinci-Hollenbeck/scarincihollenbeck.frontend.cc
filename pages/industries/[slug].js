@@ -85,6 +85,7 @@ export const getStaticProps = async ({ params }) => {
 
   const content = {
     title: industry?.title,
+    databaseId: industry?.databaseId,
     description: industry?.industryContent?.description,
     featuredImage: industry?.featuredImage?.node?.sourceUrl || null,
     contentSection: industry?.industryContent?.contentSection,

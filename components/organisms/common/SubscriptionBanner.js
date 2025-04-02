@@ -52,6 +52,7 @@ const SubscriptionBanner = ({
 
             <StandardBlueButton
               onClick={() => dispatch(handleSubscriptionModalOpener({ active: true }))}
+              $isLight
             >
               Subscribe now
             </StandardBlueButton>

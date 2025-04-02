@@ -1,8 +1,6 @@
 import { Button } from 'react-bootstrap';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import {
-  ButtonLinkCss,
-  buttonsHoverActive,
   globalBorderRadius,
   globalColor,
   globalTransition,
@@ -113,6 +111,25 @@ export const StandardBlueButton = styled.button`
   ${media_breakpoint_down('sm')} {
     font-size: ${rem(14)};
   }
+
+  ${({ $isLight }) =>
+    $isLight &&
+    css`
+      background-color: ${globalColor.blue.blue200};
+      color: ${globalColor.blue.blue6002};
+
+      &:hover {
+        color: ${globalColor.white};
+      }
+
+      &::after {
+        background-image: linear-gradient(
+          89deg,
+          #377ec4 2.36%,
+          ${globalColor.blue.blue200} 107.09%
+        );
+      }
+    `}
 
   @media print {
     display: none;
