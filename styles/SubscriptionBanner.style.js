@@ -161,21 +161,6 @@ export const SubscriptionBannerSection = styled.section`
     }
 
     ${StandardBlueButton} {
-      background-color: ${globalColor.blue.blue200};
-      color: ${globalColor.blue.blue6002};
-
-      &:hover {
-        color: ${globalColor.white};
-      }
-
-      &::after {
-        background-image: linear-gradient(
-          89deg,
-          #377ec4 2.36%,
-          ${globalColor.blue.blue200} 107.09%
-        );
-      }
-
       ${media_breakpoint_down('lg')} {
         margin-top: 12px;
       }

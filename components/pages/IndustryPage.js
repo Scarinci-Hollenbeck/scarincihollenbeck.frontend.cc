@@ -63,6 +63,7 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
 
   const {
     title,
+    databaseId,
     description,
     featuredImage,
     contentSection,
@@ -206,6 +207,7 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
 
         <IndustryPostsSlider
           posts={relatedPosts}
+          industryId={databaseId}
           anchorId={anchorLinks?.articles?.id}
         />
       </IndustryPageWrapper>

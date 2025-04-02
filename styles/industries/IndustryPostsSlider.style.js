@@ -50,6 +50,18 @@ export const IndustryPostsContainer = styled(ContainerDefault)`
   ${industrySectionContainer};
 `;
 
+export const IndustryPostsHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  > a {
+    width: fit-content;
+    flex-shrink: 0;
+  }
+`;
+
 export const IndustryPostsTitle = styled(Title60)`
   color: ${globalColor.white};
 
