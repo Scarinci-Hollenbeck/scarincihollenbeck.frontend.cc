@@ -114,6 +114,11 @@ export const FIRM_BLOG_PAGES = [
     label: 'Firm Insights',
     slug: '/library/category/law-firm-insights',
   },
+  {
+    id: 'library-subscriptions',
+    label: 'Library Subscription',
+    slug: '/library/subscriptions',
+  },
 ];
 
 export const ScarinciHollenbeckAuthor = [
@@ -813,5 +818,10 @@ export const LIBRARY_NAV = [
     id: 'filters-nav-06',
     title: 'Podcasts',
     href: '/podcasts',
+  },
+  {
+    id: 'filters-nav-07',
+    title: 'Subscribe',
+    href: '/library/subscriptions',
   },
 ];
