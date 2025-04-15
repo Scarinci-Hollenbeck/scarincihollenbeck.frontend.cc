@@ -360,6 +360,16 @@ const PERMANENT_REDIRECTS = [
     destination: '/location/new-york',
     permanent: true,
   },
+  {
+    source: '/contact',
+    destination: '/contact-us',
+    permanent: true,
+  },
+  {
+    source: '/subscribe',
+    destination: '/contact-us',
+    permanent: true,
+  },
 ];
 
 module.exports = {

@@ -13,7 +13,6 @@ export const ContactModalBox = styled.div`
   flex-direction: column;
   row-gap: 20px;
   padding-left: 1px;
-  height: content-box;
 `;
 
 export const ContactModalHeader = styled.div``;
