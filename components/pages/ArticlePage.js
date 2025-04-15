@@ -60,7 +60,11 @@ const ArticlePage = ({
       />
 
       <PostBody
-        backLink={`/library${mainCategory?.uri}`}
+        backLink={
+          mainCategory?.slug
+            ? `/library/category/${mainCategory?.slug}`
+            : '/library'
+        }
         content={post.content}
         tags={post.tags}
         postTypeConnections={post.postTypeConnections}
