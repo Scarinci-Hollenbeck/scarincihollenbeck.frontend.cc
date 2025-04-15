@@ -128,8 +128,8 @@ export const getServerSideProps = async ({ params, res, query }) => {
       seo,
       authors,
       keyContacts: authors,
-      relatedPosts: mainCategory?.posts?.nodes,
-      mainCategory,
+      relatedPosts: mainCategory?.posts?.nodes || null,
+      mainCategory: mainCategory || null,
       selectedHeroes,
     },
   };
