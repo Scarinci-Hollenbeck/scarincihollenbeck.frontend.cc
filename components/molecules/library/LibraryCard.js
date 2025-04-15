@@ -81,7 +81,7 @@ const LibraryCard = ({
             )}
 
             {!empty(date) && (
-              <LibraryCardDate datetime={date}>
+              <LibraryCardDate dateTime={date}>
                 {formatDate(date)}
               </LibraryCardDate>
             )}
