@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { PRODUCTION_URL } from 'utils/constants';
 import empty from 'is-empty';
@@ -96,6 +95,7 @@ export const getStaticProps = async ({ params }) => {
       whyChooseUsData: practice?.practicesIncluded?.whyChooseUs,
       practices,
       awards: formateAwards(practice?.practicesIncluded?.awards),
+      sidebarContent: practice?.practicesIncluded?.sidebarContent || null,
       posts: postsData?.posts || [],
     },
     revalidate: 8600,
@@ -113,14 +113,10 @@ const SinglePractice = ({
   whyChooseUsData,
   practices,
   awards,
+  sidebarContent,
   posts,
 }) => {
-  const router = useRouter();
   const canonicalUrl = `${PRODUCTION_URL}/practices/${practice.slug}`;
-
-  if (router.isFallback) {
-    return <SiteLoader />;
-  }
 
   const siteTabs = practice.practicesIncluded.contentSection.map(
     (tab, index) => ({
@@ -141,6 +137,7 @@ const SinglePractice = ({
     whyChooseUsData,
     practices,
     awards,
+    sidebarContent,
     posts,
   };
 
