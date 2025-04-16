@@ -800,3 +800,23 @@ export const LIBRARY_NAV = [
     href: '/podcasts',
   },
 ];
+
+export const SERVICES_SIDEBAR_DEFAULT_CONTENT = {
+  text: `
+    <p>
+      OUR commitment to excellence, combined with our mission to deliver
+      outstanding client service, has earned our firm a solid reputation.
+    </p>
+    <p>
+      Scarinci Hollenbeck is a business law firm based in New Jersey, New
+      York, and Washington, D.C servicing clients worldwide.
+    </p>
+  `,
+  quote: `
+    <p>
+      If you have a legal need that is not mentioned, please contact us to
+      discuss how we may help you.
+    </p>
+    <p>Contact us today to learn more about how we can assist you.</p>
+  `,
+};

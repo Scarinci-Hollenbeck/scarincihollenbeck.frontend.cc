@@ -8,32 +8,33 @@ import {
 } from 'styles/GetInTouchSidebar.style';
 import { MdTouchApp } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
+import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
+import { SERVICES_SIDEBAR_DEFAULT_CONTENT } from 'utils/constants';
 import { handleModalOpener } from '../../../redux/slices/modals.slice';
 import SocialShare from '../library/SocialShare';
 
-const GetInTouchSidebar = ({ handlePrint, isPrintBtn = false }) => {
+const GetInTouchSidebar = ({
+  handlePrint,
+  isPrintBtn = false,
+  sidebarContent,
+}) => {
   const dispatch = useDispatch();
 
   return (
     <GetInTouchHolder>
       <GetInTouchDescription>
         <GetInTouchText>
-          <p>
-            OUR commitment to excellence, combined with our mission to deliver
-            outstanding client service, has earned our firm a solid reputation.
-          </p>
-          <p>
-            Scarinci Hollenbeck is a business law firm based in New Jersey, New
-            York, and Washington, D.C servicing clients worldwide.
-          </p>
+          <JSXWithDynamicLinks
+            HTML={sidebarContent?.text || SERVICES_SIDEBAR_DEFAULT_CONTENT.text}
+          />
         </GetInTouchText>
 
         <GetInTouchQuote>
-          <p>
-            If you have a legal need that is not mentioned, please contact us to
-            discuss how we may help you.
-          </p>
-          <p>Contact us today to learn more about how we can assist you.</p>
+          <JSXWithDynamicLinks
+            HTML={
+              sidebarContent?.quote || SERVICES_SIDEBAR_DEFAULT_CONTENT.quote
+            }
+          />
         </GetInTouchQuote>
 
         <SocialShare isPrintBtn={isPrintBtn} handlePrint={handlePrint} />

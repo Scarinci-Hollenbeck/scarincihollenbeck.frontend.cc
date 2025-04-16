@@ -36,6 +36,7 @@ export const GetInTouchDescription = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 20px;
+  overflow: auto;
 
   p {
     margin: 0;
@@ -54,6 +55,7 @@ export const GetInTouchText = styled.div`
 `;
 
 export const GetInTouchQuote = styled.div`
+  margin-top: auto;
   padding: 12px 16px;
   display: flex;
   flex-direction: column;
@@ -117,6 +119,7 @@ export const GetInTouchMobileBtn = styled.button`
   }
 
   svg {
+    flex-shrink: 0;
     width: 32px;
     height: 32px;
     color: ${globalColor.blue.skyBlue};

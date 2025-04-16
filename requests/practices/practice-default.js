@@ -22,10 +22,6 @@ export const getPracticeData = async (uri) => {
   }
 
   if (data.practice) {
-    if (!data.practice?.practicesIncluded?.relatedBlogCategory) {
-      data.practice.practicesIncluded.relatedBlogCategory = [];
-    }
-
     if (!data.practice.practicesIncluded.keyContactByPractice) {
       data.practice.practicesIncluded.keyContactByPractice = [];
     }

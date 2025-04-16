@@ -18,6 +18,7 @@ const PracticeContent = ({
   anchorIdFaq,
   faqData,
   handlePrint,
+  sidebarContent,
 }) => (
   <PracticeContentSection
     id={anchorId}
@@ -43,7 +44,11 @@ const PracticeContent = ({
           <FAQ title={title} anchorId={anchorIdFaq} faqArrContent={faqData} />
         </SplitContentDescription>
         <SplitContentSidebar>
-          <GetInTouchSidebar handlePrint={handlePrint} isPrintBtn />
+          <GetInTouchSidebar
+            handlePrint={handlePrint}
+            isPrintBtn
+            sidebarContent={sidebarContent}
+          />
         </SplitContentSidebar>
       </SplitContentHolder>
     </ContainerDefault>
