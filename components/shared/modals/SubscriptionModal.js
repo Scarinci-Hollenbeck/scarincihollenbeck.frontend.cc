@@ -20,10 +20,10 @@ import { Button } from 'react-bootstrap';
 import empty from 'is-empty';
 import Loader from 'components/atoms/Loader';
 import { StandardBlueButton } from 'styles/Buttons.style';
-import { SubscriptionModalWrapper } from 'styles/ContactModal.style';
-import { handleSubscriptionModalOpener } from '../../redux/slices/modals.slice';
-import SHDiamond from '../../public/images/sh-mini-diamond-PNG.svg';
-import RenderInputs from './ContactForm/RenderInputs';
+import { SubscriptionModalWrapper } from 'styles/Modals.style';
+import { handleSubscriptionModalOpener } from '../../../redux/slices/modals.slice';
+import SHDiamond from '../../../public/images/sh-mini-diamond-PNG.svg';
+import RenderInputs from '../ContactForm/RenderInputs';
 
 const isArraysIdentical = (chosenIds, originalIds) => {
   if (chosenIds.length !== originalIds?.length) {

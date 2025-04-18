@@ -546,6 +546,66 @@ export const subscriptionInputs = [
   },
 ];
 
+export const questionFormFields = [
+  {
+    type: 'text',
+    name: 'Name',
+    placeholder: 'Your name',
+    rules: 'required|max:255',
+    'aria-label': 'Your name',
+    title: 'Your name',
+  },
+  {
+    type: 'text',
+    name: 'NameBusiness',
+    placeholder: 'Name of your business (optional)',
+    'aria-label': 'Name of your business (optional)',
+    title: 'Name of your business (optional)',
+  },
+  {
+    type: 'tel',
+    name: 'Phone',
+    placeholder: 'Phone number',
+    rules:
+      'required|regex:/^(\\+?1[-.\\s]?)?(\\()?\\d{3}(\\))?[-.\\s]?\\d{3}[-.\\s]?\\d{4}$/',
+    maxLength: 17,
+    title: `Please use these formats: 
+    (123) 456-7890
+    123-456-7890
+    123.456.7890
+    123 456 7890
+    +1 123-456-7890
+    +1 (123) 456-7890
+    `,
+    'aria-label': 'Phone number',
+  },
+  {
+    type: 'email',
+    name: 'Email',
+    placeholder: 'Email',
+    rules: 'required|max:255',
+    'aria-label': 'Email',
+    title: 'Email',
+  },
+  {
+    type: 'attorney-select',
+    name: 'SelectedAttorney',
+    placeholder: 'Select Attorney (optional)',
+    'aria-label': 'Select Attorney (optional)',
+    title: 'Select Attorney (optional)',
+  },
+  {
+    type: 'textarea',
+    name: 'Question',
+    placeholder: 'Your Question',
+    rules: 'required|max:1000',
+    rows: 8,
+    cols: 4,
+    'aria-label': 'Your Question',
+    title: 'Your Question',
+  },
+];
+
 export const Links404NavArr = [
   {
     id: 1,
@@ -604,6 +664,7 @@ export const CURRENT_DOMAIN = process.env.NODE_ENV === 'production'
   : 'http://localhost:7700';
 export const KWES_API = process.env.NEXT_PUBLIC_KWES_API;
 export const GET_IN_TOUCH_FORM_API = process.env.NEXT_PUBLIC_GET_IN_TOUCH_FORM_API;
+export const LIBRARY_QUESTION_FORM_API = process.env.NEXT_PUBLIC_LIBRARY_QUESTION_FORM_API;
 export const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 // thats url for exceptions for wrong urls
 export const HTTP_PRODUCTION_URL = 'http://scarincihollenbeck.com';
@@ -770,34 +831,39 @@ export const desiredOrder = [
 
 export const LIBRARY_NAV = [
   {
-    id: 'filters-nav-01',
+    databaseId: 'filters-nav-01',
     title: 'Overview',
-    href: '/library',
+    uri: '/library',
   },
   {
-    id: 'filters-nav-02',
+    databaseId: 'filters-nav-02',
     title: 'Client Alert',
-    href: '/library/category/client-alert',
+    uri: '/library/category/client-alert',
   },
   {
-    id: 'filters-nav-03',
+    databaseId: 'filters-nav-03',
     title: 'Firm News',
-    href: '/library/category/firm-news',
+    uri: '/library/category/firm-news',
   },
   {
-    id: 'filters-nav-04',
+    databaseId: 'filters-nav-04',
     title: 'Firm Events',
-    href: '/library/category/firm-events',
+    uri: '/library/category/firm-events',
   },
   {
-    id: 'filters-nav-05',
+    databaseId: 'filters-nav-05',
     title: 'Firm Insights',
-    href: '/library/category/law-firm-insights',
+    uri: '/library/category/law-firm-insights',
   },
   {
-    id: 'filters-nav-06',
+    databaseId: 'filters-nav-06',
+    title: 'Lawyer Spotlight',
+    uri: '/library/category/lawyer-spotlight',
+  },
+  {
+    databaseId: 'filters-nav-07',
     title: 'Podcasts',
-    href: '/podcasts',
+    uri: '/podcasts',
   },
 ];
 
@@ -819,4 +885,11 @@ export const SERVICES_SIDEBAR_DEFAULT_CONTENT = {
     </p>
     <p>Contact us today to learn more about how we can assist you.</p>
   `,
+};
+
+export const ATTORNEY_ACCORDIONS_BLOGS_TITLES = {
+  blog: 'Blog',
+  events: 'Events',
+  releases: 'News & Press Releases',
+  lawyerSpotlight: 'Lawyer Spotlight heading',
 };

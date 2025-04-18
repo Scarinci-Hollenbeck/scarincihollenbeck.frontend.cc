@@ -5,12 +5,12 @@ import {
   ContactModalHeader,
   ContactModalTitle,
   ContactModalWrapper,
-} from 'styles/ContactModal.style';
+} from 'styles/Modals.style';
 import { useDispatch, useSelector } from 'react-redux';
 import dynamic from 'next/dynamic';
-import { handleModalOpener } from '../../redux/slices/modals.slice';
+import { handleModalOpener } from '../../../redux/slices/modals.slice';
 
-const ContactForm = dynamic(() => import('./ContactForm/ContactForm'));
+const ContactForm = dynamic(() => import('../ContactForm/ContactForm'));
 
 const ContactModal = () => {
   const dispatch = useDispatch();

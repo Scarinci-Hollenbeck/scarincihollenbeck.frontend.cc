@@ -39,10 +39,7 @@ const SubHeaderDefault = ({
     .join(' ');
 
   return (
-    <SubHeaderHolder
-      className={subHeaderClassnames}
-      data-testid="default-sub-header"
-    >
+    <SubHeaderHolder className={subHeaderClassnames}>
       {backgroundImage && (
         <picture className="sub-header__image" key={`${title}-subheader-image`}>
           <Image

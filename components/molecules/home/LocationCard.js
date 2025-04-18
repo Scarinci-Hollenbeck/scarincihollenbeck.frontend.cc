@@ -45,13 +45,12 @@ export default function LocationCard({ officesData, setTitle }) {
           }
         />
       </MapBox>
-      <LocationOffices data-testid="locations-tabs">
+      <LocationOffices>
         {officesData.map((office, idx) => (
           <ContactInfoCard
             key={office.databaseId}
             openCard={cardIndex === idx}
             onClick={() => handleChangeTitle(office.title, idx)}
-            data-testid="locations-tab"
           >
             <LocationHeader isActive={cardIndex === idx}>
               <LocationHeaderTitle isActive={cardIndex === idx}>

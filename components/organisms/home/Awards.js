@@ -34,7 +34,6 @@ const Awards = ({
   return (
     <AwardsWrapper
       id={anchorId}
-      data-testid="awards"
       className="margin-scroll"
       $isLightVariant={isLightVariant}
     >

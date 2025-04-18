@@ -16,11 +16,7 @@ const WhatWeDoSection = ({ practices, anchorId }) => {
   const dispatch = useDispatch();
 
   return (
-    <WhatWeDoWrapper
-      id={anchorId}
-      className="margin-scroll"
-      data-testid="what-we-do"
-    >
+    <WhatWeDoWrapper id={anchorId} className="margin-scroll">
       <ContainerDefault className="practice-container">
         <WhatWeDoHolder>
           <WhatWeDoHeader>

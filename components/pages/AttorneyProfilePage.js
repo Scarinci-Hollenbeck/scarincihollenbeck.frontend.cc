@@ -1,8 +1,13 @@
 import ProfileAccordion from 'components/organisms/attorney/ProfileAccordion';
 import ProfileHeader from 'components/organisms/attorney/ProfileHeader';
 import PersonSiteHead from 'components/shared/head/PersonSiteHead';
-import { CURRENT_DOMAIN } from 'utils/constants';
+import {
+  ATTORNEY_ACCORDIONS_BLOGS_TITLES,
+  CURRENT_DOMAIN,
+} from 'utils/constants';
 import usePrintLogic from 'hooks/usePrintLogic';
+import { useState } from 'react';
+import LibraryQuestionBanner from 'components/organisms/library/LibraryQuestionBanner';
 import AttorneyPrintPage from './AttorneyPrintPage';
 import { useGetLocationsQuery } from '../../redux/services/project-api';
 
@@ -13,6 +18,7 @@ const AttorneyProfilePage = ({
   qrCodeBioPage,
   qrCodeLinkedin,
 }) => {
+  const [activeAccordion, setActiveAccordion] = useState([]);
   const { data: locations } = useGetLocationsQuery();
 
   const printPageProps = {
@@ -36,8 +42,22 @@ const AttorneyProfilePage = ({
         designation={profileHeader.title}
         socialMediaLinks={seo.socialMediaLinks}
       />
-      <ProfileHeader handlePrint={handlePrint} {...profileHeader} />
-      <ProfileAccordion {...accordionData} name={profileHeader?.name} />
+      <ProfileHeader
+        handlePrint={handlePrint}
+        setActiveAccordion={setActiveAccordion}
+        isLawyerSpotlight={accordionData?.blogTitles?.includes(
+          ATTORNEY_ACCORDIONS_BLOGS_TITLES.lawyerSpotlight,
+        )}
+        {...profileHeader}
+      />
+      <ProfileAccordion
+        activeAccordion={activeAccordion}
+        setActiveAccordion={setActiveAccordion}
+        name={profileHeader?.name}
+        {...accordionData}
+      />
+
+      <LibraryQuestionBanner />
 
       {isRenderPdf && (
         <AttorneyPrintPage

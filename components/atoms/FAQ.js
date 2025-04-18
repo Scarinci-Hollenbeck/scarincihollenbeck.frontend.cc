@@ -21,7 +21,6 @@ export default function FAQ({
     <FaqWrapper
       className={`margin-scroll ${isTwoColumns ? 'two-columns' : ''}`}
       id={anchorId}
-      data-testid="faq-wrapper"
     >
       <Title32>
         {`${

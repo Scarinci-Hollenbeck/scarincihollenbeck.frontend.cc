@@ -23,7 +23,7 @@ import { getIcon } from 'utils/getIcon';
 import { DiamondSeparator } from '../../../styles/Separators.style';
 
 const HomeBanner = ({ title, subtitle, infoCards }) => (
-  <Banner data-testid="home-banner">
+  <Banner>
     <BannerImage
       src="/images/home-page-banner.webp"
       alt="Building on the background"
@@ -62,7 +62,7 @@ const HomeBanner = ({ title, subtitle, infoCards }) => (
         {subtitle}
       </BannerText>
 
-      <BannerCards data-testid="banner-cards">
+      <BannerCards>
         {infoCards?.map(({
           fieldGroupName, title, icon, cardsText, link,
         }) => (

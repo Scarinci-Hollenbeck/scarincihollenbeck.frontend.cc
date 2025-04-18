@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 import empty from 'is-empty';
-import { FIRM_PAGES } from 'utils/constants';
+import { FIRM_PAGES, LIBRARY_NAV } from 'utils/constants';
 import dynamic from 'next/dynamic';
 import {
   useGetIndustriesQuery,
@@ -75,33 +75,7 @@ export const createMenuData = (practices, locations, industries) => [
     title: 'Library',
     icon: <LibraryIcon />,
     href: '/',
-    list: [
-      {
-        databaseId: 'menu-lib-00',
-        title: 'Library overview',
-        uri: '/library',
-      },
-      {
-        databaseId: 'menu-lib-01',
-        title: 'Client Alerts',
-        uri: '/library/category/client-alert',
-      },
-      {
-        databaseId: 'menu-lib-02',
-        title: 'Firm News',
-        uri: '/library/category/firm-news',
-      },
-      {
-        databaseId: 'menu-lib-03',
-        title: 'Firm Events',
-        uri: '/library/category/firm-events',
-      },
-      {
-        databaseId: 'menu-lib-04',
-        title: 'Firm Insights',
-        uri: '/library/category/law-firm-insights',
-      },
-    ],
+    list: LIBRARY_NAV,
   },
   {
     databaseId: 'menu-07',

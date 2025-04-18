@@ -2,9 +2,7 @@ import styled from 'styled-components';
 import { globalColor, globalTransition } from './global_styles/Global.styles';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 
-export const ModalContainer = styled.div.attrs({
-  'data-testid': 'modal-container',
-})`
+export const ModalContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -12,12 +10,12 @@ export const ModalContainer = styled.div.attrs({
   height: 100dvh;
   background-color: ${globalColor.transparentBlack.modal};
   position: fixed;
-  z-index: ${({ isOpen }) => (isOpen ? 1055 : -1)};
+  z-index: ${({ $isOpen }) => ($isOpen ? 1055 : -1)};
   top: 0;
   left: 0;
   pointer-events: all;
   transition: 0.5s opacity, scale;
-  scale: ${({ isOpen }) => (isOpen ? '1' : '0')};
+  scale: ${({ $isOpen }) => ($isOpen ? '1' : '0')};
 `;
 
 export const ModalContent = styled.div`
@@ -26,10 +24,12 @@ export const ModalContent = styled.div`
   padding: 20px;
   background-color: ${globalColor.white};
   pointer-events: all;
-  transition: 0.8s;
-  transform: ${({ isOpen }) => (isOpen ? 'scale(1)' : 'scale(0)')};
+  transition: ${({ $isDisableTransition }) =>
+    $isDisableTransition ? 'none' : '0.8s'};
+  transform: ${({ $isOpen }) => ($isOpen ? 'scale(1)' : 'scale(0)')};
   overflow: auto;
   max-height: calc(100dvh - 50px);
+  position: relative;
 `;
 
 export const ModalCloser = styled.button`

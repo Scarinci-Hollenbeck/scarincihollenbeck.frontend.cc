@@ -1,16 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
+import {
+  useCallback, useEffect, useRef, useState,
+} from 'react';
 import empty from 'is-empty';
-import ModalWindow from 'components/common/ModalWindow';
 import Image from 'next/image';
+import VideoIcon from 'components/common/icons/VideoIcon';
+import QuestionAnswerIcon from 'components/common/icons/QuestionAnswerIcon';
+import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import { videoRender } from 'utils/videoRender';
 import {
   CardImageVideoContainer,
   CardImageWrapper,
   CardVideoWrapper,
+  ProfileImageButtons,
 } from '../../../styles/attorney-page/AttorneyProfile.style';
-import VideoButton from './VideoButton';
 
-const ProfileImage = ({ name, profileImage, representativeVideo }) => {
+const ProfileImageButton = dynamic(() => import('./ProfileImageButton'));
+const ModalWindow = dynamic(() => import('components/common/ModalWindow'));
+
+const ProfileImage = ({
+  name,
+  profileImage,
+  representativeVideo,
+  isLawyerSpotlight = false,
+  setActiveAccordion,
+}) => {
   const videoRef = useRef(null);
   const [isShowVideo, setIsShowVideo] = useState(false);
   const videoData = typeof representativeVideo === 'string'
@@ -20,12 +34,12 @@ const ProfileImage = ({ name, profileImage, representativeVideo }) => {
       src: representativeVideo?.mediaItemUrl,
     };
 
-  const stopVideo = () => {
+  const stopVideo = useCallback(() => {
     if (videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
     }
-  };
+  }, [videoRef]);
 
   useEffect(() => {
     if (isShowVideo && videoRef.current) {
@@ -35,9 +49,9 @@ const ProfileImage = ({ name, profileImage, representativeVideo }) => {
     }
   }, [isShowVideo]);
 
-  const handleClickVideoOpener = () => {
+  const handleClickVideoOpener = useCallback(() => {
     setIsShowVideo(true);
-  };
+  }, [setIsShowVideo]);
 
   return (
     <CardImageVideoContainer>
@@ -63,13 +77,33 @@ const ProfileImage = ({ name, profileImage, representativeVideo }) => {
         </ModalWindow>
       )}
 
-      {!empty(representativeVideo) && (
-        <div className="animate__animated animate__fadeInUp animate__slow">
-          <VideoButton
-            isShowVideo={isShowVideo}
-            onButtonClick={handleClickVideoOpener}
-          />
-        </div>
+      {(!empty(representativeVideo) || isLawyerSpotlight) && (
+        <ProfileImageButtons>
+          {isLawyerSpotlight && (
+            <div className="animate__animated animate__fadeInUp animate__slow">
+              <ProfileImageButton
+                title="Lawyer Spotlight heading"
+                icon={<QuestionAnswerIcon />}
+                as={Link}
+                href="#lawyer-spotlight"
+                onClick={() => !empty(setActiveAccordion)
+                  && setActiveAccordion((prev) => (prev.includes(`lawyer-spotlight-${name}`)
+                    ? prev
+                    : [...prev, `lawyer-spotlight-${name}`]))}
+              />
+            </div>
+          )}
+          {!empty(representativeVideo) && (
+            <div className="animate__animated animate__fadeInUp animate__slow">
+              <ProfileImageButton
+                isShowVideo={isShowVideo}
+                onButtonClick={handleClickVideoOpener}
+                icon={<VideoIcon />}
+                title="My representative video"
+              />
+            </div>
+          )}
+        </ProfileImageButtons>
       )}
     </CardImageVideoContainer>
   );

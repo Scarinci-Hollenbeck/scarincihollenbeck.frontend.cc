@@ -6,6 +6,7 @@ const initialState = {
   customModalClassName: '',
   isActiveSubscriptionModal: false,
   customSubscriptionModalClassName: '',
+  isActiveQuestionModal: false,
 };
 
 const modalsSlice = createSlice({
@@ -30,8 +31,15 @@ const modalsSlice = createSlice({
         state.customSubscriptionModalClassName = '';
       }
     },
+    handleQuestionModalOpener: (state, action) => {
+      state.isActiveQuestionModal = action.payload?.active;
+    },
   },
 });
 
-export const { handleModalOpener, handleSubscriptionModalOpener } = modalsSlice.actions;
+export const {
+  handleModalOpener,
+  handleSubscriptionModalOpener,
+  handleQuestionModalOpener,
+} = modalsSlice.actions;
 export default modalsSlice.reducer;

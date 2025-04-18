@@ -3,7 +3,7 @@ import { globalColor, rem } from './global_styles/Global.styles';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 import { StandardBlueButton } from './Buttons.style';
 
-export const SubscriptionBannerHolder = styled.div`
+export const DarkBannerHolder = styled.div`
   --banner-gap: 64px;
   display: flex;
   gap: var(--banner-gap);
@@ -14,7 +14,7 @@ export const SubscriptionBannerHolder = styled.div`
   }
 `;
 
-export const SubscriptionBannerTitle = styled.h2`
+export const DarkBannerTitle = styled.h2`
   max-width: 270px;
   color: inherit;
   text-transform: uppercase;
@@ -28,17 +28,13 @@ export const SubscriptionBannerTitle = styled.h2`
   }
 `;
 
-export const SubscriptionBannerContent = styled.div`
+export const DarkBannerContent = styled.div`
   flex: 1;
   padding-left: var(--banner-gap);
   display: flex;
   flex-direction: column;
-  row-gap: 24px;
+  row-gap: 12px;
   border-left: 1px solid ${globalColor.gray.gray500};
-
-  button {
-    max-width: 240px;
-  }
 
   ${media_breakpoint_down('lg')} {
     border-left: none;
@@ -46,13 +42,9 @@ export const SubscriptionBannerContent = styled.div`
     border-top: 1px solid ${globalColor.gray.gray500};
     padding-top: var(--banner-gap);
   }
-
-  ${media_breakpoint_down('md')} {
-    row-gap: 16px;
-  }
 `;
 
-export const SubscriptionBannerSubtitle = styled.h3`
+export const DarkBannerSubtitle = styled.h3`
   margin: 0;
   color: inherit;
   font-family: var(--font-lato);
@@ -66,7 +58,8 @@ export const SubscriptionBannerSubtitle = styled.h3`
   }
 `;
 
-export const SubscriptionBannerDescription = styled.div`
+export const DarkBannerDescription = styled.div`
+  margin-bottom: auto;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -80,7 +73,27 @@ export const SubscriptionBannerDescription = styled.div`
   }
 `;
 
-export const SubscriptionBannerSection = styled.section`
+export const DarkBannerButtons = styled.div`
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+
+  > :nth-child(n) {
+    width: 250px;
+
+    ${media_breakpoint_down('sm')} {
+      flex: 1 1 100%;
+    }
+  }
+
+  ${media_breakpoint_down('md')} {
+    margin-top: 4px;
+    gap: 16px;
+  }
+`;
+
+export const DarkBannerSection = styled.section`
   padding: 80px 0;
   background-color: ${globalColor.blue.darkBlue};
   color: ${globalColor.white};
@@ -96,7 +109,7 @@ export const SubscriptionBannerSection = styled.section`
   &.subscription-industry {
     background-color: ${globalColor.blue.blue6002};
 
-    ${SubscriptionBannerTitle} {
+    ${DarkBannerTitle} {
       width: 525px;
       max-width: 100%;
       text-transform: unset;
@@ -118,7 +131,7 @@ export const SubscriptionBannerSection = styled.section`
       }
     }
 
-    ${SubscriptionBannerHolder} {
+    ${DarkBannerHolder} {
       gap: 40px;
 
       ${media_breakpoint_down('lg')} {
@@ -131,7 +144,7 @@ export const SubscriptionBannerSection = styled.section`
       }
     }
 
-    ${SubscriptionBannerContent} {
+    ${DarkBannerContent} {
       padding: 0;
       border: 0;
 
@@ -140,7 +153,7 @@ export const SubscriptionBannerSection = styled.section`
       }
     }
 
-    ${SubscriptionBannerSubtitle} {
+    ${DarkBannerSubtitle} {
       text-transform: capitalize;
       font-size: ${rem(20)};
       font-weight: 600;
@@ -150,7 +163,7 @@ export const SubscriptionBannerSection = styled.section`
       }
     }
 
-    ${SubscriptionBannerDescription} {
+    ${DarkBannerDescription} {
       ${media_breakpoint_down('lg')} {
         gap: 20px;
       }

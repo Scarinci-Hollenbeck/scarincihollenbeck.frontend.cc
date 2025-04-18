@@ -45,7 +45,7 @@ const AttorneyFilters = ({
   };
 
   return (
-    <FiltersHolder data-testid="attorneys-filter">
+    <FiltersHolder>
       {isNavbar ? (
         <>
           <Filters

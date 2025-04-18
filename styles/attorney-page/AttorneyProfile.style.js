@@ -256,14 +256,22 @@ const wave = keyframes`
   }
 `;
 
-export const VideoButtonStyled = styled.button`
+export const ProfileImageButtons = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  z-index: 4;
+`;
+
+export const ProfileImageButtonStyled = styled.button`
   padding: 14px 24px;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   column-gap: 40px;
-  position: absolute;
-  bottom: 0;
   width: 100%;
   background: linear-gradient(
     90deg,
@@ -272,7 +280,6 @@ export const VideoButtonStyled = styled.button`
     rgba(255, 255, 255, 0.88) 100%
   );
   background-size: 200% 100%;
-  z-index: 4;
   transition: ${globalTransition.default};
   animation: ${wave} 10s infinite;
 
@@ -321,6 +328,10 @@ export const VideoButtonStyled = styled.button`
     .button-label {
       color: ${globalColor.blue.blue500};
     }
+  }
+
+  ${media_breakpoint_down('lg')} {
+    column-gap: 24px;
   }
 
   ${media_breakpoint_down('md')} {

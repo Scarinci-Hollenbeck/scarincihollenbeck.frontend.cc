@@ -70,6 +70,8 @@ const ProfileHeader = ({
   isAdmin = false,
   handlePrint,
   bioTitle = 'Bio Overview',
+  isLawyerSpotlight = false,
+  setActiveAccordion,
 }) => {
   const dispatch = useDispatch();
   const [designation] = useDesignationHook(title);
@@ -85,7 +87,7 @@ const ProfileHeader = ({
   };
 
   return (
-    <ProfileHeaderSection data-testid="profile-header">
+    <ProfileHeaderSection>
       <ContainerDefault>
         <PostBreadCrumbs />
         <ProfileHeaderHolder>
@@ -94,6 +96,8 @@ const ProfileHeader = ({
               name={name}
               profileImage={profileImage}
               representativeVideo={representativeVideo}
+              isLawyerSpotlight={isLawyerSpotlight}
+              setActiveAccordion={setActiveAccordion}
             />
             <ProfileBgImage
               src="/images/profile-attorney-bg.webp"

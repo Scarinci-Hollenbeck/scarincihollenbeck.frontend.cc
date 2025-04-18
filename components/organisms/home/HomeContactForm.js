@@ -8,7 +8,7 @@ import {
 import { Title32 } from 'styles/common/Typography.style';
 
 const HomeContactForm = () => (
-  <ContactFormWrapper data-testid="ContactFormWrapper">
+  <ContactFormWrapper>
     <ContainerDefault>
       <ContactFormHolder>
         <Title32>Let’s get in touch!</Title32>

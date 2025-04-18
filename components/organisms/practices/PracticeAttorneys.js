@@ -58,11 +58,7 @@ const PracticeAttorneys = ({
 
   if (totalItems === 0 || Number.isNaN(totalItems)) {
     return (
-      <PracticeAttorneysSection
-        id={anchorId}
-        className="margin-scroll"
-        data-testid="collapse-attorneys"
-      >
+      <PracticeAttorneysSection id={anchorId} className="margin-scroll">
         {isBackground && (
           <PracticeAttorneysBg
             src="/images/profile-attorney-bg.webp"
@@ -84,7 +80,6 @@ const PracticeAttorneys = ({
     <PracticeAttorneysSection
       className={`margin-scroll ${isCollapsed ? 'collapsed' : ''}`}
       id={anchorId}
-      data-testid="collapse-attorneys"
     >
       {isBackground && (
         <PracticeAttorneysBg

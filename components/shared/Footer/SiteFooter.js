@@ -42,7 +42,7 @@ export default function Footer() {
   const { data: industries } = useGetIndustriesQuery();
 
   return (
-    <FooterWrapper data-testid="footer" $isPrint={conditionForPrintFooter}>
+    <FooterWrapper $isPrint={conditionForPrintFooter}>
       <NavigationAndSubscription />
 
       <ContainerDefault>

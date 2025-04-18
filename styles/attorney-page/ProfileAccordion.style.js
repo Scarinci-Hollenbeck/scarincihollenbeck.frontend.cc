@@ -39,6 +39,7 @@ export const ProfileAccordionHolder = styled.div`
   .accordion-item {
     border-radius: 0;
     border: none;
+    scroll-margin-top: 100px;
 
     .duplicate {
       margin-left: 8px;
@@ -49,7 +50,9 @@ export const ProfileAccordionHolder = styled.div`
   }
 
   .accordion-button {
-    padding: 16px;
+    --accordion-button-padding: 16px;
+    --accordion-label-width: 32px;
+    padding: var(--accordion-button-padding);
     background-color: ${globalColor.blue.blue6002};
     color: ${globalColor.white};
     font-size: ${rem(20)};
@@ -59,13 +62,22 @@ export const ProfileAccordionHolder = styled.div`
     border: none;
     box-shadow: ${globalShadow.shadowM};
     transition: ${globalTransition.default};
+    overflow: hidden;
+    gap: 16px;
+    position: relative;
 
     &:not(.collapsed) {
       border-radius: ${globalBorderRadius.small} ${globalBorderRadius.small} 0 0;
     }
 
+    &:has(.accordion-new) {
+      padding-left: calc(
+        var(--accordion-button-padding) + var(--accordion-label-width)
+      );
+    }
+
     ${media_breakpoint_down('md')} {
-      padding: 12px;
+      --accordion-button-padding: 12px;
       font-size: ${rem(18)};
       line-height: 1.56;
     }
@@ -80,6 +92,21 @@ export const ProfileAccordionHolder = styled.div`
     ${media_breakpoint_down('md')} {
       padding: 12px;
     }
+  }
+
+  .accordion-new {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--accordion-label-width);
+    height: 100%;
+    background-color: red;
+    writing-mode: sideways-lr;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
 
   @media print {

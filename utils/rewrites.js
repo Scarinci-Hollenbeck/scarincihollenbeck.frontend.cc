@@ -88,6 +88,10 @@ const POST_CATEGORY_REWRITES = [
     source: '/women-lead/:slug*',
     destination: '/post/:slug*?category=women-lead',
   },
+  {
+    source: '/lawyer-spotlight/:slug*',
+    destination: '/post/:slug*?category=lawyer-spotlight',
+  },
 ];
 
 const SITE_PAGES_REWRITES = [

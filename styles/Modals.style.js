@@ -274,3 +274,24 @@ export const SubscriptionModalWrapper = styled.div`
     }
   }
 `;
+
+export const QuestionModalWrapper = styled.div`
+  .kwes-form,
+  .kwes-form-init {
+    .form-fields {
+      --form-fields-gap: 20px;
+    }
+  }
+
+  .modal-open {
+    max-width: 750px;
+
+    ${media_breakpoint_down('sm')} {
+      max-width: 100%;
+    }
+  }
+`;
+
+export const QuestionModalDescription = styled.p`
+  margin: 0;
+`;

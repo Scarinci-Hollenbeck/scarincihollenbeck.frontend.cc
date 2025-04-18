@@ -1,5 +1,7 @@
-import { YouTubeEmbed } from '@next/third-parties/google';
 import empty from 'is-empty';
+import dynamic from 'next/dynamic';
+
+const YouTubeEmbed = dynamic(() => import('@next/third-parties/google').then((mod) => mod.YouTubeEmbed));
 
 const extractYouTubeID = (url) => {
   const regex = /(?:youtube\.com\/(?:[^/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/;

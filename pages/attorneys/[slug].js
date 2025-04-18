@@ -11,7 +11,7 @@ import {
   formateAwards,
   sanitizeExternalArticles,
 } from 'utils/helpers';
-import { GOV_LAW_URL } from 'utils/constants';
+import { ATTORNEY_ACCORDIONS_BLOGS_TITLES, GOV_LAW_URL } from 'utils/constants';
 import ApolloWrapper from 'layouts/ApolloWrapper';
 import AttorneyProfilePage from 'components/pages/AttorneyProfilePage';
 
@@ -37,7 +37,7 @@ query attorneysSlugs {
   }
 }`;
 
-async function attorneyFirmNewsBlogEvents(authorId) {
+async function attorneyBlogsTitles(authorId) {
   const blogTitles = [];
   const blogs = await fetchAPI(checkAttorneyPostsQueryByIdAndSlug, {
     variables: { categoryId: 599, authorId },
@@ -48,17 +48,24 @@ async function attorneyFirmNewsBlogEvents(authorId) {
   const releases = await fetchAPI(checkAttorneyPostsQueryByIdAndSlug, {
     variables: { categoryId: 98, authorId },
   });
+  const lawyerSpotlight = await fetchAPI(checkAttorneyPostsQueryByIdAndSlug, {
+    variables: { categoryId: 30518, authorId },
+  });
 
   if (blogs.posts.pageInfo.startCursor) {
-    blogTitles.push('Blog');
+    blogTitles.push(ATTORNEY_ACCORDIONS_BLOGS_TITLES.blog);
   }
 
   if (events.posts.pageInfo.startCursor) {
-    blogTitles.push('Events');
+    blogTitles.push(ATTORNEY_ACCORDIONS_BLOGS_TITLES.events);
   }
 
   if (releases.posts.pageInfo.startCursor) {
-    blogTitles.push('News & Press Releases');
+    blogTitles.push(ATTORNEY_ACCORDIONS_BLOGS_TITLES.releases);
+  }
+
+  if (lawyerSpotlight.posts.pageInfo.startCursor) {
+    blogTitles.push(ATTORNEY_ACCORDIONS_BLOGS_TITLES.lawyerSpotlight);
   }
 
   return blogTitles;
@@ -206,7 +213,7 @@ export const getStaticProps = async ({ params }) => {
   };
 
   /** Accordion data */
-  const blogTitles = await attorneyFirmNewsBlogEvents(authorId);
+  const blogTitles = await attorneyBlogsTitles(authorId);
   const additionalTabs = [1, 2, 3, 4, 5]
     .map((i) => ({
       id: i,

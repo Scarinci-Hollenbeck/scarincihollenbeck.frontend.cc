@@ -242,10 +242,13 @@ export const OutlinedButton = styled.button`
   border: 1px solid ${globalColor.gray.gray110};
   background-color: transparent;
   transition: ${globalTransition.default};
+  color: ${globalColor.white};
+  text-align: center;
 
   @media (hover: hover) {
     &:hover {
       border-color: ${globalColor.blue.blue400};
+      color: ${globalColor.white};
 
       svg {
         color: ${globalColor.blue.skyBlue};

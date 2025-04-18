@@ -3,9 +3,11 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import decodeResponse from 'utils/decodeResponse';
 import empty from 'is-empty';
+import { kwesformsInit } from 'utils/kwesformsInit';
 
-const ContactModal = dynamic(() => import('components/shared/ContactModal'));
-const SubscriptionModal = dynamic(() => import('components/shared/SubscriptionModal'));
+const ContactModal = dynamic(() => import('components/shared/modals/ContactModal'));
+const SubscriptionModal = dynamic(() => import('components/shared/modals/SubscriptionModal'));
+const QuestionModal = dynamic(() => import('components/shared/modals/QuestionModal'));
 
 const CommonModals = () => {
   const router = useRouter();
@@ -25,13 +27,7 @@ const CommonModals = () => {
     const handleRouteChange = async () => {
       if (!categoriesFromWP) return;
 
-      const kwesforms = await import('kwesforms');
-      await kwesforms.init();
-
-      const forms = document.querySelectorAll('.kwes-form');
-      forms.forEach((form) => {
-        form.className = 'kwes-form-init d-print-none w-100';
-      });
+      kwesformsInit();
     };
 
     handleRouteChange();
@@ -46,6 +42,7 @@ const CommonModals = () => {
     <>
       <ContactModal />
       <SubscriptionModal categoriesFromWP={categoriesFromWP} />
+      <QuestionModal />
     </>
   );
 };

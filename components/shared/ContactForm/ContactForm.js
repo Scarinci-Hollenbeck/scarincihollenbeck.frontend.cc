@@ -12,7 +12,6 @@ import empty from 'is-empty';
 import RenderInputs from './RenderInputs';
 
 export default function ContactForm({
-  isPositionRelativeProp,
   blockName = 'default',
   buttonText = 'Submit form',
 }) {
@@ -30,7 +29,7 @@ export default function ContactForm({
   const router = useRouter();
 
   return (
-    <FormContainer isPositionRelative={isPositionRelativeProp && 'true'}>
+    <FormContainer>
       <form
         action={GET_IN_TOUCH_FORM_API}
         className="kwes-form d-print-none"

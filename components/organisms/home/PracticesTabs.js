@@ -64,10 +64,7 @@ const PracticesTabs = ({ practices, isLoadingPractices = false }) => {
   }
 
   return (
-    <PracticesTabsWrapper
-      data-testid="practices-tabs"
-      className="light-scrollbar"
-    >
+    <PracticesTabsWrapper className="light-scrollbar">
       <PracticesTabsOpeners>
         {practicesWithChildren?.map((group, index) => (
           <PracticesTabsOpener

@@ -18,7 +18,7 @@ const IndustriesSection = ({
 }) => {
   if (empty(industries)) return null;
   return (
-    <IndustriesWrapper data-testid="industries-wrapper">
+    <IndustriesWrapper>
       <ContainerDefault>
         <IndustriesHolder>
           <IndustriesHeader>

@@ -1406,7 +1406,7 @@ query LibraryPageContentQuery {
 
 export const mainCategoriesQuery = `
 query MainCategoriesQuery {
-  categories(where: {include: [599, 99, 98, 20098]}) {
+  categories(where: {include: [599, 99, 98, 20098, 30518]}) {
     nodes {
       databaseId
       name
@@ -1488,7 +1488,7 @@ query FirstCreatedPostQuery {
 
 export const categoriesQuery = `
 query CategoriesQuery {
-  categories(where: {include: [599, 99, 98, 20098]}) {
+  categories(where: {include: [599, 99, 98, 20098, 30518]}) {
     nodes {
       databaseId
       name

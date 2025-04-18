@@ -10,6 +10,7 @@ import React from 'react';
 const RandomCardsSlider = dynamic(() => import('components/organisms/common/RandomCardsSlider'));
 const LibraryCategories = dynamic(() => import('components/organisms/library/LibraryCategories'));
 const SubscriptionBanner = dynamic(() => import('components/organisms/common/SubscriptionBanner'));
+const LibraryQuestionBanner = dynamic(() => import('components/organisms/library/LibraryQuestionBanner'));
 
 const LibraryPage = ({
   seo,
@@ -48,9 +49,17 @@ const LibraryPage = ({
     />
 
     <LibraryCategory
-      title={filters?.categories[0]?.title}
-      link={filters?.categories[0]?.uri}
-      posts={filters?.categories[0]?.posts}
+      title={filters?.categories?.[0]?.title}
+      link={filters?.categories?.[0]?.uri}
+      posts={filters?.categories?.[0]?.posts}
+    />
+
+    <LibraryQuestionBanner />
+
+    <LibraryCategory
+      title={filters?.categories?.[1]?.title}
+      link={filters?.categories?.[1]?.uri}
+      posts={filters?.categories?.[1]?.posts}
     />
 
     <RandomCardsSlider
@@ -61,7 +70,7 @@ const LibraryPage = ({
       list={posts}
     />
 
-    <LibraryCategories categories={filters?.categories.slice(1)} />
+    <LibraryCategories categories={filters?.categories?.slice(2)} />
 
     <SubscriptionBanner />
   </>

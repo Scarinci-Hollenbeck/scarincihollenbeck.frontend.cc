@@ -1,3 +1,4 @@
+import { memo, useCallback } from 'react';
 import {
   ChildrenBox,
   ModalCloser,
@@ -5,19 +6,25 @@ import {
   ModalContent,
 } from '../../styles/ModalWindow.style';
 
-const ModalWindow = ({ children, isOpen, setOpenModal }) => {
-  const handleCloseModal = () => {
+const ModalWindow = ({
+  children, isOpen, setOpenModal, contentProps,
+}) => {
+  const handleCloseModal = useCallback(() => {
     setOpenModal(false);
-  };
+  }, []);
 
-  const autoStopPropagation = (event) => event.stopPropagation();
+  const autoStopPropagation = useCallback(
+    (event) => event.stopPropagation(),
+    [],
+  );
 
   return (
-    <ModalContainer isOpen={isOpen} onClick={handleCloseModal}>
+    <ModalContainer $isOpen={isOpen} onClick={handleCloseModal}>
       <ModalContent
-        isOpen={isOpen}
+        $isOpen={isOpen}
         className={isOpen ? 'modal-open' : ''}
         onClick={autoStopPropagation}
+        {...contentProps}
       >
         <ModalCloser
           aria-label="Close modal"
@@ -30,4 +37,4 @@ const ModalWindow = ({ children, isOpen, setOpenModal }) => {
   );
 };
 
-export default ModalWindow;
+export default memo(ModalWindow);

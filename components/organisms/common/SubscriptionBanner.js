@@ -3,13 +3,14 @@ import { StandardBlueButton } from 'styles/Buttons.style';
 import { ContainerDefault } from 'styles/Containers.style';
 import { useDispatch } from 'react-redux';
 import {
-  SubscriptionBannerContent,
-  SubscriptionBannerDescription,
-  SubscriptionBannerHolder,
-  SubscriptionBannerSection,
-  SubscriptionBannerSubtitle,
-  SubscriptionBannerTitle,
-} from 'styles/SubscriptionBanner.style';
+  DarkBannerButtons,
+  DarkBannerContent,
+  DarkBannerDescription,
+  DarkBannerHolder,
+  DarkBannerSection,
+  DarkBannerSubtitle,
+  DarkBannerTitle,
+} from 'styles/DarkBanner.style';
 import dynamic from 'next/dynamic';
 import { handleSubscriptionModalOpener } from '../../../redux/slices/modals.slice';
 
@@ -21,22 +22,20 @@ const SubscriptionBanner = ({
 }) => {
   const dispatch = useDispatch();
   return (
-    <SubscriptionBannerSection
-      className={isIndustry ? 'subscription-industry' : ''}
-    >
+    <DarkBannerSection className={isIndustry ? 'subscription-industry' : ''}>
       <ContainerDefault>
-        <SubscriptionBannerHolder>
-          <SubscriptionBannerTitle as={TitleComponent}>
+        <DarkBannerHolder>
+          <DarkBannerTitle as={TitleComponent}>
             <strong>Sign up </strong>
             to get the latest from our attorneys!
-          </SubscriptionBannerTitle>
+          </DarkBannerTitle>
 
-          <SubscriptionBannerContent>
-            <SubscriptionBannerSubtitle>
+          <DarkBannerContent>
+            <DarkBannerSubtitle>
               Explore What Matters Most to You.
-            </SubscriptionBannerSubtitle>
+            </DarkBannerSubtitle>
 
-            <SubscriptionBannerDescription>
+            <DarkBannerDescription>
               <p>
                 Consider subscribing to our Firm Insights mailing list by
                 clicking the button below so you can keep up to date with the
@@ -48,18 +47,20 @@ const SubscriptionBanner = ({
                 provides valuable content across a range of categories to keep
                 you connected and ahead of the curve.
               </p>
-            </SubscriptionBannerDescription>
+            </DarkBannerDescription>
 
-            <StandardBlueButton
-              onClick={() => dispatch(handleSubscriptionModalOpener({ active: true }))}
-              $isLight
-            >
-              Subscribe now
-            </StandardBlueButton>
-          </SubscriptionBannerContent>
-        </SubscriptionBannerHolder>
+            <DarkBannerButtons>
+              <StandardBlueButton
+                onClick={() => dispatch(handleSubscriptionModalOpener({ active: true }))}
+                $isLight
+              >
+                Subscribe now
+              </StandardBlueButton>
+            </DarkBannerButtons>
+          </DarkBannerContent>
+        </DarkBannerHolder>
       </ContainerDefault>
-    </SubscriptionBannerSection>
+    </DarkBannerSection>
   );
 };
 

@@ -407,7 +407,8 @@ export const formateAwards = (awards) => {
 export const sanitizeCategories = (categories) => categories?.map((category) => ({
   databaseId: category.databaseId,
   title: category?.name || category.title,
-  description: category?.description || category?.pagesFields?.description,
+  description:
+      category?.description || category?.pagesFields?.description || '',
   uri: category?.uri ? `/library${category?.uri}` : '/library',
   image:
       category?.categoryFields?.image?.sourceUrl

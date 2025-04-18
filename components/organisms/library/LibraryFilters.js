@@ -82,10 +82,10 @@ const LibraryFilters = ({
         <LibraryFiltersHolder>
           <LibraryFiltersNav>
             {LIBRARY_NAV.map((item) => (
-              <LibraryFiltersNavItem key={item?.id}>
+              <LibraryFiltersNavItem key={item?.databaseId}>
                 <LibraryFiltersNavLink
-                  href={item?.href}
-                  $active={pathname === item?.href}
+                  href={item?.uri}
+                  $active={pathname === item?.uri}
                 >
                   {item?.title}
                 </LibraryFiltersNavLink>

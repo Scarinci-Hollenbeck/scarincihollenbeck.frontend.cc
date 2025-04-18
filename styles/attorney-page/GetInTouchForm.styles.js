@@ -9,9 +9,8 @@ import styled from 'styled-components';
 import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const FormContainer = styled.div`
-  ${({ isPositionRelative }) => isPositionRelative && 'position: relative;'}
-
-  .kwes-form, .kwes-form-init {
+  .kwes-form,
+  .kwes-form-init {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
@@ -55,6 +54,7 @@ export const FormContainer = styled.div`
       line-height: 1.5;
       font-weight: 400;
       color: ${globalColor.blue.darkBlue};
+      text-overflow: ellipsis;
 
       &:hover {
         border-bottom: 1px solid ${globalColor.blue.blue600};
@@ -148,6 +148,7 @@ export const FormContainer = styled.div`
     }
 
     .form-disclaimer {
+      width: 100%;
       margin: 0;
       font-size: ${rem(12)};
       color: ${globalColor.gray.gray110};

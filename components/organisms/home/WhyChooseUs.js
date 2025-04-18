@@ -19,7 +19,7 @@ const WhyChooseUs = ({ content }) => {
     title, article, serviceList, focusedServicesCards,
   } = content || {};
   return (
-    <WhyChooseUsSection data-testid="why-choose-us">
+    <WhyChooseUsSection>
       <ContainerDefault className="d-flex">
         <WhyChooseUsHolder>
           <ArticleBlock>

@@ -26,7 +26,7 @@ const AboutFirm = ({
   arcticle,
   heroPhoto,
 }) => (
-  <AboutSection data-testid="who-we-are">
+  <AboutSection>
     <ContainerDefault>
       <AboutBlocks>
         <AboutBlock>

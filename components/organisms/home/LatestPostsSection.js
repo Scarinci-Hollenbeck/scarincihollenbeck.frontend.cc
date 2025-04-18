@@ -24,11 +24,7 @@ const LatestPostsSection = ({
   if (empty(tabsData) && empty(posts)) return null;
 
   return (
-    <LatestPostsWrapper
-      id={anchorId}
-      data-testid="latest-posts"
-      className="margin-scroll"
-    >
+    <LatestPostsWrapper id={anchorId} className="margin-scroll">
       <ContainerDefault>
         <LatestPostsHolder>
           <LatestPostsHeader>

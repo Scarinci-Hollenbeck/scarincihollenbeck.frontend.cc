@@ -20,11 +20,7 @@ const PracticeContent = ({
   handlePrint,
   sidebarContent,
 }) => (
-  <PracticeContentSection
-    id={anchorId}
-    className="margin-scroll"
-    data-testid="practice-content"
-  >
+  <PracticeContentSection id={anchorId} className="margin-scroll">
     <ContainerDefault>
       <SocialShare
         isPrintBtn

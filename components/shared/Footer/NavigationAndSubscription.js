@@ -14,7 +14,7 @@ import { handleSubscriptionModalOpener } from '../../../redux/slices/modals.slic
 const NavigationAndSubscription = () => {
   const dispatch = useDispatch();
   return (
-    <NavWrapper data-testid="footer-nav" className="d-print-none">
+    <NavWrapper className="d-print-none">
       <ContainerDefault>
         <NavHolder>
           <FooterNavigation>

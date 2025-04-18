@@ -42,6 +42,7 @@ export const SubHeaderKeyContactsButtons = styled.div`
 
     button {
       max-width: 100%;
+      width: 100%;
     }
   }
 `;

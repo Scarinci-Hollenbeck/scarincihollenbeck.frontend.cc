@@ -155,7 +155,7 @@ const RandomCardsSlider = ({
   }, [isTimerStopped, restartTimer, list]);
 
   return (
-    <RandomSliderWrapper ref={containerRef} data-testid="bio-autoplay">
+    <RandomSliderWrapper ref={containerRef}>
       <RandomSliderBg
         src="/images/random-bio-bg.webp"
         fill

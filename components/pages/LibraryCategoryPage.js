@@ -10,6 +10,7 @@ import { useRouter } from 'next/router';
 import { setSelectedValues } from '../../redux/slices/library.slice';
 
 const SubscriptionBanner = dynamic(() => import('components/organisms/common/SubscriptionBanner'));
+const LibraryQuestionBanner = dynamic(() => import('components/organisms/library/LibraryQuestionBanner'));
 
 const LibraryCategoryPage = ({
   title,
@@ -65,7 +66,11 @@ const LibraryCategoryPage = ({
 
       <LibraryResults postsData={postsData} tags={tags} />
 
-      <SubscriptionBanner />
+      {categoryId === 30518 ? (
+        <LibraryQuestionBanner isLinkCategory={false} />
+      ) : (
+        <SubscriptionBanner />
+      )}
     </>
   );
 };

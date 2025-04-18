@@ -4,6 +4,7 @@ import {
   FormLabelStyled,
   InputGroupStyled,
 } from 'styles/attorney-page/GetInTouchForm.styles';
+import AttorneysSelectField from 'components/atoms/AttorneysSelectField';
 import UploadFileInput from '../../atoms/UploadFileInput';
 
 const InputField = ({ onChange, ...props }) => {
@@ -23,6 +24,7 @@ const InputsController = ({
   attributes,
   handleChangeValue,
   isNotEmptyInput,
+  attorneys,
 }) => {
   if (attributes.type === 'file') {
     return <UploadFileInput {...attributes} onChange={handleChangeValue} />;
@@ -36,6 +38,21 @@ const InputsController = ({
       />
     );
   }
+
+  if (attributes.type === 'attorney-select') {
+    return (
+      <>
+        <FormLabelStyled visuallyHidden={isNotEmptyInput}>
+          {attributes.name}
+        </FormLabelStyled>
+        <AttorneysSelectField
+          {...attributes}
+          attorneys={attorneys}
+          onChange={handleChangeValue}
+        />
+      </>
+    );
+  }
   return (
     <>
       <FormLabelStyled visuallyHidden={isNotEmptyInput}>
@@ -46,7 +63,7 @@ const InputsController = ({
   );
 };
 
-const RenderInputs = ({ arrayOfAttributes, attorneySlug }) => {
+const RenderInputs = ({ arrayOfAttributes, attorneySlug, attorneys }) => {
   const [isNotEmptyInput, setIsNotEmpty] = useState([]);
 
   const handleChangeValue = (e, nameInput) => {
@@ -80,6 +97,7 @@ const RenderInputs = ({ arrayOfAttributes, attorneySlug }) => {
             attributes={attributes}
             handleChangeValue={(event) => handleChangeValue(event, attributes.name)}
             isNotEmptyInput={!isNotEmptyInput.includes(attributes.name)}
+            attorneys={attributes.type === 'attorney-select' && attorneys}
           />
         </InputGroupStyled>
       ))}

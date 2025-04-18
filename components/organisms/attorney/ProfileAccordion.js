@@ -15,7 +15,11 @@ import AccordionDynamicItem from 'components/molecules/attorney/AccordionDynamic
 import GallerySlider from 'components/molecules/attorney/GallerySlider';
 import MediaSlider from 'components/molecules/attorney/MediaSlider';
 import { useRouter } from 'next/router';
-import { reservedAccordionTitles } from 'utils/constants';
+import {
+  ATTORNEY_ACCORDIONS_BLOGS_TITLES,
+  reservedAccordionTitles,
+} from 'utils/constants';
+import { useCallback } from 'react';
 import { getPaginationData } from '../../../requests/getPaginationData';
 import { postsForPaginationByAuthorIdQuery } from '../../../requests/graphql-queries';
 
@@ -28,6 +32,8 @@ const renderBlogPosts = (data, config, blogTitles, isWide, name) => blogTitles?.
   as="li"
   eventKey={`${config?.actionKey}-${name}`}
   title={config?.title}
+  id={config?.actionKey}
+  isNew={ATTORNEY_ACCORDIONS_BLOGS_TITLES.lawyerSpotlight === config?.title}
 >
   <BlogsBox
     queryParamsForPagination={config?.queryParams}
@@ -65,12 +71,14 @@ const ProfileAccordion = ({
   blogTitles,
   name,
   authorId,
+  setActiveAccordion,
+  activeAccordion,
 }) => {
   const router = useRouter();
 
   // News Press Releases section START
   const newsPressReleasesConfig = {
-    title: 'News & Press Releases',
+    title: ATTORNEY_ACCORDIONS_BLOGS_TITLES.releases,
     queryParams: 'news-press-releases-page',
     actionKey: 'news-and-press',
     params: {
@@ -89,7 +97,7 @@ const ProfileAccordion = ({
 
   // Blog section START
   const blogConfig = {
-    title: 'Blog',
+    title: ATTORNEY_ACCORDIONS_BLOGS_TITLES.blog,
     queryParams: 'blogs-page',
     actionKey: 'blogs',
     params: {
@@ -108,7 +116,7 @@ const ProfileAccordion = ({
 
   // Events section START
   const eventsConfig = {
-    title: 'Events',
+    title: ATTORNEY_ACCORDIONS_BLOGS_TITLES.events,
     queryParams: 'events-page',
     actionKey: 'events',
     params: {
@@ -125,11 +133,38 @@ const ProfileAccordion = ({
   );
   // Events section END
 
+  // Lawyer Spotlight section START
+  const layerSpotlightConfig = {
+    title: ATTORNEY_ACCORDIONS_BLOGS_TITLES.lawyerSpotlight,
+    queryParams: 'lawyer-spotlight-page',
+    actionKey: 'lawyer-spotlight',
+    params: {
+      authorId,
+      categoryId: 30518,
+      currentPage: router?.query?.['lawyer-spotlight-page'] || 1,
+      itemsPerPage: 6,
+    },
+  };
+
+  const layerSpotlightPostsPaginationData = getPaginationData(
+    postsForPaginationByAuthorIdQuery,
+    layerSpotlightConfig.params,
+  );
+  // Lawyer Spotlight section END
+
+  const openAccordion = useCallback((key) => {
+    setActiveAccordion((prev) => (prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]));
+  }, []);
+
   return (
-    <ProfileAccordionWrapper data-testid="profile-accordion">
+    <ProfileAccordionWrapper>
       <ContainerDefault>
         <ProfileAccordionHolder>
-          <Accordion as="ul" alwaysOpen>
+          <Accordion
+            as="ul"
+            activeKey={activeAccordion}
+            onSelect={openAccordion}
+          >
             {!empty(awards) && (
               <AccordionItem
                 as="li"
@@ -141,6 +176,14 @@ const ProfileAccordion = ({
                 </StandardLightBlueButton>
                 <AwardsSlider items={awards} isLightVariant />
               </AccordionItem>
+            )}
+
+            {renderBlogPosts(
+              layerSpotlightPostsPaginationData,
+              layerSpotlightConfig,
+              blogTitles,
+              false,
+              name,
             )}
 
             {!empty(attorneyBiography?.biographyContent) && (

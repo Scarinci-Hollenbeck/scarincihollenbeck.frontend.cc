@@ -30,11 +30,7 @@ const WhyChooseUs = ({
   const id = useId();
 
   return (
-    <WhyChooseUsSection
-      className="margin-scroll"
-      id={anchorId}
-      data-testid="why-choose-us"
-    >
+    <WhyChooseUsSection className="margin-scroll" id={anchorId}>
       <ContainerDefault>
         <Title32 className={isSectionTitle ? '' : 'sr-only'}>
           Why Choose Us?

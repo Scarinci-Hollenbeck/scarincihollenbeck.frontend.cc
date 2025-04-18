@@ -9,7 +9,7 @@ const AllOfficeLocations = ({ offices }) => {
   if (!offices) return null;
   const [officeTitle, setOfficeTitle] = useState(offices[0].title);
   return (
-    <LocationsHomeSection data-testid="offices-map">
+    <LocationsHomeSection>
       <ContainerDefault>
         <LocationTitle>{officeTitle}</LocationTitle>
         <LocationCard setTitle={setOfficeTitle} officesData={offices} />

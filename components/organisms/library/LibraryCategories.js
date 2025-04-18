@@ -5,17 +5,21 @@ import LogoSeparator from 'components/common/LogoSeparator';
 import LibraryCategory from './LibraryCategory';
 
 const LibraryCategories = ({ categories }) => {
-  if (empty(categories)) return null;
+  const validCategories = categories?.filter(
+    (category) => !empty(category?.posts),
+  );
+  if (empty(validCategories)) return null;
+
   return (
     <LibraryCategoriesWrapper>
-      {categories.map((category, index) => (
+      {validCategories.map((category, index) => (
         <Fragment key={category?.databaseId}>
           <LibraryCategory
             title={category?.title}
             link={category?.uri}
             posts={category?.posts}
           />
-          {index < categories.length - 1 && (
+          {index < validCategories.length - 1 && (
             <LogoSeparator direction="row" isBig />
           )}
         </Fragment>
