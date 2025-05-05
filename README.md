@@ -57,3 +57,16 @@ To create a production copy of the client application run `yarn build`. Then to 
 ### Deployment
 
 To deploy changes to the live domain [scarincihollenbeck.com](https://scarinciholleneck.com) commit your changes to the `client-prod` branch. To send changes to the live preview domain [https://scarincihollenbeck-cc-git-production.s1100h.vercel.app/](https://scarincihollenbeck-cc-git-production.s1100h.vercel.app/) commit your changes to `production` branch.
+
+Update jwt token for GraphQl protection every 1 year. Use this query for update in graphQL WP composer, change pass and login.
+Link on plugin - https://github.com/wp-graphql/wp-graphql-jwt-authentication?tab=readme-ov-file
+
+mutation LoginUser {
+login(
+input: {clientMutationId: "uniqueId", username: "admin", password: "adminpass"}
+) {
+refreshToken
+}
+}
+
+Last update - 24.04.2025.

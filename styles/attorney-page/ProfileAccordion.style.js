@@ -70,12 +70,6 @@ export const ProfileAccordionHolder = styled.div`
       border-radius: ${globalBorderRadius.small} ${globalBorderRadius.small} 0 0;
     }
 
-    &:has(.accordion-new) {
-      padding-left: calc(
-        var(--accordion-button-padding) + var(--accordion-label-width)
-      );
-    }
-
     ${media_breakpoint_down('md')} {
       --accordion-button-padding: 12px;
       font-size: ${rem(18)};
@@ -92,21 +86,6 @@ export const ProfileAccordionHolder = styled.div`
     ${media_breakpoint_down('md')} {
       padding: 12px;
     }
-  }
-
-  .accordion-new {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: var(--accordion-label-width);
-    height: 100%;
-    background-color: red;
-    writing-mode: sideways-lr;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
   }
 
   @media print {

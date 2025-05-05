@@ -33,7 +33,6 @@ const renderBlogPosts = (data, config, blogTitles, isWide, name) => blogTitles?.
   eventKey={`${config?.actionKey}-${name}`}
   title={config?.title}
   id={config?.actionKey}
-  isNew={ATTORNEY_ACCORDIONS_BLOGS_TITLES.lawyerSpotlight === config?.title}
 >
   <BlogsBox
     queryParamsForPagination={config?.queryParams}
@@ -178,14 +177,6 @@ const ProfileAccordion = ({
               </AccordionItem>
             )}
 
-            {renderBlogPosts(
-              layerSpotlightPostsPaginationData,
-              layerSpotlightConfig,
-              blogTitles,
-              false,
-              name,
-            )}
-
             {!empty(attorneyBiography?.biographyContent) && (
               <AccordionDynamicItem
                 tag="li"
@@ -208,6 +199,14 @@ const ProfileAccordion = ({
             )}
 
             <ProfileClients clients={clients} name={name} />
+
+            {renderBlogPosts(
+              layerSpotlightPostsPaginationData,
+              layerSpotlightConfig,
+              blogTitles,
+              false,
+              name,
+            )}
 
             {renderBlogPosts(
               newsPressReleasesPaginationData,
