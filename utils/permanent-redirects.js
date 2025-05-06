@@ -355,6 +355,21 @@ const PERMANENT_REDIRECTS = [
     destination: '/library/category/firm-news',
     permanent: true,
   },
+  {
+    source: '/location/washington-dc',
+    destination: '/location/new-york',
+    permanent: true,
+  },
+  {
+    source: '/contact',
+    destination: '/contact-us',
+    permanent: true,
+  },
+  {
+    source: '/subscribe',
+    destination: '/contact-us',
+    permanent: true,
+  },
 ];
 
 module.exports = {

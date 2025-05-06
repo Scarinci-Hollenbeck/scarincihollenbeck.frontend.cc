@@ -21,7 +21,9 @@ export const MemorialsSection = styled.section`
   }
 `;
 
-export const MemorialTitle = styled(Title32)`
+export const MemorialTitle = styled(Title32).attrs({
+  as: 'h1',
+})`
   width: fit-content;
   padding-bottom: 12px;
   border-bottom: 1px solid ${globalColor.blue.skyBlue};

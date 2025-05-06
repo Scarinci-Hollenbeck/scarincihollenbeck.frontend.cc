@@ -470,7 +470,7 @@ query PostMainCategoryContentQuery($id: ID!) {
   category(id: $id, idType: SLUG) {
     databaseId
     name
-    uri
+    slug
     categoryFields {
       color
     }

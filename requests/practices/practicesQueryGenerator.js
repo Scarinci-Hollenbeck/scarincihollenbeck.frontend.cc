@@ -75,9 +75,6 @@ export const practicesQuery = `query PracticeQuery($id: ID!) {
           }
         }
       }
-      relatedBlogCategory {
-        databaseId
-      }
       keyContactByPractice {
         ... on AttorneyProfile {
           databaseId
@@ -120,6 +117,10 @@ export const practicesQuery = `query PracticeQuery($id: ID!) {
         }
         label
         year
+      }
+      sidebarContent {
+        quote
+        text
       }
     }
     seo {

@@ -25,7 +25,7 @@ const LatestPostsCard = ({ article, isBig }) => (
           alt={article?.title}
           width={900}
           height={375}
-          sizes="(max-width: 768px) 100%, 900px"
+          sizes="(max-width: 768px) 100vw, 900px"
         />
       </LatestsPostsCardImage>
     )}
@@ -54,7 +54,7 @@ const LatestPostsCard = ({ article, isBig }) => (
           <span>{article?.author?.node?.name}</span>
         </LatestsPostsCardAuthor>
 
-        <LatestsPostsCardDate datetime={article?.date}>
+        <LatestsPostsCardDate dateTime={article?.date}>
           {formatDate(article?.date)}
         </LatestsPostsCardDate>
       </LatestsPostsCardFooter>

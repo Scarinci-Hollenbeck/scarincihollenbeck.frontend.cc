@@ -54,6 +54,7 @@ const PracticePageNew = ({
   whyChooseUsData,
   practices,
   awards,
+  sidebarContent,
   posts,
 }) => {
   const anchorData = useMemo(() => {
@@ -127,6 +128,7 @@ const PracticePageNew = ({
           anchorIdFaq={anchorData.faq.id}
           faqData={faq}
           handlePrint={handlePrint}
+          sidebarContent={sidebarContent}
         />
         <Awards anchorId={anchorData?.awards?.id} awards={awards} />
 

@@ -149,16 +149,6 @@ const SITE_PAGES_REWRITES = [
     destination: '/firm-page/pro-bono',
   },
   /** End of firm pages */
-  /** Start of form pages */
-  {
-    source: '/contact',
-    destination: '/contact-us',
-  },
-  {
-    source: '/subscribe',
-    destination: '/contact-us',
-  },
-  /** End of form pages */
   {
     source: '/proxy-image/:path*',
     destination: 'https://wp.scarincihollenbeck.com/:path*',
