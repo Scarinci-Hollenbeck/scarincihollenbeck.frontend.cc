@@ -3,43 +3,27 @@ import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import decodeResponse from 'utils/decodeResponse';
 import empty from 'is-empty';
-import {
-  useGetIndustriesQuery,
-  useGetPracticesQuery,
-} from '../../redux/services/project-api';
 
 const ContactModal = dynamic(() => import('components/shared/ContactModal'));
 const SubscriptionModal = dynamic(() => import('components/shared/SubscriptionModal'));
 
-const sanitizeCategories = (categories) => !empty(categories)
-  && categories.map((category) => ({
-    databaseId: category.id,
-    title: category.name,
-  }));
-
 const CommonModals = () => {
   const router = useRouter();
-  const [categoriesFromWP, setCategoriesFromWP] = useState([]);
-  const { data: practices } = useGetPracticesQuery();
-  const { data: industries } = useGetIndustriesQuery();
+  const [subscriptionsFromWP, setSubscriptionsFromWP] = useState({});
 
   useEffect(() => {
     (async () => {
-      const blogCategories = await fetch('/api/revalidate-categories');
-      const resDecoded = await decodeResponse(blogCategories);
-      if (!empty(resDecoded.data)) {
-        setCategoriesFromWP(sanitizeCategories(resDecoded.data));
+      const subscriptions = await fetch('/api/revalidate-subscriptions');
+      const resDecoded = await decodeResponse(subscriptions);
+      if (!empty(resDecoded?.data)) {
+        setSubscriptionsFromWP(resDecoded?.data);
       }
     })();
   }, []);
 
   useEffect(() => {
     const handleRouteChange = async () => {
-      if (
-        empty(categoriesFromWP)
-        || empty(industries?.data)
-        || empty(practices?.data)
-      ) return;
+      if (empty(subscriptionsFromWP)) return;
 
       const kwesforms = await import('kwesforms');
       await kwesforms.init();
@@ -56,15 +40,15 @@ const CommonModals = () => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [categoriesFromWP, industries?.data, practices?.data]);
+  }, [subscriptionsFromWP]);
 
   return (
     <>
       <ContactModal />
       <SubscriptionModal
-        categoriesFromWP={categoriesFromWP}
-        practices={practices?.data}
-        industries={industries?.data}
+        categoriesFromWP={subscriptionsFromWP?.categories}
+        practices={subscriptionsFromWP?.practices}
+        industries={subscriptionsFromWP?.industries}
       />
     </>
   );

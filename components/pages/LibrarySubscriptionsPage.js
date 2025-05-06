@@ -15,6 +15,7 @@ const LibrarySubscriptionsPage = ({
   canonicalUrl,
   filters,
   subHeaderSlides,
+  subscriptions,
 }) => (
   <>
     <BasicSiteHead
@@ -44,9 +45,9 @@ const LibrarySubscriptionsPage = ({
     />
 
     <LibrarySubscriptions
-      categories={filters?.categories}
-      practices={filters?.practices}
-      industries={filters?.industries}
+      categories={subscriptions?.categories}
+      practices={subscriptions?.practices}
+      industries={subscriptions?.industries}
     />
 
     <SubscriptionBanner />

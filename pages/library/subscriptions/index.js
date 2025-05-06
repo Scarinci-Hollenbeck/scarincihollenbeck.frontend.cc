@@ -6,6 +6,7 @@ import {
 } from 'requests/graphql-queries';
 import { getLibraryPageData } from 'requests/getLibraryPageData';
 import LibrarySubscriptionsPage from 'components/pages/LibrarySubscriptionsPage';
+import { getSubscriptions } from 'requests/getSubscriptions';
 
 export async function getStaticProps() {
   const [
@@ -13,9 +14,11 @@ export async function getStaticProps() {
       pageBy: { title, seo, pagesFields },
     },
     { filters, subHeaderSlides },
+    subscriptions,
   ] = await Promise.all([
     fetchAPI(librarySubscriptionsPageContentQuery),
     getLibraryPageData(mainCategoriesQuery),
+    getSubscriptions(),
   ]);
 
   return {
@@ -25,6 +28,7 @@ export async function getStaticProps() {
       description: pagesFields?.description,
       filters,
       subHeaderSlides,
+      subscriptions,
     },
     revalidate: 3600,
   };
@@ -36,6 +40,7 @@ const LibrarySubscriptions = ({
   description,
   filters,
   subHeaderSlides,
+  subscriptions,
 }) => {
   const canonicalUrl = `${PRODUCTION_URL}/library/subscriptions`;
 
@@ -46,6 +51,7 @@ const LibrarySubscriptions = ({
     canonicalUrl,
     filters,
     subHeaderSlides,
+    subscriptions,
   };
   return <LibrarySubscriptionsPage {...librarySubscriptionsProps} />;
 };
