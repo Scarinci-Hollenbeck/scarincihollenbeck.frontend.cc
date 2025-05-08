@@ -15,7 +15,11 @@ import empty from 'is-empty';
 import { StandardBlueButton } from 'styles/Buttons.style';
 import RenderInputs from 'components/shared/ContactForm/RenderInputs';
 import SubscriptionsAccordion from 'components/atoms/SubscriptionsAccordion';
-import { ChoseButton, ChoseButtons } from 'styles/SuscriptionsAccordion.style';
+import {
+  ChoseButton,
+  ChoseButtons,
+  SubscriptionAccordionCollapse,
+} from 'styles/SuscriptionsAccordion.style';
 import { isArraysIdentical, originalItemsIds } from 'utils/helpers';
 
 const SubscriptionForm = ({
@@ -26,6 +30,7 @@ const SubscriptionForm = ({
   const router = useRouter();
   const [categoriesChosen, setCategoriesChosen] = useState([]);
   const [servicesChosen, setServicesChosen] = useState([]);
+  const [activeKeys, setActiveKeys] = useState([]);
   const accordionWrapperRef = useRef();
   const allChosenItems = [...servicesChosen, ...categoriesChosen];
   const services = [...practices, ...industries];
@@ -35,6 +40,10 @@ const SubscriptionForm = ({
       if (isAllChosen) {
         setCategoriesChosen(originalItemsIds(categories));
         setServicesChosen(originalItemsIds(services));
+        setActiveKeys([
+          'category-accordion-subscriptions',
+          'services-accordion-subscriptions',
+        ]);
       } else {
         setCategoriesChosen([]);
         setServicesChosen([]);
@@ -99,19 +108,27 @@ const SubscriptionForm = ({
             rules="required"
             ref={accordionWrapperRef}
           >
-            <SubscriptionsAccordion
-              title="Subscribe to Category"
-              items={categories}
-              selectedItems={categoriesChosen}
-              setSelectedItems={setCategoriesChosen}
-            />
+            <SubscriptionAccordionCollapse activeKey={activeKeys} alwaysOpen>
+              <SubscriptionsAccordion
+                title="Subscribe to Category"
+                items={categories}
+                selectedItems={categoriesChosen}
+                setSelectedItems={setCategoriesChosen}
+                eventKey="category-accordion-subscriptions"
+                activeKeys={activeKeys}
+                setActiveKeys={setActiveKeys}
+              />
 
-            <SubscriptionsAccordion
-              title="Subscribe to Services"
-              items={services}
-              selectedItems={servicesChosen}
-              setSelectedItems={setServicesChosen}
-            />
+              <SubscriptionsAccordion
+                title="Subscribe to Services"
+                items={services}
+                selectedItems={servicesChosen}
+                setSelectedItems={setServicesChosen}
+                eventKey="services-accordion-subscriptions"
+                activeKeys={activeKeys}
+                setActiveKeys={setActiveKeys}
+              />
+            </SubscriptionAccordionCollapse>
           </fieldset>
 
           <StandardBlueButton
