@@ -13,4 +13,5 @@ export const LibrarySubscriptionsSection = styled.section`
 export const LibrarySubscriptionsContainer = styled(ContainerDefault)`
   display: flex;
   justify-content: center;
+  position: relative;
 `;

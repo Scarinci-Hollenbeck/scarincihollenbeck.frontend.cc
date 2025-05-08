@@ -82,13 +82,13 @@ const SubscriptionForm = ({
                 originalItemsIds([...categories, ...services]),
               )}
             >
-              Select all categories
+              Select all topics
             </ChoseButton>
             <ChoseButton
               onClick={() => handleChooseAllClearAll(false)}
               disabled={empty(allChosenItems)}
             >
-              Clear all categories
+              Clear all topics
             </ChoseButton>
           </ChoseButtons>
 
