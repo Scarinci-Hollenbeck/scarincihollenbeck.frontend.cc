@@ -103,7 +103,7 @@ export const createMenuData = (practices, locations, industries) => [
       },
       {
         databaseId: 'menu-lib-05',
-        title: 'Library Subscription',
+        title: 'Subscription',
         uri: '/library/subscriptions',
       },
     ],

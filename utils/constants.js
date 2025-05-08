@@ -116,7 +116,7 @@ export const FIRM_BLOG_PAGES = [
   },
   {
     id: 'library-subscriptions',
-    label: 'Library Subscription',
+    label: 'Subscription',
     slug: '/library/subscriptions',
   },
 ];
