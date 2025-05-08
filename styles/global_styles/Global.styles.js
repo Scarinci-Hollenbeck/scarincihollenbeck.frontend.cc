@@ -128,16 +128,6 @@ export const globalTransition = {
   default: `all ${transitionDuration}ms ease-out`,
 };
 
-export const buttonsHoverActive = `
-  &:hover {
-    background-color: ${globalColor.red.liteRed};
-  }
-
-  &:active {
-    background-color: ${globalColor.red.burgundy};
-  }
-`;
-
 export const rem = (sizeInPx) => {
   return `${sizeInPx / mainFontSize}rem`;
 };
@@ -625,51 +615,6 @@ export const GlobalStyle = createGlobalStyle`
   .numbers-list {
     li {
       margin-left: 24px;
-    }
-  }
-`;
-
-export const ButtonLinkCss = `
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-left: 5px;
-  padding-right: 5px;
-  width: 168px;
-  transition: background 0.8s;
-  background: ${globalColor.red.darkRed};
-  font-style: normal;
-  font-weight: 700;
-  font-size: inherit;
-  line-height: 1;
-  color: ${globalColor.white};
-  text-decoration: none;
-  border-radius: ${globalBorderRadius.small};
-
-  span {
-    display: flex;
-  }
-
-  svg {
-    display: none;
-  }
-
-  :hover {
-    color: ${globalColor.white};
-    text-decoration: none;
-  }
-
-  ${media_breakpoint_down('lg')} {
-    width: 50px;
-
-    span {
-      display: none;
-    }
-
-    svg {
-      display: block;
-      height: 25px;
-      width: 25px;
     }
   }
 `;

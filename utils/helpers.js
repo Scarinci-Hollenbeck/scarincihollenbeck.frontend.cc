@@ -427,3 +427,13 @@ export const setResponseHeaders = (res, revalidateTime, cacheStatus) => {
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('X-Cache-Status', cacheStatus);
 };
+
+export const isArraysIdentical = (chosenIds, originalIds) => {
+  if (!chosenIds || !originalIds || chosenIds.length !== originalIds.length) {
+    return false;
+  }
+  const originalIdsSet = new Set(originalIds);
+  return chosenIds.every((item) => originalIdsSet.has(item));
+};
+
+export const originalItemsIds = (itemsArr) => itemsArr?.map((item) => item.databaseId);

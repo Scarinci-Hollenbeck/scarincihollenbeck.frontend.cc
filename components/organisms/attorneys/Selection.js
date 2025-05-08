@@ -14,6 +14,10 @@ const Selection = ({
   const selectionsWithoutKeyword = selections?.filter(
     (a) => a.key !== 'keyword',
   );
+
+  if (!selectionsWithoutKeyword?.length && !keyword?.length) {
+    return null;
+  }
   return (
     <SelectionWrapper>
       <SelectionList>

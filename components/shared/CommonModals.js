@@ -9,21 +9,21 @@ const SubscriptionModal = dynamic(() => import('components/shared/SubscriptionMo
 
 const CommonModals = () => {
   const router = useRouter();
-  const [categoriesFromWP, setCategoriesFromWP] = useState();
+  const [subscriptionsFromWP, setSubscriptionsFromWP] = useState({});
 
   useEffect(() => {
     (async () => {
-      const blogCategories = await fetch('/api/revalidate-categories');
-      const resDecoded = await decodeResponse(blogCategories);
-      if (!empty(resDecoded.data)) {
-        setCategoriesFromWP(resDecoded.data);
+      const subscriptions = await fetch('/api/revalidate-subscriptions');
+      const resDecoded = await decodeResponse(subscriptions);
+      if (!empty(resDecoded?.data)) {
+        setSubscriptionsFromWP(resDecoded?.data);
       }
     })();
   }, []);
 
   useEffect(() => {
     const handleRouteChange = async () => {
-      if (!categoriesFromWP) return;
+      if (empty(subscriptionsFromWP)) return;
 
       const kwesforms = await import('kwesforms');
       await kwesforms.init();
@@ -40,12 +40,16 @@ const CommonModals = () => {
     return () => {
       router.events.off('routeChangeComplete', handleRouteChange);
     };
-  }, [categoriesFromWP]);
+  }, [subscriptionsFromWP]);
 
   return (
     <>
       <ContactModal />
-      <SubscriptionModal categoriesFromWP={categoriesFromWP} />
+      <SubscriptionModal
+        categoriesFromWP={subscriptionsFromWP?.categories}
+        practices={subscriptionsFromWP?.practices}
+        industries={subscriptionsFromWP?.industries}
+      />
     </>
   );
 };

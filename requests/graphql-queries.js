@@ -1541,3 +1541,17 @@ query PodcastsPageContentQuery {
     }
   }
 }`;
+
+export const librarySubscriptionsPageContentQuery = `
+query LibrarySubscriptionsPageContentQuery {
+  pageBy(pageId: 172538) {
+    title
+    pagesFields {
+      description
+    }
+    seo {
+      metaDesc
+      title
+    }
+  }
+}`;

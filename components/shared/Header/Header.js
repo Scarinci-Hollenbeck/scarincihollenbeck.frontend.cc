@@ -101,6 +101,11 @@ export const createMenuData = (practices, locations, industries) => [
         title: 'Firm Insights',
         uri: '/library/category/law-firm-insights',
       },
+      {
+        databaseId: 'menu-lib-05',
+        title: 'Subscription',
+        uri: '/library/subscriptions',
+      },
     ],
   },
   {
