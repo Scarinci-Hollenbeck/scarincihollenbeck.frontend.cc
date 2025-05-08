@@ -71,6 +71,10 @@ export const SubscriptionAccordionCollapse = styled(Accordion)`
   --bs-accordion-active-color: ${globalColor.blue.darkBlue};
   --bs-accordion-active-bg: ${globalColor.gray.gray10};
 
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+
   .accordion-body {
     padding-top: 4px;
     display: flex;

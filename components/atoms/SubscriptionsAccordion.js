@@ -15,6 +15,9 @@ const SubscriptionsAccordion = ({
   items,
   selectedItems,
   setSelectedItems,
+  eventKey,
+  activeKeys,
+  setActiveKeys,
 }) => {
   const checkboxesWrapperRef = useRef(null);
   const accordionId = useId();
@@ -50,59 +53,68 @@ const SubscriptionsAccordion = ({
     [items, setSelectedItems],
   );
 
+  const accordionClick = useCallback(
+    (e) => {
+      e.stopPropagation();
+      if (activeKeys.includes(eventKey)) {
+        setActiveKeys(activeKeys.filter((key) => key !== eventKey));
+      } else {
+        setActiveKeys([...activeKeys, eventKey]);
+      }
+    },
+    [activeKeys, eventKey, setActiveKeys],
+  );
+
   return (
-    <SubscriptionAccordionCollapse>
-      <Accordion.Item eventKey={`${accordionId}-accordion-subscriptions`}>
-        <Accordion.Header as="p">{title}</Accordion.Header>
-        <Accordion.Body>
-          <ChoseButtons>
-            <ChoseButton
-              onClick={() => handleChooseAllClearAll(true)}
-              disabled={isArraysIdentical(
-                selectedItems,
-                originalItemsIds(items),
-              )}
-            >
-              Select all
-            </ChoseButton>
-            <ChoseButton
-              onClick={() => handleChooseAllClearAll(false)}
-              disabled={empty(selectedItems)}
-            >
-              Clear all
-            </ChoseButton>
-          </ChoseButtons>
-          <CheckboxesList ref={checkboxesWrapperRef}>
-            {!empty(items) ? (
-              <>
-                {items?.map(({ databaseId, title }) => (
-                  <li key={`${accordionId}${databaseId}`}>
-                    <label
-                      htmlFor={`${accordionId}-${databaseId}`}
-                      className="form-checkbox"
-                    >
-                      <input
-                        type="checkbox"
-                        className="form-checkbox__input"
-                        id={`${accordionId}-${databaseId}`}
-                        name="category"
-                        value={title}
-                        onChange={() => handleCheckItem(databaseId)}
-                        checked={selectedItems?.includes(databaseId)}
-                      />
-                      <span className="form-checkbox__icon" />
-                      <span className="form-checkbox__label">{title}</span>
-                    </label>
-                  </li>
-                ))}
-              </>
-            ) : (
-              <Loader />
-            )}
-          </CheckboxesList>
-        </Accordion.Body>
-      </Accordion.Item>
-    </SubscriptionAccordionCollapse>
+    <Accordion.Item eventKey={eventKey}>
+      <Accordion.Header as="p" onClick={accordionClick}>
+        {title}
+      </Accordion.Header>
+      <Accordion.Body>
+        <ChoseButtons>
+          <ChoseButton
+            onClick={() => handleChooseAllClearAll(true)}
+            disabled={isArraysIdentical(selectedItems, originalItemsIds(items))}
+          >
+            Select all
+          </ChoseButton>
+          <ChoseButton
+            onClick={() => handleChooseAllClearAll(false)}
+            disabled={empty(selectedItems)}
+          >
+            Clear all
+          </ChoseButton>
+        </ChoseButtons>
+        <CheckboxesList ref={checkboxesWrapperRef}>
+          {!empty(items) ? (
+            <>
+              {items?.map(({ databaseId, title }) => (
+                <li key={`${accordionId}${databaseId}`}>
+                  <label
+                    htmlFor={`${accordionId}-${databaseId}`}
+                    className="form-checkbox"
+                  >
+                    <input
+                      type="checkbox"
+                      className="form-checkbox__input"
+                      id={`${accordionId}-${databaseId}`}
+                      name="category"
+                      value={title}
+                      onChange={() => handleCheckItem(databaseId)}
+                      checked={selectedItems?.includes(databaseId)}
+                    />
+                    <span className="form-checkbox__icon" />
+                    <span className="form-checkbox__label">{title}</span>
+                  </label>
+                </li>
+              ))}
+            </>
+          ) : (
+            <Loader />
+          )}
+        </CheckboxesList>
+      </Accordion.Body>
+    </Accordion.Item>
   );
 };
 
