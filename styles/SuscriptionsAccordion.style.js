@@ -82,8 +82,13 @@ export const SubscriptionAccordionCollapse = styled(Accordion)`
     gap: 16px;
   }
 
+  .accordion-item {
+    border-radius: var(--bs-accordion-border-radius);
+  }
+
   .accordion-button {
     font-size: ${rem(18)};
+    border-radius: var(--bs-accordion-border-radius);
 
     ${media_breakpoint_down('md')} {
       font-size: ${rem(14)};
