@@ -370,6 +370,11 @@ const PERMANENT_REDIRECTS = [
     destination: '/contact-us',
     permanent: true,
   },
+  {
+    source: '/work-life-balance',
+    destination: '/work-life-integration',
+    permanent: true,
+  },
 ];
 
 module.exports = {

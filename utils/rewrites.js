@@ -105,8 +105,8 @@ const SITE_PAGES_REWRITES = [
     destination: '/basic-page/disclaimer',
   },
   {
-    source: '/work-life-balance',
-    destination: '/basic-page/work-life-balance',
+    source: '/work-life-integration',
+    destination: '/basic-page/work-life-integration',
   },
   /** End of Simple Pages */
   /** Start of Funeral Pages */
