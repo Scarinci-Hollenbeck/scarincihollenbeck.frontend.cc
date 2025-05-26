@@ -22,7 +22,7 @@ export async function getStaticPaths() {
     'terms-of-use',
     'privacy-policy',
     'disclaimer',
-    'work-life-balance',
+    'work-life-integration',
   ];
   const paths = pages.map((url) => `/basic-page/${url}`);
 
@@ -60,7 +60,7 @@ export const getStaticProps = async ({ params }) => {
   };
 };
 
-/** Basic page component - Awards, Privacy Policy, Work Life Balance etc. */
+/** Basic page component - Awards, Privacy Policy, Work Life Integration etc. */
 const BasicPage = ({
   seo,
   title,

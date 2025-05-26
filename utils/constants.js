@@ -201,9 +201,9 @@ export const FIRM_PAGES = [
     uri: '/memorials',
   },
   {
-    databaseId: 'work-life-balance',
-    title: 'Work Life Balance',
-    uri: '/work-life-balance',
+    databaseId: 'work-life-integration',
+    title: 'Work Life Integration',
+    uri: '/work-life-integration',
   },
 ];
 
@@ -472,19 +472,18 @@ export const inputsCareerForm = [
 export const inputsGetInTouchAttributes = [
   {
     type: 'text',
-    name: 'FirstName',
-    placeholder: 'First name',
+    name: 'FullName',
+    placeholder: 'Full name',
     rules: 'required|max:255',
-    'aria-label': 'First name',
-    title: 'First name',
+    'aria-label': 'Full name',
+    title: 'Full name',
   },
   {
     type: 'text',
-    name: 'LastName',
-    placeholder: 'Last name',
-    rules: 'required|max:255',
-    'aria-label': 'Last name',
-    title: 'Last name',
+    name: 'Business',
+    placeholder: 'Business (optional)',
+    'aria-label': 'Business',
+    title: 'Business',
   },
   {
     type: 'email',
@@ -522,11 +521,12 @@ export const inputsGetInTouchAttributes = [
   {
     type: 'textarea',
     name: 'Message',
-    placeholder: 'Message (optional)',
+    placeholder: 'Message',
     rows: 8,
     cols: 4,
     'aria-label': 'Message',
     title: 'Message',
+    rules: 'required|max:1000',
   },
 ];
 

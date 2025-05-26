@@ -28,7 +28,7 @@ const BasicPageContent = ({
       backgroundImage={subHeaderImage}
       RightContentComponent={SubHeaderMenu}
       rightContentProps={{
-        menu: canonicalUrl.includes('work-life-balance')
+        menu: canonicalUrl.includes('work-life-integration')
           ? FIRM_PAGES
           : SIDEBAR_POLITIC_LINKS,
       }}
