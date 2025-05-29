@@ -24,6 +24,20 @@ const POST_TYPE_REWRITES = [
 
 /** List of top level categories */
 const POST_CATEGORY_REWRITES = [
+  /** Start of Firm Pages */
+  {
+    source: '/diversity',
+    destination: '/firm-page/diversity',
+  },
+  {
+    source: '/community-involvement',
+    destination: '/firm-page/community-involvement',
+  },
+  {
+    source: '/pro-bono',
+    destination: '/firm-page/pro-bono',
+  },
+  /** End of firm pages */
   {
     source: '/law-firm-insights/:slug*',
     destination: '/post/:slug*?category=law-firm-insights',
@@ -127,20 +141,6 @@ const SITE_PAGES_REWRITES = [
     destination: '/memorials/peter-r-yarem',
   },
   /** End of Funeral Pages */
-  /** Start of Firm Pages */
-  {
-    source: '/diversity',
-    destination: '/firm-page/diversity',
-  },
-  {
-    source: '/community-involvement',
-    destination: '/firm-page/community-involvement',
-  },
-  {
-    source: '/pro-bono',
-    destination: '/firm-page/pro-bono',
-  },
-  /** End of firm pages */
   {
     source: '/proxy-image/:path*',
     destination: 'https://wp.scarincihollenbeck.com/:path*',

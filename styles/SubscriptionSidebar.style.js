@@ -33,10 +33,15 @@ export const SubscriptionSidebarHolder = styled.div`
 export const SubscriptionSidebarContent = styled.div`
   display: flex;
   flex-direction: column;
-  row-gap: 12px;
+  row-gap: 8px;
 
   ${Title20} {
     color: currentColor;
+    font-size: ${rem(16)};
+
+    ${media_breakpoint_down('xxl')} {
+      font-size: ${rem(14)};
+    }
   }
 
   ${media_breakpoint_down('md')} {
@@ -46,6 +51,11 @@ export const SubscriptionSidebarContent = styled.div`
 
 export const SubscriptionSidebarText = styled.p`
   margin: 0;
+  font-size: ${rem(16)};
+
+  ${media_breakpoint_down('xxl')} {
+    font-size: ${rem(14)};
+  }
 `;
 
 export const SubscriptionSidebarBlock = styled.div`
@@ -66,11 +76,16 @@ export const SubscriptionSidebarBlockTitle = styled.h3`
   font-size: inherit;
   font-weight: 600;
   color: ${globalColor.white};
+  font-size: ${rem(16)};
 
   > span {
     width: 28px;
     height: 28px;
     color: ${globalColor.blue.skyBlue};
+  }
+
+  ${media_breakpoint_down('xxl')} {
+    font-size: ${rem(14)};
   }
 `;
 
@@ -85,6 +100,11 @@ export const SubscriptionSidebarBlockLinks = styled.ul`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    font-size: ${rem(16)};
+
+    ${media_breakpoint_down('xxl')} {
+      font-size: ${rem(14)};
+    }
   }
 
   a {
