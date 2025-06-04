@@ -64,7 +64,7 @@ export const ArticleSecondaryContent = styled.div`
   flex-direction: column;
 
   ${LogoSeparatorWrapper} {
-    margin: 0;
+    margin-block: 0;
   }
 
   ${PracticeAttorneysSection} {

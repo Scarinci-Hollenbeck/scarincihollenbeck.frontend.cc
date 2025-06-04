@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import { PRODUCTION_URL } from 'utils/constants';
 import empty from 'is-empty';
 import PracticePageNew from 'components/pages/PracticePageNew';
@@ -6,8 +5,6 @@ import { formateAwards } from 'utils/helpers';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 import { fetchAPI } from '../../requests/api';
 import { getPracticeData } from '../../requests/practices/practice-default';
-
-const SiteLoader = dynamic(() => import('components/shared/SiteLoader'));
 
 const practicesSlugsQuery = `
 query practicesSlugs {

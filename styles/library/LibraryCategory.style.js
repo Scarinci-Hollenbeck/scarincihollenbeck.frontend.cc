@@ -4,7 +4,7 @@ import { media_breakpoint_down } from '../mediaBreakpoints.style';
 
 export const LibraryCategoriesWrapper = styled.div`
   ${LogoSeparatorWrapper} {
-    margin: 0;
+    margin-block: 0;
   }
 `;
 

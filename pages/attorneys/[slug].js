@@ -37,31 +37,16 @@ query attorneysSlugs {
   }
 }`;
 
-async function attorneyFirmNewsBlogEvents(authorId) {
-  const blogTitles = [];
+async function checkAttorneyBlogsExist(authorId, attorneyId) {
   const blogs = await fetchAPI(checkAttorneyPostsQueryByIdAndSlug, {
-    variables: { categoryId: 599, authorId },
-  });
-  const events = await fetchAPI(checkAttorneyPostsQueryByIdAndSlug, {
-    variables: { categoryId: 99, authorId },
-  });
-  const releases = await fetchAPI(checkAttorneyPostsQueryByIdAndSlug, {
-    variables: { categoryId: 98, authorId },
+    variables: { authorId, attorneyId },
   });
 
   if (blogs.posts.pageInfo.startCursor) {
-    blogTitles.push('Blog');
+    return true;
   }
 
-  if (events.posts.pageInfo.startCursor) {
-    blogTitles.push('Events');
-  }
-
-  if (releases.posts.pageInfo.startCursor) {
-    blogTitles.push('News & Press Releases');
-  }
-
-  return blogTitles;
+  return false;
 }
 
 const excludedSlugs = ['scarinci-hollenbeck'];
@@ -86,12 +71,6 @@ export async function getStaticPaths() {
 
 export const getStaticProps = async ({ params }) => {
   const slug = params?.slug;
-
-  if (!slug) {
-    return {
-      notFound: true,
-    };
-  }
 
   const attorneyBio = await attorneyBySlug(slug);
 
@@ -206,7 +185,11 @@ export const getStaticProps = async ({ params }) => {
   };
 
   /** Accordion data */
-  const blogTitles = await attorneyFirmNewsBlogEvents(authorId);
+  const isBlogsAttorney = await checkAttorneyBlogsExist(
+    authorId,
+    attorneyBio?.databaseId,
+  );
+
   const additionalTabs = [1, 2, 3, 4, 5]
     .map((i) => ({
       id: i,
@@ -233,8 +216,9 @@ export const getStaticProps = async ({ params }) => {
       attorneyBio?.attorneyPublicationsSecondType?.publicationsItems,
     videos: attorneyBio.attorneyAwardsClientsBlogsVideos.attorneyVideos || [],
     govLawPosts,
-    blogTitles: blogTitles || [],
+    isBlogsAttorney: isBlogsAttorney || false,
     authorId,
+    attorneyId: attorneyBio?.databaseId || null,
   };
 
   return {

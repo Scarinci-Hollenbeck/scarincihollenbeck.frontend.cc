@@ -1,6 +1,7 @@
 export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
   attorneyProfileBy(slug: $slug) {
     status
+    databaseId
     seo {
       title
       metaDesc
@@ -191,15 +192,16 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
   }
 }`;
 
-export const checkAttorneyPostsQueryByIdAndSlug = `query AttorneyPostsById(
-  $categoryId: [ID]
+export const checkAttorneyPostsQueryByIdAndSlug = `
+query AttorneyPostsById(
   $authorId: Int
   $first: Int
   $last: Int
   $after: String
   $before: String
+  $attorneyId: ID
   ) {
-  posts(first: $first, last: $last, after: $after, before: $before, where: {categoryIn: $categoryId, author: $authorId}) {
+  posts(first: $first, last: $last, after: $after, before: $before, where: {author: $authorId, selectAttorneysCustom: $attorneyId}) {
     pageInfo {
       endCursor
       startCursor
@@ -538,13 +540,13 @@ query ClientsQuery(
 
 export const postsForPaginationByAuthorIdQuery = `
   query postsForPaginationByAuthorId(
-    $categoryId: [ID],
     $authorId: Int,
+    $attorneyId: ID,
     $offsetPosts: Int,
     $postsPerPage: Int
   ) {
     posts(
-      where: {categoryIn: $categoryId, author: $authorId, offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
+      where: {author: $authorId, selectAttorneysCustom: $attorneyId, offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
     ) {
       pageInfo {
         offsetPagination {

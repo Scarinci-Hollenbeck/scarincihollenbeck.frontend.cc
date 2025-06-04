@@ -16,7 +16,7 @@ const LibraryCategories = ({ categories }) => {
             posts={category?.posts}
           />
           {index < categories.length - 1 && (
-            <LogoSeparator direction="row" isBig />
+            <LogoSeparator direction="row" isBig isContainer />
           )}
         </Fragment>
       ))}
