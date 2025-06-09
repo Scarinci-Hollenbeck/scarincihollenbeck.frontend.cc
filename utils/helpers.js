@@ -94,7 +94,7 @@ export const formatSrcToCloudinaryUrl = (src) => {
     const file = splitSrc[splitSrc.length - 1];
     return CLOUDINARY_BASE_URL + file;
   }
-  return '/images/no-image-found-diamond-750x350.png';
+  return '/images/logo-diamond-print.png';
 };
 
 // Format image src into a cloudinary url

@@ -69,7 +69,7 @@ const AttorneyPrintPage = ({
   const containerRef = useRef();
   useImagesLoad(onReady, containerRef);
 
-  const linkedIn = contact.socialMediaLinks.filter(
+  const linkedIn = contact?.socialMediaLinks?.filter(
     (a) => a.channel === 'LinkedIn',
   )[0];
 
