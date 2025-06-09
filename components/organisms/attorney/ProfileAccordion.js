@@ -23,7 +23,7 @@ const AwardsSlider = dynamic(() => import('components/molecules/home/AwardsSlide
 
 const BlogsBox = dynamic(() => import('../../molecules/attorney/BlogsBox'));
 
-const renderBlogPosts = (data, config, blogTitles, isWide, name) => blogTitles?.includes(config?.title) && (
+const renderBlogPosts = (data, config, isBlogsAttorney, isWide, name) => isBlogsAttorney && (
 <AccordionItem
   as="li"
   eventKey={`${config?.actionKey}-${name}`}
@@ -62,39 +62,21 @@ const ProfileAccordion = ({
   publicationsItems,
   videos,
   govLawPosts,
-  blogTitles,
+  isBlogsAttorney,
   name,
   authorId,
+  attorneyId,
 }) => {
   const router = useRouter();
 
-  // News Press Releases section START
-  const newsPressReleasesConfig = {
-    title: 'News & Press Releases',
-    queryParams: 'news-press-releases-page',
-    actionKey: 'news-and-press',
-    params: {
-      authorId,
-      categoryId: 98,
-      currentPage: router?.query?.['news-press-releases-page'] || 1,
-      itemsPerPage: 6,
-    },
-  };
-
-  const newsPressReleasesPaginationData = getPaginationData(
-    postsForPaginationByAuthorIdQuery,
-    newsPressReleasesConfig.params,
-  );
-  // News Press Releases section END
-
-  // Blog section START
+  // Blog posts section START
   const blogConfig = {
-    title: 'Blog',
+    title: 'Blog posts',
     queryParams: 'blogs-page',
     actionKey: 'blogs',
     params: {
       authorId,
-      categoryId: 599,
+      attorneyId,
       currentPage: router?.query?.['blogs-page'] || 1,
       itemsPerPage: 3,
     },
@@ -104,26 +86,7 @@ const ProfileAccordion = ({
     postsForPaginationByAuthorIdQuery,
     blogConfig.params,
   );
-  // Blog section END
-
-  // Events section START
-  const eventsConfig = {
-    title: 'Events',
-    queryParams: 'events-page',
-    actionKey: 'events',
-    params: {
-      authorId,
-      categoryId: 99,
-      currentPage: router?.query?.['events-page'] || 1,
-      itemsPerPage: 6,
-    },
-  };
-
-  const eventsPostsPaginationData = getPaginationData(
-    postsForPaginationByAuthorIdQuery,
-    eventsConfig.params,
-  );
-  // Events section END
+  // Blog posts section END
 
   return (
     <ProfileAccordionWrapper data-testid="profile-accordion">
@@ -167,17 +130,9 @@ const ProfileAccordion = ({
             <ProfileClients clients={clients} name={name} />
 
             {renderBlogPosts(
-              newsPressReleasesPaginationData,
-              newsPressReleasesConfig,
-              blogTitles,
-              false,
-              name,
-            )}
-
-            {renderBlogPosts(
               blogPostsPaginationData,
               blogConfig,
-              blogTitles,
+              isBlogsAttorney,
               false,
               name,
             )}
@@ -200,14 +155,6 @@ const ProfileAccordion = ({
               >
                 <MediaSlider items={presentationsItems} />
               </AccordionItem>
-            )}
-
-            {renderBlogPosts(
-              eventsPostsPaginationData,
-              eventsConfig,
-              blogTitles,
-              true,
-              name,
             )}
 
             {!empty(videos) && (
