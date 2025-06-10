@@ -58,7 +58,7 @@ const SubHeaderDefault = ({
       )}
 
       <SubHeaderContent className="sub-header__content">
-        <PostBreadCrumbs data={{ title }} />
+        <PostBreadCrumbs data={{ title, category }} />
 
         <SubHeaderInfo key={`${title}-subheader-content`}>
           <SubHeaderCategory
