@@ -80,11 +80,9 @@ export const getPracticeData = async (uri) => {
     ];
   }
 
-  const concatAttorneys = [
-    ...practiceChief,
-    ...keyContactsArr,
-    ...keyContactsByParentPractice,
-  ];
+  const concatAttorneys = empty(keyContactsArr) && empty(practiceChief)
+    ? [...keyContactsByParentPractice]
+    : [...practiceChief, ...keyContactsArr];
 
   const uniqueAttorneys = Array.from(
     new Map(concatAttorneys.map((item) => [item.databaseId, item])).values(),
