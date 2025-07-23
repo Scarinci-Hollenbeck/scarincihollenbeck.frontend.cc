@@ -372,7 +372,7 @@ export const ATTORNEYS_FAQ = [
     We service our clients in a large variety of matters. In areas such as Intellectual Property,
     including trademark, copyright, or patent-related matters, we can service these requests regardless
     of where our clients are based. However, we predominantly handle legal matters whose jurisdiction
-    is New Jersey, New York, the tri-state metropolitan area, and Washington, D.C. We also have <strong>attorneys
+    is New Jersey, New York, the tri-state metropolitan area. We also have <strong>attorneys
     who are licensed</strong> to practice in Connecticut, Florida, Massachusetts, Pennsylvania, and other states.
     We recommend calling one of our dedicated staff members who can help identify if we have an attorney at
     the firm that can assist you. Feel free to reach out to us at <a href="tel:201-806-3364"> 201-806-3364</a>.
@@ -819,7 +819,7 @@ export const SERVICES_SIDEBAR_DEFAULT_CONTENT = {
     </p>
     <p>
       Scarinci Hollenbeck is a business law firm based in New Jersey, New
-      York, and Washington, D.C servicing clients worldwide.
+      York servicing clients worldwide.
     </p>
   `,
   quote: `
