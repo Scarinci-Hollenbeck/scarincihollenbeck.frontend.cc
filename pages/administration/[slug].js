@@ -39,13 +39,11 @@ const getAdminData = async (slug) => {
         vizibility: administration.vizibility,
         socialMediaLinks: administration.socialMediaLinks,
       },
-      offices: administration.location.map(
-        ({ id, uri, officeMainInformation }) => ({
-          id,
-          uri,
-          name: officeMainInformation.addressLocality,
-        }),
-      ),
+      offices: administration.location.map(({ id, uri, title }) => ({
+        id,
+        uri,
+        name: title,
+      })),
       isAdmin: true,
     },
     seo: {

@@ -128,9 +128,6 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
           id
           title(format: RENDERED)
           uri
-          officeMainInformation {
-            addressLocality
-          }
         }
       }
       relatedPractices {
@@ -852,9 +849,7 @@ query FirmPageQuery($id: ID!) {
       }
       location {
         ... on OfficeLocation {
-          officeMainInformation {
-            addressLocality
-          }
+          title
           uri
           id
         }
@@ -977,9 +972,7 @@ query FirmOverviewQuery {
             }
             location {
               ... on OfficeLocation {
-                officeMainInformation {
-                  addressLocality
-                }
+                title
                 uri
                 id
               }
@@ -1024,9 +1017,7 @@ query FirmOverviewQuery {
             }
             location {
               ... on OfficeLocation {
-                officeMainInformation {
-                  addressLocality
-                }
+                title
                 uri
                 id
               }
@@ -1069,9 +1060,7 @@ export const adminsQuery = `query AttorneyPostsById {
           ... on OfficeLocation {
             id
             uri
-            officeMainInformation {
-              addressLocality
-            }
+            title
           }
         }
         designation

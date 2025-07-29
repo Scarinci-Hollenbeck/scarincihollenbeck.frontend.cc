@@ -37,12 +37,10 @@ const sanitizeMembers = (members) => members.map((member) => ({
       }),
     )
     : !empty(member.administration)
-      ? member.administration?.location?.map(
-        ({ id, officeMainInformation }) => ({
-          id,
-          officeMainInformation: officeMainInformation.addressLocality,
-        }),
-      )
+      ? member.administration?.location?.map(({ id, title }) => ({
+        id,
+        officeMainInformation: title,
+      }))
       : [],
 }));
 
