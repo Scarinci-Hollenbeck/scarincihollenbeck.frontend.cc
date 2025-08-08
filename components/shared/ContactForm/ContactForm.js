@@ -49,7 +49,10 @@ export default function ContactForm({
           * The use of the Internet or this form for communication with the firm
           or any individual member of the firm does not establish an
           attorney-client relationship. Confidential or time-sensitive
-          information should not be sent through this form.
+          information should not be sent through this form. By providing a
+          telephone number and submitting this form you are consenting to be
+          contacted by SMS text message. Message & data rates may apply. You can
+          reply STOP to opt-out of further messaging.
         </p>
         {!empty(blockName) && (
           // eslint-disable-next-line react/no-unknown-property
