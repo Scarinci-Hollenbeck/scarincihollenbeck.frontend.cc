@@ -42,8 +42,9 @@ const CareerForm = () => {
             attorney-client relationship. Confidential or time-sensitive
             information should not be sent through this form. By providing a
             telephone number and submitting this form you are consenting to be
-            contacted by SMS text message. Message & data rates may apply. You
-            can reply STOP to opt-out of further messaging.
+            contacted by SMS text message. Message & data rates may apply.
+            Message frequency may vary. You can reply STOP to opt-out of further
+            messaging.
           </p>
           {/* eslint-disable-next-line react/no-unknown-property */}
           <fieldset
