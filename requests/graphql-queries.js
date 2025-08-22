@@ -622,6 +622,10 @@ export const homePageQuery = `query HomePageQuery {
         awardImage {
           sourceUrl
         }
+        link {
+          url
+          target
+        }
       }
       isHoliday
       firstSection {
