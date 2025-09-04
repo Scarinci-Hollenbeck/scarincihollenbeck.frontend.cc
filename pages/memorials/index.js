@@ -22,7 +22,7 @@ export async function getStaticProps() {
       image: featuredImage?.node?.sourceUrl || null,
       memorials: memorials?.nodes,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 }
 

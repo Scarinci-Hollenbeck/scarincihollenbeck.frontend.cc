@@ -9,8 +9,8 @@ global.cache.practices = global.cache.practices || {
 
 export default async function handler(req, res) {
   const currentTime = Date.now();
-  const cacheDurationSeconds = 8600;
-  const cacheDuration = cacheDurationSeconds * 1000; // 8600 sec
+  const cacheDurationSeconds = 600;
+  const cacheDuration = cacheDurationSeconds * 1000; // 600 sec
 
   const { data, lastFetchTime } = global.cache.practices;
   const timeSinceLastFetch = currentTime - lastFetchTime;

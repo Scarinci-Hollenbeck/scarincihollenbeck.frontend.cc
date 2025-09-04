@@ -136,7 +136,7 @@ export const getServerSideProps = async ({ res }) => {
   `;
   res.setHeader(
     'Cache-Control',
-    'max-age=0, s-maxage=86400, stale-while-revalidate',
+    'max-age=0, s-maxage=600, stale-while-revalidate',
   );
   res.setHeader('Content-Type', 'text/xml');
   res.write(sitemap);

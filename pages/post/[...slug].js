@@ -88,7 +88,7 @@ const getPostContentData = async (slug, categorySlug) => {
 export const getServerSideProps = async ({ params, res, query }) => {
   res.setHeader(
     'Cache-Control',
-    'max-age=0, s-maxage=3600, stale-while-revalidate=120',
+    'max-age=0, s-maxage=600, stale-while-revalidate=120',
   );
   const postSlug = params.slug[params.slug.length - 1];
   const { category } = query;

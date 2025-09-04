@@ -56,7 +56,7 @@ export const getStaticProps = async ({ params }) => {
       sections: pagesFields?.sections,
       canonicalUrl: `${PRODUCTION_URL}/${params.slug}`,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 };
 

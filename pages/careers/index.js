@@ -57,7 +57,7 @@ export const getStaticProps = async () => {
       },
       careerList: sanitizeCareers(careerList),
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 };
 

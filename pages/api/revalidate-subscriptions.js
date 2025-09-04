@@ -10,8 +10,8 @@ global.cache.categories = global.cache.categories || {
 
 export default async function handler(req, res) {
   const currentTime = Date.now();
-  const cacheDurationSeconds = 8600;
-  const cacheDuration = cacheDurationSeconds * 1000; // 8600 seconds in milliseconds
+  const cacheDurationSeconds = 600;
+  const cacheDuration = cacheDurationSeconds * 1000; // 600 seconds in milliseconds
 
   const { data, lastFetchTime } = global.cache.categories;
   const timeSinceLastFetch = currentTime - lastFetchTime;

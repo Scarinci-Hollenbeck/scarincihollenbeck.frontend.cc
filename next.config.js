@@ -18,7 +18,7 @@ const { PERMANENT_REDIRECTS } = require('./utils/permanent-redirects');
 const securityHeaders = [
   {
     key: 'Cache-Control',
-    value: 's-maxage=8600, stale-while-revalidate',
+    value: 's-maxage=600, stale-while-revalidate',
   },
 ];
 

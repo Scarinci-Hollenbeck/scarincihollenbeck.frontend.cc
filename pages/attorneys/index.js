@@ -57,7 +57,7 @@ export async function getStaticProps() {
       seoAttorneys: sortedAttorneysByCategory,
       practices,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 }
 

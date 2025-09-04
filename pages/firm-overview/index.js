@@ -73,7 +73,7 @@ export const getStaticProps = async () => {
       firmMembers: firmMembers || {},
       subHeaderImage: featuredImage.node.sourceUrl,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 };
 
