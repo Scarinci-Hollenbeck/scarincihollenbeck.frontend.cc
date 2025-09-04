@@ -95,7 +95,7 @@ export const getStaticProps = async ({ params }) => {
       sidebarContent: practice?.practicesIncluded?.sidebarContent || null,
       posts: postsData?.posts || [],
     },
-    revalidate: 8600,
+    revalidate: 600,
   };
 };
 

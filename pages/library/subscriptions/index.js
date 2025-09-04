@@ -30,7 +30,7 @@ export async function getStaticProps() {
       subHeaderSlides,
       subscriptions,
     },
-    revalidate: 3600,
+    revalidate: 600,
   };
 }
 

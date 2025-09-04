@@ -50,7 +50,7 @@ export const getStaticProps = async () => {
       practices: practicesSorted,
       seo: data?.seo,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 };
 

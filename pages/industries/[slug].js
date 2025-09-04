@@ -109,7 +109,7 @@ export const getStaticProps = async ({ params }) => {
       seo: industry?.seo,
       canonicalLink: `${PRODUCTION_URL}/industries/${params?.slug}`,
     },
-    revalidate: 8600,
+    revalidate: 600,
   };
 };
 

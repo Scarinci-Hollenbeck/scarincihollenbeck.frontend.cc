@@ -144,7 +144,7 @@ export const getStaticProps = async ({ params }) => {
       canonicalUrl: `${PRODUCTION_URL}/location/${slug}`,
       practices,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 };
 

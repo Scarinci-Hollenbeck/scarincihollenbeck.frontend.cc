@@ -229,7 +229,7 @@ export const getStaticProps = async ({ params }) => {
       qrCodeBioPage: attorneyBio.attorneyMainInformation.qrCodeBioPage,
       qrCodeLinkedin: attorneyBio.attorneyMainInformation.qrCodeLinkedin,
     },
-    revalidate: 3600,
+    revalidate: 600,
   };
 };
 

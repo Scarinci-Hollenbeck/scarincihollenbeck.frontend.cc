@@ -83,7 +83,7 @@ export const getStaticProps = async ({ params }) => {
     props: {
       dataAdmin,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 };
 

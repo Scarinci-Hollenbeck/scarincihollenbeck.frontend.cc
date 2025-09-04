@@ -107,7 +107,7 @@ export const getStaticProps = async () => {
       whyChooseUs,
       practices,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 };
 
