@@ -17,7 +17,7 @@ import MediaSlider from 'components/molecules/attorney/MediaSlider';
 import { useRouter } from 'next/router';
 import { reservedAccordionTitles } from 'utils/constants';
 import { getPaginationData } from '../../../requests/getPaginationData';
-import { postsForPaginationByAuthorIdQuery } from '../../../requests/graphql-queries';
+import { attorneyPostsQuery } from '../../../requests/graphql-queries';
 
 const AwardsSlider = dynamic(() => import('components/molecules/home/AwardsSlider'));
 
@@ -62,31 +62,53 @@ const ProfileAccordion = ({
   publicationsItems,
   videos,
   govLawPosts,
-  isBlogsAttorney,
+  isArticlesAttorney,
+  isNewsAttorney,
   name,
   authorId,
   attorneyId,
 }) => {
   const router = useRouter();
 
-  // Blog posts section START
+  // Articles from Firm Insights category START
   const blogConfig = {
-    title: 'Blog posts',
-    queryParams: 'blogs-page',
-    actionKey: 'blogs',
+    title: 'Articles',
+    queryParams: 'articles-page',
+    actionKey: 'articles',
     params: {
       authorId,
       attorneyId,
-      currentPage: router?.query?.['blogs-page'] || 1,
+      currentPage: router?.query?.['articles-page'] || 1,
       itemsPerPage: 3,
+      categories: [599],
     },
   };
 
-  const blogPostsPaginationData = getPaginationData(
-    postsForPaginationByAuthorIdQuery,
+  const articlesPaginationData = getPaginationData(
+    attorneyPostsQuery,
     blogConfig.params,
   );
-  // Blog posts section END
+  // Articles from Firm Insights category END
+
+  // Articles from Firm News, Client Alerts, Firm Events categories START
+  const newsConfig = {
+    title: 'The News',
+    queryParams: 'news-page',
+    actionKey: 'news',
+    params: {
+      authorId,
+      attorneyId,
+      currentPage: router?.query?.['news-page'] || 1,
+      itemsPerPage: 3,
+      categories: [98, 99, 20098],
+    },
+  };
+
+  const newsPaginationData = getPaginationData(
+    attorneyPostsQuery,
+    newsConfig.params,
+  );
+  // Articles from Firm News, Client Alerts, Firm Events categories END
 
   return (
     <ProfileAccordionWrapper data-testid="profile-accordion">
@@ -130,9 +152,17 @@ const ProfileAccordion = ({
             <ProfileClients clients={clients} name={name} />
 
             {renderBlogPosts(
-              blogPostsPaginationData,
+              articlesPaginationData,
               blogConfig,
-              isBlogsAttorney,
+              isArticlesAttorney,
+              false,
+              name,
+            )}
+
+            {renderBlogPosts(
+              newsPaginationData,
+              newsConfig,
+              isNewsAttorney,
               false,
               name,
             )}

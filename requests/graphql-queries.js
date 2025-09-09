@@ -189,23 +189,31 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
   }
 }`;
 
-export const checkAttorneyPostsQueryByIdAndSlug = `
-query AttorneyPostsById(
-  $authorId: Int
-  $first: Int
-  $last: Int
-  $after: String
-  $before: String
-  $attorneyId: ID
+export const checkAttorneyPostsQuery = `
+query CheckAttorneyPostsQuery(
+  $authorId: Int,
+  $first: Int,
+  $last: Int,
+  $after: String,
+  $before: String,
+  $attorneyId: ID,
+  $categories: [ID],
   ) {
-  posts(first: $first, last: $last, after: $after, before: $before, where: {author: $authorId, selectAttorneysCustom: $attorneyId}) {
-    pageInfo {
-      endCursor
-      startCursor
-      hasNextPage
-      hasPreviousPage
+    posts(
+      first: $first, 
+      last: $last, 
+      after: $after, 
+      before: $before, 
+      where: {author: $authorId, selectAttorneysCustom: $attorneyId, categoryIn: $categories},
+    ) {
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
+        hasPreviousPage
+      }
     }
-  }}
+  }
 `;
 
 export const attorneysQuery = `query FirmPageQuery {
@@ -535,15 +543,21 @@ query ClientsQuery(
   }
 }`;
 
-export const postsForPaginationByAuthorIdQuery = `
-  query postsForPaginationByAuthorId(
+export const attorneyPostsQuery = `
+  query AttorneyPostsQuery(
     $authorId: Int,
     $attorneyId: ID,
     $offsetPosts: Int,
-    $postsPerPage: Int
+    $postsPerPage: Int,
+    $categories: [ID],
   ) {
     posts(
-      where: {author: $authorId, selectAttorneysCustom: $attorneyId, offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
+      where: {
+        author: $authorId, 
+        selectAttorneysCustom: $attorneyId, 
+        offsetPagination: {offset: $offsetPosts, size: $postsPerPage}, 
+        categoryIn: $categories
+      }
     ) {
       pageInfo {
         offsetPagination {

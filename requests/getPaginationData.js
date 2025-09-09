@@ -12,6 +12,7 @@ export const getPaginationData = (query, params) => {
     slug,
     authorName,
     attorneyId,
+    categories,
   } = params;
 
   const currentPage = Number(tempCurrentPage);
@@ -25,6 +26,7 @@ export const getPaginationData = (query, params) => {
     authorId: !empty(authorId) ? authorId : null,
     categoryId: !empty(categoryId) ? categoryId : null,
     attorneyId: !empty(attorneyId) ? attorneyId : null,
+    categories: !empty(categories) ? categories : null,
     offsetPosts,
     postsPerPage: itemsPerPage,
     slug: !empty(slug) ? slug : null,

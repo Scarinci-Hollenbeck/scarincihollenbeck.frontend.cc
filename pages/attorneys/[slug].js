@@ -2,7 +2,7 @@ import React from 'react';
 import { fetchAPI } from 'requests/api';
 import {
   attorneyBySlugQuery,
-  checkAttorneyPostsQueryByIdAndSlug,
+  checkAttorneyPostsQuery,
 } from 'requests/graphql-queries';
 import {
   concatNameUser,
@@ -37,9 +37,9 @@ query attorneysSlugs {
   }
 }`;
 
-async function checkAttorneyBlogsExist(authorId, attorneyId) {
-  const blogs = await fetchAPI(checkAttorneyPostsQueryByIdAndSlug, {
-    variables: { authorId, attorneyId },
+async function checkAttorneyBlogsExist(authorId, attorneyId, categories) {
+  const blogs = await fetchAPI(checkAttorneyPostsQuery, {
+    variables: { authorId, attorneyId, categories },
   });
 
   if (blogs.posts.pageInfo.startCursor) {
@@ -185,9 +185,16 @@ export const getStaticProps = async ({ params }) => {
   };
 
   /** Accordion data */
-  const isBlogsAttorney = await checkAttorneyBlogsExist(
+  const isArticlesAttorney = await checkAttorneyBlogsExist(
     authorId,
     attorneyBio?.databaseId,
+    [599],
+  );
+
+  const isNewsAttorney = await checkAttorneyBlogsExist(
+    authorId,
+    attorneyBio?.databaseId,
+    [98, 99, 20098],
   );
 
   const additionalTabs = [1, 2, 3, 4, 5]
@@ -216,7 +223,8 @@ export const getStaticProps = async ({ params }) => {
       attorneyBio?.attorneyPublicationsSecondType?.publicationsItems,
     videos: attorneyBio.attorneyAwardsClientsBlogsVideos.attorneyVideos || [],
     govLawPosts,
-    isBlogsAttorney: isBlogsAttorney || false,
+    isArticlesAttorney: isArticlesAttorney || false,
+    isNewsAttorney: isNewsAttorney || false,
     authorId,
     attorneyId: attorneyBio?.databaseId || null,
   };
