@@ -81,6 +81,11 @@ export const fetchExternalPosts = async (site, authorId, amount) => {
       },
     });
 
+    if (!res || !res.ok) {
+      console.warn(`Error ${url}: ${res?.status} ${res?.statusText}`);
+      return [];
+    }
+
     return await res.json();
   } catch (error) {
     console.error(error);
