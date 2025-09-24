@@ -78,7 +78,7 @@ export const getStaticProps = async ({ params }) => {
     return {
       redirect: {
         destination: '/attorneys?notFound=true',
-        permanent: true,
+        permanent: false,
       },
     };
   }
