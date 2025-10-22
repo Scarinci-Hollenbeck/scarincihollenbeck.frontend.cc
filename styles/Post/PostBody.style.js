@@ -42,10 +42,6 @@ export const PostContent = styled.div`
   gap: 32px;
   overflow: auto;
 
-  .disclaimer {
-    margin: 0;
-  }
-
   .wp-block-heading {
     scroll-margin-top: calc(var(--header-height) + 16px);
   }

@@ -1,40 +1,35 @@
 import React from 'react';
 import empty from 'is-empty';
 import {
-  ProfileAccordionBody,
-  ProfileClientsWrapper,
-} from 'styles/attorney-page/ProfileAccordion.style';
+  ProfileClientsList,
+  ProfileClientsListItem,
+} from 'styles/attorney-page/ProfileClients.style';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
-import AccordionItem from './AccordionItem';
 
 const ClientSlider = dynamic(() => import('./ClientSlider'));
 
-const ProfileClients = ({ clients, name }) => {
+const ProfileClients = ({ clients }) => {
   if (empty(clients)) return null;
 
   return (
-    <ProfileClientsWrapper as="li" data-testid="profile-clients-list">
+    <>
       <ClientSlider clients={clients} />
-      <AccordionItem
-        eventKey={`profile-clients-list-${name}`}
-        title="Clients List"
-      >
-        <ProfileAccordionBody $columnsCountUl={3}>
-          <ul>
-            {clients.map(({ clientLink, clientTitle }) => (
-              <li key={clientTitle}>
-                {!empty(clientLink) ? (
-                  <Link href={clientLink}>{clientTitle}</Link>
-                ) : (
-                  clientTitle
-                )}
-              </li>
-            ))}
-          </ul>
-        </ProfileAccordionBody>
-      </AccordionItem>
-    </ProfileClientsWrapper>
+
+      <ProfileClientsList>
+        {clients.map(({ clientLink, clientTitle }) => (
+          <ProfileClientsListItem key={clientTitle}>
+            {!empty(clientLink) ? (
+              <Link href={clientLink} target="_blank" rel="noreferrer noopener">
+                {clientTitle}
+              </Link>
+            ) : (
+              clientTitle
+            )}
+          </ProfileClientsListItem>
+        ))}
+      </ProfileClientsList>
+    </>
   );
 };
 

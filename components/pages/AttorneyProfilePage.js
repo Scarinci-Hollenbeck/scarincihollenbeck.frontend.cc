@@ -1,26 +1,18 @@
-import ProfileAccordion from 'components/organisms/attorney/ProfileAccordion';
 import ProfileHeader from 'components/organisms/attorney/ProfileHeader';
 import PersonSiteHead from 'components/shared/head/PersonSiteHead';
 import { CURRENT_DOMAIN } from 'utils/constants';
 import usePrintLogic from 'hooks/usePrintLogic';
-import AttorneyPrintPage from './AttorneyPrintPage';
-import { useGetLocationsQuery } from '../../redux/services/project-api';
+import ProfileContent from 'components/organisms/attorney/ProfileContent';
+import ProfileMedia from 'components/organisms/attorney/ProfileMedia';
+// import AttorneyPrintPage from './AttorneyPrintPage';
 
-const AttorneyProfilePage = ({
-  seo,
-  profileHeader,
-  accordionData,
-  qrCodeBioPage,
-  qrCodeLinkedin,
-}) => {
-  const { data: locations } = useGetLocationsQuery();
+const AttorneyProfilePage = (props) => {
+  const {
+    seo, profileHeader, profileContent, asideItems, profileMedia,
+  } = props;
 
   const printPageProps = {
     ...profileHeader,
-    ...accordionData,
-    qrCodeBioPage,
-    qrCodeLinkedin,
-    locations,
   };
 
   const { isRenderPdf, setIsPrintReady, handlePrint } = usePrintLogic();
@@ -33,17 +25,21 @@ const AttorneyProfilePage = ({
         canonicalUrl={`${CURRENT_DOMAIN}/${seo.canonicalLink}`}
         name={profileHeader.name}
         featuredImage={seo.image}
-        designation={profileHeader.title}
+        designation={profileHeader.designation}
         socialMediaLinks={seo.socialMediaLinks}
       />
       <ProfileHeader handlePrint={handlePrint} {...profileHeader} />
-      <ProfileAccordion {...accordionData} name={profileHeader?.name} />
+
+      <ProfileContent profileContent={profileContent} asideItems={asideItems} />
+
+      <ProfileMedia {...profileMedia} />
 
       {isRenderPdf && (
-        <AttorneyPrintPage
-          {...printPageProps}
-          onReady={() => setIsPrintReady(true)}
-        />
+        <span>Print coming soon</span>
+        // <AttorneyPrintPage
+        //   {...printPageProps}
+        //   onReady={() => setIsPrintReady(true)}
+        // />
       )}
     </>
   );

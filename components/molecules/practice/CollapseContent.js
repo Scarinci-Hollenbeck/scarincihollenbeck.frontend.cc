@@ -5,57 +5,58 @@ import {
   CollapseButton,
   CollapseContentWrapper,
 } from 'styles/CollapseContent.style';
-import { ContentContainer } from 'styles/Content.style';
+import empty from 'is-empty';
 
-const CollapseContent = ({ title, content, id }) => {
+const MAX_HEIGHT = 500;
+
+const CollapseContent = ({
+  title, content, id, ...props
+}) => {
   const [open, setOpen] = useState(false);
+  const [isShort, setIsShort] = useState(false);
   const contentRef = useRef(null);
-  const isContentShort = contentRef.current && contentRef.current.clientHeight < 500;
 
   useEffect(() => {
-    const handleContentHeight = () => {
-      if (contentRef.current) {
-        if (contentRef.current.clientHeight < 500) {
-          setOpen(true);
-        } else {
-          setOpen(false);
-        }
-      }
+    const el = contentRef.current;
+    if (!el) return;
+
+    const checkHeight = () => {
+      const short = el.clientHeight < MAX_HEIGHT;
+      setIsShort(short);
+      setOpen(short);
     };
 
-    handleContentHeight();
+    checkHeight();
+
+    const observer = new ResizeObserver(() => checkHeight());
+    observer.observe(el);
+
+    return () => observer.disconnect();
   }, [content]);
 
-  if (isContentShort) {
-    return (
-      <ContentContainer
-        ref={contentRef}
-        className="content-block margin-scroll"
-        id={`${id}-section`}
-      >
-        <h2>{title}</h2>
-        <JSXWithDynamicLinks HTML={content} />
-      </ContentContainer>
-    );
-  }
-
   return (
-    <div className="content-block margin-scroll" id={`${id}-section`}>
-      <Collapse in={open}>
-        <CollapseContentWrapper>
-          <h2>{title}</h2>
+    <div
+      className="content-block margin-scroll"
+      id={id ? `${id}-section` : undefined}
+    >
+      <Collapse in={isShort || open}>
+        <CollapseContentWrapper {...props}>
+          {!empty(title) && <h2>{title}</h2>}
           <div ref={contentRef}>
             <JSXWithDynamicLinks HTML={content} />
           </div>
         </CollapseContentWrapper>
       </Collapse>
-      <CollapseButton
-        onClick={() => setOpen(!open)}
-        aria-expanded={open}
-        className="collapse-opener"
-      >
-        {open ? '' : 'Read more'}
-      </CollapseButton>
+
+      {!isShort && (
+        <CollapseButton
+          onClick={() => setOpen(!open)}
+          aria-expanded={open}
+          className="collapse-opener"
+        >
+          {open ? '' : 'Read more'}
+        </CollapseButton>
+      )}
     </div>
   );
 };

@@ -11,7 +11,7 @@ import {
   LinkListBox404,
   TilesBox,
 } from '../../styles/404.style';
-import PostBreadcrumbs from '../organisms/post/PostBreadcrumbs';
+import BreadCrumbs from '../organisms/common/BreadCrumbs';
 import {
   tile404ContentArr,
   tilesErrorContentArr,
@@ -26,7 +26,7 @@ const ErrorPage = ({
   return (
     <ErrorWrapper>
       <Container>
-        <PostBreadcrumbs />
+        <BreadCrumbs />
 
         <ErrorHolder>
           <ErrorContent>

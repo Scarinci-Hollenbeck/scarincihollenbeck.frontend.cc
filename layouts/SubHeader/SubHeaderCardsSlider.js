@@ -15,9 +15,8 @@ import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDyn
 import Image from 'next/image';
 import { IoIosArrowDown, IoIosArrowUp } from 'react-icons/io';
 import { UnderlinedLink } from 'styles/common/Typography.style';
-import { useDispatch } from 'react-redux';
 import useSlider from 'hooks/useSlider';
-import { handleModalOpener } from '../../redux/slices/modals.slice';
+import ContactModalOpener from 'components/atoms/ContactModalOpener';
 
 const SubHeaderCardsSlider = ({
   slides = [],
@@ -25,7 +24,6 @@ const SubHeaderCardsSlider = ({
   slidesLabel,
   isContact,
 }) => {
-  const dispatch = useDispatch();
   const {
     activeSlide,
     prevSlide,
@@ -78,13 +76,13 @@ const SubHeaderCardsSlider = ({
             </SubHeaderSlideDescription>
           )}
           {isContact && (
-            <UnderlinedLink
+            <ContactModalOpener
+              asComponent={UnderlinedLink}
               as="button"
-              onClick={() => dispatch(handleModalOpener({ active: true }))}
               $isWhite
             >
               Contact now
-            </UnderlinedLink>
+            </ContactModalOpener>
           )}
 
           <SubHeaderSlideNavigationButton

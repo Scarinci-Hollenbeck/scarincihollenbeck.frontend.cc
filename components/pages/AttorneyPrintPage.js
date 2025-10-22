@@ -17,7 +17,7 @@ import {
 } from '../../styles/attorney-page/AttorneyPrintPage.style';
 import ProfileServices from '../molecules/attorney/ProfileServices';
 import ProfileBioList from '../molecules/attorney/ProfileBioList';
-import { useDesignationHook } from '../organisms/attorney/ProfileHeader';
+// import { useDesignationHook } from '../organisms/attorney/ProfileHeader';
 import ProfileContacts from '../molecules/attorney/ProfileContacts';
 import { JSXWithDynamicLinks } from '../atoms/micro-templates/JSXWithDynamicLinks';
 import { ProfileAccordionBody } from '../../styles/attorney-page/ProfileAccordion.style';
@@ -64,7 +64,7 @@ const AttorneyPrintPage = ({
   onReady,
   locations,
 }) => {
-  const [designation] = useDesignationHook(title);
+  // const [designation] = useDesignationHook(title);
 
   const containerRef = useRef();
   useImagesLoad(onReady, containerRef);
@@ -102,7 +102,7 @@ const AttorneyPrintPage = ({
           <ProfileHeaderRight>
             <ProfileTitle className="profile-title">
               <Title32 as="h1">{name}</Title32>
-              <ProfileDesignation>{designation}</ProfileDesignation>
+              {/* <ProfileDesignation>{designation}</ProfileDesignation> */}
             </ProfileTitle>
             <ProfileServices
               coChairs={coChairs}

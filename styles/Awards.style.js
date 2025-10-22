@@ -51,11 +51,9 @@ export const AwardsSliderWrapper = styled.div`
   row-gap: 12px;
 
   .disclaimer {
-    margin: 0;
     color: ${({ $isLightVariant }) =>
       $isLightVariant ? globalColor.blue.darkBlue : globalColor.white};
     font-weight: 600;
-    text-align: center;
 
     ${media_breakpoint_down('md')} {
       font-size: ${rem(14)};
@@ -66,7 +64,6 @@ export const AwardsSliderWrapper = styled.div`
 export const AwardCardWrapper = styled.div`
   height: 100%;
   width: 100%;
-  padding-top: ${({ $isLightVariant }) => ($isLightVariant ? '12px' : '16px')};
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -94,7 +91,8 @@ export const AwardCardWrapper = styled.div`
 `;
 
 export const AwardCardImage = styled.div`
-  width: 200px;
+  padding: 12px;
+  width: 100%;
   height: 200px;
   display: flex;
   align-items: center;
@@ -102,12 +100,12 @@ export const AwardCardImage = styled.div`
 
   img {
     width: 100%;
+    max-width: 100%;
     height: 100%;
     object-fit: contain;
   }
 
   ${media_breakpoint_down('md')} {
-    width: 144px;
     height: 144px;
   }
 
@@ -192,7 +190,6 @@ export const AwardsPrintContainer = styled.div`
     color: ${globalColor.blue.darkBlue};
     margin: 8px 0 0 0;
     font-weight: 600;
-    text-align: center;
   }
 `;
 

@@ -7,11 +7,6 @@ export const RelatedPostsContainer = styled(ContainerDefault)`
   display: flex;
   flex-direction: column;
   gap: 24px;
-
-  .disclaimer {
-    margin: 0;
-    text-align: center;
-  }
 `;
 
 export const RelatedPostsSliderWrapper = styled.div`

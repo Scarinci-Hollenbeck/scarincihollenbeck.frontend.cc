@@ -8,10 +8,9 @@ import AttorneyCard from 'components/shared/AttorneyCard';
 import { globalColor } from 'styles/global_styles/Global.styles';
 import { QRCodesBoxForPDF } from 'styles/common/PrintStyles.style';
 import { FaFilePdf } from 'react-icons/fa6';
-import { OutlinedButton, StandardBlueButton } from 'styles/Buttons.style';
-import { useDispatch } from 'react-redux';
+import { OutlinedButton } from 'styles/Buttons.style';
 import { SubHeaderInteractive } from 'styles/subheader/SubHeader.style';
-import { handleModalOpener } from '../../redux/slices/modals.slice';
+import ContactModalOpener from 'components/atoms/ContactModalOpener';
 
 const SubHeaderKeyContacts = ({
   keyContacts,
@@ -20,7 +19,6 @@ const SubHeaderKeyContacts = ({
   printButtonText = 'Print page',
 }) => {
   if (empty(keyContacts)) return null;
-  const dispatch = useDispatch();
 
   return (
     <SubHeaderInteractive $bg={globalColor.blue.blue6002}>
@@ -70,16 +68,9 @@ const SubHeaderKeyContacts = ({
       </SubHeaderKeyContactsCards>
 
       <SubHeaderKeyContactsButtons>
-        <StandardBlueButton
-          onClick={() => dispatch(
-            handleModalOpener({
-              active: true,
-            }),
-          )}
-          $isLightHover
-        >
+        <ContactModalOpener $isLightHover>
           <span>Contact now</span>
-        </StandardBlueButton>
+        </ContactModalOpener>
         {handlePrint && (
           <OutlinedButton onClick={handlePrint}>
             <FaFilePdf size={24} />

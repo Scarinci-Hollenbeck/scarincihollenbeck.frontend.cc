@@ -559,8 +559,10 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   .disclaimer {
+    margin: 0 auto;
     font-size: inherit;
     font-weight: 700;
+    text-align: center;
   }
   
   .tostify-custom {

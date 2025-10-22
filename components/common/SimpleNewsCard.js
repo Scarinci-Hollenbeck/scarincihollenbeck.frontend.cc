@@ -1,10 +1,7 @@
 import empty from 'is-empty';
 import Link from 'next/link';
 import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
-import {
-  CardFooterBox,
-  NewsCardBlock,
-} from '../../styles/attorney-page/AttorneyProfile.style';
+import { NewsCardBlock, CardFooterBox } from 'styles/SimpleNewsCard.style';
 import { formatDate } from '../../utils/helpers';
 import { videoRender } from '../../utils/videoRender';
 
@@ -19,6 +16,7 @@ const SimpleNewsCard = ({
   isAuthor,
   isFull,
   isJSXDescription,
+  isWhite,
 }) => {
   const Component = empty(video) && !empty(link) ? Link : 'div';
   const DescriptionComponent = isJSXDescription ? 'div' : 'p';
@@ -39,7 +37,7 @@ const SimpleNewsCard = ({
     };
 
   return (
-    <NewsCardBlock $isWide={isWide} $isFull={isFull}>
+    <NewsCardBlock $isWide={isWide} $isFull={isFull} $isWhite={isWhite}>
       <Component {...conditionLayoutProps} className="news-card-wrapper">
         {!empty(video) && (
           <div className="news-card-video">

@@ -711,23 +711,6 @@ export const latestPostTabs = [
   },
 ];
 
-export const reservedAccordionTitles = [
-  'Clients List',
-  'Awards',
-  'Full Biography',
-  'Affiliations Area',
-  'Representative Matters',
-  'Gallery',
-  'Media',
-  'Presentations',
-  'Publications',
-  'Videos',
-  'News & Press Releases',
-  'Blog',
-  'Events',
-  'Government & Law',
-];
-
 export const NAVBAR_SERVICES_TABS = ['Practices', 'Industries'];
 
 export const readyIndustriesUrls = [

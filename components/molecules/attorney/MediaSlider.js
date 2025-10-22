@@ -19,7 +19,7 @@ const breakpoints = {
   },
 };
 
-const MediaSlider = ({ items }) => {
+const MediaSlider = ({ items, ...props }) => {
   if (empty(items)) return null;
 
   return (
@@ -40,6 +40,7 @@ const MediaSlider = ({ items }) => {
               link={item?.link}
               textPost={item?.description}
               isFull
+              {...props}
             />
           </SwiperSlide>
         ))}
