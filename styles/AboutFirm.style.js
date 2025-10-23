@@ -67,21 +67,6 @@ export const AboutDescription = styled.div`
       color: ${globalColor.blue.skyBlue};
       font-weight: 400;
     }
-
-    ${media_breakpoint_down('md')} {
-      font-size: ${rem(14)};
-    }
-  }
-
-  ul {
-    list-style: disc;
-
-    li {
-      margin-left: 24px;
-      &::marker {
-        font-size: ${rem(12)};
-      }
-    }
   }
 
   ${media_breakpoint_down('md')} {

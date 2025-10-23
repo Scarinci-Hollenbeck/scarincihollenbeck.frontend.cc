@@ -38,6 +38,27 @@ const removeDuplicates = (chairs, coChairs, services) => {
   return services.filter((service) => !urisToRemove.has(service?.uri));
 };
 
+const changeBio = (miniBio, fullBio) => {
+  if (empty(miniBio) && empty(fullBio)) {
+    return null;
+  }
+
+  if (empty(miniBio) && !empty(fullBio)) {
+    return fullBio;
+  }
+
+  if (!empty(miniBio) && empty(fullBio)) {
+    return `
+      <p><strong>${miniBio}</strong></p>
+    `;
+  }
+
+  return `
+      <p><strong>${miniBio}</strong></p>
+      ${fullBio}
+    `;
+};
+
 /** Get the attorneys bio database on their slug */
 async function attorneyBySlug(slug) {
   const data = await fetchAPI(attorneyBySlugQuery, {
@@ -229,11 +250,15 @@ export const getStaticProps = async ({ params }) => {
     }))
     .filter((a) => a.title !== null);
 
+  const attorneyBiography = attorneyBio?.attorneyBiography?.biographyContent || null;
+  const attorneyMiniBio = attorneyBio?.attorneyBiography?.miniBio || null;
+  const attorneyBiographyChanged = changeBio(
+    attorneyMiniBio,
+    attorneyBiography,
+  );
+
   const profileContent = {
-    attorneyBiography:
-      attorneyBio?.attorneyBiography?.biographyContent
-      || attorneyBio?.attorneyBiography?.miniBio
-      || null,
+    attorneyBiography: attorneyBiographyChanged,
     awards: formateAwards(attorneyBio.attorneyAwardsClientsBlogsVideos?.awards),
     representativeMatters: attorneyBio.attorneyRepresentativeMatters.repMatters
       ? attorneyBio.attorneyRepresentativeMatters.repMatters.filter(

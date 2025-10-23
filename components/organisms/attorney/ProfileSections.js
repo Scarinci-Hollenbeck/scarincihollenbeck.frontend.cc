@@ -3,6 +3,7 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { ProfileSectionsStyled } from 'styles/attorney-page/ProfileSections.style';
 import empty from 'is-empty';
+import { ProfileRepresentativeItems } from 'styles/attorney-page/ProfileRepresentative.style';
 
 const AwardsSlider = dynamic(() => import('components/molecules/home/AwardsSlider'));
 const ProfileRepresentative = dynamic(() => import('components/molecules/attorney/ProfileRepresentative'));
@@ -68,18 +69,21 @@ const ProfileSections = (props) => {
           title="Representative Matters"
           disclaimer="* Results may vary depending on your particular facts and legal circumstances."
         >
-          {representativeMatters.map((item, index) => (
-            <ProfileRepresentative
-              key={`${item?.title}-${index + 1}`}
-              title={
-                representativeMatters.length > 1 && !empty(item?.title)
-                  ? `${index + 1}. ${item?.title}`
-                  : item?.title
-              }
-              label={item?.label}
-              content={item?.content}
-            />
-          ))}
+          <ProfileRepresentativeItems>
+            {representativeMatters.map((item, index) => (
+              <ProfileRepresentative
+                key={`${item?.title}-${index + 1}`}
+                title={
+                  representativeMatters.length > 1 && !empty(item?.title)
+                    ? `${index + 1}. ${item?.title}`
+                    : item?.title
+                }
+                label={item?.label}
+                content={item?.content}
+                isSeparator={index !== 0}
+              />
+            ))}
+          </ProfileRepresentativeItems>
         </ProfileSection>
       )}
 

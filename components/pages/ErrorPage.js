@@ -51,7 +51,7 @@ const ErrorPage = ({
                 Or try visiting one of these pages on our site to narrow your
                 search.
               </p>
-              <ul>
+              <ul className="text-list">
                 {Links404NavArr.map((link) => (
                   <li key={link.id}>
                     <Link href={link.href}>{link.title}</Link>

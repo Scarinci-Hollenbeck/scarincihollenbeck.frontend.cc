@@ -44,13 +44,11 @@ export const ProfileDetailContent = styled.div`
 
   ul {
     margin: 0;
-    list-style: disc;
     display: flex;
     flex-direction: column;
     row-gap: 8px;
 
     li {
-      margin: 0 0 0 20px;
       font-size: ${rem(14)};
       color: ${globalColor.blue.darkBlue};
 
@@ -64,7 +62,9 @@ export const ProfileDetailContent = styled.div`
     margin-top: 4px;
 
     li {
-      list-style-type: circle;
+      &::marker {
+        content: '⬦  ';
+      }
     }
   }
 

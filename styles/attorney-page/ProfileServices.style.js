@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {
+  customListMarker,
   globalBorderRadius,
   globalColor,
   globalTransition,
@@ -29,7 +30,6 @@ export const ProfileServicesTitle = styled.p`
 export const ProfileServicesContent = styled.ul`
   margin: 0;
   column-gap: 12px;
-  list-style: disc;
   column-count: 3;
 
   ${media_breakpoint_down('xl')} {
@@ -92,10 +92,11 @@ export const ProfileServicesChairItem = styled.li`
 `;
 
 export const ProfileServicesItem = styled.li`
-  margin: 0 0 4px 20px;
+  margin-bottom: 4px;
   font-size: ${rem(14)};
   color: ${globalColor.blue.darkBlue};
   break-inside: avoid;
+  ${customListMarker};
 
   &::marker {
     color: ${globalColor.blue.blue400};

@@ -1,9 +1,15 @@
 import styled from 'styled-components';
 import { globalColor, rem } from 'styles/global_styles/Global.styles';
 
-export const ProfileRepresentativeContainer = styled.div`
-  padding-top: 20px;
+export const ProfileRepresentativeItems = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 24px;
   border-top: 1px solid ${globalColor.blue.blue400};
+`;
+
+export const ProfileRepresentativeContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;

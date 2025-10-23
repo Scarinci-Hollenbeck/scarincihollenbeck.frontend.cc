@@ -1,17 +1,17 @@
 import styled from 'styled-components';
 import {
+  customListMarker,
   globalColor,
   globalTransition,
 } from 'styles/global_styles/Global.styles';
 
 export const ProfileClientsList = styled.ul`
-  list-style: disc;
   margin: 0;
 `;
 
 export const ProfileClientsListItem = styled.li`
-  margin-left: 24px;
   text-transform: capitalize;
+  ${customListMarker};
 
   a {
     color: inherit;

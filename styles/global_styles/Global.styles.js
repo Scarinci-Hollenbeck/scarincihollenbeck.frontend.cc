@@ -128,6 +128,20 @@ export const globalTransition = {
   default: `all ${transitionDuration}ms ease-out`,
 };
 
+export const customListMarker = `
+  margin-left: 1.220em;
+  &::marker {
+    content: "⬥  ";
+  }
+`;
+
+export const hideListMarker = `
+  margin-left: 0;
+  &::marker {
+    content: none;
+  }
+`;
+
 export const rem = (sizeInPx) => {
   return `${sizeInPx / mainFontSize}rem`;
 };
@@ -599,17 +613,12 @@ export const GlobalStyle = createGlobalStyle`
 
   .text-list {
     list-style: disc;
-
-    li {
-      margin-left: 24px;
+    
+    > li {
+      ${customListMarker};
 
       &::marker {
         color: currentColor;
-        font-size: small;
-
-        ${media_breakpoint_down('md')} {
-          font-size: smaller;
-        }
       }
     }
   }

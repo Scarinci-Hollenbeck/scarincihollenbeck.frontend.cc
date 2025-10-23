@@ -21,7 +21,7 @@ const CollapseContent = ({
     if (!el) return;
 
     const checkHeight = () => {
-      const short = el.clientHeight < MAX_HEIGHT;
+      const short = el.clientHeight <= MAX_HEIGHT;
       setIsShort(short);
       setOpen(short);
     };
