@@ -4,12 +4,10 @@ import {
   globalColor,
   rem,
 } from 'styles/global_styles/Global.styles';
-import {
-  media_breakpoint_down,
-  media_breakpoint_exactly_down,
-} from 'styles/mediaBreakpoints.style';
+import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const ProfileDetailItem = styled.div`
+  flex: 1;
   padding: 8px 16px;
   border-radius: ${globalBorderRadius.middle};
   background-color: ${globalColor.gray.gray1002};
@@ -17,10 +15,6 @@ export const ProfileDetailItem = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 8px;
-
-  ${media_breakpoint_down('sm')} {
-    flex-shrink: 100%;
-  }
 `;
 
 const profileDetailTitleStyles = `

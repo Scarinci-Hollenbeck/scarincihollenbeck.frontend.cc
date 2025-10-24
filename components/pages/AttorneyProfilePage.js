@@ -1,21 +1,26 @@
 import ProfileHeader from 'components/organisms/attorney/ProfileHeader';
 import PersonSiteHead from 'components/shared/head/PersonSiteHead';
 import { CURRENT_DOMAIN } from 'utils/constants';
-import usePrintLogic from 'hooks/usePrintLogic';
 import ProfileContent from 'components/organisms/attorney/ProfileContent';
 import ProfileMedia from 'components/organisms/attorney/ProfileMedia';
-// import AttorneyPrintPage from './AttorneyPrintPage';
+import ProfilePrint from 'components/organisms/attorney/ProfilePrint';
+import usePrintLogic from 'hooks/usePrintLogic';
+import { useGetLocationsQuery } from '../../redux/services/project-api';
 
 const AttorneyProfilePage = (props) => {
   const {
     seo, profileHeader, profileContent, asideItems, profileMedia,
   } = props;
 
+  const { data: locations } = useGetLocationsQuery();
+  const { isRenderPdf, handlePrint, setIsPrintReady } = usePrintLogic();
+
   const printPageProps = {
     ...profileHeader,
+    ...profileContent,
+    asideItems,
+    locations,
   };
-
-  const { isRenderPdf, setIsPrintReady, handlePrint } = usePrintLogic();
 
   return (
     <>
@@ -34,13 +39,11 @@ const AttorneyProfilePage = (props) => {
 
       <ProfileMedia {...profileMedia} />
 
-      {isRenderPdf && (
-        <span>Print coming soon</span>
-        // <AttorneyPrintPage
-        //   {...printPageProps}
-        //   onReady={() => setIsPrintReady(true)}
-        // />
-      )}
+      <ProfilePrint
+        isRenderPdf={isRenderPdf}
+        setIsPrintReady={setIsPrintReady}
+        printData={printPageProps}
+      />
     </>
   );
 };

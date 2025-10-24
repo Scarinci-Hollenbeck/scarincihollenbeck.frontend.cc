@@ -167,6 +167,13 @@ export const getStaticProps = async ({ params }) => {
     }))
     : [];
 
+  const attorneyBiography = attorneyBio?.attorneyBiography?.biographyContent || null;
+  const attorneyMiniBio = attorneyBio?.attorneyBiography?.miniBio || null;
+  const attorneyBiographyChanged = changeBio(
+    attorneyMiniBio,
+    attorneyBiography,
+  );
+
   /** Create new tabs for Government and Law & Con Law  & Drop Music esq */
   /** Get Attorney External Blog Posts */
   const govLawPosts = {};
@@ -250,13 +257,6 @@ export const getStaticProps = async ({ params }) => {
     }))
     .filter((a) => a.title !== null);
 
-  const attorneyBiography = attorneyBio?.attorneyBiography?.biographyContent || null;
-  const attorneyMiniBio = attorneyBio?.attorneyBiography?.miniBio || null;
-  const attorneyBiographyChanged = changeBio(
-    attorneyMiniBio,
-    attorneyBiography,
-  );
-
   const profileContent = {
     attorneyBiography: attorneyBiographyChanged,
     awards: formateAwards(attorneyBio.attorneyAwardsClientsBlogsVideos?.awards),
@@ -265,10 +265,13 @@ export const getStaticProps = async ({ params }) => {
         ({ content }) => !empty(content),
       )
       : [],
-    clients: attorneyBio.attorneyAwardsClientsBlogsVideos?.clients
+    clientsImages: attorneyBio.attorneyAwardsClientsBlogsVideos?.clients
       ? attorneyBio.attorneyAwardsClientsBlogsVideos?.clients.filter(
         ({ clientImage }) => !empty(clientImage),
       )
+      : [],
+    clientsList: attorneyBio.attorneyAwardsClientsBlogsVideos?.clients
+      ? attorneyBio.attorneyAwardsClientsBlogsVideos?.clients
       : [],
     additionalTabs,
   };

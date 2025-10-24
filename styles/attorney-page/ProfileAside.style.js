@@ -2,6 +2,10 @@ import styled from 'styled-components';
 import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const ProfileAsideItems = styled.div`
+  @media print {
+    display: contents;
+  }
+
   display: flex;
   flex-direction: column;
   gap: 16px;

@@ -3,11 +3,10 @@ import dynamic from 'next/dynamic';
 import React from 'react';
 import { ProfileSectionsStyled } from 'styles/attorney-page/ProfileSections.style';
 import empty from 'is-empty';
-import { ProfileRepresentativeItems } from 'styles/attorney-page/ProfileRepresentative.style';
 
 const AwardsSlider = dynamic(() => import('components/molecules/home/AwardsSlider'));
-const ProfileRepresentative = dynamic(() => import('components/molecules/attorney/ProfileRepresentative'));
-const ClientSlider = dynamic(() => import('components/molecules/attorney/ClientSlider'));
+const ProfileRepresentatives = dynamic(() => import('components/molecules/attorney/ProfileRepresentatives'));
+const ProfileClients = dynamic(() => import('components/molecules/attorney/ProfileClients'));
 
 const breakpointsAwards = {
   1440: {
@@ -34,7 +33,8 @@ const ProfileSections = (props) => {
     attorneyBiography,
     awards,
     representativeMatters,
-    clients,
+    clientsImages,
+    clientsList,
     additionalTabs,
   } = props;
 
@@ -45,9 +45,9 @@ const ProfileSections = (props) => {
         content={attorneyBiography}
       />
 
-      {!empty(clients) && (
+      {(!empty(clientsImages) || !empty(clientsList)) && (
         <ProfileSection title="Clients">
-          <ClientSlider clients={clients} />
+          <ProfileClients clients={{ clientsImages, clientsList }} />
         </ProfileSection>
       )}
 
@@ -69,21 +69,9 @@ const ProfileSections = (props) => {
           title="Representative Matters"
           disclaimer="* Results may vary depending on your particular facts and legal circumstances."
         >
-          <ProfileRepresentativeItems>
-            {representativeMatters.map((item, index) => (
-              <ProfileRepresentative
-                key={`${item?.title}-${index + 1}`}
-                title={
-                  representativeMatters.length > 1 && !empty(item?.title)
-                    ? `${index + 1}. ${item?.title}`
-                    : item?.title
-                }
-                label={item?.label}
-                content={item?.content}
-                isSeparator={index !== 0}
-              />
-            ))}
-          </ProfileRepresentativeItems>
+          <ProfileRepresentatives
+            representativeMatters={representativeMatters}
+          />
         </ProfileSection>
       )}
 

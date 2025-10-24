@@ -21,6 +21,10 @@ export const ProfileContentAside = styled.aside`
 `;
 
 export const ProfileContentSection = styled.section`
+  @media print {
+    display: none;
+  }
+
   padding-block: 60px;
   background-color: ${globalColor.gray.gray10};
 

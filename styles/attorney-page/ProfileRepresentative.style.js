@@ -13,6 +13,12 @@ export const ProfileRepresentativeContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 16px;
+
+  .text-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
 `;
 
 export const ProfileRepresentativeHeader = styled.div`

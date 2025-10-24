@@ -10,25 +10,32 @@ import dynamic from 'next/dynamic';
 const ClientSlider = dynamic(() => import('./ClientSlider'));
 
 const ProfileClients = ({ clients }) => {
-  if (empty(clients)) return null;
+  const { clientsImages, clientsList } = clients;
+  if (empty(clientsImages) && empty(clientsList)) return null;
 
   return (
     <>
-      <ClientSlider clients={clients} />
+      {!empty(clientsImages) && <ClientSlider clients={clientsImages} />}
 
-      <ProfileClientsList>
-        {clients.map(({ clientLink, clientTitle }) => (
-          <ProfileClientsListItem key={clientTitle}>
-            {!empty(clientLink) ? (
-              <Link href={clientLink} target="_blank" rel="noreferrer noopener">
-                {clientTitle}
-              </Link>
-            ) : (
-              clientTitle
-            )}
-          </ProfileClientsListItem>
-        ))}
-      </ProfileClientsList>
+      {!empty(clientsList) && (
+        <ProfileClientsList>
+          {clientsList.map(({ clientLink, clientTitle }) => (
+            <ProfileClientsListItem key={clientTitle}>
+              {!empty(clientLink) ? (
+                <Link
+                  href={clientLink}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                >
+                  {clientTitle}
+                </Link>
+              ) : (
+                clientTitle
+              )}
+            </ProfileClientsListItem>
+          ))}
+        </ProfileClientsList>
+      )}
     </>
   );
 };

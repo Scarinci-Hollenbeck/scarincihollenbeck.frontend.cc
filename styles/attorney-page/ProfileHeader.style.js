@@ -3,15 +3,15 @@ import { globalColor, rem } from 'styles/global_styles/Global.styles';
 import { media_breakpoint_down } from 'styles/mediaBreakpoints.style';
 
 export const ProfileHeaderSection = styled.section`
+  @media print {
+    display: none;
+  }
+
   display: flex;
   flex-direction: column;
   background-color: ${globalColor.gray.gray10};
   position: relative;
   z-index: 0;
-
-  @media print {
-    display: none;
-  }
 
   &::after {
     content: '';
