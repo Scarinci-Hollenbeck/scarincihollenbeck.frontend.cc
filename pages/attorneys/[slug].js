@@ -38,27 +38,6 @@ const removeDuplicates = (chairs, coChairs, services) => {
   return services.filter((service) => !urisToRemove.has(service?.uri));
 };
 
-const changeBio = (miniBio, fullBio) => {
-  if (empty(miniBio) && empty(fullBio)) {
-    return null;
-  }
-
-  if (empty(miniBio) && !empty(fullBio)) {
-    return fullBio;
-  }
-
-  if (!empty(miniBio) && empty(fullBio)) {
-    return `
-      <p><strong>${miniBio}</strong></p>
-    `;
-  }
-
-  return `
-      <p><strong>${miniBio}</strong></p>
-      ${fullBio}
-    `;
-};
-
 /** Get the attorneys bio database on their slug */
 async function attorneyBySlug(slug) {
   const data = await fetchAPI(attorneyBySlugQuery, {
@@ -169,10 +148,7 @@ export const getStaticProps = async ({ params }) => {
 
   const attorneyBiography = attorneyBio?.attorneyBiography?.biographyContent || null;
   const attorneyMiniBio = attorneyBio?.attorneyBiography?.miniBio || null;
-  const attorneyBiographyChanged = changeBio(
-    attorneyMiniBio,
-    attorneyBiography,
-  );
+  const attorneyBiographyChanged = attorneyBiography || attorneyMiniBio || null;
 
   /** Create new tabs for Government and Law & Con Law  & Drop Music esq */
   /** Get Attorney External Blog Posts */
