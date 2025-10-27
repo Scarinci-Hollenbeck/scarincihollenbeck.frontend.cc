@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 import {
+  customListMarker,
   globalColor,
   globalTransition,
   rem,
@@ -267,18 +268,13 @@ export const NavbarRightList = styled.ul`
   display: flex;
   flex-direction: column;
   row-gap: 4px;
-  list-style: disc;
   overflow-y: auto;
   overscroll-behavior: contain;
 `;
 
 export const NavbarRightItem = styled.li`
-  margin: 0 0 0 24px;
   color: ${globalColor.gray.gray300};
-
-  &::marker {
-    font-size: ${rem(15)};
-  }
+  ${customListMarker};
 `;
 
 export const NavbarRightItemLink = styled(Link)`

@@ -4,12 +4,14 @@ import { globalColor, globalTransition } from './global_styles/Global.styles';
 export const SliderWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  height: 100%;
 
   .slider-container {
     max-width: 100%;
     width: 100%;
 
     &::part(container) {
+      height: auto;
       padding-bottom: 64px;
       transition: padding 0.3s ease-out;
     }

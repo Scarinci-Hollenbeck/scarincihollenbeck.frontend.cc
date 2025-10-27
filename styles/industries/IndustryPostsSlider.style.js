@@ -12,8 +12,6 @@ export const IndustryPostsSection = styled.section`
   background-color: ${globalColor.blue.darkBlue};
 
   .disclaimer {
-    margin: 0;
-    text-align: center;
     color: ${globalColor.white};
   }
 

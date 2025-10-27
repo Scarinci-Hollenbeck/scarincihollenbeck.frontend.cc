@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { Title32, Title20 } from 'styles/common/Typography.style';
 import {
+  customListMarker,
   globalBorderRadius,
   globalColor,
   rem,
@@ -109,18 +110,12 @@ export const WhyChooseUsCardDescription = styled.div`
 
   ul {
     li {
-      margin-left: 24px;
       padding: 0;
+      ${customListMarker};
 
       &::before {
         display: none;
       }
-
-      &::marker {
-        font-size: ${rem(14)};
-      }
-
-      list-style: disc;
     }
   }
 

@@ -3,6 +3,8 @@ import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
 
 export const getPaginationData = (query, params) => {
+  if (empty(query)) return {};
+
   const {
     id,
     authorId,

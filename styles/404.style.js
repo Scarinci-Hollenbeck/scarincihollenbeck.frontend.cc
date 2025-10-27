@@ -202,10 +202,9 @@ export const LinkListBox404 = styled.div`
     height: fit-content;
     column-count: 2;
     column-gap: 32px;
-    list-style: disc;
 
     li {
-      margin: 0 0 8px 24px;
+      margin-bottom: 8px;
       break-inside: avoid;
       color: ${globalColor.blue.darkBlue};
       text-transform: capitalize;

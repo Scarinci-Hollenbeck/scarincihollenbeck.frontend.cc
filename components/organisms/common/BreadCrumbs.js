@@ -178,7 +178,7 @@ const delegatePathFunc = (list, router, data) => {
   );
 };
 
-const PostBreadCrumbs = ({ data }) => {
+const BreadCrumbs = ({ data }) => {
   const router = useRouter();
   const [slug, setSlug] = useState([]);
 
@@ -205,4 +205,4 @@ const PostBreadCrumbs = ({ data }) => {
   );
 };
 
-export default PostBreadCrumbs;
+export default BreadCrumbs;

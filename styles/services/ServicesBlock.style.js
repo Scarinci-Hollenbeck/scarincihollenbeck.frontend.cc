@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import {
+  customListMarker,
   globalColor,
   globalTransition,
   rem,
@@ -47,14 +48,9 @@ export const ServicesLinksList = styled.ul`
 `;
 
 export const ServicesLinksListItem = styled.li`
-  margin-left: 24px;
   margin-bottom: 4px;
-  list-style: disc;
   break-inside: avoid;
-
-  &::marker {
-    font-size: ${rem(12)};
-  }
+  ${customListMarker};
 
   &:last-of-type {
     margin-bottom: 0;
