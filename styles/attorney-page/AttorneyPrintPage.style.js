@@ -1,8 +1,14 @@
 import styled from 'styled-components';
-import { globalColor, rem } from '../global_styles/Global.styles';
+import {
+  customListMarker,
+  globalBorderRadius,
+  globalColor,
+  rem,
+} from '../global_styles/Global.styles';
 import { Title32, Title20 } from 'styles/common/Typography.style';
+import { ContentContainer } from 'styles/Content.style';
 
-export const BioPagePrintContainer = styled.div`
+export const BioPrintPageContainer = styled.div`
   @media print {
     display: flex !important;
     flex-direction: column;
@@ -12,20 +18,15 @@ export const BioPagePrintContainer = styled.div`
     .wrapper-pdf {
       display: flex;
       gap: 20px;
-
-      .card-image-wrapper {
-        min-height: auto;
-        margin-top: 6px;
-        width: 188px;
-        height: 186px;
-      }
     }
 
     .profile-title {
       padding-top: 3px;
+
       ${Title32} {
         margin: 3px 0 0 0;
       }
+
       span {
         font-size: ${rem(16)};
       }
@@ -46,8 +47,22 @@ export const BioPagePrintContainer = styled.div`
       }
     }
 
+    .address-box {
+      flex: 1 1 calc((100% - 10px) / 2);
+      box-shadow: none;
+
+      * {
+        font-size: ${rem(10)};
+      }
+
+      svg {
+        width: 12px;
+        height: 12px;
+      }
+    }
+
     .item-info-box {
-      width: 250px;
+      flex: 1 1 calc((100% - 10px) / 2);
       background-color: ${globalColor.gray.gray10};
       box-shadow: none;
       row-gap: 4px;
@@ -60,28 +75,15 @@ export const BioPagePrintContainer = styled.div`
         font-size: ${rem(10)};
       }
     }
-
-    .address-box {
-      * {
-        font-size: ${rem(10)};
-      }
-      svg {
-        width: 12px;
-        height: 12px;
-      }
-      flex: 1 1 calc((100% - 24px) / 2);
-      box-shadow: none;
-    }
   }
 
   .print-pdf-clients {
     column-count: 3;
     column-gap: 20px;
-  }
 
-  .print-pdf-representative-matters {
-    column-count: 2;
-    column-gap: 20px;
+    a {
+      color: ${globalColor.blue.ultramarine};
+    }
   }
 
   ${Title20} {
@@ -100,5 +102,44 @@ export const InfoPrintBox = styled.div`
 
   &:last-child {
     margin-bottom: 0;
+  }
+`;
+
+export const BioPrintPageImage = styled.div`
+  margin-top: 6px;
+  min-height: auto;
+  width: 188px;
+  height: 186px;
+  border-radius: ${globalBorderRadius.small};
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+`;
+
+export const BioPrintPageHeaderRight = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  row-gap: 12px;
+`;
+
+export const BioPrintPageContent = styled(ContentContainer)`
+  ul {
+    display: grid;
+    row-gap: 8px;
+
+    li {
+      ${customListMarker};
+      color: ${globalColor.blue.darkBlue};
+
+      &::marker {
+        color: ${globalColor.blue.blue400};
+      }
+    }
   }
 `;

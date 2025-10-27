@@ -20,15 +20,6 @@ export const LatestPostsHolder = styled.div`
   display: flex;
   flex-direction: column;
   row-gap: 24px;
-
-  .disclaimer {
-    margin: 0;
-    text-align: center;
-
-    ${media_breakpoint_down('md')} {
-      font-size: ${rem(14)};
-    }
-  }
 `;
 
 export const LatestPostsHeader = styled.div`

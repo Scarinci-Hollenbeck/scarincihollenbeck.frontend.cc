@@ -8,28 +8,11 @@ import {
   ProfileServicesItem,
   ProfileServicesTitle,
   ProfileServicesWrapper,
-} from 'styles/attorney-page/AttorneyProfile.style';
+} from 'styles/attorney-page/ProfileServices.style';
 import empty from 'is-empty';
 
-const removeDuplicates = (chairs, coChairs, services) => {
-  if (empty(services)) return [];
-  if (empty(chairs) && empty(coChairs)) return services;
-
-  const urisToRemove = new Set(
-    [...coChairs, ...chairs].map((item) => item.link),
-  );
-
-  return services.filter((service) => !urisToRemove.has(service?.uri));
-};
-
-const ProfileServices = ({ services, coChairs, chairs }) => {
-  const servicesWithoutDuplicates = removeDuplicates(
-    chairs,
-    coChairs,
-    services,
-  );
-
-  if (empty(servicesWithoutDuplicates)) return null;
+const ProfileServices = ({ profilePractices, coChairs, chairs }) => {
+  if (empty(profilePractices)) return null;
 
   return (
     <ProfileServicesWrapper className="profile-services-wrapper">
@@ -64,12 +47,11 @@ const ProfileServices = ({ services, coChairs, chairs }) => {
           </ProfileServicesChair>
         )}
 
-        {!empty(servicesWithoutDuplicates)
-          && servicesWithoutDuplicates.map((service) => (
-            <ProfileServicesItem key={service.title}>
-              <Link href={service.uri}>{service.title}</Link>
-            </ProfileServicesItem>
-          ))}
+        {profilePractices.map((service) => (
+          <ProfileServicesItem key={service.title}>
+            <Link href={service.uri}>{service.title}</Link>
+          </ProfileServicesItem>
+        ))}
       </ProfileServicesContent>
     </ProfileServicesWrapper>
   );

@@ -4,43 +4,38 @@ import empty from 'is-empty';
 import Link from 'next/link';
 import {
   ClientsSliderCard,
-  ClientsSliderTitle,
   ClientsSliderWrapper,
 } from 'styles/attorney-page/ClientsSlider.style';
 import SwiperSlide from 'components/organisms/common/SwiperSlide';
 
 const breakpoints = {
-  1800: {
-    slidesPerView: 9,
-  },
   1440: {
-    slidesPerView: 7,
+    slidesPerView: 6,
   },
   1280: {
     slidesPerView: 5,
-    spaceBetween: 24,
+  },
+  992: {
+    slidesPerView: 4,
   },
   768: {
-    spaceBetween: 20,
+    slidesPerView: 5,
+  },
+  580: {
     slidesPerView: 4,
   },
   0: {
-    spaceBetween: 12,
-    slidesPerView: 2,
+    slidesPerView: 3,
   },
 };
 
 const ClientSlider = ({ clients }) => {
-  const clientsWithImages = clients.filter(
-    ({ clientImage }) => !empty(clientImage),
-  );
+  if (empty(clients)) return null;
 
-  if (empty(clientsWithImages)) return null;
   return (
     <ClientsSliderWrapper>
-      <ClientsSliderTitle>Clients</ClientsSliderTitle>
       <SwiperWrapper
-        space-between={24}
+        space-between={16}
         breakpoints={breakpoints}
         grab-cursor="true"
         autoplay="true"
@@ -48,14 +43,15 @@ const ClientSlider = ({ clients }) => {
         loop="true"
         lazy="true"
       >
-        {clientsWithImages.map(({ clientImage, clientLink, clientTitle }) => (
-          <SwiperSlide key={`${clientTitle}-slide`}>
+        {clients.map(({ clientImage, clientLink, clientTitle }) => (
+          <SwiperSlide key={`${clientLink}-slide`}>
             <ClientsSliderCard
               as={!empty(clientLink) && Link}
               href={!empty(clientLink) ? clientLink : undefined}
               target={!empty(clientLink) ? '_blank' : undefined}
-              rel={!empty(clientLink) ? 'noreferrer' : undefined}
+              rel={!empty(clientLink) ? 'noreferrer noopener' : undefined}
               $isLink={!empty(clientLink)}
+              title={clientTitle}
             >
               <Image
                 src={clientImage?.sourceUrl}

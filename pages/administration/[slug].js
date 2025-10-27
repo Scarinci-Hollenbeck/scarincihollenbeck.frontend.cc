@@ -32,7 +32,7 @@ const getAdminData = async (slug) => {
       name: concatNameUser(administration.name, administration.abbreviation),
       biography: administration.biography,
       profileImage: administration.featuredImage.sourceUrl,
-      title: administration.designation,
+      designation: administration.designation,
       contact: {
         email: administration.email,
         phoneNumber: `${SITE_PHONE} ${administration.phoneExtension}`,

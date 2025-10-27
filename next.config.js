@@ -15,13 +15,6 @@ const {
 } = require('./utils/rewrites');
 const { PERMANENT_REDIRECTS } = require('./utils/permanent-redirects');
 
-const securityHeaders = [
-  {
-    key: 'Cache-Control',
-    value: 's-maxage=600, stale-while-revalidate',
-  },
-];
-
 const nextConfig = {
   reactStrictMode: false,
   images: {
@@ -104,14 +97,6 @@ const nextConfig = {
   },
   compiler: {
     styledComponents: true,
-  },
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: securityHeaders,
-      },
-    ];
   },
 
   async redirects() {

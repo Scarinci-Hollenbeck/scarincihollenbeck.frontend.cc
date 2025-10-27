@@ -96,6 +96,16 @@ export const underlinedLinkStyles = `
 export const UnderlinedLink = styled(Link)`
   ${underlinedLinkStyles};
   color: ${({ $isWhite }) => (!$isWhite ? undefined : globalColor.white)};
+
+  ${({ $isSmall }) => {
+    if ($isSmall) {
+      return `
+        font-size: ${rem(14)};
+        line-height: 1.43;
+        font-weight: 400;
+      `;
+    }
+  }}
 `;
 
 export const FilledLink = styled(Link)`

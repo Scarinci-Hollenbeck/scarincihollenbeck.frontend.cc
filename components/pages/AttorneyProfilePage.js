@@ -1,29 +1,26 @@
-import ProfileAccordion from 'components/organisms/attorney/ProfileAccordion';
 import ProfileHeader from 'components/organisms/attorney/ProfileHeader';
 import PersonSiteHead from 'components/shared/head/PersonSiteHead';
 import { CURRENT_DOMAIN } from 'utils/constants';
+import ProfileContent from 'components/organisms/attorney/ProfileContent';
+import ProfileMedia from 'components/organisms/attorney/ProfileMedia';
+import ProfilePrint from 'components/organisms/attorney/ProfilePrint';
 import usePrintLogic from 'hooks/usePrintLogic';
-import AttorneyPrintPage from './AttorneyPrintPage';
 import { useGetLocationsQuery } from '../../redux/services/project-api';
 
-const AttorneyProfilePage = ({
-  seo,
-  profileHeader,
-  accordionData,
-  qrCodeBioPage,
-  qrCodeLinkedin,
-}) => {
+const AttorneyProfilePage = (props) => {
+  const {
+    seo, profileHeader, profileContent, asideItems, profileMedia,
+  } = props;
+
   const { data: locations } = useGetLocationsQuery();
+  const { isRenderPdf, handlePrint, setIsPrintReady } = usePrintLogic();
 
   const printPageProps = {
     ...profileHeader,
-    ...accordionData,
-    qrCodeBioPage,
-    qrCodeLinkedin,
+    ...profileContent,
+    asideItems,
     locations,
   };
-
-  const { isRenderPdf, setIsPrintReady, handlePrint } = usePrintLogic();
 
   return (
     <>
@@ -33,18 +30,20 @@ const AttorneyProfilePage = ({
         canonicalUrl={`${CURRENT_DOMAIN}/${seo.canonicalLink}`}
         name={profileHeader.name}
         featuredImage={seo.image}
-        designation={profileHeader.title}
+        designation={profileHeader.designation}
         socialMediaLinks={seo.socialMediaLinks}
       />
       <ProfileHeader handlePrint={handlePrint} {...profileHeader} />
-      <ProfileAccordion {...accordionData} name={profileHeader?.name} />
 
-      {isRenderPdf && (
-        <AttorneyPrintPage
-          {...printPageProps}
-          onReady={() => setIsPrintReady(true)}
-        />
-      )}
+      <ProfileContent profileContent={profileContent} asideItems={asideItems} />
+
+      <ProfileMedia {...profileMedia} />
+
+      <ProfilePrint
+        isRenderPdf={isRenderPdf}
+        setIsPrintReady={setIsPrintReady}
+        printData={printPageProps}
+      />
     </>
   );
 };

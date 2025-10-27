@@ -14,9 +14,32 @@ import {
 import { GOV_LAW_URL } from 'utils/constants';
 import ApolloWrapper from 'layouts/ApolloWrapper';
 import AttorneyProfilePage from 'components/pages/AttorneyProfilePage';
+import empty from 'is-empty';
+
+const mapDesignation = (title) => {
+  const map = {
+    'Red Bank, NJ Managing Partner': 'Red Bank, NJ Office Managing Partner',
+    'Managing Partner': 'Firm Managing Partner',
+    'Washington, D.C. Managing Partner':
+      'Washington, D.C. Office Managing Partner',
+  };
+
+  return map[title] ?? title;
+};
+
+const removeDuplicates = (chairs, coChairs, services) => {
+  if (empty(services)) return [];
+  if (empty(chairs) && empty(coChairs)) return services;
+
+  const urisToRemove = new Set(
+    [...coChairs, ...chairs].map((item) => item.link),
+  );
+
+  return services.filter((service) => !urisToRemove.has(service?.uri));
+};
 
 /** Get the attorneys bio database on their slug */
-export async function attorneyBySlug(slug) {
+async function attorneyBySlug(slug) {
   const data = await fetchAPI(attorneyBySlugQuery, {
     variables: { slug },
   });
@@ -27,15 +50,6 @@ export async function attorneyBySlug(slug) {
 
   return data?.attorneyProfileBy;
 }
-
-const attorneysSlugsQuery = `
-query attorneysSlugs {
-  attorneyProfiles(first: 100, where: {status: PUBLISH}) {
-    nodes {
-      slug
-    }
-  }
-}`;
 
 async function checkAttorneyBlogsExist(authorId, attorneyId, categories) {
   const blogs = await fetchAPI(checkAttorneyPostsQuery, {
@@ -48,6 +62,15 @@ async function checkAttorneyBlogsExist(authorId, attorneyId, categories) {
 
   return false;
 }
+
+const attorneysSlugsQuery = `
+query attorneysSlugs {
+  attorneyProfiles(first: 100, where: {status: PUBLISH}) {
+    nodes {
+      slug
+    }
+  }
+}`;
 
 const excludedSlugs = ['scarinci-hollenbeck'];
 
@@ -83,7 +106,49 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
+  /** Variables */
   const authorId = attorneyBio?.attorneyAuthorId?.authorId?.databaseId;
+  const designation = mapDesignation(
+    attorneyBio.attorneyMainInformation?.designation,
+  );
+  const profileImage = formatSrcToCloudinaryUrl(
+    attorneyBio.attorneyMainInformation.profileImage?.sourceUrl,
+  );
+  const practices = attorneyBio.attorneyPrimaryRelatedPracticesLocationsGroups
+    ?.relatedPractices
+    ? attorneyBio.attorneyPrimaryRelatedPracticesLocationsGroups?.relatedPractices.map(
+      ({ uri, title }) => ({
+        uri,
+        title,
+      }),
+    )
+    : [];
+
+  const offices = attorneyBio.attorneyPrimaryRelatedPracticesLocationsGroups.officeLocation?.map(
+    ({ uri, id, title }) => ({
+      link: uri,
+      name: title,
+      ID: id,
+    }),
+  );
+
+  const chairs = attorneyBio.attorneyChairCoChair.chair
+    ? attorneyBio.attorneyChairCoChair.chair.map(({ uri, title }) => ({
+      title,
+      link: uri,
+    }))
+    : [];
+
+  const coChairs = attorneyBio.attorneyChairCoChair.coChair
+    ? attorneyBio.attorneyChairCoChair.coChair.map(({ uri, title }) => ({
+      title,
+      link: uri,
+    }))
+    : [];
+
+  const attorneyBiography = attorneyBio?.attorneyBiography?.biographyContent || null;
+  const attorneyMiniBio = attorneyBio?.attorneyBiography?.miniBio || null;
+  const attorneyBiographyChanged = attorneyBiography || attorneyMiniBio || null;
 
   /** Create new tabs for Government and Law & Con Law  & Drop Music esq */
   /** Get Attorney External Blog Posts */
@@ -113,10 +178,8 @@ export const getStaticProps = async ({ params }) => {
     title: attorneyBio?.seo?.title,
     canonicalLink: `attorneys/${params?.slug}`,
     metaDescription: attorneyBio?.seo?.metaDesc,
-    image: formatSrcToCloudinaryUrl(
-      attorneyBio.attorneyMainInformation.profileImage?.sourceUrl,
-    ),
-    designation: attorneyBio.attorneyMainInformation?.designation,
+    image: profileImage,
+    designation,
     socialMediaLinks: attorneyBio.attorneyMainInformation?.socialMediaLinks,
   };
 
@@ -126,65 +189,30 @@ export const getStaticProps = async ({ params }) => {
       attorneyBio?.title,
       attorneyBio?.attorneyMainInformation?.abbreviation,
     ),
-    profileImage: formatSrcToCloudinaryUrl(
-      attorneyBio.attorneyMainInformation.profileImage?.sourceUrl,
-    ),
+    profileImage,
     representativeVideo:
       attorneyBio?.attorneyMainInformation?.videoPresentation?.videoLink
       || attorneyBio?.attorneyMainInformation?.videoPresentation?.uploadVideo,
-    title: attorneyBio.attorneyMainInformation?.designation,
+    designation,
     contact: {
       phoneNumber: attorneyBio.attorneyMainInformation?.phoneNumber,
       email: attorneyBio.attorneyMainInformation?.email,
       fax: attorneyBio.attorneyMainInformation?.faxNumber,
       vizibility: attorneyBio.attorneyMainInformation?.vizibility,
       socialMediaLinks: attorneyBio.attorneyMainInformation?.socialMediaLinks,
+      linkedIn: attorneyBio.attorneyMainInformation?.socialMediaLinks?.filter(
+        (a) => a.channel === 'LinkedIn',
+      )[0],
     },
-    practices: attorneyBio.attorneyPrimaryRelatedPracticesLocationsGroups
-      ?.relatedPractices
-      ? attorneyBio.attorneyPrimaryRelatedPracticesLocationsGroups?.relatedPractices.map(
-        ({ uri, title }) => ({
-          uri,
-          title,
-        }),
-      )
-      : [],
-    offices:
-      attorneyBio.attorneyPrimaryRelatedPracticesLocationsGroups.officeLocation?.map(
-        ({ uri, id, title }) => ({
-          link: uri,
-          name: title,
-          ID: id,
-        }),
-      ),
-    chair: attorneyBio.attorneyChairCoChair.chair
-      ? attorneyBio.attorneyChairCoChair.chair.map(({ uri, title }) => ({
-        title,
-        link: uri,
-      }))
-      : [],
-    coChair: attorneyBio.attorneyChairCoChair.coChair
-      ? attorneyBio.attorneyChairCoChair.coChair.map(({ uri, title }) => ({
-        title,
-        link: uri,
-      }))
-      : [],
-    attorneyBiography: attorneyBio?.attorneyBiography,
-    education:
-      attorneyBio?.attorneyAdditionalInformationEducationAdmissionsAffiliations
-        ?.education,
-    barAdmissions:
-      attorneyBio?.attorneyAdditionalInformationEducationAdmissionsAffiliations
-        ?.barAdmissions,
-    affiliations:
-      attorneyBio?.attorneyAdditionalInformationEducationAdmissionsAffiliations
-        ?.affiliations,
-    additionalInfo:
-      attorneyBio?.attorneyAdditionalInformationEducationAdmissionsAffiliations
-        ?.additionalInformation,
+    profilePractices: removeDuplicates(chairs, coChairs, practices),
+    offices,
+    chairs,
+    coChairs,
+    qrCodeBioPage: attorneyBio.attorneyMainInformation.qrCodeBioPage,
+    qrCodeLinkedin: attorneyBio.attorneyMainInformation.qrCodeLinkedin,
   };
 
-  /** Accordion data */
+  /** Profile content data */
   const isArticlesAttorney = await checkAttorneyBlogsExist(
     authorId,
     attorneyBio?.databaseId,
@@ -205,14 +233,45 @@ export const getStaticProps = async ({ params }) => {
     }))
     .filter((a) => a.title !== null);
 
-  const accordionData = {
-    clients: attorneyBio.attorneyAwardsClientsBlogsVideos?.clients,
+  const profileContent = {
+    attorneyBiography: attorneyBiographyChanged,
     awards: formateAwards(attorneyBio.attorneyAwardsClientsBlogsVideos?.awards),
-    attorneyBiography: attorneyBio?.attorneyBiography,
     representativeMatters: attorneyBio.attorneyRepresentativeMatters.repMatters
-      ? attorneyBio.attorneyRepresentativeMatters.repMatters[0].content
+      ? attorneyBio.attorneyRepresentativeMatters.repMatters.filter(
+        ({ content }) => !empty(content),
+      )
+      : [],
+    clientsImages: attorneyBio.attorneyAwardsClientsBlogsVideos?.clients
+      ? attorneyBio.attorneyAwardsClientsBlogsVideos?.clients.filter(
+        ({ clientImage }) => !empty(clientImage),
+      )
+      : [],
+    clientsList: attorneyBio.attorneyAwardsClientsBlogsVideos?.clients
+      ? attorneyBio.attorneyAwardsClientsBlogsVideos?.clients
       : [],
     additionalTabs,
+  };
+
+  /** Aside data */
+  const asideItems = {
+    education:
+      attorneyBio?.attorneyAdditionalInformationEducationAdmissionsAffiliations
+        ?.education,
+    barAdmissions:
+      attorneyBio?.attorneyAdditionalInformationEducationAdmissionsAffiliations
+        ?.barAdmissions,
+    affiliations:
+      attorneyBio?.attorneyAdditionalInformationEducationAdmissionsAffiliations
+        ?.affiliations,
+    additionalInfo:
+      attorneyBio?.attorneyAdditionalInformationEducationAdmissionsAffiliations
+        ?.additionalInformation,
+    awardsRecognitions:
+      attorneyBio?.attorneyAwardsClientsBlogsVideos?.awardsRecognitions,
+  };
+
+  /** Profile media data */
+  const profileMedia = {
     gallery: attorneyBio.attorneyAwardsClientsBlogsVideos
       ? attorneyBio.attorneyAwardsClientsBlogsVideos.images
       : [],
@@ -233,9 +292,9 @@ export const getStaticProps = async ({ params }) => {
     props: {
       seo,
       profileHeader,
-      accordionData,
-      qrCodeBioPage: attorneyBio.attorneyMainInformation.qrCodeBioPage,
-      qrCodeLinkedin: attorneyBio.attorneyMainInformation.qrCodeLinkedin,
+      profileContent,
+      asideItems,
+      profileMedia,
     },
     revalidate: 600,
   };
@@ -245,16 +304,16 @@ export const getStaticProps = async ({ params }) => {
 const AttorneyProfile = ({
   seo,
   profileHeader,
-  accordionData,
-  qrCodeBioPage,
-  qrCodeLinkedin,
+  profileContent,
+  asideItems,
+  profileMedia,
 }) => {
   const attorneyPageProps = {
     seo,
     profileHeader,
-    accordionData,
-    qrCodeBioPage,
-    qrCodeLinkedin,
+    profileContent,
+    asideItems,
+    profileMedia,
   };
 
   return (

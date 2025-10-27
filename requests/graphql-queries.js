@@ -105,6 +105,7 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
         governmentLaw
         musicEsq
       }
+      awardsRecognitions
     }
     attorneyChairCoChair {
       chair {
@@ -140,8 +141,9 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
     }
     attorneyRepresentativeMatters {
       repMatters {
-        content
         title
+        content
+        label
       }
     }
     title(format: RENDERED)
@@ -575,6 +577,7 @@ export const attorneyPostsQuery = `
             }
           }
           uri
+          databaseId
           title(format: RENDERED)
           excerpt(format: RENDERED)
           author {

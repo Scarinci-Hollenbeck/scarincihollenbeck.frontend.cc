@@ -1,47 +1,19 @@
-import { useEffect, useRef, useState } from 'react';
 import empty from 'is-empty';
-import ModalWindow from 'components/common/ModalWindow';
 import Image from 'next/image';
-import { videoRender } from 'utils/videoRender';
+import dynamic from 'next/dynamic';
 import {
-  CardImageVideoContainer,
-  CardImageWrapper,
-  CardVideoWrapper,
-} from '../../../styles/attorney-page/AttorneyProfile.style';
-import VideoButton from './VideoButton';
+  ProfileImageContainer,
+  ProfileImageWrapper,
+  ProfileImageBg,
+  ProfileImageButtons,
+} from '../../../styles/attorney-page/ProfileImage.style';
 
-const ProfileImage = ({ name, profileImage, representativeVideo }) => {
-  const videoRef = useRef(null);
-  const [isShowVideo, setIsShowVideo] = useState(false);
-  const videoData = typeof representativeVideo === 'string'
-    ? representativeVideo
-    : {
-      type: representativeVideo?.mimeType,
-      src: representativeVideo?.mediaItemUrl,
-    };
+const ProfileRepresentativeVideo = dynamic(() => import('./ProfileRepresentativeVideo'));
 
-  const stopVideo = () => {
-    if (videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-  };
-
-  useEffect(() => {
-    if (isShowVideo && videoRef.current) {
-      videoRef.current.play();
-    } else {
-      stopVideo();
-    }
-  }, [isShowVideo]);
-
-  const handleClickVideoOpener = () => {
-    setIsShowVideo(true);
-  };
-
-  return (
-    <CardImageVideoContainer>
-      <CardImageWrapper>
+const ProfileImage = ({ name, profileImage, representativeVideo }) => (
+  <>
+    <ProfileImageContainer>
+      <ProfileImageWrapper>
         <Image
           key={profileImage}
           src={profileImage}
@@ -49,30 +21,32 @@ const ProfileImage = ({ name, profileImage, representativeVideo }) => {
           width={500}
           height={535}
           quality={100}
-          sizes="(max-width: 576px) 100vw, (max-width: 992px) 324px, (max-width: 1680px) 400px, 500px"
+          sizes="(max-width: 992px) 360px, (max-width: 1680px) 400px, 500px"
           className="animate__animated animate__fadeInUp animate__fast"
           priority
           loading="eager"
         />
-      </CardImageWrapper>
-      {!empty(representativeVideo) && (
-        <ModalWindow isOpen={isShowVideo} setOpenModal={setIsShowVideo}>
-          <CardVideoWrapper>
-            {videoRender(videoData, videoRef)}
-          </CardVideoWrapper>
-        </ModalWindow>
-      )}
+      </ProfileImageWrapper>
 
       {!empty(representativeVideo) && (
-        <div className="animate__animated animate__fadeInUp animate__slow">
-          <VideoButton
-            isShowVideo={isShowVideo}
-            onButtonClick={handleClickVideoOpener}
+        <ProfileImageButtons>
+          <ProfileRepresentativeVideo
+            representativeVideo={representativeVideo}
           />
-        </div>
+        </ProfileImageButtons>
       )}
-    </CardImageVideoContainer>
-  );
-};
+    </ProfileImageContainer>
+
+    <ProfileImageBg
+      src="/images/profile-attorney-bg.webp"
+      width={700}
+      height={900}
+      alt="Profile background"
+      priority
+      sizes="(max-width: 768px) 100vw, (max-width: 1680px) 480px, 700px"
+      loading="eager"
+    />
+  </>
+);
 
 export default ProfileImage;
