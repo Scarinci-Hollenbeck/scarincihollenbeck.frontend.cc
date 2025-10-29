@@ -25,7 +25,7 @@ const ProfileArticles = (props) => {
         queryParamsForPagination={queryParams}
         paginationData={data}
         isWideCards={isWideCards}
-        isWhiteCards
+        authorId={params?.authorId}
       />
     </ProfileSection>
   );

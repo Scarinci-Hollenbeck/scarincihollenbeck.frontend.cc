@@ -35,7 +35,13 @@ const ProfileMedia = (props) => {
             <ProfileArticles
               title="Articles"
               queryParams="articles-page"
-              params={{ authorId, attorneyId, categories: [599] }}
+              params={{
+                authorId,
+                attorneyId,
+                categories: [599],
+                itemsPerPage: 4,
+              }}
+              isWideCards
             />
           )}
 
@@ -43,7 +49,11 @@ const ProfileMedia = (props) => {
             <ProfileArticles
               title="The News"
               queryParams="news-page"
-              params={{ authorId, attorneyId, categories: [98, 99, 20098] }}
+              params={{
+                authorId,
+                attorneyId,
+                categories: [98, 99, 20098],
+              }}
             />
           )}
 

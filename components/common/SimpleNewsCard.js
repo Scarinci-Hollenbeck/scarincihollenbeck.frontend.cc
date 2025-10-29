@@ -5,30 +5,32 @@ import { NewsCardBlock, CardFooterBox } from 'styles/SimpleNewsCard.style';
 import { formatDate } from '../../utils/helpers';
 import { videoRender } from '../../utils/videoRender';
 
+const renderDate = (date) => {
+  if (empty(date)) return null;
+  return (
+    <time dateTime={date} className="news-card-date">
+      {formatDate(date)}
+    </time>
+  );
+};
+
 const SimpleNewsCard = ({
   title,
   textPost,
   label,
+  authors,
   date,
   link,
   video,
+  services,
+  isSpecial = false,
   isWide,
-  isAuthor,
   isFull,
   isJSXDescription,
   isWhite,
+  isRedTitle,
 }) => {
-  const Component = empty(video) && !empty(link) ? Link : 'div';
   const DescriptionComponent = isJSXDescription ? 'div' : 'p';
-  const conditionLayoutProps = empty(video) && !empty(link)
-    ? {
-      href: link?.url,
-      passHref: true,
-      target: link?.target === '_blank' ? '_blank' : undefined,
-      rel: link?.target === '_blank' ? 'noopener noreferrer' : undefined,
-    }
-    : null;
-
   const videoData = typeof video === 'string'
     ? video
     : {
@@ -37,51 +39,95 @@ const SimpleNewsCard = ({
     };
 
   return (
-    <NewsCardBlock $isWide={isWide} $isFull={isFull} $isWhite={isWhite}>
-      <Component {...conditionLayoutProps} className="news-card-wrapper">
-        {!empty(video) && (
-          <div className="news-card-video">
-            {videoRender(videoData, null, { height: 208 })}
-          </div>
-        )}
+    <NewsCardBlock
+      $isWide={isWide}
+      $isFull={isFull}
+      $isWhite={isWhite}
+      $isRedTitle={isRedTitle}
+      $isSpecial={isSpecial}
+    >
+      {!empty(video) && (
+        <div className="news-card-video">
+          {videoRender(videoData, null, { height: 208 })}
+        </div>
+      )}
 
-        <div className="news-card-content">
-          <div className="news-card-info">
-            <h4 className="news-card-title" title={title}>
+      <div className="news-card-content">
+        <div className="news-card-info">
+          {!empty(title) && (
+            <h3 className="news-card-title" title={title}>
               {title}
-            </h4>
-            {!empty(textPost) && (
-              <DescriptionComponent
-                className="news-card-text"
-                title={!isJSXDescription ? textPost : undefined}
-              >
-                {isJSXDescription ? (
-                  <JSXWithDynamicLinks HTML={textPost} />
-                ) : (
-                  textPost
-                )}
-              </DescriptionComponent>
-            )}
-          </div>
+            </h3>
+          )}
 
-          {(!empty(label) || !empty(date)) && (
-            <CardFooterBox>
-              {!empty(label) && (
-                <p className="news-card-label" title={label}>
-                  {isAuthor && <span>Author: </span>}
-                  {label}
-                </p>
+          {!empty(textPost) && (
+            <DescriptionComponent
+              className="news-card-text"
+              title={!isJSXDescription ? textPost : undefined}
+            >
+              {isJSXDescription ? (
+                <JSXWithDynamicLinks HTML={textPost} />
+              ) : (
+                textPost
               )}
+            </DescriptionComponent>
+          )}
 
-              {!empty(date) && (
-                <time dateTime={date} className="news-card-date">
-                  {formatDate(date)}
-                </time>
-              )}
-            </CardFooterBox>
+          {!empty(services) && (
+            <div>
+              {services.map((service) => (
+                <Link
+                  key={service?.databaseId}
+                  href={service?.uri}
+                  className="news-card-service"
+                >
+                  {service?.title}
+                </Link>
+              ))}
+            </div>
+          )}
+
+          {isSpecial && renderDate(date)}
+
+          {!empty(authors) && (
+            <div>
+              {authors.map((author, index) => (
+                <Link
+                  key={author?.databaseId}
+                  href={author?.uri}
+                  className={`news-card-author ${
+                    author?.isCurrent ? 'current' : ''
+                  }`}
+                >
+                  {`${author?.title}${index < authors.length - 1 ? ', ' : ''}`}
+                </Link>
+              ))}
+            </div>
           )}
         </div>
-      </Component>
+
+        {(!empty(label) || !empty(date)) && !isSpecial && (
+          <CardFooterBox>
+            {!empty(label) && (
+              <p className="news-card-label" title={label}>
+                {label}
+              </p>
+            )}
+
+            {renderDate(date)}
+          </CardFooterBox>
+        )}
+      </div>
+
+      {empty(video) && !empty(link?.url) && (
+        <Link
+          href={link?.url}
+          passHref
+          target={link?.target === '_blank' ? '_blank' : undefined}
+          rel={link?.target === '_blank' ? 'noopener noreferrer' : undefined}
+          className="news-card-link"
+        />
+      )}
     </NewsCardBlock>
   );
 };

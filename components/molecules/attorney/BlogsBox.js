@@ -8,19 +8,41 @@ import {
   BlogsBoxWrapper,
 } from '../../../styles/attorney-page/BlogsBox.style';
 
-const sanitizePosts = (postsArg) => postsArg?.edges.map(({ node }) => {
-  if (typeof node.author !== 'string') {
-    node.author = node.author.node.name;
-  }
+const sanitizePosts = (postsArg, authorId) => postsArg?.edges.map(({ node }) => {
+  const combinedAuthors = [
+    ...(node?.selectAuthors?.authorDisplayOrder || []),
+    ...(node?.selectHeroes?.selectAttorneys || []),
+  ];
+
+  const uniqueAuthors = combinedAuthors.filter((author, index, self) => {
+    const id = author?.databaseId;
+    if (!id || id === 156871) return false; // 156871 is the Scarinci Hollenbeck, LLC author
+
+    return index === self.findIndex((a) => a?.databaseId === id);
+  });
+
+  const authors = uniqueAuthors.map((author) => {
+    const isCurrent = author?.attorneyAuthorId?.authorId?.databaseId === authorId;
+    return isCurrent ? { ...author, isCurrent: true } : author;
+  });
+
+  const services = [
+    ...(node?.linksToOtherPostTypes?.practices || []),
+    ...(node?.linksToOtherPostTypes?.industries || []),
+  ];
+
   return {
     ...node,
+    services,
+    authors,
   };
 });
+
 const BlogsBox = ({
   paginationData,
   queryParamsForPagination,
   isWideCards,
-  isWhiteCards,
+  authorId,
 }) => {
   const {
     posts, limit, page, loading, error,
@@ -30,7 +52,10 @@ const BlogsBox = ({
     return null;
   }
 
-  const memoData = useMemo(() => sanitizePosts(posts), [paginationData]);
+  const memoData = useMemo(
+    () => sanitizePosts(posts, authorId),
+    [paginationData, authorId],
+  );
 
   return (
     <>
@@ -42,14 +67,14 @@ const BlogsBox = ({
               <SimpleNewsCard
                 key={article?.databaseId || article?.uri}
                 link={{ url: changePostLink(article?.uri) }}
-                textPost={article?.excerpt}
                 title={article?.title}
-                label={article?.author}
                 date={article?.date}
-                isJSXDescription
-                isAuthor
+                services={article?.services}
+                authors={article?.authors}
                 isWide={isWideCards}
-                isWhite={isWhiteCards}
+                isSpecial
+                isWhite
+                isRedTitle
               />
             ))}
           </BlogsBoxList>

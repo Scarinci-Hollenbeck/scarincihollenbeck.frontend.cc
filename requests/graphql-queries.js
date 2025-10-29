@@ -571,19 +571,51 @@ export const attorneyPostsQuery = `
       edges {
         node {
           date
-          featuredImage {
-            node {
-              sourceUrl
-            }
-          }
           uri
           databaseId
           title(format: RENDERED)
-          excerpt(format: RENDERED)
-          author {
-            node {
-              name
-              url
+          linksToOtherPostTypes {
+            practices {
+              ... on Practice {
+                databaseId
+                title
+                uri
+              }
+            }
+            industries {
+              ... on Industry {
+                databaseId
+                title
+                uri
+              }
+            }
+          }
+          selectHeroes {
+            selectAttorneys {
+              ... on AttorneyProfile {
+                databaseId
+                title
+                uri
+                attorneyAuthorId {
+                  authorId {
+                    databaseId
+                  }
+                }
+              }
+            }
+          }
+          selectAuthors {
+            authorDisplayOrder {
+              ... on AttorneyProfile {
+                databaseId
+                title
+                uri
+                attorneyAuthorId {
+                  authorId {
+                    databaseId
+                  }
+                }
+              }
             }
           }
         }

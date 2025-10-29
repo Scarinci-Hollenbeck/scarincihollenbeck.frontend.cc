@@ -41,7 +41,7 @@ const ProfileSections = (props) => {
   return (
     <ProfileSectionsStyled>
       <ProfileSection
-        title={attorneyBiographyTitle || 'Biography'}
+        title={attorneyBiographyTitle}
         content={attorneyBiography}
       />
 

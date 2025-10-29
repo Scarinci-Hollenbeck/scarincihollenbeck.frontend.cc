@@ -6,6 +6,17 @@ import {
 } from './global_styles/Global.styles';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 
+const footerLetterStyles = `
+  color: ${globalColor.gray.gray110};
+  font-size: inherit;
+  font-weight: 300;
+  line-height: 1.5;
+
+  ${media_breakpoint_down('sm')} {
+    font-size: ${rem(14)};
+  }
+`;
+
 export const NewsCardBlock = styled.article`
   min-height: 192px;
   width: ${({ $isWide, $isFull }) =>
@@ -14,22 +25,24 @@ export const NewsCardBlock = styled.article`
       : $isWide
       ? 'calc((100% - var(--news-list-gap)) / 2)'
       : 'calc((100% - var(--news-list-gap) * 2) / 3)'};
+  display: flex;
+  flex-direction: column;
   background-color: ${({ $isWhite }) =>
     $isWhite ? globalColor.white : globalColor.gray.gray10};
   border-radius: 4px;
   overflow: hidden;
+  position: relative;
 
-  .news-card-wrapper {
+  .news-card-link {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
+    z-index: 1;
     border: 1px solid transparent;
     border-radius: inherit;
     transition: ${globalTransition.default};
-  }
 
-  a.news-card-wrapper {
     :hover {
       border-color: ${globalColor.blue.skyBlue};
     }
@@ -47,7 +60,7 @@ export const NewsCardBlock = styled.article`
     .video-render,
     video,
     lite-youtube {
-      border-radius: 4px 4px 0 0;
+      border-radius: inherit;
       max-width: 100%;
       width: 100%;
       height: 100%;
@@ -64,6 +77,11 @@ export const NewsCardBlock = styled.article`
     display: flex;
     flex-direction: column;
     row-gap: 24px;
+
+    a {
+      position: relative;
+      z-index: 2;
+    }
   }
 
   .news-card-title {
@@ -73,7 +91,8 @@ export const NewsCardBlock = styled.article`
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 0;
-    color: ${globalColor.blue.darkBlue};
+    color: ${({ $isRedTitle }) =>
+      $isRedTitle ? globalColor.red.newRed : globalColor.blue.darkBlue};
     font-size: ${rem(20)};
     line-height: 1.6;
     font-weight: 600;
@@ -108,31 +127,55 @@ export const NewsCardBlock = styled.article`
     row-gap: 8px;
   }
 
-  ${media_breakpoint_down('xl')} {
-    width: ${({ $isFull }) =>
-      $isFull ? '100%' : 'calc((100% - var(--news-list-gap)) / 2)'};
+  .news-card-service {
+    font-size: ${rem(16)};
+    line-height: 1.5;
+    font-weight: 700;
+    color: ${globalColor.gray.gray700};
+    word-break: break-word;
+
+    &:first-child {
+      &::before {
+        content: none;
+      }
+    }
+
+    &::before {
+      content: '⬥';
+      margin-inline: 8px;
+      color: ${globalColor.blue.blue400};
+      font-size: 0.8rem;
+      vertical-align: middle;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        color: ${globalColor.blue.blue400};
+      }
+    }
+
+    &:active {
+      color: ${globalColor.blue.blue400};
+    }
   }
 
-  ${media_breakpoint_down('md')} {
-    width: 100%;
+  .news-card-author {
+    ${footerLetterStyles};
+
+    &.current {
+      pointer-events: none;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        color: ${globalColor.blue.blue400};
+      }
+    }
+
+    &:active {
+      color: ${globalColor.blue.blue400};
+    }
   }
-`;
-
-const footerLetterStyles = `
-  color: ${globalColor.gray.gray110};
-  font-size: inherit;
-  font-weight: 300;
-  line-height: 1.5;
-
-  ${media_breakpoint_down('sm')} {
-    font-size: ${rem(14)};
-  }
-`;
-
-export const CardFooterBox = styled.div`
-  display: flex;
-  margin-top: auto;
-  column-gap: 12px;
 
   .news-card-label {
     ${footerLetterStyles};
@@ -147,8 +190,24 @@ export const CardFooterBox = styled.div`
 
   .news-card-date {
     ${footerLetterStyles};
-    margin-left: auto;
+    margin-left: ${({ $isSpecial }) => ($isSpecial ? '0' : 'auto')};
+    margin-top: auto;
     font-weight: 600;
     flex-shrink: 0;
   }
+
+  ${media_breakpoint_down('xl')} {
+    width: ${({ $isFull }) =>
+      $isFull ? '100%' : 'calc((100% - var(--news-list-gap)) / 2)'};
+  }
+
+  ${media_breakpoint_down('md')} {
+    width: 100%;
+  }
+`;
+
+export const CardFooterBox = styled.div`
+  display: flex;
+  margin-top: auto;
+  column-gap: 12px;
 `;
