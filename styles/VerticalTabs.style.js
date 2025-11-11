@@ -53,6 +53,7 @@ export const VerticalTabsHolder = styled.div`
 `;
 
 export const OpenersList = styled.ol`
+  list-style: none;
   margin: 0;
   height: 100%;
   width: 500px;
