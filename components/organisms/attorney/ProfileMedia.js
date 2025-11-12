@@ -39,9 +39,7 @@ const ProfileMedia = (props) => {
                 authorId,
                 attorneyId,
                 categories: [599],
-                itemsPerPage: 4,
               }}
-              isWideCards
             />
           )}
 
@@ -59,37 +57,37 @@ const ProfileMedia = (props) => {
 
           {!empty(mediaItems) && (
             <ProfileSection title="Media">
-              <MediaSlider items={mediaItems} isWhite />
+              <MediaSlider items={mediaItems} />
             </ProfileSection>
           )}
 
           {!empty(presentationsItems) && (
             <ProfileSection title="Presentations">
-              <MediaSlider items={presentationsItems} isWhite />
+              <MediaSlider items={presentationsItems} />
             </ProfileSection>
           )}
 
           {!empty(videos) && (
             <ProfileSection title="Video">
-              <MediaSlider items={videos} isWhite />
+              <MediaSlider items={videos} />
             </ProfileSection>
           )}
 
           {!empty(gallery) && (
             <ProfileSection title="Gallery">
-              <GallerySlider items={gallery} isWhite />
+              <GallerySlider items={gallery} />
             </ProfileSection>
           )}
 
           {!empty(publicationsItems) && (
             <ProfileSection title="Publications">
-              <MediaSlider items={publicationsItems} isWhite />
+              <MediaSlider items={publicationsItems} />
             </ProfileSection>
           )}
 
           {!empty(govLawPosts?.posts) && (
             <ProfileSection title="Government & Law">
-              <MediaSlider items={govLawPosts?.posts} isWhite />
+              <MediaSlider items={govLawPosts?.posts} />
             </ProfileSection>
           )}
 

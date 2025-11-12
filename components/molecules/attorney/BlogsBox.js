@@ -72,9 +72,8 @@ const BlogsBox = ({
                 services={article?.services}
                 authors={article?.authors}
                 isWide={isWideCards}
-                isSpecial
-                isWhite
-                isRedTitle
+                isTransparent
+                isBlueTitle
               />
             ))}
           </BlogsBoxList>

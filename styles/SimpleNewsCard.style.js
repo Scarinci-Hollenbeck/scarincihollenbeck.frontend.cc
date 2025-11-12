@@ -6,19 +6,8 @@ import {
 } from './global_styles/Global.styles';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 
-const footerLetterStyles = `
-  color: ${globalColor.gray.gray110};
-  font-size: inherit;
-  font-weight: 300;
-  line-height: 1.5;
-
-  ${media_breakpoint_down('sm')} {
-    font-size: ${rem(14)};
-  }
-`;
-
 export const NewsCardBlock = styled.article`
-  min-height: 192px;
+  min-height: 160px;
   width: ${({ $isWide, $isFull }) =>
     $isFull
       ? '100%'
@@ -27,8 +16,8 @@ export const NewsCardBlock = styled.article`
       : 'calc((100% - var(--news-list-gap) * 2) / 3)'};
   display: flex;
   flex-direction: column;
-  background-color: ${({ $isWhite }) =>
-    $isWhite ? globalColor.white : globalColor.gray.gray10};
+  background-color: ${({ $isTransparent }) =>
+    $isTransparent ? 'transparent' : globalColor.gray.gray10};
   border-radius: 4px;
   overflow: hidden;
   position: relative;
@@ -91,8 +80,8 @@ export const NewsCardBlock = styled.article`
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 0;
-    color: ${({ $isRedTitle }) =>
-      $isRedTitle ? globalColor.red.newRed : globalColor.blue.darkBlue};
+    color: ${({ $isBlueTitle }) =>
+      $isBlueTitle ? globalColor.blue.blue500 : globalColor.blue.darkBlue};
     font-size: ${rem(20)};
     line-height: 1.6;
     font-weight: 600;
@@ -127,41 +116,19 @@ export const NewsCardBlock = styled.article`
     row-gap: 8px;
   }
 
-  .news-card-service {
-    font-size: ${rem(16)};
-    line-height: 1.5;
-    font-weight: 700;
+  .news-card-services {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+
+  .news-card-author,
+  .news-card-label {
     color: ${globalColor.gray.gray700};
-    word-break: break-word;
-
-    &:first-child {
-      &::before {
-        content: none;
-      }
-    }
-
-    &::before {
-      content: '⬥';
-      margin-inline: 8px;
-      color: ${globalColor.blue.blue400};
-      font-size: 0.8rem;
-      vertical-align: middle;
-    }
-
-    @media (hover: hover) {
-      &:hover {
-        color: ${globalColor.blue.blue400};
-      }
-    }
-
-    &:active {
-      color: ${globalColor.blue.blue400};
-    }
+    font-weight: 400;
   }
 
   .news-card-author {
-    ${footerLetterStyles};
-
     &.current {
       pointer-events: none;
     }
@@ -178,7 +145,6 @@ export const NewsCardBlock = styled.article`
   }
 
   .news-card-label {
-    ${footerLetterStyles};
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -189,11 +155,11 @@ export const NewsCardBlock = styled.article`
   }
 
   .news-card-date {
-    ${footerLetterStyles};
-    margin-left: ${({ $isSpecial }) => ($isSpecial ? '0' : 'auto')};
     margin-top: auto;
-    font-weight: 600;
+    margin-left: auto;
     flex-shrink: 0;
+    color: ${globalColor.gray.gray110};
+    font-weight: 300;
   }
 
   ${media_breakpoint_down('xl')} {

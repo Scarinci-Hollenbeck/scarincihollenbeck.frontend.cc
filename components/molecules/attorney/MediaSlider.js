@@ -40,6 +40,7 @@ const MediaSlider = ({ items, ...props }) => {
               link={item?.link}
               textPost={item?.description}
               isFull
+              isTransparent
               {...props}
             />
           </SwiperSlide>

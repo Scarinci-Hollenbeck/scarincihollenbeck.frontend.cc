@@ -35,6 +35,14 @@ export const LibraryTagLink = styled(Link)`
   z-index: 2;
   transition: ${globalTransition.default};
 
+  ${({ $isSmall }) =>
+    $isSmall &&
+    `
+    padding-inline: 11px;
+    font-size: ${rem(14)};
+    line-height: 1.43;
+  `}
+
   &:hover {
     color: ${globalColor.blue.skyBlue};
   }

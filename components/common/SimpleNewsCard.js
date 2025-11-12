@@ -2,6 +2,7 @@ import empty from 'is-empty';
 import Link from 'next/link';
 import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
 import { NewsCardBlock, CardFooterBox } from 'styles/SimpleNewsCard.style';
+import { LibraryTagLink } from 'styles/library/LibraryTags.style';
 import { formatDate } from '../../utils/helpers';
 import { videoRender } from '../../utils/videoRender';
 
@@ -23,12 +24,11 @@ const SimpleNewsCard = ({
   link,
   video,
   services,
-  isSpecial = false,
   isWide,
   isFull,
   isJSXDescription,
-  isWhite,
-  isRedTitle,
+  isTransparent,
+  isBlueTitle,
 }) => {
   const DescriptionComponent = isJSXDescription ? 'div' : 'p';
   const videoData = typeof video === 'string'
@@ -42,9 +42,8 @@ const SimpleNewsCard = ({
     <NewsCardBlock
       $isWide={isWide}
       $isFull={isFull}
-      $isWhite={isWhite}
-      $isRedTitle={isRedTitle}
-      $isSpecial={isSpecial}
+      $isTransparent={isTransparent}
+      $isBlueTitle={isBlueTitle}
     >
       {!empty(video) && (
         <div className="news-card-video">
@@ -74,44 +73,44 @@ const SimpleNewsCard = ({
           )}
 
           {!empty(services) && (
-            <div>
+            <div className="news-card-services">
               {services.map((service) => (
-                <Link
+                <LibraryTagLink
+                  $isSmall
                   key={service?.databaseId}
                   href={service?.uri}
-                  className="news-card-service"
                 >
                   {service?.title}
-                </Link>
-              ))}
-            </div>
-          )}
-
-          {isSpecial && renderDate(date)}
-
-          {!empty(authors) && (
-            <div>
-              {authors.map((author, index) => (
-                <Link
-                  key={author?.databaseId}
-                  href={author?.uri}
-                  className={`news-card-author ${
-                    author?.isCurrent ? 'current' : ''
-                  }`}
-                >
-                  {`${author?.title}${index < authors.length - 1 ? ', ' : ''}`}
-                </Link>
+                </LibraryTagLink>
               ))}
             </div>
           )}
         </div>
 
-        {(!empty(label) || !empty(date)) && !isSpecial && (
+        {(!empty(label) || !empty(authors) || !empty(date)) && (
           <CardFooterBox>
             {!empty(label) && (
               <p className="news-card-label" title={label}>
                 {label}
               </p>
+            )}
+
+            {!empty(authors) && (
+              <div className="news-card-authors">
+                {authors.map((author, index) => (
+                  <Link
+                    key={author?.databaseId}
+                    href={author?.uri}
+                    className={`news-card-author ${
+                      author?.isCurrent ? 'current' : ''
+                    }`}
+                  >
+                    {`${author?.title}${
+                      index < authors.length - 1 ? ', ' : ''
+                    }`}
+                  </Link>
+                ))}
+              </div>
             )}
 
             {renderDate(date)}

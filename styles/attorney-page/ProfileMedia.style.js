@@ -18,5 +18,5 @@ export const ProfileMediaSection = styled.section`
 export const ProfileMediaItems = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 40px;
 `;
