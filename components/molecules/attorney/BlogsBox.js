@@ -4,9 +4,9 @@ import SimpleNewsCard from '../../common/SimpleNewsCard';
 import CustomPagination from '../../atoms/CustomPagination';
 import Loader from '../../atoms/Loader';
 import {
-  AccordionNewsList,
-  BlogsWrapper,
-} from '../../../styles/attorney-page/ProfileAccordion.style';
+  BlogsBoxList,
+  BlogsBoxWrapper,
+} from '../../../styles/attorney-page/BlogsBox.style';
 
 const sanitizePosts = (postsArg) => postsArg?.edges.map(({ node }) => {
   if (typeof node.author !== 'string') {
@@ -20,6 +20,7 @@ const BlogsBox = ({
   paginationData,
   queryParamsForPagination,
   isWideCards,
+  isWhiteCards,
 }) => {
   const {
     posts, limit, page, loading, error,
@@ -35,11 +36,11 @@ const BlogsBox = ({
     <>
       {loading && <Loader />}
       {!loading && (
-        <BlogsWrapper>
-          <AccordionNewsList>
+        <BlogsBoxWrapper>
+          <BlogsBoxList>
             {memoData.map((article) => (
               <SimpleNewsCard
-                key={article?.title}
+                key={article?.databaseId || article?.uri}
                 link={{ url: changePostLink(article?.uri) }}
                 textPost={article?.excerpt}
                 title={article?.title}
@@ -48,16 +49,17 @@ const BlogsBox = ({
                 isJSXDescription
                 isAuthor
                 isWide={isWideCards}
+                isWhite={isWhiteCards}
               />
             ))}
-          </AccordionNewsList>
+          </BlogsBoxList>
           <CustomPagination
             totalItems={posts?.pageInfo?.offsetPagination?.total}
             currentPage={page}
             limit={limit}
             queryParam={queryParamsForPagination}
           />
-        </BlogsWrapper>
+        </BlogsBoxWrapper>
       )}
     </>
   );

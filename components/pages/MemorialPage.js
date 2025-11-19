@@ -1,3 +1,4 @@
+import ProfileContent from 'components/organisms/attorney/ProfileContent';
 import MemorialHeader from 'components/organisms/memorials/MemorialHeader';
 import PersonSiteHead from 'components/shared/head/PersonSiteHead';
 import { CURRENT_DOMAIN } from 'utils/constants';
@@ -6,6 +7,7 @@ const MemorialPage = ({ seo, pageData }) => {
   const {
     name, image, additionalInfo, title, description, born, death,
   } = pageData;
+
   return (
     <>
       <PersonSiteHead
@@ -19,11 +21,16 @@ const MemorialPage = ({ seo, pageData }) => {
       <MemorialHeader
         name={name}
         profileImage={image}
-        additionalInfo={additionalInfo}
-        descriptionTitle={title}
-        description={description}
         born={born}
         death={death}
+      />
+
+      <ProfileContent
+        profileContent={{
+          attorneyBiographyTitle: title,
+          attorneyBiography: description,
+        }}
+        asideItems={{ additionalInfo }}
       />
     </>
   );

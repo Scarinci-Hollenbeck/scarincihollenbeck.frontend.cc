@@ -3,6 +3,8 @@ import gql from 'graphql-tag';
 import { useQuery } from 'react-apollo-hooks';
 
 export const getPaginationData = (query, params) => {
+  if (empty(query)) return {};
+
   const {
     id,
     authorId,
@@ -11,6 +13,8 @@ export const getPaginationData = (query, params) => {
     itemsPerPage,
     slug,
     authorName,
+    attorneyId,
+    categories,
   } = params;
 
   const currentPage = Number(tempCurrentPage);
@@ -23,6 +27,8 @@ export const getPaginationData = (query, params) => {
     authorName: authorName || null,
     authorId: !empty(authorId) ? authorId : null,
     categoryId: !empty(categoryId) ? categoryId : null,
+    attorneyId: !empty(attorneyId) ? attorneyId : null,
+    categories: !empty(categories) ? categories : null,
     offsetPosts,
     postsPerPage: itemsPerPage,
     slug: !empty(slug) ? slug : null,

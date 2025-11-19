@@ -251,6 +251,7 @@ export const SubscriptionModalWrapper = styled.div`
     position: absolute;
     top: 40px;
     right: 20px;
+    z-index: 5;
 
     ${media_breakpoint_down('md')} {
       --icon-wrapper-size: 32px;

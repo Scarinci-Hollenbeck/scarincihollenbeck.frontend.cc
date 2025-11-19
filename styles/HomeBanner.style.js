@@ -247,17 +247,6 @@ export const BannerCardContent = styled.div`
     }
   }
 
-  ul {
-    list-style: disc;
-
-    li {
-      margin-left: 24px;
-      &::marker {
-        font-size: ${rem(12)};
-      }
-    }
-  }
-
   ${media_breakpoint_down('sm')} {
     margin-bottom: 8px;
     row-gap: 12px;

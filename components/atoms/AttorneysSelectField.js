@@ -3,12 +3,12 @@ import {
 } from 'react';
 import { Form } from 'react-bootstrap';
 import {
-  AttorneySelectFieldDropdown,
-  AttorneySelectFieldDropdownItem,
-  AttorneySelectFieldWrapper,
+  AttorneysSelectFieldDropdown,
+  AttorneysSelectFieldDropdownItem,
+  AttorneysSelectFieldWrapper,
 } from 'styles/AttorneysSelectField.style';
 
-const AttorneySelectField = ({
+const AttorneysSelectField = ({
   name,
   attorneys = [],
   onChange,
@@ -60,7 +60,7 @@ const AttorneySelectField = ({
   }, []);
 
   return (
-    <AttorneySelectFieldWrapper ref={dropdownRef}>
+    <AttorneysSelectFieldWrapper ref={dropdownRef}>
       <Form.Control
         type="text"
         value={inputValue}
@@ -70,9 +70,9 @@ const AttorneySelectField = ({
         {...attributes}
       />
       {showDropdown && filteredAttorneys.length > 0 && (
-        <AttorneySelectFieldDropdown>
+        <AttorneysSelectFieldDropdown>
           {filteredAttorneys.map((attorney) => (
-            <AttorneySelectFieldDropdownItem
+            <AttorneysSelectFieldDropdownItem
               key={attorney?.id}
               onClick={() => handleSelect(attorney?.title)}
               onKeyDown={(e) => {
@@ -83,12 +83,12 @@ const AttorneySelectField = ({
               tabIndex={0}
             >
               {attorney?.title}
-            </AttorneySelectFieldDropdownItem>
+            </AttorneysSelectFieldDropdownItem>
           ))}
-        </AttorneySelectFieldDropdown>
+        </AttorneysSelectFieldDropdown>
       )}
-    </AttorneySelectFieldWrapper>
+    </AttorneysSelectFieldWrapper>
   );
 };
 
-export default AttorneySelectField;
+export default AttorneysSelectField;

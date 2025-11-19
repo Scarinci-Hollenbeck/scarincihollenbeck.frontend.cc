@@ -367,7 +367,47 @@ const PERMANENT_REDIRECTS = [
   },
   {
     source: '/subscribe',
-    destination: '/contact-us',
+    destination: '/library/subscriptions',
+    permanent: true,
+  },
+  {
+    source: '/work-life-balance',
+    destination: '/work-life-integration',
+    permanent: true,
+  },
+  {
+    source: '/covid-19-education-alert/:slug*',
+    destination: '/law-firm-insights/:slug*',
+    permanent: true,
+  },
+  {
+    source: '/covid-19-alerts/:slug*',
+    destination: '/firm-news/:slug*',
+    permanent: true,
+  },
+  {
+    source: '/just-in/:slug*',
+    destination: '/firm-news/:slug*',
+    permanent: true,
+  },
+  {
+    source: '/featured/:slug*',
+    destination: '/firm-news/:slug*',
+    permanent: true,
+  },
+  {
+    source: '/mandarin/:slug*',
+    destination: '/law-firm-insights/:slug*',
+    permanent: true,
+  },
+  {
+    source: '/subscriptions',
+    destination: '/library/subscriptions',
+    permanent: true,
+  },
+  {
+    source: '/podcasts-2',
+    destination: '/',
     permanent: true,
   },
 ];

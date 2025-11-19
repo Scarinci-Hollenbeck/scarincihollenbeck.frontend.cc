@@ -11,7 +11,7 @@ import {
   LinkListBox404,
   TilesBox,
 } from '../../styles/404.style';
-import PostBreadcrumbs from '../organisms/post/PostBreadcrumbs';
+import BreadCrumbs from '../organisms/common/BreadCrumbs';
 import {
   tile404ContentArr,
   tilesErrorContentArr,
@@ -26,7 +26,7 @@ const ErrorPage = ({
   return (
     <ErrorWrapper>
       <Container>
-        <PostBreadcrumbs />
+        <BreadCrumbs />
 
         <ErrorHolder>
           <ErrorContent>
@@ -51,7 +51,7 @@ const ErrorPage = ({
                 Or try visiting one of these pages on our site to narrow your
                 search.
               </p>
-              <ul>
+              <ul className="text-list">
                 {Links404NavArr.map((link) => (
                   <li key={link.id}>
                     <Link href={link.href}>{link.title}</Link>

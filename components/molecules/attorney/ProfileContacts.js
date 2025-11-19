@@ -3,7 +3,7 @@ import { BsFillEnvelopeFill } from 'react-icons/bs';
 import { FaLinkedin } from 'react-icons/fa';
 import { IoPrintSharp } from 'react-icons/io5';
 import { MdLocalPhone, MdLocationPin } from 'react-icons/md';
-import { AddressBox } from 'styles/attorney-page/AttorneyProfile.style';
+import { ProfileContactsContainer } from 'styles/attorney-page/ProfileContacts.style';
 import React from 'react';
 import empty from 'is-empty';
 import { QRCodesBoxForPDF } from 'styles/common/PrintStyles.style';
@@ -11,37 +11,43 @@ import { QRCodesBoxForPDF } from 'styles/common/PrintStyles.style';
 const ProfileContacts = ({
   contact,
   offices,
-  fax,
-  linkedIn,
   qrCodeLinkedin,
   qrCodeBioPage,
 }) => {
-  const { phoneNumber, email } = contact || {};
+  const {
+    phoneNumber, email, linkedIn, fax,
+  } = contact || {};
   return (
-    <AddressBox className="address-box">
+    <ProfileContactsContainer className="address-box">
       <p className="contacts-title">Contacts</p>
 
       <ul className="contacts-list">
-        <li className="contacts-item">
-          <MdLocationPin />
-          {offices?.map((office, idx) => (
-            <Link
-              className="contacts-link"
-              href={office.uri || office.link}
-              key={office.id || office.ID}
-            >
-              {office.name}
-              {idx !== offices.length - 1 && ', '}
-            </Link>
-          ))}
-        </li>
+        {!empty(offices) && (
+          <li className="contacts-item">
+            <MdLocationPin />
+            <span className="contacts-offices">
+              {offices?.map((office, idx) => (
+                <Link
+                  className="contacts-link"
+                  href={office.uri || office.link}
+                  key={office.id || office.ID}
+                >
+                  {office.name}
+                  {idx !== offices.length - 1 && ', '}
+                </Link>
+              ))}
+            </span>
+          </li>
+        )}
 
-        <li className="contacts-item">
-          <a href={`tel:${phoneNumber}`} className="contacts-link">
-            <MdLocalPhone />
-            <span>{phoneNumber}</span>
-          </a>
-        </li>
+        {phoneNumber && (
+          <li className="contacts-item">
+            <a href={`tel:${phoneNumber}`} className="contacts-link">
+              <MdLocalPhone />
+              <span>{phoneNumber}</span>
+            </a>
+          </li>
+        )}
 
         {fax && (
           <li className="contacts-item pdf-hidden">
@@ -50,24 +56,28 @@ const ProfileContacts = ({
           </li>
         )}
 
-        <li className="contacts-item">
-          <a href={`mailto:${email}`} className="contacts-link">
-            <BsFillEnvelopeFill />
-            <span>{email}</span>
-          </a>
-        </li>
+        {email && (
+          <li className="contacts-item">
+            <a href={`mailto:${email}`} className="contacts-link">
+              <BsFillEnvelopeFill />
+              <span>{email}</span>
+            </a>
+          </li>
+        )}
 
-        <li className="contacts-item pdf-hidden">
-          <a
-            href={linkedIn?.url}
-            target="_blank"
-            rel="noreferrer"
-            className="contacts-link"
-          >
-            <FaLinkedin />
-            <span>{linkedIn?.channel}</span>
-          </a>
-        </li>
+        {linkedIn?.url && (
+          <li className="contacts-item pdf-hidden">
+            <a
+              href={linkedIn?.url}
+              target="_blank"
+              rel="noreferrer"
+              className="contacts-link"
+            >
+              <FaLinkedin />
+              <span>{linkedIn?.channel}</span>
+            </a>
+          </li>
+        )}
       </ul>
       {(!empty(qrCodeLinkedin) || !empty(qrCodeBioPage)) && (
         <QRCodesBoxForPDF>
@@ -91,7 +101,7 @@ const ProfileContacts = ({
           )}
         </QRCodesBoxForPDF>
       )}
-    </AddressBox>
+    </ProfileContactsContainer>
   );
 };
 

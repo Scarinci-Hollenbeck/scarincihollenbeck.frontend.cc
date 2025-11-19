@@ -99,7 +99,19 @@ const delegatePathFunc = (list, router, data) => {
           <ButtonBreadcrumb href="/library">Library</ButtonBreadcrumb>
           <BsChevronRight />
         </li>
-        {list[0] !== 'post'
+        {!empty(data?.category?.slug) ? (
+          <>
+            <li>
+              <ButtonBreadcrumb
+                href={`/library/category/${data?.category?.slug}`}
+              >
+                {data?.category?.name}
+              </ButtonBreadcrumb>
+              <BsChevronRight />
+            </li>
+          </>
+        ) : (
+          list[0] !== 'post'
           && list?.slice(0, -1)?.map((item) => (
             <li key={`${item} + breadcrumb`}>
               <ButtonBreadcrumb href={`/library/category/${item}`}>
@@ -107,7 +119,9 @@ const delegatePathFunc = (list, router, data) => {
               </ButtonBreadcrumb>
               <BsChevronRight />
             </li>
-          ))}
+          ))
+        )}
+
         <li className="active">
           <span>{convertPath(list[list.length - 1])}</span>
         </li>
@@ -164,7 +178,7 @@ const delegatePathFunc = (list, router, data) => {
   );
 };
 
-const PostBreadCrumbs = ({ data }) => {
+const BreadCrumbs = ({ data }) => {
   const router = useRouter();
   const [slug, setSlug] = useState([]);
 
@@ -191,4 +205,4 @@ const PostBreadCrumbs = ({ data }) => {
   );
 };
 
-export default PostBreadCrumbs;
+export default BreadCrumbs;

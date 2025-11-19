@@ -1,5 +1,5 @@
 import BackArrow from 'components/atoms/BackArrow';
-import CareerForm from 'components/molecules/CareerForm';
+import CareerForm from 'components/shared/forms/CareerForm';
 import {
   ArticleContent,
   ArticleContentHolder,

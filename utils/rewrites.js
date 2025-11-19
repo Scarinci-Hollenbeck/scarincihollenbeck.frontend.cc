@@ -24,9 +24,31 @@ const POST_TYPE_REWRITES = [
 
 /** List of top level categories */
 const POST_CATEGORY_REWRITES = [
+  /** Start of Firm Pages */
+  {
+    source: '/diversity',
+    destination: '/firm-page/diversity',
+  },
+  {
+    source: '/community-involvement',
+    destination: '/firm-page/community-involvement',
+  },
+  {
+    source: '/pro-bono',
+    destination: '/firm-page/pro-bono',
+  },
+  /** End of firm pages */
   {
     source: '/law-firm-insights/:slug*',
     destination: '/post/:slug*?category=law-firm-insights',
+  },
+  {
+    source: '/client-alert/:slug*',
+    destination: '/post/:slug*?category=client-alert',
+  },
+  {
+    source: '/firm-events/:slug*',
+    destination: '/post/:slug*?category=firm-events',
   },
   {
     source: '/firm-news/:slug*',
@@ -37,56 +59,44 @@ const POST_CATEGORY_REWRITES = [
     destination: '/post/:slug*?category=firm-news',
   },
   {
-    source: '/client-alert/:slug*',
-    destination: '/post/:slug*?category=client-alert',
+    source: '/сommunity-involvement/:slug*',
+    destination: '/post/:slug*?category=сommunity-involvement',
   },
   {
-    source: '/covid-19-alerts/:slug*',
-    destination: '/post/:slug*?category=covid-19-alerts',
+    source: '/congratulations/:slug*',
+    destination: '/post/:slug*?category=congratulations',
   },
   {
-    source: '/covid-19-education-alert/:slug*',
-    destination: '/post/:slug*?category=covid-19-education-alert',
+    source: '/diversity/:slug*',
+    destination: '/post/:slug*?category=diversity',
   },
   {
-    source: '/cyber-security-client-alert/:slug*',
-    destination: '/post/:slug*?category=cyber-security-client-alert',
+    source: '/legal-updates/:slug*',
+    destination: '/post/:slug*?category=legal-updates',
   },
   {
-    source: '/featured/:slug*',
-    destination: '/post/:slug*?category=featured',
+    source: '/litigation-alert/:slug*',
+    destination: '/post/:slug*?category=litigation-alert',
   },
   {
-    source: '/federal-payroll-protection-act/:slug*',
-    destination: '/post/:slug*?category=federal-payroll-protection-act',
-  },
-  {
-    source: '/firm-events/:slug*',
-    destination: '/post/:slug*?category=firm-events',
-  },
-  {
-    source: '/headlines/:slug*',
-    destination: '/post/:slug*?category=headlines',
-  },
-  {
-    source: '/just-in/:slug*',
-    destination: '/post/:slug*?category=just-in',
-  },
-  {
-    source: '/art-law/:slug*',
-    destination: '/post/:slug*?category=art-law',
+    source: '/pro-bono/:slug*',
+    destination: '/post/:slug*?category=pro-bono',
   },
   {
     source: '/quick-news/:slug*',
     destination: '/post/:slug*?category=quick-news',
   },
   {
-    source: '/mandarin/:slug*',
-    destination: '/post/:slug*?category=mandarin',
+    source: '/real-estate-news/:slug*',
+    destination: '/post/:slug*?category=real-estate-news',
   },
   {
     source: '/women-lead/:slug*',
     destination: '/post/:slug*?category=women-lead',
+  },
+  {
+    source: '/uncategorized/:slug*',
+    destination: '/post/:slug*?category=uncategorized',
   },
   {
     source: '/lawyer-spotlight/:slug*',
@@ -113,8 +123,8 @@ const SITE_PAGES_REWRITES = [
     destination: '/basic-page/disclaimer',
   },
   {
-    source: '/work-life-balance',
-    destination: '/basic-page/work-life-balance',
+    source: '/work-life-integration',
+    destination: '/basic-page/work-life-integration',
   },
   /** End of Simple Pages */
   /** Start of Funeral Pages */
@@ -135,24 +145,6 @@ const SITE_PAGES_REWRITES = [
     destination: '/memorials/peter-r-yarem',
   },
   /** End of Funeral Pages */
-  /** Start of Firm Pages */
-  {
-    source: '/diversity',
-    destination: '/firm-page/diversity',
-  },
-  {
-    source: '/diversity/:slug*',
-    destination: '/post/:slug*?category=diversity',
-  },
-  {
-    source: '/community-involvement',
-    destination: '/firm-page/community-involvement',
-  },
-  {
-    source: '/pro-bono',
-    destination: '/firm-page/pro-bono',
-  },
-  /** End of firm pages */
   {
     source: '/proxy-image/:path*',
     destination: 'https://wp.scarincihollenbeck.com/:path*',

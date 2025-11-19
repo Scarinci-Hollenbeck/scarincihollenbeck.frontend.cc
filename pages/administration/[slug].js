@@ -32,20 +32,18 @@ const getAdminData = async (slug) => {
       name: concatNameUser(administration.name, administration.abbreviation),
       biography: administration.biography,
       profileImage: administration.featuredImage.sourceUrl,
-      title: administration.designation,
+      designation: administration.designation,
       contact: {
         email: administration.email,
         phoneNumber: `${SITE_PHONE} ${administration.phoneExtension}`,
         vizibility: administration.vizibility,
         socialMediaLinks: administration.socialMediaLinks,
       },
-      offices: administration.location.map(
-        ({ id, uri, officeMainInformation }) => ({
-          id,
-          uri,
-          name: officeMainInformation.addressLocality,
-        }),
-      ),
+      offices: administration.location.map(({ id, uri, title }) => ({
+        id,
+        uri,
+        name: title,
+      })),
       isAdmin: true,
     },
     seo: {
@@ -85,7 +83,7 @@ export const getStaticProps = async ({ params }) => {
     props: {
       dataAdmin,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 };
 

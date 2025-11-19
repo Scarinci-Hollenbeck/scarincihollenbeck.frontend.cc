@@ -1,6 +1,6 @@
 import { setResponseHeaders } from 'utils/helpers';
 import empty from 'is-empty';
-import { fetchRestAPI } from 'requests/api';
+import { getSubscriptions } from 'requests/getSubscriptions';
 
 global.cache = global.cache || {};
 global.cache.categories = global.cache.categories || {
@@ -10,8 +10,8 @@ global.cache.categories = global.cache.categories || {
 
 export default async function handler(req, res) {
   const currentTime = Date.now();
-  const cacheDurationSeconds = 8600;
-  const cacheDuration = cacheDurationSeconds * 1000; // 8600 seconds in milliseconds
+  const cacheDurationSeconds = 600;
+  const cacheDuration = cacheDurationSeconds * 1000; // 600 seconds in milliseconds
 
   const { data, lastFetchTime } = global.cache.categories;
   const timeSinceLastFetch = currentTime - lastFetchTime;
@@ -22,15 +22,15 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { categories } = await fetchRestAPI('subscriptions');
+    const subscriptionsFields = await getSubscriptions();
 
     global.cache.categories = {
-      data: categories,
+      data: subscriptionsFields,
       lastFetchTime: currentTime,
     };
 
     setResponseHeaders(res, cacheDurationSeconds, 'MISS');
-    return res.status(200).json({ data: categories });
+    return res.status(200).json({ data: subscriptionsFields });
   } catch (err) {
     if (!empty(data)) {
       setResponseHeaders(res, cacheDurationSeconds, 'HIT');

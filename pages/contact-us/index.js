@@ -29,7 +29,7 @@ export async function getStaticProps() {
       mapLocations: sanitizeOffices(officeLocations.nodes),
       featuredImage: featuredImage.node.sourceUrl,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 }
 

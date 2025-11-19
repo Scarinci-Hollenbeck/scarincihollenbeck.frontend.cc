@@ -1,4 +1,4 @@
-import PostBreadCrumbs from 'components/organisms/post/PostBreadcrumbs';
+import BreadCrumbs from 'components/organisms/common/BreadCrumbs';
 import Image from 'next/image';
 import React from 'react';
 import {
@@ -45,7 +45,7 @@ const SubHeaderIndustry = ({
       )}
     </SubHeaderIndustryBgImage>
     <SubHeaderIndustryContainer>
-      <PostBreadCrumbs />
+      <BreadCrumbs />
 
       <SubHeaderIndustryTop>
         <SubHeaderIndustryContent>

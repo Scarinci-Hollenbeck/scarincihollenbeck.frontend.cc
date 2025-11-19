@@ -31,7 +31,7 @@ export async function getStaticProps() {
       filters,
       subHeaderSlides,
     },
-    revalidate: 3600,
+    revalidate: 600,
   };
 }
 

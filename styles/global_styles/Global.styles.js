@@ -128,13 +128,17 @@ export const globalTransition = {
   default: `all ${transitionDuration}ms ease-out`,
 };
 
-export const buttonsHoverActive = `
-  &:hover {
-    background-color: ${globalColor.red.liteRed};
+export const customListMarker = `
+  margin-left: 1.220em;
+  &::marker {
+    content: "⬥  ";
   }
+`;
 
-  &:active {
-    background-color: ${globalColor.red.burgundy};
+export const hideListMarker = `
+  margin-left: 0;
+  &::marker {
+    content: none;
   }
 `;
 
@@ -569,8 +573,10 @@ export const GlobalStyle = createGlobalStyle`
   }
   
   .disclaimer {
+    margin: 0 auto;
     font-size: inherit;
     font-weight: 700;
+    text-align: center;
   }
   
   .tostify-custom {
@@ -607,17 +613,12 @@ export const GlobalStyle = createGlobalStyle`
 
   .text-list {
     list-style: disc;
-
-    li {
-      margin-left: 24px;
+    
+    > li {
+      ${customListMarker};
 
       &::marker {
         color: currentColor;
-        font-size: small;
-
-        ${media_breakpoint_down('md')} {
-          font-size: smaller;
-        }
       }
     }
   }
@@ -625,51 +626,6 @@ export const GlobalStyle = createGlobalStyle`
   .numbers-list {
     li {
       margin-left: 24px;
-    }
-  }
-`;
-
-export const ButtonLinkCss = `
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-left: 5px;
-  padding-right: 5px;
-  width: 168px;
-  transition: background 0.8s;
-  background: ${globalColor.red.darkRed};
-  font-style: normal;
-  font-weight: 700;
-  font-size: inherit;
-  line-height: 1;
-  color: ${globalColor.white};
-  text-decoration: none;
-  border-radius: ${globalBorderRadius.small};
-
-  span {
-    display: flex;
-  }
-
-  svg {
-    display: none;
-  }
-
-  :hover {
-    color: ${globalColor.white};
-    text-decoration: none;
-  }
-
-  ${media_breakpoint_down('lg')} {
-    width: 50px;
-
-    span {
-      display: none;
-    }
-
-    svg {
-      display: block;
-      height: 25px;
-      width: 25px;
     }
   }
 `;

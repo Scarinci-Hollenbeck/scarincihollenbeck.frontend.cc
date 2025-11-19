@@ -19,11 +19,11 @@ const ModalWindow = ({
   );
 
   return (
-    <ModalContainer $isOpen={isOpen} onClick={handleCloseModal}>
+    <ModalContainer $isOpen={isOpen} onMouseDown={handleCloseModal}>
       <ModalContent
         $isOpen={isOpen}
         className={isOpen ? 'modal-open' : ''}
-        onClick={autoStopPropagation}
+        onMouseDown={autoStopPropagation}
         {...contentProps}
       >
         <ModalCloser

@@ -81,6 +81,11 @@ export const fetchExternalPosts = async (site, authorId, amount) => {
       },
     });
 
+    if (!res || !res.ok) {
+      console.warn(`Error ${url}: ${res?.status} ${res?.statusText}`);
+      return [];
+    }
+
     return await res.json();
   } catch (error) {
     console.error(error);
@@ -94,7 +99,7 @@ export const formatSrcToCloudinaryUrl = (src) => {
     const file = splitSrc[splitSrc.length - 1];
     return CLOUDINARY_BASE_URL + file;
   }
-  return '/images/no-image-found-diamond-750x350.png';
+  return '/images/logo-diamond-print.png';
 };
 
 // Format image src into a cloudinary url
@@ -428,3 +433,13 @@ export const setResponseHeaders = (res, revalidateTime, cacheStatus) => {
   res.setHeader('Content-Type', 'application/json');
   res.setHeader('X-Cache-Status', cacheStatus);
 };
+
+export const isArraysIdentical = (chosenIds, originalIds) => {
+  if (!chosenIds || !originalIds || chosenIds.length !== originalIds.length) {
+    return false;
+  }
+  const originalIdsSet = new Set(originalIds);
+  return chosenIds.every((item) => originalIdsSet.has(item));
+};
+
+export const originalItemsIds = (itemsArr) => itemsArr?.map((item) => item.databaseId);

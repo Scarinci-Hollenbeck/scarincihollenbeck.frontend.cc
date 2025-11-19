@@ -1,5 +1,5 @@
 import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
-import ContactForm from 'components/shared/ContactForm/ContactForm';
+import ContactForm from 'components/shared/forms/ContactForm';
 import Image from 'next/image';
 import React from 'react';
 import { Title32 } from 'styles/common/Typography.style';

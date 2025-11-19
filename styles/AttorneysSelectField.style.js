@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { globalColor } from './global_styles/Global.styles';
 
-export const AttorneySelectFieldDropdown = styled.ul`
+export const AttorneysSelectFieldDropdown = styled.ul`
   position: absolute;
   z-index: 1000;
   background: ${globalColor.white};
@@ -14,7 +14,7 @@ export const AttorneySelectFieldDropdown = styled.ul`
   padding: 0;
 `;
 
-export const AttorneySelectFieldDropdownItem = styled.li`
+export const AttorneysSelectFieldDropdownItem = styled.li`
   padding: 8px 12px;
   cursor: pointer;
 
@@ -23,7 +23,7 @@ export const AttorneySelectFieldDropdownItem = styled.li`
   }
 `;
 
-export const AttorneySelectFieldWrapper = styled.div`
+export const AttorneysSelectFieldWrapper = styled.div`
   position: relative;
   width: 100%;
 `;

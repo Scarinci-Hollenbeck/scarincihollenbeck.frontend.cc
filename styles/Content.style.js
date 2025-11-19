@@ -13,7 +13,10 @@ export const ContentWrapper = styled.section`
 `;
 
 export const ContentContainer = styled.div`
-  --content-text-color: ${globalColor.gray.gray700};
+  --content-text-color: ${({ $fontColor = globalColor.gray.gray700 }) =>
+    $fontColor};
+  --list-marker-color: ${({ $listMarkerColor = 'currentColor' }) =>
+    $listMarkerColor};
   color: var(--content-text-color);
   word-break: break-word;
 
@@ -33,6 +36,14 @@ export const ContentContainer = styled.div`
 
     &:empty {
       display: none;
+    }
+  }
+
+  ul {
+    li {
+      &::marker {
+        color: var(--list-marker-color);
+      }
     }
   }
 
@@ -123,6 +134,12 @@ export const ContentContainer = styled.div`
   .table-wrapper {
     width: 100%;
     overflow-x: auto;
+
+    &:last-child {
+      table {
+        margin-bottom: 0;
+      }
+    }
 
     table {
       width: 100%;

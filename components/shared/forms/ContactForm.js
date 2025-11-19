@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { FormContainer } from 'styles/attorney-page/GetInTouchForm.styles';
+import { FormContainer } from 'styles/Forms.style';
 import { StandardBlueButton } from 'styles/Buttons.style';
 import {
   GET_IN_TOUCH_FORM_API,
-  inputsGetInTouchAttributes,
+  inputsContactForm,
   RECAPTCHA_SITE_KEY,
   THANKS_MESSAGE,
 } from 'utils/constants';
@@ -41,14 +41,18 @@ export default function ContactForm({
         success-message={THANKS_MESSAGE.title}
       >
         <RenderInputs
-          arrayOfAttributes={inputsGetInTouchAttributes}
+          arrayOfAttributes={inputsContactForm}
           attorneySlug={router.asPath}
         />
         <p className="form-disclaimer">
           * The use of the Internet or this form for communication with the firm
           or any individual member of the firm does not establish an
           attorney-client relationship. Confidential or time-sensitive
-          information should not be sent through this form.
+          information should not be sent through this form. By providing a
+          telephone number and submitting this form you are consenting to be
+          contacted by SMS text message. Message & data rates may apply. Message
+          frequency may vary. You can reply STOP to opt-out of further
+          messaging.
         </p>
         {!empty(blockName) && (
           // eslint-disable-next-line react/no-unknown-property

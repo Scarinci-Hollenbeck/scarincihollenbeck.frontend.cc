@@ -1,4 +1,4 @@
-import { ProfileImageButtonStyled } from '../../../styles/attorney-page/AttorneyProfile.style';
+import { ProfileImageButtonStyled } from '../../../styles/attorney-page/ProfileImage.style';
 
 const ProfileImageButton = ({
   isShowVideo = false,

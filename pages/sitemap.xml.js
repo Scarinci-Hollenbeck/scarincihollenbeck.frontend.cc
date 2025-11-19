@@ -24,77 +24,77 @@ const getCurrentPublishedPages = async () => {
         headers,
       )
     ).json();
-    let siteMapArr;
-    if (!empty(response?.data)) {
-      siteMapArr = Array.from(
-        Object.entries(response?.data),
-        ([key, value]) => {
-          value = value.map((page) => {
-            if (page.date_modified.length === 0) {
-              page.date_modified = new Date().toISOString();
-            } else {
-              page.date_modified = reformatDate(page.date_modified);
-            }
-            return page;
+
+    if (empty(response?.data)) return [];
+
+    const siteMapArr = Array.from(
+      Object.entries(response?.data),
+      ([key, value]) => {
+        value = value.map((page) => {
+          if (page.date_modified.length === 0) {
+            page.date_modified = new Date().toISOString();
+          } else {
+            page.date_modified = reformatDate(page.date_modified);
+          }
+          return page;
+        });
+        if (key === 'categories') {
+          value.map((category) => {
+            category.slug = `/library/category/${category.slug}`;
+            return category;
           });
-          if (key === 'categories') {
-            value.map((category) => {
-              category.slug = `/library/category/${category.slug}`;
-              return category;
-            });
-            value = [
-              ...value,
-              {
-                id: value.length,
-                title: 'Categories',
-                date_modified: new Date().toISOString(),
-                slug: '/library/category/firm-news',
-              },
-            ];
-          }
-          if (key === 'attorneys') {
-            value = [
-              ...value,
-              {
-                id: value.length,
-                title: 'Attorneys',
-                date_modified: new Date().toISOString(),
-                slug: '/attorneys',
-              },
-            ];
-          }
-          if (key === 'administration') {
-            value = [
-              ...value,
-              {
-                id: value.length,
-                title: 'Administration',
-                date_modified: new Date().toISOString(),
-                slug: '/administration',
-              },
-            ];
-          }
-          if (key === 'careers') {
-            value = [
-              ...value,
-              {
-                id: value.length,
-                title: 'Careers',
-                date_modified: new Date().toISOString(),
-                slug: '/careers',
-              },
-            ];
-          }
-          if (key === 'authors') {
-            value = value.map((author) => {
-              author.slug = `/library${author.slug}`;
-              return author;
-            });
-          }
-          return value;
-        },
-      );
-    }
+          value = [
+            ...value,
+            {
+              id: value.length,
+              title: 'Categories',
+              date_modified: new Date().toISOString(),
+              slug: '/library/category/firm-news',
+            },
+          ];
+        }
+        if (key === 'attorneys') {
+          value = [
+            ...value,
+            {
+              id: value.length,
+              title: 'Attorneys',
+              date_modified: new Date().toISOString(),
+              slug: '/attorneys',
+            },
+          ];
+        }
+        if (key === 'administration') {
+          value = [
+            ...value,
+            {
+              id: value.length,
+              title: 'Administration',
+              date_modified: new Date().toISOString(),
+              slug: '/administration',
+            },
+          ];
+        }
+        if (key === 'careers') {
+          value = [
+            ...value,
+            {
+              id: value.length,
+              title: 'Careers',
+              date_modified: new Date().toISOString(),
+              slug: '/careers',
+            },
+          ];
+        }
+        if (key === 'authors') {
+          value = value.map((author) => {
+            author.slug = `/library${author.slug}`;
+            return author;
+          });
+        }
+        return value;
+      },
+    );
 
     return siteMapArr
       .flat()
@@ -136,7 +136,7 @@ export const getServerSideProps = async ({ res }) => {
   `;
   res.setHeader(
     'Cache-Control',
-    'max-age=0, s-maxage=86400, stale-while-revalidate',
+    'max-age=0, s-maxage=600, stale-while-revalidate',
   );
   res.setHeader('Content-Type', 'text/xml');
   res.write(sitemap);

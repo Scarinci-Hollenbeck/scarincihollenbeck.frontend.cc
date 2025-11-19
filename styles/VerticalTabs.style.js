@@ -53,6 +53,7 @@ export const VerticalTabsHolder = styled.div`
 `;
 
 export const OpenersList = styled.ol`
+  list-style: none;
   margin: 0;
   height: 100%;
   width: 500px;
@@ -85,9 +86,7 @@ export const OpenersList = styled.ol`
   }
 `;
 
-export const OpenersListItem = styled.li`
-  list-style: none;
-`;
+export const OpenersListItem = styled.li``;
 
 export const TabOpener = styled.button`
   color: ${globalColor.gray.gray500};
@@ -187,15 +186,10 @@ export const TabContent = styled(ContentContainer)`
 
 export const TabContentColumns = styled.ul`
   --column-gap: 32px;
-  list-style: none !important;
   display: flex;
   flex-wrap: wrap;
   column-gap: var(--column-gap);
   row-gap: 24px;
-
-  > li {
-    margin-left: 0 !important;
-  }
 
   ${media_breakpoint_down('xl')} {
     flex-direction: column;

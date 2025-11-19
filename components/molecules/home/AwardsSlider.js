@@ -6,7 +6,7 @@ import { AwardsSliderWrapper } from 'styles/Awards.style';
 import SwiperSlide from 'components/organisms/common/SwiperSlide';
 import AwardCard from './AwardCard';
 
-const breakpoints = {
+const breakpointsDefault = {
   1440: {
     slidesPerView: 5,
     spaceBetween: 32,
@@ -24,7 +24,11 @@ const breakpoints = {
   },
 };
 
-const AwardsSlider = ({ items, isLightVariant = false }) => {
+const AwardsSlider = ({
+  items,
+  breakpoints = breakpointsDefault,
+  isLightVariant = false,
+}) => {
   if (empty(items)) return null;
 
   return (

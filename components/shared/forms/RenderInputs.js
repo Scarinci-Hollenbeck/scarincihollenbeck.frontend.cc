@@ -1,9 +1,6 @@
 import { useState } from 'react';
 import { Form } from 'react-bootstrap';
-import {
-  FormLabelStyled,
-  InputGroupStyled,
-} from 'styles/attorney-page/GetInTouchForm.styles';
+import { FormLabelStyled, InputGroupStyled } from 'styles/Forms.style';
 import AttorneysSelectField from 'components/atoms/AttorneysSelectField';
 import UploadFileInput from '../../atoms/UploadFileInput';
 

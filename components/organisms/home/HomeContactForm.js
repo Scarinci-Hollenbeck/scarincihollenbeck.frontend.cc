@@ -1,4 +1,4 @@
-import ContactForm from 'components/shared/ContactForm/ContactForm';
+import ContactForm from 'components/shared/forms/ContactForm';
 import React from 'react';
 import { ContainerDefault } from 'styles/Containers.style';
 import {

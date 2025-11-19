@@ -18,10 +18,10 @@ export const getServerSideProps = async ({ res }) => {
   const posts = await getPageSitemap(
     'wp-json/sitemap-next/v1/all-published-posts/',
   );
-  const postsDateConverted = posts.links.map(({ link, modify_date }) => ({
+  const postsDateConverted = posts?.links.map(({ link, modify_date }) => ({
     link,
     modify_date: convertUnixTimestampToISO(modify_date),
-  }));
+  })) || [];
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
       ${postsDateConverted
@@ -40,7 +40,7 @@ export const getServerSideProps = async ({ res }) => {
 		`;
   res.setHeader(
     'Cache-Control',
-    'max-age=0, s-maxage=86400, stale-while-revalidate',
+    'max-age=0, s-maxage=600, stale-while-revalidate',
   );
   res.setHeader('Content-Type', 'text/xml');
   res.write(sitemap);

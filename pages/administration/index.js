@@ -51,7 +51,7 @@ export async function getStaticProps() {
       },
       admins: sortedAdmins,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 }
 

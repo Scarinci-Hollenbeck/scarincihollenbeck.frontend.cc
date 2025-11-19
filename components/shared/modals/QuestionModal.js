@@ -10,7 +10,7 @@ import {
 import { kwesformsInit } from 'utils/kwesformsInit';
 import empty from 'is-empty';
 import dynamic from 'next/dynamic';
-import QuestionForm from 'components/molecules/library/QuestionForm';
+import QuestionForm from 'components/shared/forms/QuestionForm';
 import ModalWindow from 'components/common/ModalWindow';
 import { handleQuestionModalOpener } from '../../../redux/slices/modals.slice';
 import { useGetAttorneysQuery } from '../../../redux/services/project-api';

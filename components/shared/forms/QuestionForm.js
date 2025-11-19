@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { FormContainer } from 'styles/attorney-page/GetInTouchForm.styles';
+import { FormContainer } from 'styles/Forms.style';
 import { StandardBlueButton } from 'styles/Buttons.style';
 import {
   LIBRARY_QUESTION_FORM_API,
@@ -8,7 +8,7 @@ import {
   RECAPTCHA_SITE_KEY,
   THANKS_MESSAGE,
 } from 'utils/constants';
-import RenderInputs from 'components/shared/ContactForm/RenderInputs';
+import RenderInputs from 'components/shared/forms/RenderInputs';
 
 export default function QuestionForm({
   blockName = 'default-question-form',

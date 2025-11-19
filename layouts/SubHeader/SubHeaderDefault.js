@@ -1,5 +1,5 @@
 import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
-import PostBreadCrumbs from 'components/organisms/post/PostBreadcrumbs';
+import BreadCrumbs from 'components/organisms/common/BreadCrumbs';
 import SocialShare from 'components/organisms/library/SocialShare';
 import Image from 'next/image';
 import { changeTitle } from 'utils/helpers';
@@ -55,7 +55,7 @@ const SubHeaderDefault = ({
       )}
 
       <SubHeaderContent className="sub-header__content">
-        <PostBreadCrumbs data={{ title }} />
+        <BreadCrumbs data={{ title, category }} />
 
         <SubHeaderInfo key={`${title}-subheader-content`}>
           <SubHeaderCategory

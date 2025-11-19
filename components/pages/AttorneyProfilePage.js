@@ -1,35 +1,27 @@
-import ProfileAccordion from 'components/organisms/attorney/ProfileAccordion';
 import ProfileHeader from 'components/organisms/attorney/ProfileHeader';
 import PersonSiteHead from 'components/shared/head/PersonSiteHead';
-import {
-  ATTORNEY_ACCORDIONS_BLOGS_TITLES,
-  CURRENT_DOMAIN,
-} from 'utils/constants';
+import { CURRENT_DOMAIN } from 'utils/constants';
+import ProfileContent from 'components/organisms/attorney/ProfileContent';
+import ProfileMedia from 'components/organisms/attorney/ProfileMedia';
+import ProfilePrint from 'components/organisms/attorney/ProfilePrint';
 import usePrintLogic from 'hooks/usePrintLogic';
-import { useState } from 'react';
 import LibraryQuestionBanner from 'components/organisms/library/LibraryQuestionBanner';
-import AttorneyPrintPage from './AttorneyPrintPage';
 import { useGetLocationsQuery } from '../../redux/services/project-api';
 
-const AttorneyProfilePage = ({
-  seo,
-  profileHeader,
-  accordionData,
-  qrCodeBioPage,
-  qrCodeLinkedin,
-}) => {
-  const [activeAccordion, setActiveAccordion] = useState([]);
+const AttorneyProfilePage = (props) => {
+  const {
+    seo, profileHeader, profileContent, asideItems, profileMedia,
+  } = props;
+
   const { data: locations } = useGetLocationsQuery();
+  const { isRenderPdf, handlePrint, setIsPrintReady } = usePrintLogic();
 
   const printPageProps = {
     ...profileHeader,
-    ...accordionData,
-    qrCodeBioPage,
-    qrCodeLinkedin,
+    ...profileContent,
+    asideItems,
     locations,
   };
-
-  const { isRenderPdf, setIsPrintReady, handlePrint } = usePrintLogic();
 
   return (
     <>
@@ -39,32 +31,26 @@ const AttorneyProfilePage = ({
         canonicalUrl={`${CURRENT_DOMAIN}/${seo.canonicalLink}`}
         name={profileHeader.name}
         featuredImage={seo.image}
-        designation={profileHeader.title}
+        designation={profileHeader.designation}
         socialMediaLinks={seo.socialMediaLinks}
       />
       <ProfileHeader
         handlePrint={handlePrint}
-        setActiveAccordion={setActiveAccordion}
-        isLawyerSpotlight={accordionData?.blogTitles?.includes(
-          ATTORNEY_ACCORDIONS_BLOGS_TITLES.lawyerSpotlight,
-        )}
+        isLawyerSpotlight={profileMedia?.isLawyerSpotlight}
         {...profileHeader}
       />
-      <ProfileAccordion
-        activeAccordion={activeAccordion}
-        setActiveAccordion={setActiveAccordion}
-        name={profileHeader?.name}
-        {...accordionData}
-      />
+
+      <ProfileContent profileContent={profileContent} asideItems={asideItems} />
+
+      <ProfileMedia {...profileMedia} />
 
       <LibraryQuestionBanner />
 
-      {isRenderPdf && (
-        <AttorneyPrintPage
-          {...printPageProps}
-          onReady={() => setIsPrintReady(true)}
-        />
-      )}
+      <ProfilePrint
+        isRenderPdf={isRenderPdf}
+        setIsPrintReady={setIsPrintReady}
+        printData={printPageProps}
+      />
     </>
   );
 };

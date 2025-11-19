@@ -37,12 +37,10 @@ const sanitizeMembers = (members) => members.map((member) => ({
       }),
     )
     : !empty(member.administration)
-      ? member.administration?.location?.map(
-        ({ id, officeMainInformation }) => ({
-          id,
-          officeMainInformation: officeMainInformation.addressLocality,
-        }),
-      )
+      ? member.administration?.location?.map(({ id, title }) => ({
+        id,
+        officeMainInformation: title,
+      }))
       : [],
 }));
 
@@ -75,7 +73,7 @@ export const getStaticProps = async () => {
       firmMembers: firmMembers || {},
       subHeaderImage: featuredImage.node.sourceUrl,
     },
-    revalidate: 86400,
+    revalidate: 600,
   };
 };
 

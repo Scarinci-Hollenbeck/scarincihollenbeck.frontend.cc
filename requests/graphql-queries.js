@@ -1,6 +1,7 @@
 export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
   attorneyProfileBy(slug: $slug) {
     status
+    databaseId
     seo {
       title
       metaDesc
@@ -104,6 +105,7 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
         governmentLaw
         musicEsq
       }
+      awardsRecognitions
     }
     attorneyChairCoChair {
       chair {
@@ -127,9 +129,6 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
           id
           title(format: RENDERED)
           uri
-          officeMainInformation {
-            addressLocality
-          }
         }
       }
       relatedPractices {
@@ -142,8 +141,9 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
     }
     attorneyRepresentativeMatters {
       repMatters {
-        content
         title
+        content
+        label
       }
     }
     title(format: RENDERED)
@@ -191,22 +191,31 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
   }
 }`;
 
-export const checkAttorneyPostsQueryByIdAndSlug = `query AttorneyPostsById(
-  $categoryId: [ID]
-  $authorId: Int
-  $first: Int
-  $last: Int
-  $after: String
-  $before: String
+export const checkAttorneyPostsQuery = `
+query CheckAttorneyPostsQuery(
+  $authorId: Int,
+  $first: Int,
+  $last: Int,
+  $after: String,
+  $before: String,
+  $attorneyId: ID,
+  $categories: [ID],
   ) {
-  posts(first: $first, last: $last, after: $after, before: $before, where: {categoryIn: $categoryId, author: $authorId}) {
-    pageInfo {
-      endCursor
-      startCursor
-      hasNextPage
-      hasPreviousPage
+    posts(
+      first: $first, 
+      last: $last, 
+      after: $after, 
+      before: $before, 
+      where: {author: $authorId, selectAttorneysCustom: $attorneyId, categoryIn: $categories},
+    ) {
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
+        hasPreviousPage
+      }
     }
-  }}
+  }
 `;
 
 export const attorneysQuery = `query FirmPageQuery {
@@ -536,15 +545,21 @@ query ClientsQuery(
   }
 }`;
 
-export const postsForPaginationByAuthorIdQuery = `
-  query postsForPaginationByAuthorId(
-    $categoryId: [ID],
+export const attorneyPostsQuery = `
+  query AttorneyPostsQuery(
     $authorId: Int,
+    $attorneyId: ID,
     $offsetPosts: Int,
-    $postsPerPage: Int
+    $postsPerPage: Int,
+    $categories: [ID],
   ) {
     posts(
-      where: {categoryIn: $categoryId, author: $authorId, offsetPagination: {offset: $offsetPosts, size: $postsPerPage}}
+      where: {
+        author: $authorId, 
+        selectAttorneysCustom: $attorneyId, 
+        offsetPagination: {offset: $offsetPosts, size: $postsPerPage}, 
+        categoryIn: $categories
+      }
     ) {
       pageInfo {
         offsetPagination {
@@ -562,6 +577,7 @@ export const postsForPaginationByAuthorIdQuery = `
             }
           }
           uri
+          databaseId
           title(format: RENDERED)
           excerpt(format: RENDERED)
           author {
@@ -622,6 +638,10 @@ export const homePageQuery = `query HomePageQuery {
         year
         awardImage {
           sourceUrl
+        }
+        link {
+          url
+          target
         }
       }
       isHoliday
@@ -850,9 +870,7 @@ query FirmPageQuery($id: ID!) {
       }
       location {
         ... on OfficeLocation {
-          officeMainInformation {
-            addressLocality
-          }
+          title
           uri
           id
         }
@@ -975,9 +993,7 @@ query FirmOverviewQuery {
             }
             location {
               ... on OfficeLocation {
-                officeMainInformation {
-                  addressLocality
-                }
+                title
                 uri
                 id
               }
@@ -1022,9 +1038,7 @@ query FirmOverviewQuery {
             }
             location {
               ... on OfficeLocation {
-                officeMainInformation {
-                  addressLocality
-                }
+                title
                 uri
                 id
               }
@@ -1067,9 +1081,7 @@ export const adminsQuery = `query AttorneyPostsById {
           ... on OfficeLocation {
             id
             uri
-            officeMainInformation {
-              addressLocality
-            }
+            title
           }
         }
         designation
@@ -1531,6 +1543,20 @@ query AuthorContentQuery($id: ID!) {
 export const podcastsPageContentQuery = `
 query PodcastsPageContentQuery {
   pageBy(pageId: 169286) {
+    title
+    pagesFields {
+      description
+    }
+    seo {
+      metaDesc
+      title
+    }
+  }
+}`;
+
+export const librarySubscriptionsPageContentQuery = `
+query LibrarySubscriptionsPageContentQuery {
+  pageBy(pageId: 172538) {
     title
     pagesFields {
       description

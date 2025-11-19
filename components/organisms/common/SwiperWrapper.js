@@ -43,7 +43,7 @@ const SwiperWrapper = ({
       swiper.navigation.init();
       swiper.navigation.update();
     }
-  }, []);
+  }, [breakpoints]);
 
   useEffect(() => {
     if (swiperRef.current && swiperRef.current.swiper) {

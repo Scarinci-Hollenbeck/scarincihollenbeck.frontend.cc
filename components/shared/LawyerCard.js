@@ -91,9 +91,9 @@ const LawyerCard = ({
         <LawyerCardLocations>
           {locations.map((location, index) => (
             <LawyerCardLocation key={location?.id || location?.databaseId}>
-              {location?.officeMainInformation?.addressLocality
-                || location?.officeMainInformation
-                || location?.title}
+              {location?.title
+                || location?.officeMainInformation?.addressLocality
+                || location?.officeMainInformation}
               {index < locations.length - 1 && ','}
             </LawyerCardLocation>
           ))}

@@ -1,15 +1,15 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
-import { FormContainer } from 'styles/attorney-page/GetInTouchForm.styles';
-import { StandardBlueButton } from '../../styles/Buttons.style';
+import { FormContainer } from 'styles/Forms.style';
+import { StandardBlueButton } from '../../../styles/Buttons.style';
 import {
   THANKS_MESSAGE,
   inputsCareerForm,
   GET_IN_TOUCH_FORM_API,
   RECAPTCHA_SITE_KEY,
-} from '../../utils/constants';
-import { CareerFormContainer } from '../../styles/Careers.style';
-import RenderInputs from '../shared/ContactForm/RenderInputs';
+} from '../../../utils/constants';
+import { CareerFormContainer } from '../../../styles/Careers.style';
+import RenderInputs from './RenderInputs';
 
 const CareerForm = () => {
   const router = useRouter();
@@ -40,7 +40,11 @@ const CareerForm = () => {
             * The use of the Internet or this form for communication with the
             firm or any individual member of the firm does not establish an
             attorney-client relationship. Confidential or time-sensitive
-            information should not be sent through this form.
+            information should not be sent through this form. By providing a
+            telephone number and submitting this form you are consenting to be
+            contacted by SMS text message. Message & data rates may apply.
+            Message frequency may vary. You can reply STOP to opt-out of further
+            messaging.
           </p>
           {/* eslint-disable-next-line react/no-unknown-property */}
           <fieldset

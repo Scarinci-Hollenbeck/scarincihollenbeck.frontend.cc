@@ -33,7 +33,7 @@ export const DarkBannerContent = styled.div`
   padding-left: var(--banner-gap);
   display: flex;
   flex-direction: column;
-  row-gap: 12px;
+  row-gap: 24px;
   border-left: 1px solid ${globalColor.gray.gray500};
 
   ${media_breakpoint_down('lg')} {
@@ -41,6 +41,10 @@ export const DarkBannerContent = styled.div`
     padding-left: 0;
     border-top: 1px solid ${globalColor.gray.gray500};
     padding-top: var(--banner-gap);
+  }
+
+  ${media_breakpoint_down('md')} {
+    row-gap: 16px;
   }
 `;
 
@@ -74,7 +78,6 @@ export const DarkBannerDescription = styled.div`
 `;
 
 export const DarkBannerButtons = styled.div`
-  margin-top: 12px;
   display: flex;
   flex-wrap: wrap;
   gap: 24px;

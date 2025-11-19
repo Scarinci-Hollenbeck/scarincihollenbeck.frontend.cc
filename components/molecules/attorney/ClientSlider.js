@@ -4,65 +4,68 @@ import empty from 'is-empty';
 import Link from 'next/link';
 import {
   ClientsSliderCard,
-  ClientsSliderTitle,
   ClientsSliderWrapper,
 } from 'styles/attorney-page/ClientsSlider.style';
 import SwiperSlide from 'components/organisms/common/SwiperSlide';
 
 const breakpoints = {
-  1800: {
-    slidesPerView: 9,
-  },
   1440: {
-    slidesPerView: 7,
+    slidesPerView: 6,
   },
   1280: {
     slidesPerView: 5,
-    spaceBetween: 24,
+  },
+  992: {
+    slidesPerView: 4,
   },
   768: {
-    spaceBetween: 20,
+    slidesPerView: 5,
+  },
+  580: {
     slidesPerView: 4,
   },
   0: {
-    spaceBetween: 12,
-    slidesPerView: 2,
+    slidesPerView: 3,
   },
 };
 
-const ClientSlider = ({ clients }) => (
-  <ClientsSliderWrapper>
-    <ClientsSliderTitle>Clients</ClientsSliderTitle>
-    <SwiperWrapper
-      space-between={24}
-      breakpoints={breakpoints}
-      grab-cursor="true"
-      autoplay="true"
-      speed="1000"
-      loop="true"
-      lazy="true"
-    >
-      {clients.map(({ clientImage, clientLink, clientTitle }) => (
-        <SwiperSlide key={`${clientTitle}-slide`}>
-          <ClientsSliderCard
-            as={!empty(clientLink) && Link}
-            href={!empty(clientLink) ? clientLink : undefined}
-            target={!empty(clientLink) ? '_blank' : undefined}
-            rel={!empty(clientLink) ? 'noreferrer' : undefined}
-            $isLink={!empty(clientLink)}
-          >
-            <Image
-              src={clientImage.sourceUrl}
-              alt={clientImage.mediaDetails.altText || clientTitle}
-              width={170}
-              height={170}
-              loading="lazy"
-            />
-          </ClientsSliderCard>
-        </SwiperSlide>
-      ))}
-    </SwiperWrapper>
-  </ClientsSliderWrapper>
-);
+const ClientSlider = ({ clients }) => {
+  if (empty(clients)) return null;
+
+  return (
+    <ClientsSliderWrapper>
+      <SwiperWrapper
+        space-between={16}
+        breakpoints={breakpoints}
+        grab-cursor="true"
+        autoplay="true"
+        speed="1000"
+        loop="true"
+        lazy="true"
+      >
+        {clients.map(({ clientImage, clientLink, clientTitle }) => (
+          <SwiperSlide key={`${clientLink}-slide`}>
+            <ClientsSliderCard
+              as={!empty(clientLink) && Link}
+              href={!empty(clientLink) ? clientLink : undefined}
+              target={!empty(clientLink) ? '_blank' : undefined}
+              rel={!empty(clientLink) ? 'noreferrer noopener' : undefined}
+              $isLink={!empty(clientLink)}
+              title={clientTitle}
+            >
+              <Image
+                src={clientImage?.sourceUrl}
+                alt={clientImage?.mediaDetails?.altText || clientTitle}
+                width={170}
+                height={170}
+                loading="lazy"
+              />
+            </ClientsSliderCard>
+          </SwiperSlide>
+        ))}
+      </SwiperWrapper>
+    </ClientsSliderWrapper>
+  );
+};
 
 export default ClientSlider;

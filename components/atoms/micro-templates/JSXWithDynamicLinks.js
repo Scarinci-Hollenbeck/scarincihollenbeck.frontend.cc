@@ -44,7 +44,7 @@ const productionUrls = [
   BASE_API_URL,
 ];
 // Parsing HTML and replace a hardcode-domain to dynamic href for <Link/>. This function returns React jsx components.
-export const JSXWithDynamicLinks = ({ HTML, print, isHoliday }) => {
+export const JSXWithDynamicLinks = ({ HTML, print }) => {
   if (empty(HTML)) return null;
 
   const options = {

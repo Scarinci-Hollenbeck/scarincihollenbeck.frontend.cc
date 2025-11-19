@@ -114,6 +114,11 @@ export const FIRM_BLOG_PAGES = [
     label: 'Firm Insights',
     slug: '/library/category/law-firm-insights',
   },
+  {
+    id: 'library-subscriptions',
+    label: 'Subscription',
+    slug: '/library/subscriptions',
+  },
 ];
 
 export const ScarinciHollenbeckAuthor = [
@@ -196,9 +201,9 @@ export const FIRM_PAGES = [
     uri: '/memorials',
   },
   {
-    databaseId: 'work-life-balance',
-    title: 'Work Life Balance',
-    uri: '/work-life-balance',
+    databaseId: 'work-life-integration',
+    title: 'Work Life Integration',
+    uri: '/work-life-integration',
   },
 ];
 
@@ -367,7 +372,7 @@ export const ATTORNEYS_FAQ = [
     We service our clients in a large variety of matters. In areas such as Intellectual Property,
     including trademark, copyright, or patent-related matters, we can service these requests regardless
     of where our clients are based. However, we predominantly handle legal matters whose jurisdiction
-    is New Jersey, New York, the tri-state metropolitan area, and Washington, D.C. We also have <strong>attorneys
+    is New Jersey, New York, the tri-state metropolitan area. We also have <strong>attorneys
     who are licensed</strong> to practice in Connecticut, Florida, Massachusetts, Pennsylvania, and other states.
     We recommend calling one of our dedicated staff members who can help identify if we have an attorney at
     the firm that can assist you. Feel free to reach out to us at <a href="tel:201-806-3364"> 201-806-3364</a>.
@@ -464,22 +469,21 @@ export const inputsCareerForm = [
   },
 ];
 
-export const inputsGetInTouchAttributes = [
+export const inputsContactForm = [
   {
     type: 'text',
-    name: 'FirstName',
-    placeholder: 'First name',
+    name: 'FullName',
+    placeholder: 'Full name',
     rules: 'required|max:255',
-    'aria-label': 'First name',
-    title: 'First name',
+    'aria-label': 'Full name',
+    title: 'Full name',
   },
   {
     type: 'text',
-    name: 'LastName',
-    placeholder: 'Last name',
-    rules: 'required|max:255',
-    'aria-label': 'Last name',
-    title: 'Last name',
+    name: 'Business',
+    placeholder: 'Business (optional)',
+    'aria-label': 'Business',
+    title: 'Business',
   },
   {
     type: 'email',
@@ -517,11 +521,12 @@ export const inputsGetInTouchAttributes = [
   {
     type: 'textarea',
     name: 'Message',
-    placeholder: 'Message (optional)',
+    placeholder: 'Message',
     rows: 8,
     cols: 4,
     'aria-label': 'Message',
     title: 'Message',
+    rules: 'required|max:1000',
   },
 ];
 
@@ -767,23 +772,6 @@ export const latestPostTabs = [
   },
 ];
 
-export const reservedAccordionTitles = [
-  'Clients List',
-  'Awards',
-  'Full Biography',
-  'Affiliations Area',
-  'Representative Matters',
-  'Gallery',
-  'Media',
-  'Presentations',
-  'Publications',
-  'Videos',
-  'News & Press Releases',
-  'Blog',
-  'Events',
-  'Government & Law',
-];
-
 export const NAVBAR_SERVICES_TABS = ['Practices', 'Industries'];
 
 export const readyIndustriesUrls = [
@@ -832,7 +820,7 @@ export const desiredOrder = [
 export const LIBRARY_NAV = [
   {
     databaseId: 'filters-nav-01',
-    title: 'Overview',
+    title: 'Library overview',
     uri: '/library',
   },
   {
@@ -865,6 +853,11 @@ export const LIBRARY_NAV = [
     title: 'Podcasts',
     uri: '/podcasts',
   },
+  {
+    databaseId: 'filters-nav-08',
+    title: 'Subscribe',
+    uri: '/library/subscriptions',
+  },
 ];
 
 export const SERVICES_SIDEBAR_DEFAULT_CONTENT = {
@@ -875,7 +868,7 @@ export const SERVICES_SIDEBAR_DEFAULT_CONTENT = {
     </p>
     <p>
       Scarinci Hollenbeck is a business law firm based in New Jersey, New
-      York, and Washington, D.C servicing clients worldwide.
+      York servicing clients worldwide.
     </p>
   `,
   quote: `
@@ -885,11 +878,4 @@ export const SERVICES_SIDEBAR_DEFAULT_CONTENT = {
     </p>
     <p>Contact us today to learn more about how we can assist you.</p>
   `,
-};
-
-export const ATTORNEY_ACCORDIONS_BLOGS_TITLES = {
-  blog: 'Blog',
-  events: 'Events',
-  releases: 'News & Press Releases',
-  lawyerSpotlight: 'Lawyer Spotlight heading',
 };
