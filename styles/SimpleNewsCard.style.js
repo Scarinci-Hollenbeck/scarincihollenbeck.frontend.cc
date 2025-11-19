@@ -18,9 +18,19 @@ export const NewsCardBlock = styled.article`
   flex-direction: column;
   background-color: ${({ $isTransparent }) =>
     $isTransparent ? 'transparent' : globalColor.gray.gray10};
+  border: 1px solid transparent;
   border-radius: 4px;
   overflow: hidden;
   position: relative;
+  transition: ${globalTransition.default};
+
+  :hover {
+    &:has(.news-card-link) {
+      background-color: ${globalColor.white};
+      border-color: ${({ $isTransparent }) =>
+        $isTransparent ? 'transparent' : globalColor.blue.skyBlue};
+    }
+  }
 
   .news-card-link {
     position: absolute;
@@ -28,13 +38,6 @@ export const NewsCardBlock = styled.article`
     width: 100%;
     height: 100%;
     z-index: 1;
-    border: 1px solid transparent;
-    border-radius: inherit;
-    transition: ${globalTransition.default};
-
-    :hover {
-      border-color: ${globalColor.blue.skyBlue};
-    }
   }
 
   p {
@@ -82,14 +85,9 @@ export const NewsCardBlock = styled.article`
     margin-bottom: 0;
     color: ${({ $isBlueTitle }) =>
       $isBlueTitle ? globalColor.blue.blue500 : globalColor.blue.darkBlue};
-    font-size: ${rem(20)};
-    line-height: 1.6;
+    font-size: ${rem(16)};
+    line-height: 1.5;
     font-weight: 600;
-
-    ${media_breakpoint_down('sm')} {
-      font-size: ${rem(18)};
-      line-height: 1.56;
-    }
   }
 
   .news-card-text {
