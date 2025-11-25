@@ -52,6 +52,7 @@ const ProfileMedia = (props) => {
             <ProfileArticles
               title="Lawyer Spotlight"
               queryParams="lawyer-spotlight-page"
+              sectionId="lawyer-spotlight"
               params={{
                 authorId,
                 attorneyId,

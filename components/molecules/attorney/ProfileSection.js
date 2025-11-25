@@ -7,12 +7,22 @@ import ProfileSectionWrapper from './ProfileSectionWrapper';
 const CollapseContent = dynamic(() => import('components/molecules/practice/CollapseContent'));
 
 const ProfileSection = ({
-  children, title, content, disclaimer, link,
+  children,
+  title,
+  content,
+  disclaimer,
+  link,
+  sectionId,
 }) => {
   if (empty(content) && empty(children)) return null;
 
   return (
-    <ProfileSectionWrapper disclaimer={disclaimer} title={title} link={link}>
+    <ProfileSectionWrapper
+      disclaimer={disclaimer}
+      title={title}
+      link={link}
+      sectionId={sectionId}
+    >
       {!empty(content) && (
         <CollapseContent
           content={content}

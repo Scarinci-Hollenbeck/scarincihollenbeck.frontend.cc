@@ -23,10 +23,18 @@ const AttorneysSelectField = ({
     (e) => {
       const value = e.target.value;
       setInputValue(value);
-      setShowDropdown(true);
+
+      if (!value.trim()) {
+        setFilteredAttorneys([]);
+        setShowDropdown(false);
+        onChange(e, name);
+        return;
+      }
+
       setFilteredAttorneys(
         attorneys.filter(({ title }) => title.toLowerCase().includes(value.toLowerCase())),
       );
+      setShowDropdown(true);
       onChange(e, name);
     },
     [attorneys, onChange, name],
@@ -55,8 +63,19 @@ const AttorneysSelectField = ({
         setShowDropdown(false);
       }
     };
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setShowDropdown(false);
+      }
+    };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   return (
@@ -66,6 +85,14 @@ const AttorneysSelectField = ({
         value={inputValue}
         onChange={handleInputChange}
         name={name}
+        onBlur={(e) => {
+          if (
+            !e.relatedTarget
+            || !dropdownRef.current.contains(e.relatedTarget)
+          ) {
+            setShowDropdown(false);
+          }
+        }}
         autoComplete="off"
         {...attributes}
       />

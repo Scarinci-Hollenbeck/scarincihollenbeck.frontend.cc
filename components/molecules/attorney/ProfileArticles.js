@@ -7,7 +7,7 @@ import ProfileSection from './ProfileSection';
 
 const ProfileArticles = (props) => {
   const {
-    title, queryParams, params, isWideCards,
+    title, queryParams, params, isWideCards, sectionId,
   } = props;
 
   const router = useRouter();
@@ -20,7 +20,7 @@ const ProfileArticles = (props) => {
 
   const data = getPaginationData(attorneyPostsQuery, paginationParams);
   return (
-    <ProfileSection title={title}>
+    <ProfileSection title={title} sectionId={sectionId}>
       <BlogsBox
         queryParamsForPagination={queryParams}
         paginationData={data}

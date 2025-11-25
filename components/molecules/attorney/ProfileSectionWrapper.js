@@ -8,9 +8,13 @@ import {
 import { Title20, UnderlinedLink } from 'styles/common/Typography.style';
 
 const ProfileSectionWrapper = ({
-  children, title, link, disclaimer,
+  children,
+  title,
+  link,
+  disclaimer,
+  sectionId,
 }) => (
-  <ProfileSectionContainer>
+  <ProfileSectionContainer id={sectionId}>
     {(!empty(title) || !empty(link?.href)) && (
       <ProfileSectionHeader>
         {!empty(title) && <Title20 as="h2">{title}</Title20>}

@@ -15,6 +15,7 @@ export const ProfileSectionsStyled = styled.div`
 `;
 
 export const ProfileSectionContainer = styled.section`
+  scroll-margin-top: var(--header-height);
   display: flex;
   flex-direction: column;
   gap: 12px;
