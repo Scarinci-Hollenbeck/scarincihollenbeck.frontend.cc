@@ -39,8 +39,7 @@ export const LibraryTagLink = styled(Link)`
     $isSmall &&
     `
     padding-inline: 11px;
-    font-size: ${rem(14)};
-    line-height: 1.43;
+    font-size: ${rem(12)};
   `}
 
   &:hover {

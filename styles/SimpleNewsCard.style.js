@@ -29,6 +29,7 @@ export const NewsCardBlock = styled.article`
       background-color: ${globalColor.white};
       border-color: ${({ $isTransparent }) =>
         $isTransparent ? 'transparent' : globalColor.blue.skyBlue};
+      box-shadow: 0 2px 16px 0 rgba(10, 62, 108, 0.08);
     }
   }
 
