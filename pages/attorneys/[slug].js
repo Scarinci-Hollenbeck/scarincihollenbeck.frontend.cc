@@ -213,7 +213,7 @@ export const getStaticProps = async ({ params }) => {
   };
 
   /** Profile content data */
-  const [isArticlesAttorney, isNewsAttorney, isLawyerSpotlight] = await Promise.all([
+  const [isArticlesAttorney, isNewsAttorney, isAttorneySpotlight] = await Promise.all([
     checkAttorneyBlogsExist(authorId, attorneyBio?.databaseId, [599]),
     checkAttorneyBlogsExist(
       authorId,
@@ -282,7 +282,7 @@ export const getStaticProps = async ({ params }) => {
     govLawPosts,
     isArticlesAttorney: isArticlesAttorney || false,
     isNewsAttorney: isNewsAttorney || false,
-    isLawyerSpotlight: isLawyerSpotlight || false,
+    isAttorneySpotlight: isAttorneySpotlight || false,
     authorId,
     attorneyId: attorneyBio?.databaseId || null,
   };

@@ -595,9 +595,9 @@ export const questionFormFields = [
   {
     type: 'attorney-select',
     name: 'SelectedAttorney',
-    placeholder: 'Select Attorney (optional)',
-    'aria-label': 'Select Attorney (optional)',
-    title: 'Select Attorney (optional)',
+    placeholder: 'Start typing to select or enter attorney (optional)',
+    'aria-label': 'Start typing to select or enter attorney (optional)',
+    title: 'Start typing to select or enter attorney (optional)',
   },
   {
     type: 'textarea',
@@ -845,8 +845,8 @@ export const LIBRARY_NAV = [
   },
   {
     databaseId: 'filters-nav-06',
-    title: 'Lawyer Spotlight',
-    uri: '/library/category/lawyer-spotlight',
+    title: 'Attorney Spotlight',
+    uri: '/library/category/attorney-spotlight',
   },
   {
     databaseId: 'filters-nav-07',

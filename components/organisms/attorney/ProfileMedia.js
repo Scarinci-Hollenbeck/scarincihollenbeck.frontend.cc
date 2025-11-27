@@ -23,7 +23,7 @@ const ProfileMedia = (props) => {
     govLawPosts,
     isArticlesAttorney,
     isNewsAttorney,
-    isLawyerSpotlight,
+    isAttorneySpotlight,
     authorId,
     attorneyId,
   } = props;
@@ -48,11 +48,11 @@ const ProfileMedia = (props) => {
             />
           )}
 
-          {isLawyerSpotlight && (
+          {isAttorneySpotlight && (
             <ProfileArticles
-              title="Lawyer Spotlight"
-              queryParams="lawyer-spotlight-page"
-              sectionId="lawyer-spotlight"
+              title="Attorney Spotlight"
+              queryParams="attorney-spotlight-page"
+              sectionId="attorney-spotlight"
               params={{
                 authorId,
                 attorneyId,

@@ -36,7 +36,7 @@ const ProfileHeader = (props) => {
     profilePractices,
     isAdmin = false,
     handlePrint,
-    isLawyerSpotlight = false,
+    isAttorneySpotlight = false,
   } = props;
 
   const profileContactsProps = {
@@ -54,7 +54,7 @@ const ProfileHeader = (props) => {
               name={name}
               profileImage={profileImage}
               representativeVideo={representativeVideo}
-              isLawyerSpotlight={isLawyerSpotlight}
+              isAttorneySpotlight={isAttorneySpotlight}
             />
           </ProfileHeaderLeft>
 

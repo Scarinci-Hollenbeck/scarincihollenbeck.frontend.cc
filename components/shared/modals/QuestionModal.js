@@ -52,9 +52,9 @@ const QuestionModal = () => {
               <QuestionModalDescription>
                 Your insights help us shape content that truly matters to our
                 readers. If there&apos;s a legal topic you&apos;re curious about
-                or a question you&apos;ve always wanted to ask a lawyer — this
+                or a question you&apos;ve always wanted to ask a attorney — this
                 is your chance. Submit your question below, and it might be
-                featured (with an answer!) in an upcoming Lawyer Spotlight
+                featured (with an answer!) in an upcoming Attorney Spotlight
                 article.
               </QuestionModalDescription>
               {isLoading ? (

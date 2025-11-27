@@ -15,7 +15,7 @@ export const DarkBannerHolder = styled.div`
 `;
 
 export const DarkBannerTitle = styled.h2`
-  max-width: 270px;
+  max-width: 280px;
   color: inherit;
   text-transform: uppercase;
 

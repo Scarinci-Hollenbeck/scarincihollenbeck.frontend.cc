@@ -36,7 +36,7 @@ const AttorneyProfilePage = (props) => {
       />
       <ProfileHeader
         handlePrint={handlePrint}
-        isLawyerSpotlight={profileMedia?.isLawyerSpotlight}
+        isAttorneySpotlight={profileMedia?.isAttorneySpotlight}
         {...profileHeader}
       />
 

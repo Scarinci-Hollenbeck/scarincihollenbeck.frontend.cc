@@ -17,7 +17,7 @@ const ProfileImage = ({
   name,
   profileImage,
   representativeVideo,
-  isLawyerSpotlight = false,
+  isAttorneySpotlight = false,
 }) => (
   <>
     <ProfileImageContainer>
@@ -36,15 +36,15 @@ const ProfileImage = ({
         />
       </ProfileImageWrapper>
 
-      {(!empty(representativeVideo) || isLawyerSpotlight) && (
+      {(!empty(representativeVideo) || isAttorneySpotlight) && (
         <ProfileImageButtons>
-          {isLawyerSpotlight && (
+          {isAttorneySpotlight && (
             <div className="animate__animated animate__fadeInUp animate__slow">
               <ProfileImageButton
-                title="Lawyer Spotlight heading"
+                title="Attorney Spotlight heading"
                 icon={<QuestionAnswerIcon />}
                 as={Link}
-                href="#lawyer-spotlight"
+                href="#attorney-spotlight"
               />
             </div>
           )}

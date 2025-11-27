@@ -19,6 +19,7 @@ const LibraryPage = ({
   canonicalUrl,
   posts,
   filters,
+  categoriesData,
   subHeaderSlides,
 }) => (
   <>
@@ -49,17 +50,17 @@ const LibraryPage = ({
     />
 
     <LibraryCategory
-      title={filters?.categories?.[0]?.title}
-      link={filters?.categories?.[0]?.uri}
-      posts={filters?.categories?.[0]?.posts}
+      title={categoriesData?.map?.clientAlert?.title}
+      link={categoriesData?.map?.clientAlert?.uri}
+      posts={categoriesData?.map?.clientAlert?.posts}
     />
 
     <LibraryQuestionBanner />
 
     <LibraryCategory
-      title={filters?.categories?.[1]?.title}
-      link={filters?.categories?.[1]?.uri}
-      posts={filters?.categories?.[1]?.posts}
+      title={categoriesData?.map?.firmEvents?.title}
+      link={categoriesData?.map?.firmEvents.uri}
+      posts={categoriesData?.map?.firmEvents?.posts}
     />
 
     <RandomCardsSlider
@@ -70,7 +71,7 @@ const LibraryPage = ({
       list={posts}
     />
 
-    <LibraryCategories categories={filters?.categories?.slice(2)} />
+    <LibraryCategories categories={categoriesData?.ordered?.slice(2)} />
 
     <SubscriptionBanner />
   </>

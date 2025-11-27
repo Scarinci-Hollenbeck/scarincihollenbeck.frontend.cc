@@ -99,8 +99,8 @@ const POST_CATEGORY_REWRITES = [
     destination: '/post/:slug*?category=uncategorized',
   },
   {
-    source: '/lawyer-spotlight/:slug*',
-    destination: '/post/:slug*?category=lawyer-spotlight',
+    source: '/attorney-spotlight/:slug*',
+    destination: '/post/:slug*?category=attorney-spotlight',
   },
 ];
 

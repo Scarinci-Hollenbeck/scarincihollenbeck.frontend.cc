@@ -23,7 +23,7 @@ const LibraryQuestionBanner = ({ isLinkCategory = true }) => {
       <ContainerDefault>
         <DarkBannerHolder>
           <DarkBannerTitle as={Title32}>
-            Have a Question for Our Lawyers? We want to hear from you!
+            Have a Question for Our Attorneys? We want to hear from you!
           </DarkBannerTitle>
 
           <DarkBannerContent>
@@ -35,12 +35,12 @@ const LibraryQuestionBanner = ({ isLinkCategory = true }) => {
             <DarkBannerDescription>
               <p>
                 If there&apos;s a legal topic you&apos;re curious about or a
-                question you&apos;ve always wanted to ask a lawyer — this is
+                question you&apos;ve always wanted to ask a attorney — this is
                 your chance.
               </p>
               <p>
                 Submit your question below, and it might be featured (with an
-                answer!) in an upcoming Lawyer Spotlight article.
+                answer!) in an upcoming Attorney Spotlight article.
               </p>
             </DarkBannerDescription>
 
@@ -54,9 +54,9 @@ const LibraryQuestionBanner = ({ isLinkCategory = true }) => {
               {isLinkCategory && (
                 <OutlinedButton
                   as={Link}
-                  href="/library/category/lawyer-spotlight"
+                  href="/library/category/attorney-spotlight"
                 >
-                  Open Lawyer Spotlight
+                  Open Attorney Spotlight
                 </OutlinedButton>
               )}
             </DarkBannerButtons>
