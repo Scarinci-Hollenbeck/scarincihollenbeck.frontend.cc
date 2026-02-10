@@ -99,10 +99,8 @@ export const getStaticProps = async ({ params }) => {
 
   if (!attorneyBio) {
     return {
-      redirect: {
-        destination: '/attorneys?notFound=true',
-        permanent: false,
-      },
+      notFound: true,
+      revalidate: 60, // Short revalidate for quick recovery when attorney becomes available
     };
   }
 
