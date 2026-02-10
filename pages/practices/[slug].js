@@ -42,10 +42,8 @@ export const getStaticProps = async ({ params }) => {
 
   if (empty(practice) || practice?.status !== 'publish') {
     return {
-      redirect: {
-        destination: '/services?notFound=true',
-        permanent: true,
-      },
+      notFound: true,
+      revalidate: 60,
     };
   }
 

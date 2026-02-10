@@ -22,10 +22,7 @@ export const getServerSideProps = async ({
 
   if (empty(pageContent)) {
     return {
-      redirect: {
-        destination: '/library?notFound=true',
-        permanent: true,
-      },
+      notFound: true,
     };
   }
 
