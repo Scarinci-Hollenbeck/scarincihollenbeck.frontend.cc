@@ -44,7 +44,12 @@ export default function QuestionForm({
           attorneySlug={router.asPath}
           attorneys={attorneys}
         />
-        <p className="form-disclaimer">*Disclaimer</p>
+        <p className="form-disclaimer">
+          * Submitting a question through this form does not create an
+          attorney-client relationship with Scarinci Hollenbeck or any of its
+          attorneys. Please do not include confidential or sensitive
+          information.
+        </p>
         <fieldset
           data-kw-group="true"
           rules="required"
