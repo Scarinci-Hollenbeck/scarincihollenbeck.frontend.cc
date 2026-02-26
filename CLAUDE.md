@@ -34,6 +34,7 @@ Pages use one of two approaches:
 ### Redux Store (`redux/`)
 
 RTK Query powers two API services:
+
 - `redux/services/wp-graphql.js` — mutation-based GraphQL client for client-side queries
 - `redux/services/project-api.js` — queries internal `/api/` routes for attorneys, practices, locations, industries
 
@@ -42,6 +43,7 @@ Slices: `attorneys`, `sizes`, `modals`, `library`
 ### URL Routing
 
 The site uses Next.js **rewrites** (not redirects) to map public-facing URLs to internal page routes. Key mappings in `utils/rewrites.js`:
+
 - `/practices/:slug` → `/services` page (practices and industries are under `/services`)
 - `/law-firm-insights/:slug`, `/client-alert/:slug`, etc. → `/post/:slug`
 - `/diversity`, `/community-involvement`, `/pro-bono` → `/firm-page/:slug`
@@ -52,6 +54,7 @@ Permanent redirects are in `utils/permanent-redirects.js`.
 ### Component Structure
 
 Follows atomic design under `components/`:
+
 - `atoms/` — smallest UI units (buttons, cards, icons)
 - `molecules/` — composed from atoms
 - `organisms/` — complex sections (Navbar, forms)
