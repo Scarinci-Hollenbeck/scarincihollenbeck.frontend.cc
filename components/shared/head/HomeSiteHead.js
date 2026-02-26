@@ -2,12 +2,19 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { CURRENT_DOMAIN } from 'utils/constants';
-import { buildBusinessSchema } from 'utils/json-ld-schemas';
+import { buildBusinessSchema, buildWebPageSchema } from 'utils/json-ld-schemas';
 
-const HomeSiteHead = ({ title, metaDescription, canonicalUrl }) => {
+const HomeSiteHead = ({
+  title,
+  metaDescription,
+  canonicalUrl,
+  webPageData,
+  hqGeo,
+}) => {
   const router = useRouter();
   const slug = router.asPath;
   const currentUrl = CURRENT_DOMAIN + slug;
+  const webPageSchema = webPageData ? buildWebPageSchema(webPageData) : null;
 
   return (
     <Head>
@@ -28,7 +35,7 @@ const HomeSiteHead = ({ title, metaDescription, canonicalUrl }) => {
         key="ScarinciHollenbeck"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(buildBusinessSchema()),
+          __html: JSON.stringify(buildBusinessSchema(hqGeo)),
         }}
       />
       <meta name="twitter:card" content="summary_large_image" />
@@ -38,6 +45,12 @@ const HomeSiteHead = ({ title, metaDescription, canonicalUrl }) => {
         name="twitter:image"
         content={`${CURRENT_DOMAIN}/images/no-image-found-diamond.png`}
       />
+      {webPageSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webPageSchema) }}
+        />
+      )}
       <meta
         name="google-site-verification"
         content="Vb4fICdLxnhQzqJEDL11a-Tk0X5f4XhW35pA0qoeh1E"

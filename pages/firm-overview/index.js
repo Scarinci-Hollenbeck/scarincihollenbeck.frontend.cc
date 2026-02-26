@@ -1,5 +1,5 @@
 import FirmOverviewPage from 'components/pages/FirmOverview';
-import { SITE_PHONE, PRODUCTION_URL } from 'utils/constants';
+import { SITE_PHONE, PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import { fetchAPI } from 'requests/api';
 import { firmOverviewQuery } from 'requests/graphql-queries';
 import empty from 'is-empty';
@@ -63,6 +63,21 @@ export const getStaticProps = async () => {
     return acc;
   }, {});
 
+  const canonicalUrl = `${PRODUCTION_URL}/firm-overview`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Firm Overview' },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: seo.title,
+    description: seo.metaDesc,
+    pageType: 'AboutPage',
+    mainEntity: { '@id': `${CURRENT_DOMAIN}/#organization` },
+  };
+
   return {
     props: {
       title,
@@ -72,6 +87,9 @@ export const getStaticProps = async () => {
       firmOverviewTabs,
       firmMembers: firmMembers || {},
       subHeaderImage: featuredImage.node.sourceUrl,
+      breadcrumbs,
+      webPageData,
+      canonicalUrl,
     },
     revalidate: 600,
   };
@@ -86,9 +104,10 @@ const FirmOverview = ({
   firmOverviewTabs,
   firmMembers,
   subHeaderImage,
+  breadcrumbs,
+  webPageData,
+  canonicalUrl,
 }) => {
-  const canonicalUrl = `${PRODUCTION_URL}/firm-overview`;
-
   const firmOverviewProps = {
     title,
     seo,
@@ -98,6 +117,8 @@ const FirmOverview = ({
     firmOverviewTabs,
     firmMembers,
     subHeaderImage,
+    breadcrumbs,
+    webPageData,
   };
 
   return <FirmOverviewPage {...firmOverviewProps} />;

@@ -25,12 +25,17 @@ const FirmOverviewPage = ({
   firmOverviewTabs,
   firmMembers,
   subHeaderImage,
+  breadcrumbs,
+  webPageData,
 }) => (
   <>
     <BasicSiteHead
       title={seo.title}
       metaDescription={seo.metaDesc}
       canonicalUrl={canonicalUrl}
+      breadcrumbs={breadcrumbs}
+      webPageData={webPageData}
+      includeOrganizationSchema
     />
     <SubHeaderDefault
       title={title}

@@ -1,4 +1,4 @@
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import AttorneysPage from 'components/pages/AttorneysDirectory';
 import useNotFoundNotification from 'hooks/useNotFoundNotification';
 import {
@@ -46,6 +46,32 @@ export async function getStaticProps() {
       notFound: true,
     };
   }
+
+  const canonicalUrl = `${PRODUCTION_URL}/attorneys`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Attorneys' },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: seo?.title,
+    description: seo?.metaDesc,
+    pageType: 'CollectionPage',
+    mainEntity: { '@id': `${canonicalUrl}#itemlist` },
+  };
+
+  const itemListData = attorneys.map((attorney) => ({
+    name: attorney.title,
+    url: `${CURRENT_DOMAIN}${attorney?.link || attorney?.uri}`,
+  }));
+
+  const itemListMeta = {
+    name: 'Attorneys at Scarinci Hollenbeck',
+    url: `${PRODUCTION_URL}/attorneys`,
+  };
+
   return {
     props: {
       seo,
@@ -53,9 +79,14 @@ export async function getStaticProps() {
         title,
         description: pagesFields?.description,
       },
+      canonicalUrl,
       attorneyArchives,
       seoAttorneys: sortedAttorneysByCategory,
       practices,
+      breadcrumbs,
+      webPageData,
+      itemListData,
+      itemListMeta,
     },
     revalidate: 600,
   };
@@ -65,12 +96,15 @@ export async function getStaticProps() {
 const Attorneys = ({
   seo,
   site,
+  canonicalUrl,
   attorneyArchives,
   seoAttorneys,
   practices,
+  breadcrumbs,
+  webPageData,
+  itemListData,
+  itemListMeta,
 }) => {
-  const canonicalUrl = `${PRODUCTION_URL}/attorneys`;
-
   useNotFoundNotification('The selected profile no longer exists.');
 
   const attorneysPageProps = {
@@ -80,6 +114,10 @@ const Attorneys = ({
     attorneyArchives,
     seoAttorneys,
     practices,
+    breadcrumbs,
+    webPageData,
+    itemListData,
+    itemListMeta,
   };
 
   return <AttorneysPage {...attorneysPageProps} />;

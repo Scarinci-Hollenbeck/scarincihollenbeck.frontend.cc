@@ -7,13 +7,24 @@ import SubHeaderSubscription from 'layouts/SubHeader/SubHeaderSubscription';
 const CareersInfo = dynamic(() => import('components/organisms/careers/CareersInfo'));
 
 const CareersPage = ({
-  careers, seo, site, canonicalUrl,
+  careers,
+  seo,
+  site,
+  canonicalUrl,
+  breadcrumbs,
+  webPageData,
+  itemListData,
+  itemListMeta,
 }) => (
   <>
     <BasicSiteHead
       title={seo.title}
       metaDescription={seo.metaDesc}
       canonicalUrl={canonicalUrl}
+      breadcrumbs={breadcrumbs}
+      webPageData={webPageData}
+      itemListData={itemListData}
+      itemListMeta={itemListMeta}
     />
     <SubHeaderDefault
       title={site.title}

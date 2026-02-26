@@ -4,7 +4,10 @@ import { useEffect, useRef } from 'react';
 import AttorneyFilters from 'components/organisms/attorneys/AttorneyFilters';
 import { useDispatch, useSelector } from 'react-redux';
 import SubHeaderDefault from 'layouts/SubHeader/SubHeaderDefault';
-import { ScarinciHollenbeckKeyContact } from 'utils/constants';
+import {
+  ScarinciHollenbeckKeyContact,
+  DEFAULT_SCHEMA_FAQ,
+} from 'utils/constants';
 import dynamic from 'next/dynamic';
 import { FaqContainer } from 'styles/Faq.style';
 import SubHeaderKeyContacts from 'layouts/SubHeader/SubHeaderKeyContacts';
@@ -22,6 +25,10 @@ const AttorneysPage = ({
   attorneyArchives,
   seoAttorneys,
   practices,
+  breadcrumbs,
+  webPageData,
+  itemListData,
+  itemListMeta,
 }) => {
   const containerRef = useRef();
   const dispatch = useDispatch();
@@ -40,6 +47,11 @@ const AttorneysPage = ({
         title={seo.title}
         metaDescription={seo.metaDesc}
         canonicalUrl={canonicalUrl}
+        breadcrumbs={breadcrumbs}
+        webPageData={webPageData}
+        faqData={DEFAULT_SCHEMA_FAQ}
+        itemListData={itemListData}
+        itemListMeta={itemListMeta}
       />
       <SubHeaderDefault
         title={site.title}

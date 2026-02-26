@@ -340,34 +340,65 @@ export const ERROR_PAGE_CONTENT = {
     "It's possible you entered the address incorrectly, we moved the desired page, or there is an issue on our servers. Try searching our site to find what you are looking for.",
 };
 
-/** content for /practices and /attorneys FAQ's component */
-
-export const ATTORNEYS_FAQ = [
+/** Default FAQ — plain text, single source of truth for JSON-LD schema and UI fallback */
+export const DEFAULT_SCHEMA_FAQ = [
   {
     id: 1,
     title: 'How can I get in touch with an attorney?',
-    description: <HawCanIGet />,
+    description:
+      'Call 201-806-3364, email info@sh-law.com, or visit our contact page at scarincihollenbeck.com/contact-us.',
   },
   {
     id: 2,
     title: 'How do I know which attorney to contact?',
-    description: <HawDoIKnow />,
+    description:
+      "Different kinds of legal matters require attention from specialized areas of law. You can discover the firm's practice groups at scarincihollenbeck.com/services, or call 201-806-3364 or email info@sh-law.com.",
   },
   {
     id: 3,
-    title: 'What are the firm`s main practice areas?',
-    description: <WhatAreTheFirms />,
+    title: "What are the firm's main practice areas?",
+    description:
+      "Scarinci Hollenbeck's core practice areas include Bankruptcy & Creditors' Rights, Commercial Real Estate, Corporate Transactions & Business, Education Law, Environmental, Intellectual Property, Labor & Employment, Litigation, Public Law, and Tax, Trusts & Estates.",
   },
   {
     id: 4,
     title: 'Where is the firm located?',
-    description: <WhereIsYheFirmLocated />,
+    description:
+      'The firm has several office locations including New York, NY; Little Falls, NJ; and Red Bank, NJ.',
   },
   {
     id: 5,
     title:
       'I am located outside of New Jersey and New York. Can you still help me?',
-    description: `
+    description:
+      'It depends on the nature of the matter. Scarinci Hollenbeck, LLC represents clients around the world. We predominantly handle legal matters in New Jersey, New York, and the tri-state metropolitan area. We also have attorneys licensed in Connecticut, Florida, Massachusetts, Pennsylvania, and other states.',
+  },
+  {
+    id: 6,
+    title: 'What kind of clients does your firm service?',
+    description:
+      'Scarinci Hollenbeck, LLC routinely serves business owners, corporate entities, leaders, and operators of small businesses and Fortune 500 companies alike.',
+  },
+  {
+    id: 7,
+    title: 'I am not a business owner. Could your firm still help me?',
+    description:
+      'We are a general practice law firm that services businesses, corporations, and entities. We typically only represent people who own and operate these organizations. However, you are free to call 201-806-3364 or email info@sh-law.com.',
+  },
+  {
+    id: 8,
+    title: 'How do you pronounce "Scarinci Hollenbeck, LLC"?',
+    description: 'SCUH-RIN-SEE HALL-EN-BEK',
+  },
+];
+
+/** UI version of DEFAULT_SCHEMA_FAQ — overrides descriptions with rich JSX/HTML for interactive display */
+const faqUiOverrides = {
+  1: <HawCanIGet />,
+  2: <HawDoIKnow />,
+  3: <WhatAreTheFirms />,
+  4: <WhereIsYheFirmLocated />,
+  5: `
     It depends on the nature of the matter. <strong>Scarinci Hollenbeck, LLC</strong> represents clients around the world.
     We service our clients in a large variety of matters. In areas such as Intellectual Property,
     including trademark, copyright, or patent-related matters, we can service these requests regardless
@@ -377,29 +408,17 @@ export const ATTORNEYS_FAQ = [
     We recommend calling one of our dedicated staff members who can help identify if we have an attorney at
     the firm that can assist you. Feel free to reach out to us at <a href="tel:201-806-3364"> 201-806-3364</a>.
     `,
-  },
-  {
-    id: 6,
-    title: 'What kind of clients does your firm service?',
-    description: `Scarinci Hollenbeck, LLC routinely serves business owners, corporate entities, leaders, and operators
-    of small businesses and Fortune 500 companies alike.`,
-  },
-  {
-    id: 7,
-    title: 'I am not a business owner. Could your firm still help me?',
-    description: `We are a general practice law firm that services businesses, corporations, and entities.
-    We typically only represent people who own and operate these organizations. However, you are free to call 
-    our business development group at <a href="tel:201-806-3364"> 201-806-3364</a> or email us at 
-    <a href="mailto:info@sh-law.com">info@sh-law.com</a> A member of our group can direct you to an 
+  7: `We are a general practice law firm that services businesses, corporations, and entities.
+    We typically only represent people who own and operate these organizations. However, you are free to call
+    our business development group at <a href="tel:201-806-3364"> 201-806-3364</a> or email us at
+    <a href="mailto:info@sh-law.com">info@sh-law.com</a> A member of our group can direct you to an
     attorney in our firm that may be able to assist.
     `,
-  },
-  {
-    id: 8,
-    title: 'How do you pronounce "Scarinci Hollenbeck, LLC"?',
-    description: 'SCUH-RIN-SEE HALL-EN-BEK',
-  },
-];
+};
+
+export const DEFAULT_FIRM_FAQ = DEFAULT_SCHEMA_FAQ.map((item) => (item.id in faqUiOverrides
+  ? { ...item, description: faqUiOverrides[item.id] }
+  : item));
 
 export const inputsCareerForm = [
   {
@@ -588,6 +607,7 @@ export const GOV_LAW_URL = 'https://scarincilawyer.com';
 
 export const IMAGE_UPLOAD_CLOUDINARY = 'https://res.cloudinary.com/scarinci-hollenbeck/images/v';
 export const CLOUDINARY_BASE_URL = 'https://res.cloudinary.com/scarinci-hollenbeck/wp.scarincihollenbeck/';
+export const LOGO_URL = 'https://res.cloudinary.com/scarinci-hollenbeck/images/v1748506161/wp.scarincihollenbeck/scarinci-logo/scarinci-logo.png';
 
 /** a helper header data when making requests to WP backend */
 export const headers = {

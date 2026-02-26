@@ -1,5 +1,5 @@
 import CareersPage from 'components/pages/CareersDirectory';
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import { fetchAPI } from '../../requests/api';
 import { careersPageQuery, careersQuery } from '../../requests/graphql-queries';
 
@@ -45,6 +45,32 @@ export const getStaticProps = async () => {
   const {
     seo, title, careersPage, featuredImage, focusedCards, pagesFields,
   } = page;
+
+  const canonicalUrl = `${PRODUCTION_URL}/careers`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Careers' },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: seo.title,
+    description: seo.metaDesc,
+    pageType: 'CollectionPage',
+    mainEntity: { '@id': `${canonicalUrl}#itemlist` },
+  };
+
+  const itemListData = careerList.map((career) => ({
+    name: career.careerFields?.position || career.slug,
+    url: `${CURRENT_DOMAIN}/careers/${career.slug}`,
+  }));
+
+  const itemListMeta = {
+    name: 'Career Opportunities at Scarinci Hollenbeck',
+    url: canonicalUrl,
+  };
+
   return {
     props: {
       seo,
@@ -56,20 +82,36 @@ export const getStaticProps = async () => {
         focusedCards: focusedCards?.cards,
       },
       careerList: sanitizeCareers(careerList),
+      breadcrumbs,
+      webPageData,
+      itemListData,
+      itemListMeta,
+      canonicalUrl,
     },
     revalidate: 600,
   };
 };
 
 /** The careers page directory component */
-const CareersDirectory = ({ careerList, seo, site }) => {
-  const canonicalUrl = `${PRODUCTION_URL}/careers`;
-
+const CareersDirectory = ({
+  careerList,
+  seo,
+  site,
+  breadcrumbs,
+  webPageData,
+  itemListData,
+  itemListMeta,
+  canonicalUrl,
+}) => {
   const careerProps = {
     seo,
     site,
     canonicalUrl,
     careers: careerList,
+    breadcrumbs,
+    webPageData,
+    itemListData,
+    itemListMeta,
   };
 
   return <CareersPage {...careerProps} />;

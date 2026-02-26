@@ -1,4 +1,4 @@
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import empty from 'is-empty';
 import PracticePageNew from 'components/pages/PracticePageNew';
 import { formateAwards } from 'utils/helpers';
@@ -55,22 +55,32 @@ export const getStaticProps = async ({ params }) => {
   const attorneysSchemaChair = practiceChief?.length > 0
     ? practiceChief?.map((attorney) => ({
       '@type': 'Person',
+      '@id': `${PRODUCTION_URL}${attorney.link}`,
       name: attorney.title,
       image: attorney.profileImage,
-      url: attorney.link,
+      url: `${PRODUCTION_URL}${attorney.link}`,
       telephone: attorney.phoneNumber,
       jobTitle: 'Attorney',
+      worksFor: {
+        '@type': 'LegalService',
+        '@id': `${CURRENT_DOMAIN}/#organization`,
+      },
     }))
     : [];
 
   const attorneysSchemaAttorneyList = includeAttorney?.length > 0
     ? includeAttorney?.map((attorney) => ({
       '@type': 'Person',
+      '@id': `${PRODUCTION_URL}${attorney.link}`,
       name: attorney.title,
       image: attorney.profileImage,
-      url: attorney.link,
+      url: `${PRODUCTION_URL}${attorney.link}`,
       telephone: attorney.phoneNumber,
       jobTitle: 'Attorney',
+      worksFor: {
+        '@type': 'LegalService',
+        '@id': `${CURRENT_DOMAIN}/#organization`,
+      },
     }))
     : [];
 
@@ -78,6 +88,29 @@ export const getStaticProps = async ({ params }) => {
     ...attorneysSchemaChair,
     ...attorneysSchemaAttorneyList,
   ];
+
+  const canonicalUrl = `${PRODUCTION_URL}/practices/${practice.slug}`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Practices & Industries', url: `${CURRENT_DOMAIN}/services` },
+    { name: practice.title },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: practice?.seo?.title,
+    description: practice?.seo?.metaDesc,
+    pageType: 'WebPage',
+    mainEntity: { '@id': `${canonicalUrl}#service` },
+  };
+
+  const siteTabs = practice.practicesIncluded.contentSection.map(
+    (tab, index) => ({
+      ...tab,
+      id: index,
+    }),
+  );
 
   return {
     props: {
@@ -92,6 +125,10 @@ export const getStaticProps = async ({ params }) => {
       awards: formateAwards(practice?.practicesIncluded?.awards),
       sidebarContent: practice?.practicesIncluded?.sidebarContent || null,
       posts: postsData?.posts || [],
+      breadcrumbs,
+      webPageData,
+      canonicalUrl,
+      siteTabs,
     },
     revalidate: 600,
   };
@@ -110,16 +147,11 @@ const SinglePractice = ({
   awards,
   sidebarContent,
   posts,
+  breadcrumbs,
+  webPageData,
+  canonicalUrl,
+  siteTabs,
 }) => {
-  const canonicalUrl = `${PRODUCTION_URL}/practices/${practice.slug}`;
-
-  const siteTabs = practice.practicesIncluded.contentSection.map(
-    (tab, index) => ({
-      ...tab,
-      id: index,
-    }),
-  );
-
   const practiceProps = {
     practice,
     canonicalUrl,
@@ -134,6 +166,8 @@ const SinglePractice = ({
     awards,
     sidebarContent,
     posts,
+    breadcrumbs,
+    webPageData,
   };
 
   return <PracticePageNew {...practiceProps} />;

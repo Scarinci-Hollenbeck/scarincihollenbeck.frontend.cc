@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import Head from 'next/head';
 import ErrorPage from 'components/pages/ErrorPage';
-import { ERROR_PAGE_CONTENT } from 'utils/constants';
+import { ERROR_PAGE_CONTENT, SITE_TITLE } from 'utils/constants';
 
 /**
  * Map of path prefixes to their redirect destinations.
@@ -31,7 +32,13 @@ const Custom404 = () => {
   }, [router]);
 
   return (
-    <ErrorPage title={title} subTitle={subTitle} mainMessage={mainMessage} />
+    <>
+      <Head>
+        <title>{`404 - Page Not Found | ${SITE_TITLE}`}</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Head>
+      <ErrorPage title={title} subTitle={subTitle} mainMessage={mainMessage} />
+    </>
   );
 };
 

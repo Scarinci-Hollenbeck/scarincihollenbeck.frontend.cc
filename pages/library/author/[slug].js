@@ -1,6 +1,6 @@
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import LibraryAuthorPage from 'components/pages/LibraryAuthorPage';
-import { getBaseUrl, sanitizeCategories } from 'utils/helpers';
+import { getBaseUrl, sanitizeCategories, stripHtml } from 'utils/helpers';
 import empty from 'is-empty';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 
@@ -32,6 +32,39 @@ export const getServerSideProps = async ({
     author: user?.databaseId,
   });
 
+  const canonicalUrl = `${PRODUCTION_URL}/library/author/${slug}`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Library', url: `${CURRENT_DOMAIN}/library` },
+    { name: `Writings by ${user?.name}` },
+  ];
+
+  const authorPersonData = [
+    {
+      '@type': 'Person',
+      '@id': `${canonicalUrl}#person`,
+      name: user.name,
+      url: user.url || canonicalUrl,
+      ...(user.avatar?.url && {
+        image: { '@type': 'ImageObject', url: user.avatar.url },
+      }),
+      ...(user.description && { description: stripHtml(user.description) }),
+      worksFor: {
+        '@type': 'LegalService',
+        '@id': `${CURRENT_DOMAIN}/#organization`,
+      },
+    },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: `Writings by ${user?.name}`,
+    description: stripHtml(user?.description),
+    pageType: 'CollectionPage',
+    mainEntity: { '@id': `${canonicalUrl}#person` },
+  };
+
   return {
     props: {
       title: `Writings by ${user?.name}`,
@@ -39,7 +72,7 @@ export const getServerSideProps = async ({
       authorId: user?.databaseId,
       seo: {
         ...user?.seo,
-        canonicalUrl: `${PRODUCTION_URL}/library/author/${slug}`,
+        canonicalUrl,
       },
       subHeaderSlides: sanitizeCategories([
         ...mainCategories?.categories?.nodes,
@@ -47,6 +80,9 @@ export const getServerSideProps = async ({
       ]),
       postsData,
       tags,
+      breadcrumbs,
+      webPageData,
+      authorPersonData,
     },
   };
 };
@@ -59,6 +95,9 @@ const LibraryAuthor = ({
   subHeaderSlides,
   postsData,
   tags,
+  breadcrumbs,
+  webPageData,
+  authorPersonData,
 }) => {
   const authorProps = {
     title,
@@ -68,6 +107,9 @@ const LibraryAuthor = ({
     subHeaderSlides,
     postsData,
     tags,
+    breadcrumbs,
+    webPageData,
+    authorPersonData,
   };
 
   return <LibraryAuthorPage {...authorProps} />;

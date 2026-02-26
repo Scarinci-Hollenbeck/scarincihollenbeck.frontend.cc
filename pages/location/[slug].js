@@ -1,7 +1,13 @@
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import LocationPage from 'components/pages/LocationPage';
-import { BASE_API_URL, headers, PRODUCTION_URL } from 'utils/constants';
+import {
+  BASE_API_URL,
+  headers,
+  PRODUCTION_URL,
+  CURRENT_DOMAIN,
+  SITE_TITLE,
+} from 'utils/constants';
 import { fetchAPI } from 'requests/api';
 import { getOfficeAndMoreData } from 'requests/graphql-queries';
 import empty from 'is-empty';
@@ -124,15 +130,68 @@ export const getStaticProps = async ({ params }) => {
     limit: '8',
   });
 
-  const attorneysSchema = currentOffice.attorneys.map((attorney) => ({
-    '@type': 'Person',
-    name: attorney.title,
-    designation: attorney.designation,
-    image: attorney.better_featured_image,
-    url: `${PRODUCTION_URL}/attorneys/${attorney.link}`,
-    telephone: attorney.phone,
-    jobTitle: 'Attorney',
-  }));
+  const attorneysSchema = currentOffice.attorneys.map((attorney) => {
+    const profileUrl = `${PRODUCTION_URL}${attorney.link}`;
+    return {
+      '@type': 'Person',
+      '@id': profileUrl,
+      name: attorney.title,
+      image: attorney.better_featured_image,
+      url: profileUrl,
+      telephone: attorney.phone?.trim(),
+      jobTitle: 'Attorney',
+      worksFor: {
+        '@type': 'LegalService',
+        '@id': `${CURRENT_DOMAIN}/#organization`,
+      },
+    };
+  });
+
+  const canonicalUrl = `${PRODUCTION_URL}/location/${slug}`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Locations', url: `${CURRENT_DOMAIN}/location` },
+    { name: currentOffice.title },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: currentOffice.seo?.title,
+    description: currentOffice.seo?.metaDesc,
+    pageType: 'WebPage',
+    mainEntity: { '@id': `${canonicalUrl}/#legalservice` },
+  };
+
+  const stateAreaServed = {
+    NJ: [
+      { '@type': 'State', name: 'New Jersey' },
+      { '@type': 'State', name: 'New York' },
+    ],
+    NY: [
+      { '@type': 'State', name: 'New York' },
+      { '@type': 'State', name: 'New Jersey' },
+    ],
+    DC: [{ '@type': 'AdministrativeArea', name: 'Washington, D.C.' }],
+  };
+
+  const locationSeo = {
+    url: canonicalUrl,
+    name: `${SITE_TITLE} - ${currentOffice.title}`,
+    telephone: currentOffice.phone,
+    faxNumber: currentOffice.fax,
+    streetAddress: currentOffice.floor
+      ? `${currentOffice.streetAddress}, ${currentOffice.floor}`
+      : currentOffice.streetAddress,
+    addressLocality: currentOffice.addressLocality,
+    addressRegion: currentOffice.addressRegion,
+    postalCode: currentOffice.postCode,
+    image: currentOffice.featuredImage,
+    mapAddress: currentOffice.mapAddress,
+    ...(currentOffice.latitude && { latitude: currentOffice.latitude }),
+    ...(currentOffice.longitude && { longitude: currentOffice.longitude }),
+    areaServed: stateAreaServed[currentOffice.addressRegion] || [],
+  };
 
   return {
     props: {
@@ -141,8 +200,11 @@ export const getStaticProps = async ({ params }) => {
       currentOffice,
       attorneysSchemaData: attorneysSchema,
       posts: postsData?.posts || [],
-      canonicalUrl: `${PRODUCTION_URL}/location/${slug}`,
+      canonicalUrl,
       practices,
+      breadcrumbs,
+      webPageData,
+      locationSeo,
     },
     revalidate: 600,
   };
@@ -157,6 +219,9 @@ const SingleLocation = ({
   attorneysSchemaData,
   canonicalUrl,
   practices,
+  breadcrumbs,
+  locationSeo,
+  webPageData,
 }) => {
   const router = useRouter();
 
@@ -172,6 +237,9 @@ const SingleLocation = ({
     canonicalUrl,
     locations: offices,
     practices,
+    breadcrumbs,
+    webPageData,
+    locationSeo,
   };
 
   return <LocationPage {...locationProps} />;

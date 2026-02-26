@@ -12,12 +12,20 @@ const MemorialsPage = ({
   image,
   memorials,
   canonicalUrl,
+  itemListData,
+  itemListMeta,
+  breadcrumbs,
+  webPageData,
 }) => (
   <>
     <BasicSiteHead
       title={seo?.title}
       metaDescription={seo?.metaDesc}
       canonicalUrl={canonicalUrl}
+      itemListData={itemListData}
+      itemListMeta={itemListMeta}
+      breadcrumbs={breadcrumbs}
+      webPageData={webPageData}
     />
     <SubHeaderDefault
       backgroundImage={image}

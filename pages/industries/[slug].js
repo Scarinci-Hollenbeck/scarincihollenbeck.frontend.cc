@@ -2,7 +2,7 @@ import React from 'react';
 import { fetchAPI } from 'requests/api';
 import empty from 'is-empty';
 import IndustryPage from 'components/pages/IndustryPage';
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import { getIndustryContent } from 'requests/industries/industry-default';
 import ApolloWrapper from 'layouts/ApolloWrapper';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
@@ -103,21 +103,47 @@ export const getStaticProps = async ({ params }) => {
     spotlight: industry?.industryContent?.spotlight,
   };
 
+  const canonicalLink = `${PRODUCTION_URL}/industries/${params?.slug}`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Practices & Industries', url: `${CURRENT_DOMAIN}/services` },
+    { name: industry.title },
+  ];
+
+  const webPageData = {
+    url: canonicalLink,
+    name: industry?.seo?.title,
+    description: industry?.seo?.metaDesc,
+    pageType: 'WebPage',
+    mainEntity: { '@id': `${canonicalLink}#service` },
+  };
+
   return {
     props: {
       content,
       seo: industry?.seo,
-      canonicalLink: `${PRODUCTION_URL}/industries/${params?.slug}`,
+      canonicalLink,
+      breadcrumbs,
+      webPageData,
     },
     revalidate: 600,
   };
 };
 
-const Industry = ({ content, seo, canonicalLink }) => {
+const Industry = ({
+  content,
+  seo,
+  canonicalLink,
+  breadcrumbs,
+  webPageData,
+}) => {
   const industryProps = {
     content,
     seo,
     canonicalLink,
+    breadcrumbs,
+    webPageData,
   };
   return (
     <ApolloWrapper>

@@ -15,12 +15,16 @@ const PodcastsPage = ({
   canonicalUrl,
   filters,
   subHeaderSlides,
+  breadcrumbs,
+  webPageData,
 }) => (
   <>
     <BasicSiteHead
       title={seo?.title}
       metaDescription={seo?.metaDesc}
       canonicalUrl={canonicalUrl}
+      breadcrumbs={breadcrumbs}
+      webPageData={webPageData}
     />
     <SubHeaderDefault
       title={title}

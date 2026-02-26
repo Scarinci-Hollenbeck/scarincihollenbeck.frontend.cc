@@ -20,6 +20,8 @@ const LibraryCategoryPage = ({
   subHeaderSlides,
   postsData,
   tags,
+  breadcrumbs,
+  webPageData,
 }) => {
   const dispatch = useDispatch();
   const { query } = useRouter();
@@ -41,6 +43,8 @@ const LibraryCategoryPage = ({
         title={seo?.title}
         metaDescription={seo?.metaDesc}
         canonicalUrl={seo?.canonicalUrl}
+        breadcrumbs={breadcrumbs}
+        webPageData={webPageData}
       />
       <SubHeaderDefault
         title={title}

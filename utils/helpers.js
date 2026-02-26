@@ -7,6 +7,9 @@ import {
   readyIndustriesUrls,
 } from './constants';
 
+// Strip HTML tags from a string and trim whitespace
+export const stripHtml = (str) => (str ? str.replace(/<[^>]*>/g, '').trim() : '');
+
 // sort a list by its key
 export function sortByKey(list, key) {
   if (list !== undefined) {
@@ -442,3 +445,19 @@ export const isArraysIdentical = (chosenIds, originalIds) => {
 };
 
 export const originalItemsIds = (itemsArr) => itemsArr?.map((item) => item.databaseId);
+
+export const extractHtmlListItems = (html) => {
+  if (!html) return [];
+  return (html.match(/<li[^>]*>([\s\S]*?)<\/li>/gi) || [])
+    .map((li) => li
+      .replace(/<[^>]+>/g, '')
+      .replace(/&amp;/g, '&')
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"')
+      .replace(/&#39;/g, "'")
+      .replace(/&nbsp;/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim())
+    .filter(Boolean);
+};

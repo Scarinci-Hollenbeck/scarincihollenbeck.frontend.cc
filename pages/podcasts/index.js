@@ -1,4 +1,5 @@
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
+import { stripHtml } from 'utils/helpers';
 import { fetchAPI } from 'requests/api';
 import {
   categoriesQuery,
@@ -18,23 +19,45 @@ export async function getStaticProps() {
     getLibraryPageData(categoriesQuery),
   ]);
 
+  const canonicalUrl = `${PRODUCTION_URL}/podcasts`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Podcasts' },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: seo?.title,
+    description: stripHtml(pagesFields?.description),
+    pageType: 'CollectionPage',
+  };
+
   return {
     props: {
       seo,
       title,
       description: pagesFields?.description,
+      canonicalUrl,
       filters,
       subHeaderSlides,
+      breadcrumbs,
+      webPageData,
     },
     revalidate: 600,
   };
 }
 
 const Library = ({
-  seo, title, description, filters, subHeaderSlides,
+  seo,
+  title,
+  description,
+  canonicalUrl,
+  filters,
+  subHeaderSlides,
+  breadcrumbs,
+  webPageData,
 }) => {
-  const canonicalUrl = `${PRODUCTION_URL}/podcasts`;
-
   const podcastsProps = {
     seo,
     title,
@@ -42,6 +65,8 @@ const Library = ({
     canonicalUrl,
     filters,
     subHeaderSlides,
+    breadcrumbs,
+    webPageData,
   };
   return <PodcastsPage {...podcastsProps} />;
 };

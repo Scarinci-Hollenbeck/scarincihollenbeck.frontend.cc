@@ -10,6 +10,7 @@ import {
   officeLocationsQuery,
 } from 'requests/graphql-queries';
 import { chunkArray, formateAwards } from 'utils/helpers';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 
 /** Get homepage content WP GRAPHQL API */
 export async function homePageContent() {
@@ -78,6 +79,15 @@ export const getStaticProps = async () => {
   const latestArticlesTabsData = await getLatestArticlesTabsData();
 
   const offices = await getMapDataFrmLocations();
+  const hqOffice = offices?.find(
+    (o) => o.officeMainInformation?.addressLocality === 'Little Falls',
+  );
+  const hqGeo = hqOffice?.officeMainInformation?.latitude
+    ? {
+      latitude: hqOffice.officeMainInformation.latitude,
+      longitude: hqOffice.officeMainInformation.longitude,
+    }
+    : null;
   const request = await homePageContent();
   const practices = await getPractices();
 
@@ -94,6 +104,14 @@ export const getStaticProps = async () => {
   /** get firm locations */
   // const offices = await homePageLocations();
 
+  const webPageData = {
+    url: PRODUCTION_URL,
+    name: seo.title,
+    description: seo.metaDesc,
+    pageType: 'WebPage',
+    mainEntity: { '@id': `${CURRENT_DOMAIN}/#organization` },
+  };
+
   return {
     props: {
       seo,
@@ -106,6 +124,8 @@ export const getStaticProps = async () => {
       latestArticlesTabsData,
       whyChooseUs,
       practices,
+      webPageData,
+      hqGeo,
     },
     revalidate: 600,
   };
@@ -123,6 +143,8 @@ const Home = ({
   latestArticlesTabsData,
   whyChooseUs,
   practices,
+  webPageData,
+  hqGeo,
 }) => {
   const homePageProps = {
     seo,
@@ -135,6 +157,8 @@ const Home = ({
     latestArticlesTabsData,
     whyChooseUs,
     practices,
+    webPageData,
+    hqGeo,
   };
   return <HomePage {...homePageProps} />;
 };

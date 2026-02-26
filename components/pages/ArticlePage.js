@@ -21,6 +21,7 @@ const ArticlePage = ({
   mainCategory,
   keyContacts,
   selectedHeroes,
+  breadcrumbs,
 }) => {
   const printPageProps = {
     title: post?.title,
@@ -42,6 +43,8 @@ const ArticlePage = ({
         canonicalUrl={seo?.canonicalUrl}
         post={post}
         authors={authors}
+        breadcrumbs={breadcrumbs}
+        mainCategory={mainCategory}
       />
       <SubHeaderDefault
         title={post.title}
