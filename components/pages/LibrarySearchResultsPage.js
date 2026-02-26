@@ -15,12 +15,16 @@ const LibrarySearchResultsPage = ({
   subHeaderSlides,
   postsData,
   tags,
+  breadcrumbs,
+  webPageData,
 }) => (
   <>
     <BasicSiteHead
       title={seo?.title}
       metaDescription={seo?.metaDesc}
       canonicalUrl={seo?.canonicalUrl}
+      breadcrumbs={breadcrumbs}
+      webPageData={webPageData}
     />
     <SubHeaderDefault
       title={title}

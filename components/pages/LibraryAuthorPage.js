@@ -13,12 +13,18 @@ const LibraryAuthorPage = ({
   subHeaderSlides,
   postsData,
   tags,
+  breadcrumbs,
+  webPageData,
+  authorPersonData,
 }) => (
   <>
     <BasicSiteHead
       title={seo?.title}
       metaDescription={seo?.metaDesc}
       canonicalUrl={seo?.canonicalUrl}
+      breadcrumbs={breadcrumbs}
+      webPageData={webPageData}
+      personDataForSchema={authorPersonData}
     />
     <SubHeaderDefault
       title={title}

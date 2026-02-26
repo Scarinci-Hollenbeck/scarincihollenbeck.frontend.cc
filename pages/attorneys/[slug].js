@@ -10,8 +10,9 @@ import {
   formatSrcToCloudinaryUrl,
   formateAwards,
   sanitizeExternalArticles,
+  extractHtmlListItems,
 } from 'utils/helpers';
-import { GOV_LAW_URL } from 'utils/constants';
+import { GOV_LAW_URL, CURRENT_DOMAIN } from 'utils/constants';
 import ApolloWrapper from 'layouts/ApolloWrapper';
 import AttorneyProfilePage from 'components/pages/AttorneyProfilePage';
 import empty from 'is-empty';
@@ -171,6 +172,8 @@ export const getStaticProps = async ({ params }) => {
     }
   }
 
+  const additionalInfo = attorneyBio?.attorneyAdditionalInformationEducationAdmissionsAffiliations;
+
   /** SEO meta data */
   const seo = {
     title: attorneyBio?.seo?.title,
@@ -179,6 +182,15 @@ export const getStaticProps = async ({ params }) => {
     image: profileImage,
     designation,
     socialMediaLinks: attorneyBio.attorneyMainInformation?.socialMediaLinks,
+    email: attorneyBio.attorneyMainInformation?.email || null,
+    telephone: attorneyBio.attorneyMainInformation?.phoneNumber || null,
+    knowsAbout: practices.map((p) => p.title).filter(Boolean),
+    alumniOf: extractHtmlListItems(additionalInfo?.education),
+    barAdmissions: extractHtmlListItems(additionalInfo?.barAdmissions),
+    affiliations: extractHtmlListItems(additionalInfo?.affiliations),
+    awards: extractHtmlListItems(
+      attorneyBio?.attorneyAwardsClientsBlogsVideos?.awardsRecognitions,
+    ),
   };
 
   /** Profile header data */
@@ -286,6 +298,12 @@ export const getStaticProps = async ({ params }) => {
     attorneyId: attorneyBio?.databaseId || null,
   };
 
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Attorneys', url: `${CURRENT_DOMAIN}/attorneys` },
+    { name: profileHeader.name },
+  ];
+
   return {
     props: {
       seo,
@@ -293,6 +311,7 @@ export const getStaticProps = async ({ params }) => {
       profileContent,
       asideItems,
       profileMedia,
+      breadcrumbs,
     },
     revalidate: 600,
   };
@@ -305,6 +324,7 @@ const AttorneyProfile = ({
   profileContent,
   asideItems,
   profileMedia,
+  breadcrumbs,
 }) => {
   const attorneyPageProps = {
     seo,
@@ -312,6 +332,7 @@ const AttorneyProfile = ({
     profileContent,
     asideItems,
     profileMedia,
+    breadcrumbs,
   };
 
   return (

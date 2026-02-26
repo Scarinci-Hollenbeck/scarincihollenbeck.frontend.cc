@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import HomeBanner from 'components/organisms/home/HomeBanner';
 import HomeSiteHead from 'components/shared/head/HomeSiteHead';
-import { CURRENT_DOMAIN } from 'utils/constants';
+import { PRODUCTION_URL } from 'utils/constants';
 import HappyHoliday from 'components/molecules/home/HappyHoliday';
 import { filterAttorneysByDesignation } from 'utils/helpers';
 import { useMemo } from 'react';
@@ -37,6 +37,8 @@ const HomePage = ({
   latestArticlesTabsData,
   whyChooseUs,
   practices,
+  webPageData,
+  hqGeo,
 }) => {
   const { data: attorneysData } = useGetAttorneysQuery();
 
@@ -50,7 +52,9 @@ const HomePage = ({
       <HomeSiteHead
         title={seo?.title || ''}
         metaDescription={seo?.metaDesc || ''}
-        canonicalUrl={CURRENT_DOMAIN}
+        canonicalUrl={PRODUCTION_URL}
+        webPageData={webPageData}
+        hqGeo={hqGeo}
       />
       <HomeBanner {...firstSection} />
       {isHoliday && <HappyHoliday />}

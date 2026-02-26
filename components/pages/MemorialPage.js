@@ -3,7 +3,7 @@ import MemorialHeader from 'components/organisms/memorials/MemorialHeader';
 import PersonSiteHead from 'components/shared/head/PersonSiteHead';
 import { CURRENT_DOMAIN } from 'utils/constants';
 
-const MemorialPage = ({ seo, pageData }) => {
+const MemorialPage = ({ seo, pageData, breadcrumbs }) => {
   const {
     name, image, additionalInfo, title, description, born, death,
   } = pageData;
@@ -16,7 +16,7 @@ const MemorialPage = ({ seo, pageData }) => {
         canonicalUrl={`${CURRENT_DOMAIN}/${seo.canonicalLink}`}
         name={name}
         featuredImage={seo.image}
-        designation="deceased"
+        breadcrumbs={breadcrumbs}
       />
       <MemorialHeader
         name={name}

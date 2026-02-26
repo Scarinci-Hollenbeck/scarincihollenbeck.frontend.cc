@@ -1,12 +1,11 @@
-import Head from 'next/head';
 import BasicSiteHead from 'components/shared/head/BasicSiteHead';
-import { buildLocationSchema } from 'utils/json-ld-schemas';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 import empty from 'is-empty';
 import LocationContent from 'components/organisms/locations/LocationContent';
 import { FaqContainer } from 'styles/Faq.style';
 import SubHeaderLocations from 'layouts/SubHeader/SubHeaderLocations';
+import { DEFAULT_SCHEMA_FAQ } from '../../utils/constants';
 import { sortByKey } from '../../utils/helpers';
 import SubHeaderDefault from '../../layouts/SubHeader/SubHeaderDefault';
 import PracticeAnchors from '../organisms/practices/PracticeAnchors';
@@ -57,6 +56,9 @@ const LocationPage = ({
   locations,
   practices,
   posts,
+  breadcrumbs,
+  webPageData,
+  locationSeo,
 }) => {
   const anchorData = useMemo(() => {
     const copyAnchorLocationsData = { ...anchorLocationsData };
@@ -89,16 +91,14 @@ const LocationPage = ({
         metaDescription={seo.metaDesc}
         canonicalUrl={canonicalUrl}
         personDataForSchema={attorneysSchemaData}
+        breadcrumbs={breadcrumbs}
+        faqData={
+          !empty(currentOffice.faq) ? currentOffice.faq : DEFAULT_SCHEMA_FAQ
+        }
+        webPageData={webPageData}
+        locationSeo={locationSeo}
+        includeOrganizationSchema
       />
-      <Head>
-        <script
-          key={currentOffice.name}
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify(buildLocationSchema(seo)),
-          }}
-        />
-      </Head>
       <SubHeaderDefault
         title={currentOffice.title}
         subtitle={seo.metaDesc}

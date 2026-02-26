@@ -273,6 +273,8 @@ export const officeLocationsQuery = `query OfficeLocationsQuery {
         fax
         floor
         postCode
+        latitude
+        longitude
         autoMap {
 					mediaItemUrl
 					databaseId
@@ -390,6 +392,7 @@ query PostContentQuery($id: ID!) {
     title
     link
     date
+    modified
     status
     seo {
       opengraphDescription
@@ -804,6 +807,7 @@ query CareerPageQuery($slug: ID!) {
         ... on OfficeLocation {
           title
           databaseId
+          uri
         }
       }
       positionType
@@ -811,6 +815,7 @@ query CareerPageQuery($slug: ID!) {
     }
     title
     status
+    date
     seo {
       title
       metaDesc
@@ -1111,6 +1116,8 @@ export const getOfficeAndMoreData = `query FirmPageQuery($id: ID!) {
       streetAddress
       addressLocality
       addressRegion
+      latitude
+      longitude
       officePractices {
         ... on Practice {
           id
@@ -1533,6 +1540,10 @@ query AuthorContentQuery($id: ID!) {
     name
     description
     databaseId
+    url
+    avatar {
+      url
+    }
     seo {
       title
       metaDesc

@@ -79,6 +79,7 @@ const getPostContentData = async (slug, categorySlug) => {
     content: post?.content,
     title: post?.title,
     date: post?.date,
+    modified: post?.modified,
     mainCategory: postMainCategoryContent?.category,
     tags: post?.tags?.nodes,
     postTypeConnections: post?.linksToOtherPostTypes,
@@ -106,6 +107,7 @@ export const getServerSideProps = async ({ params, res, query }) => {
     content,
     title,
     date,
+    modified,
     mainCategory,
     authors,
     selectedHeroes,
@@ -118,9 +120,26 @@ export const getServerSideProps = async ({ params, res, query }) => {
     content,
     title,
     date,
+    modified,
     tags,
     postTypeConnections,
   };
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Library', url: `${CURRENT_DOMAIN}/library` },
+    ...(mainCategory?.name
+      ? [
+        {
+          name: mainCategory.name,
+          ...(mainCategory.slug && {
+            url: `${CURRENT_DOMAIN}/library/category/${mainCategory.slug}`,
+          }),
+        },
+      ]
+      : []),
+    { name: title },
+  ];
 
   return {
     props: {
@@ -131,6 +150,7 @@ export const getServerSideProps = async ({ params, res, query }) => {
       relatedPosts: mainCategory?.posts?.nodes || null,
       mainCategory: mainCategory || null,
       selectedHeroes,
+      breadcrumbs,
     },
   };
 };
@@ -144,6 +164,7 @@ const SinglePost = ({
   mainCategory,
   keyContacts,
   selectedHeroes,
+  breadcrumbs,
 }) => {
   const postProps = {
     post,
@@ -153,6 +174,7 @@ const SinglePost = ({
     mainCategory,
     keyContacts,
     selectedHeroes,
+    breadcrumbs,
   };
   return <ArticlePage {...postProps} />;
 };

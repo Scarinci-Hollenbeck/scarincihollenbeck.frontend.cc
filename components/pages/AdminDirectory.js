@@ -7,13 +7,24 @@ import SubHeaderMenu from 'layouts/SubHeader/SubHeaderMenu';
 import NonFiltered from '../molecules/attorneys/NonFiltered';
 
 const AdministrationPage = ({
-  admins, seo, site, canonicalUrl,
+  admins,
+  seo,
+  site,
+  canonicalUrl,
+  itemListData,
+  itemListMeta,
+  breadcrumbs,
+  webPageData,
 }) => (
   <>
     <BasicSiteHead
       title={seo.title}
       metaDescription={seo.metaDesc}
       canonicalUrl={canonicalUrl}
+      itemListData={itemListData}
+      itemListMeta={itemListMeta}
+      breadcrumbs={breadcrumbs}
+      webPageData={webPageData}
     />
     <SubHeaderDefault
       title={site.title}

@@ -13,12 +13,24 @@ const ServicesPage = ({
   practices,
   seo,
   canonicalUrl,
+  breadcrumbs,
+  webPageData,
+  itemListData,
 }) => (
   <>
     <BasicSiteHead
       title={seo?.title}
       metaDescription={seo?.metaDesc}
       canonicalUrl={canonicalUrl}
+      breadcrumbs={breadcrumbs}
+      webPageData={webPageData}
+      serviceSchemaData={{
+        name: title,
+        description: seo?.metaDesc,
+        url: canonicalUrl,
+      }}
+      itemListData={itemListData}
+      itemListMeta={{ name: 'Legal Services', url: canonicalUrl }}
     />
     <SubHeaderDefault
       title={title}

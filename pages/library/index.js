@@ -1,4 +1,5 @@
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
+import { stripHtml } from 'utils/helpers';
 import { fetchAPI } from 'requests/api';
 import {
   libraryPageContentQuery,
@@ -22,6 +23,20 @@ export async function getStaticProps() {
     getLibraryPageData(mainCategoriesQuery),
   ]);
 
+  const canonicalUrl = `${PRODUCTION_URL}/library`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Library' },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: seo?.title,
+    description: stripHtml(pagesFields?.description),
+    pageType: 'CollectionPage',
+  };
+
   return {
     props: {
       seo,
@@ -30,6 +45,9 @@ export async function getStaticProps() {
       posts: posts?.nodes || [],
       filters,
       subHeaderSlides,
+      canonicalUrl,
+      breadcrumbs,
+      webPageData,
     },
     revalidate: 600,
   };
@@ -42,9 +60,10 @@ const Library = ({
   posts,
   filters,
   subHeaderSlides,
+  canonicalUrl,
+  breadcrumbs,
+  webPageData,
 }) => {
-  const canonicalUrl = `${PRODUCTION_URL}/library`;
-
   useNotFoundNotification("Category doesn't exist!");
 
   const libraryProps = {
@@ -55,6 +74,8 @@ const Library = ({
     posts,
     filters,
     subHeaderSlides,
+    breadcrumbs,
+    webPageData,
   };
   return <LibraryPage {...libraryProps} />;
 };

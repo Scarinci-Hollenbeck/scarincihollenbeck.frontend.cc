@@ -1,5 +1,5 @@
 import FirmPage from 'components/pages/FirmPage';
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import { fetchAPI } from 'requests/api';
 import { firmPagesQuery } from 'requests/graphql-queries';
 import empty from 'is-empty';
@@ -59,6 +59,21 @@ export const getStaticProps = async ({ params }) => {
 
   const { relatedPosts } = firmPagesRelatedPostsMembers;
 
+  const canonicalLink = `${PRODUCTION_URL}/${params?.slug}`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: title },
+  ];
+
+  const webPageData = {
+    url: canonicalLink,
+    name: seo.title,
+    description: seo.metaDesc,
+    pageType: 'WebPage',
+    mainEntity: { '@id': `${CURRENT_DOMAIN}/#organization` },
+  };
+
   const page = {
     title,
     description: pagesFields?.description,
@@ -66,7 +81,9 @@ export const getStaticProps = async ({ params }) => {
     sections: pagesFields?.sections,
     image: featuredImage?.node?.sourceUrl || null,
     seo,
-    canonicalLink: `${PRODUCTION_URL}/${params?.slug}`,
+    canonicalLink,
+    breadcrumbs,
+    webPageData,
   };
 
   return {

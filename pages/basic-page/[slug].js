@@ -1,5 +1,5 @@
 import BasicPageContent from 'components/pages/BasicPageContent';
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import { fetchAPI } from 'requests/api';
 import { basicPagesQuery } from 'requests/graphql-queries';
 
@@ -47,6 +47,20 @@ export const getStaticProps = async ({ params }) => {
     title, seo, featuredImage, pagesFields,
   } = request;
 
+  const canonicalUrl = `${PRODUCTION_URL}/${params.slug}`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: title },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: seo.title,
+    description: seo.metaDesc,
+    pageType: slug === 'awards' ? 'AboutPage' : 'WebPage',
+  };
+
   return {
     props: {
       title,
@@ -54,7 +68,9 @@ export const getStaticProps = async ({ params }) => {
       subHeaderImage: featuredImage?.node.sourceUrl,
       description: pagesFields?.description,
       sections: pagesFields?.sections,
-      canonicalUrl: `${PRODUCTION_URL}/${params.slug}`,
+      canonicalUrl,
+      breadcrumbs,
+      webPageData,
     },
     revalidate: 600,
   };
@@ -68,6 +84,8 @@ const BasicPage = ({
   canonicalUrl,
   description,
   sections,
+  breadcrumbs,
+  webPageData,
 }) => {
   const basicPageProps = {
     sections,
@@ -76,6 +94,8 @@ const BasicPage = ({
     title,
     description,
     subHeaderImage,
+    breadcrumbs,
+    webPageData,
   };
 
   return <BasicPageContent {...basicPageProps} />;

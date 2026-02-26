@@ -9,7 +9,12 @@ import { useGetLocationsQuery } from '../../redux/services/project-api';
 
 const AttorneyProfilePage = (props) => {
   const {
-    seo, profileHeader, profileContent, asideItems, profileMedia,
+    seo,
+    profileHeader,
+    profileContent,
+    asideItems,
+    profileMedia,
+    breadcrumbs,
   } = props;
 
   const { data: locations } = useGetLocationsQuery();
@@ -32,6 +37,14 @@ const AttorneyProfilePage = (props) => {
         featuredImage={seo.image}
         designation={profileHeader.designation}
         socialMediaLinks={seo.socialMediaLinks}
+        breadcrumbs={breadcrumbs}
+        email={seo.email}
+        telephone={seo.telephone}
+        knowsAbout={seo.knowsAbout}
+        alumniOf={seo.alumniOf}
+        barAdmissions={seo.barAdmissions}
+        affiliations={seo.affiliations}
+        awards={seo.awards}
       />
       <ProfileHeader handlePrint={handlePrint} {...profileHeader} />
 

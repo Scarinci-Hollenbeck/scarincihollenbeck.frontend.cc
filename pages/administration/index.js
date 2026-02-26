@@ -1,5 +1,10 @@
 import AdministrationPage from 'components/pages/AdminDirectory';
-import { desiredOrder, PRODUCTION_URL, SITE_PHONE } from 'utils/constants';
+import {
+  CURRENT_DOMAIN,
+  desiredOrder,
+  PRODUCTION_URL,
+  SITE_PHONE,
+} from 'utils/constants';
 import { fetchAPI } from 'requests/api';
 import { administrationPageQuery, adminsQuery } from 'requests/graphql-queries';
 
@@ -41,6 +46,31 @@ export async function getStaticProps() {
     );
   });
 
+  const itemListData = admins.map((admin) => ({
+    name: admin.title,
+    url: `${CURRENT_DOMAIN}${admin?.uri}`,
+  }));
+
+  const itemListMeta = {
+    name: 'Administration at Scarinci Hollenbeck',
+    url: `${PRODUCTION_URL}/administration`,
+  };
+
+  const canonicalUrl = `${PRODUCTION_URL}/administration`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Administration' },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: seo?.title,
+    description: seo?.metaDesc,
+    pageType: 'CollectionPage',
+    mainEntity: { '@id': `${canonicalUrl}#itemlist` },
+  };
+
   return {
     props: {
       seo,
@@ -49,21 +79,37 @@ export async function getStaticProps() {
         description: pagesFields.description,
         image: featuredImage.node.sourceUrl,
       },
+      canonicalUrl,
       admins: sortedAdmins,
+      itemListData,
+      itemListMeta,
+      breadcrumbs,
+      webPageData,
     },
     revalidate: 600,
   };
 }
 
 /** Administration directory page component */
-const Administration = ({ admins, seo, site }) => {
-  const canonicalUrl = `${PRODUCTION_URL}/administration`;
-
+const Administration = ({
+  admins,
+  seo,
+  site,
+  canonicalUrl,
+  itemListData,
+  itemListMeta,
+  breadcrumbs,
+  webPageData,
+}) => {
   const adminProps = {
     admins,
     seo,
     canonicalUrl,
     site,
+    itemListData,
+    itemListMeta,
+    breadcrumbs,
+    webPageData,
   };
   return <AdministrationPage {...adminProps} />;
 };

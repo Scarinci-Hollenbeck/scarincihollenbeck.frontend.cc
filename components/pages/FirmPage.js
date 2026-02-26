@@ -16,6 +16,8 @@ export default function FirmPage({ page }) {
     description,
     image,
     canonicalLink,
+    breadcrumbs,
+    webPageData,
   } = page;
 
   const titlesMap = {
@@ -28,6 +30,8 @@ export default function FirmPage({ page }) {
         title={seo.title}
         metaDescription={seo.metaDesc}
         canonicalUrl={canonicalLink}
+        breadcrumbs={breadcrumbs}
+        webPageData={webPageData}
       />
       <SubHeaderDefault
         title={title}

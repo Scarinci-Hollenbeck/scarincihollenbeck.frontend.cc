@@ -3,6 +3,7 @@ import { fetchAPI } from 'requests/api';
 import { memorialPageQuery } from 'requests/graphql-queries';
 import { formatSrcToCloudinaryUrl } from 'utils/helpers';
 import MemorialPage from 'components/pages/MemorialPage';
+import { CURRENT_DOMAIN } from 'utils/constants';
 
 export async function memorialBySlug(slug) {
   const data = await fetchAPI(memorialPageQuery, {
@@ -79,19 +80,27 @@ export const getStaticProps = async ({ params }) => {
     additionalInfo: memorialData?.memorialFields?.additionalInformation,
   };
 
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Memorials', url: `${CURRENT_DOMAIN}/memorials` },
+    { name: pageData.name },
+  ];
+
   return {
     props: {
       seo,
       pageData,
+      breadcrumbs,
     },
     revalidate: 600,
   };
 };
 
-const Memorial = ({ seo, pageData }) => {
+const Memorial = ({ seo, pageData, breadcrumbs }) => {
   const memorialPageProps = {
     seo,
     pageData,
+    breadcrumbs,
   };
 
   return <MemorialPage {...memorialPageProps} />;

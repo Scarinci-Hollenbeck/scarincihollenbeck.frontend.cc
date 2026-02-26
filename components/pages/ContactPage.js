@@ -15,12 +15,21 @@ const ContactPage = ({
   mapLocations,
   featuredImage,
   canonicalUrl,
+  breadcrumbs,
+  webPageData,
+  officeLocationsData,
+  hqGeo,
 }) => (
   <>
     <BasicSiteHead
       title={seo.title}
       metaDescription={seo.metaDesc}
       canonicalUrl={canonicalUrl}
+      breadcrumbs={breadcrumbs}
+      webPageData={webPageData}
+      officeLocationsData={officeLocationsData}
+      includeOrganizationSchema
+      hqGeo={hqGeo}
     />
     <SubHeaderDefault
       title={title}

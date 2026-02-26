@@ -1,6 +1,7 @@
 import AdminProfile from 'components/pages/AdminProfile';
 import { CURRENT_DOMAIN, SITE_PHONE } from 'utils/constants';
 import { concatNameUser } from 'utils/helpers';
+
 import empty from 'is-empty';
 import { fetchAPI } from '../../requests/api';
 import { administrationPersoneQuery } from '../../requests/graphql-queries';
@@ -35,7 +36,12 @@ const getAdminData = async (slug) => {
       designation: administration.designation,
       contact: {
         email: administration.email,
-        phoneNumber: `${SITE_PHONE} ${administration.phoneExtension}`,
+        phoneNumber: administration.phoneExtension
+          ? `${SITE_PHONE} ext. ${administration.phoneExtension.replace(
+            /^#/,
+            '',
+          )}`
+          : SITE_PHONE,
         vizibility: administration.vizibility,
         socialMediaLinks: administration.socialMediaLinks,
       },
@@ -79,20 +85,28 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Administration', url: `${CURRENT_DOMAIN}/administration` },
+    { name: dataAdmin.profile.name },
+  ];
+
   return {
     props: {
       dataAdmin,
+      breadcrumbs,
     },
     revalidate: 600,
   };
 };
 
 /** Administration profile component */
-const AdministrationProfile = ({ dataAdmin }) => {
+const AdministrationProfile = ({ dataAdmin, breadcrumbs }) => {
   const adminProps = {
     seo: dataAdmin.seo,
     profile: dataAdmin.profile,
     canonicalUrl: dataAdmin.seo.canonicalLink,
+    breadcrumbs,
   };
 
   return <AdminProfile {...adminProps} />;

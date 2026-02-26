@@ -1,8 +1,8 @@
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import LibraryCategoryPage from 'components/pages/LibraryCategoryPage';
 import empty from 'is-empty';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
-import { getBaseUrl } from 'utils/helpers';
+import { getBaseUrl, stripHtml } from 'utils/helpers';
 
 export const getServerSideProps = async ({
   params, query, req, res,
@@ -30,19 +30,36 @@ export const getServerSideProps = async ({
     category: pageContent?.databaseId,
   });
 
+  const canonicalUrl = `${PRODUCTION_URL}/library/category/${params.slug}`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Library', url: `${CURRENT_DOMAIN}/library` },
+    { name: pageContent?.name },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: pageContent?.seo?.title || pageContent?.name,
+    description: stripHtml(pageContent?.description),
+    pageType: 'CollectionPage',
+  };
+
   return {
     props: {
       title: pageContent?.name,
       description: pageContent?.description,
       seo: {
         ...pageContent?.seo,
-        canonicalUrl: `${PRODUCTION_URL}/library/category/${params.slug}`,
+        canonicalUrl,
       },
       categoryId: pageContent?.databaseId,
       filters,
       subHeaderSlides,
       postsData,
       tags,
+      breadcrumbs,
+      webPageData,
     },
   };
 };
@@ -57,6 +74,8 @@ const LibraryCategory = ({
   subHeaderSlides,
   postsData,
   tags,
+  breadcrumbs,
+  webPageData,
 }) => {
   const libraryProps = {
     title,
@@ -67,6 +86,8 @@ const LibraryCategory = ({
     subHeaderSlides,
     postsData,
     tags,
+    breadcrumbs,
+    webPageData,
   };
 
   return <LibraryCategoryPage {...libraryProps} />;

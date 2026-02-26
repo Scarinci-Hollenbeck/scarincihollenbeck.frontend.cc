@@ -7,7 +7,9 @@ import {
 import { ContainerDefault } from 'styles/Containers.style';
 import ProfileSection from 'components/molecules/attorney/ProfileSection';
 
-const AdminProfile = ({ seo, profile, canonicalUrl }) => (
+const AdminProfile = ({
+  seo, profile, canonicalUrl, breadcrumbs,
+}) => (
   <>
     <PersonSiteHead
       title={seo.title}
@@ -16,6 +18,10 @@ const AdminProfile = ({ seo, profile, canonicalUrl }) => (
       name={profile.name}
       featuredImage={profile.profileImage}
       designation={profile.designation}
+      email={profile.contact?.email}
+      telephone={profile.contact?.phoneNumber}
+      socialMediaLinks={profile.contact?.socialMediaLinks}
+      breadcrumbs={breadcrumbs}
     />
     <ProfileHeader {...profile} />
 

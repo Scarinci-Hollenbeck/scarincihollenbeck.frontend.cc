@@ -8,10 +8,10 @@ import {
   FAQSection,
   FAQText,
 } from 'styles/industries/IndustryFaq.style';
-import { ATTORNEYS_FAQ } from 'utils/constants';
+import { DEFAULT_FIRM_FAQ } from 'utils/constants';
 
 const IndustryFaq = ({ faqList, isSingleOpened = false, anchorId }) => {
-  const faqItems = faqList || ATTORNEYS_FAQ;
+  const faqItems = faqList || DEFAULT_FIRM_FAQ;
   return (
     <FAQSection id={anchorId} className="margin-scroll">
       <ContainerDefault>

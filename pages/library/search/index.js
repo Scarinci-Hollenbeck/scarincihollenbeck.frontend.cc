@@ -1,7 +1,7 @@
-import { PRODUCTION_URL } from 'utils/constants';
+import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import LibrarySearchResultsPage from 'components/pages/LibrarySearchResultsPage';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
-import { getBaseUrl } from 'utils/helpers';
+import { getBaseUrl, stripHtml } from 'utils/helpers';
 
 export async function getServerSideProps({ query, req, res }) {
   res.setHeader(
@@ -17,18 +17,40 @@ export async function getServerSideProps({ query, req, res }) {
 
   const { title, seo, pagesFields } = pageBy;
 
+  const canonicalUrl = `${PRODUCTION_URL}/library/search`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Library', url: `${CURRENT_DOMAIN}/library` },
+    { name: 'Search Results' },
+  ];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: title,
+    description: stripHtml(pagesFields?.description),
+    pageType: 'CollectionPage',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: `${PRODUCTION_URL}/library/search?keyword={search_term_string}`,
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
   return {
     props: {
       postsData,
       seo: {
         ...seo,
-        canonicalUrl: `${PRODUCTION_URL}/library`,
+        canonicalUrl,
       },
       title,
       description: pagesFields?.description,
       filters,
       subHeaderSlides,
       tags,
+      breadcrumbs,
+      webPageData,
     },
   };
 }
@@ -41,6 +63,8 @@ const LibrarySearch = ({
   subHeaderSlides,
   postsData,
   tags,
+  breadcrumbs,
+  webPageData,
 }) => {
   const libraryProps = {
     seo,
@@ -50,6 +74,8 @@ const LibrarySearch = ({
     subHeaderSlides,
     postsData,
     tags,
+    breadcrumbs,
+    webPageData,
   };
   return <LibrarySearchResultsPage {...libraryProps} />;
 };

@@ -5,6 +5,8 @@ import { CURRENT_DOMAIN } from 'utils/constants';
 import {
   STANDARD_SCHEMA,
   buildAttorneyProfileSchema,
+  buildBreadcrumbSchema,
+  buildWebPageSchema,
 } from 'utils/json-ld-schemas';
 
 const PersonSiteHead = ({
@@ -15,11 +17,29 @@ const PersonSiteHead = ({
   featuredImage,
   designation,
   socialMediaLinks,
+  breadcrumbs,
+  email,
+  telephone,
+  knowsAbout,
+  alumniOf,
+  barAdmissions,
+  affiliations,
+  awards,
 }) => {
   const router = useRouter();
   const slug = router.asPath;
   const currentUrl = CURRENT_DOMAIN + slug;
+  const pageUrl = canonicalUrl || currentUrl;
   const standardImage = `${CURRENT_DOMAIN}/images/no-image-found-diamond.png`;
+
+  const profilePageSchema = buildWebPageSchema({
+    id: `${pageUrl}#profilepage`,
+    url: pageUrl,
+    name: title,
+    description: metaDescription,
+    pageType: 'ProfilePage',
+    mainEntity: { '@id': pageUrl },
+  });
   const standardSocial = [
     { url: 'https://twitter.com/S_H_Law' },
     { url: 'https://www.facebook.com/ScarinciHollenbeck/' },
@@ -43,17 +63,29 @@ const PersonSiteHead = ({
         dangerouslySetInnerHTML={{ __html: STANDARD_SCHEMA }}
       />
       <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(profilePageSchema) }}
+      />
+      <script
         key="ScarinciHollenbeck Bio Profile"
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify(
-            buildAttorneyProfileSchema(
-              title,
-              canonicalUrl || currentUrl,
-              featuredImage || standardImage,
-              socialMediaLinks || standardSocial,
-              designation,
-            ),
+            buildAttorneyProfileSchema({
+              name,
+              url: pageUrl,
+              imageUrl: featuredImage || standardImage,
+              socialMediaLinks: socialMediaLinks || standardSocial,
+              jobTitle: designation,
+              description: metaDescription,
+              email,
+              telephone,
+              knowsAbout,
+              alumniOf,
+              barAdmissions,
+              affiliations,
+              awards,
+            }),
           ),
         }}
       />
@@ -61,6 +93,14 @@ const PersonSiteHead = ({
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={metaDescription} />
       <meta name="twitter:image" content={featuredImage || standardImage} />
+      {breadcrumbs?.length > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(buildBreadcrumbSchema(breadcrumbs)),
+          }}
+        />
+      )}
     </Head>
   );
 };

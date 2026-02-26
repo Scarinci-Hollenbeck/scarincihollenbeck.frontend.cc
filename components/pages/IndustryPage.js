@@ -57,7 +57,13 @@ const anchorDataDefault = {
   },
 };
 
-const IndustryPage = ({ content, seo, canonicalLink }) => {
+const IndustryPage = ({
+  content,
+  seo,
+  canonicalLink,
+  breadcrumbs,
+  webPageData,
+}) => {
   const [activeTab, setActiveTab] = useState(0);
   const { query } = useRouter();
 
@@ -135,6 +141,14 @@ const IndustryPage = ({ content, seo, canonicalLink }) => {
         title={seo?.title}
         metaDescription={seo?.metaDesc}
         canonicalUrl={canonicalLink}
+        breadcrumbs={breadcrumbs}
+        faqData={faq}
+        webPageData={webPageData}
+        serviceSchemaData={{
+          name: title,
+          description: seo?.metaDesc,
+          url: canonicalLink,
+        }}
       />
       <SubHeaderIndustry
         title={title}

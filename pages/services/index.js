@@ -7,7 +7,11 @@ import ServicesPage from 'components/pages/ServicesPage';
 import { getIndustries } from 'requests/getIndustries';
 import { sortByKey } from 'utils/helpers';
 import { getPractices } from 'requests/getPractices';
-import { PRODUCTION_URL } from 'utils/constants';
+import {
+  PRODUCTION_URL,
+  CURRENT_DOMAIN,
+  readyIndustriesUrls,
+} from 'utils/constants';
 
 const sanitizeIndustries = (industries) => industries.map((industry) => ({
   databaseId: industry?.databaseId,
@@ -42,13 +46,57 @@ export const getStaticProps = async () => {
     };
   }
 
+  const canonicalUrl = `${PRODUCTION_URL}/services`;
+
+  const breadcrumbs = [
+    { name: 'Home', url: `${CURRENT_DOMAIN}/` },
+    { name: 'Practices & Industries' },
+  ];
+
+  const sanitizedIndustries = sanitizeIndustries(
+    sortByKey(industries, 'title'),
+  );
+
+  const practiceItems = practicesSorted.flatMap((practice) => {
+    const parent = {
+      name: practice.title,
+      url: `${PRODUCTION_URL}${practice.uri}`,
+    };
+    const children = (practice.childPractice || []).map((child) => ({
+      name: child.title,
+      url: `${PRODUCTION_URL}${child.uri}`,
+    }));
+    return [parent, ...children];
+  });
+
+  const industryItems = sanitizedIndustries
+    .filter((industry) => readyIndustriesUrls.includes(industry.uri))
+    .map((industry) => ({
+      name: industry.title,
+      url: `${PRODUCTION_URL}${industry.uri}`,
+    }));
+
+  const itemListData = [...practiceItems, ...industryItems];
+
+  const webPageData = {
+    url: canonicalUrl,
+    name: data?.seo?.title,
+    description: data?.seo?.metaDesc,
+    pageType: 'CollectionPage',
+    mainEntity: { '@id': `${canonicalUrl}#itemlist` },
+  };
+
   return {
     props: {
       title: data?.title,
       content: data?.pagesFields,
-      industries: sanitizeIndustries(sortByKey(industries, 'title')),
+      industries: sanitizedIndustries,
       practices: practicesSorted,
       seo: data?.seo,
+      breadcrumbs,
+      webPageData,
+      itemListData,
+      canonicalUrl,
     },
     revalidate: 600,
   };
@@ -60,9 +108,13 @@ const ServicesPageDirectory = ({
   industries,
   practices,
   seo,
+  breadcrumbs,
+  webPageData,
+  itemListData,
+  canonicalUrl,
 }) => {
   useNotFoundNotification('The practice or industry no longer exists.');
-  const canonicalUrl = `${PRODUCTION_URL}/services`;
+
   const propsPage = {
     title,
     content,
@@ -70,6 +122,9 @@ const ServicesPageDirectory = ({
     practices,
     seo,
     canonicalUrl,
+    breadcrumbs,
+    webPageData,
+    itemListData,
   };
 
   return <ServicesPage {...propsPage} />;
