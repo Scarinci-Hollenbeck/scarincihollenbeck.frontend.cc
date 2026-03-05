@@ -1,10 +1,6 @@
 {
   "$schema": "https://unpkg.com/knip@latest/schema.json",
-  "entry": [
-    "pages/**/*.{js,jsx}",
-    "pages/api/**/*.js",
-    "next.config.js"
-  ],
+  "entry": ["pages/**/*.{js,jsx}", "pages/api/**/*.js", "next.config.js"],
   "project": [
     "**/*.{js,jsx}",
     "!node_modules/**",
@@ -22,8 +18,5 @@
     "hooks/*": ["hooks/*"],
     "hoks/*": ["hoks/*"]
   },
-  "ignoreDependencies": [
-    "sharp",
-    "eslint-config-next"
-  ]
+  "ignoreDependencies": ["sharp", "eslint-config-next"]
 }
