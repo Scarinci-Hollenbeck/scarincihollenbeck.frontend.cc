@@ -10,31 +10,9 @@ import {
 } from 'styles/Hit.style';
 import { Highlight } from 'react-instantsearch-dom';
 import empty from 'is-empty';
-import PracticesIcon from 'components/common/icons/PracticesIcon';
-import PostsIcon from 'components/common/icons/PostsIcon';
-import AttorneysIcon from 'components/common/icons/AttorneysIcon';
-import CareersIcon from 'components/common/icons/CareersIcon';
-import IndustriesIcon from 'components/common/icons/IndustriesIcon';
-import LocationsIcon from 'components/common/icons/LocationsIcon';
+import { getIcon } from 'utils/getIcon';
 import { changeTitle } from '../../../utils/helpers';
 import { BASE_API_URL, PRODUCTION_URL } from '../../../utils/constants';
-
-const getItemIcon = (type) => {
-  const icons = {
-    Posts: <PostsIcon />,
-    Attorneys: <AttorneysIcon />,
-    Practices: <PracticesIcon />,
-    Careers: <CareersIcon />,
-    Industries: <IndustriesIcon />,
-    'Office Locations': <LocationsIcon />,
-  };
-
-  if (!icons[type]) {
-    return <PracticesIcon />;
-  }
-
-  return icons[type];
-};
 
 export default function Hit({ hit, setIsOpenSearch, handleClear }) {
   // eslint-disable-next-line no-underscore-dangle
@@ -64,7 +42,9 @@ export default function Hit({ hit, setIsOpenSearch, handleClear }) {
         }
         passHref
       >
-        <SearchedItemIcon>{getItemIcon(hit.post_type_label)}</SearchedItemIcon>
+        <SearchedItemIcon>
+          {getIcon(hit.post_type_label) ?? getIcon('Practices')}
+        </SearchedItemIcon>
         <SearchedItemContent>
           <SearchableItemTitle>
             <Highlight hit={hit} attribute="post_title" />

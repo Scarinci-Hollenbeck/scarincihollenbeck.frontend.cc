@@ -47,6 +47,7 @@ const AboutFirm = ({
                   fill
                   alt={heroPhoto?.altText || 'image'}
                   sizes="(max-width: 576px) 100vw, 280px"
+                  quality={75}
                 />
               </AboutCardImage>
             )}

@@ -2,7 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IoSearchOutline } from 'react-icons/io5';
 import { HeaderSearchWrapper, SearchOpener } from 'styles/Header.style';
 import { AnimatePresence, motion } from 'framer-motion';
-import { GlobalSearch } from '../GlobalSearch/GlobalSearch';
+import dynamic from 'next/dynamic';
+
+const GlobalSearch = dynamic(
+  () => import('../GlobalSearch/GlobalSearch').then((mod) => ({
+    default: mod.GlobalSearch,
+  })),
+  { ssr: false },
+);
+
+const MotionSearchOpener = motion(SearchOpener);
 
 const HeaderSearch = ({ isOpenSearch, setIsOpenSearch }) => {
   const [inputFocus, setInputFocus] = useState(null);
@@ -52,7 +61,7 @@ const HeaderSearch = ({ isOpenSearch, setIsOpenSearch }) => {
       <AnimatePresence>
         {isOpenSearch && (
           <motion.div
-            initial={{ opacity: 0, x: '-100%' }}
+            initial={{ opacity: 0, x: '-100%', width: '100%' }}
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: '-100%' }}
           >
@@ -65,7 +74,7 @@ const HeaderSearch = ({ isOpenSearch, setIsOpenSearch }) => {
         )}
 
         {!isOpenSearch && (
-          <SearchOpener
+          <MotionSearchOpener
             onClick={handleOpenSearch}
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
@@ -73,7 +82,7 @@ const HeaderSearch = ({ isOpenSearch, setIsOpenSearch }) => {
             aria-label="Search opener"
           >
             <IoSearchOutline />
-          </SearchOpener>
+          </MotionSearchOpener>
         )}
       </AnimatePresence>
     </HeaderSearchWrapper>

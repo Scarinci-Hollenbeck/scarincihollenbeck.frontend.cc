@@ -10,7 +10,7 @@ import { useId } from 'react';
 import ContactBoxTemplate from '../atoms/ContactBox';
 import SHDiamond from '../../public/images/sh-mini-diamond-PNG.svg';
 
-export const renderLinkToLocationPractice = (locationsOrPractice) => {
+const renderLinkToLocationPractice = (locationsOrPractice) => {
   if (Array.isArray(locationsOrPractice)) {
     if (locationsOrPractice[0]?.uri) {
       return locationsOrPractice.map((office, idx) => (
@@ -80,7 +80,7 @@ const renderImage = (
     loading="lazy"
     src={image || SHDiamond}
     alt={name}
-    quality={100}
+    quality={75}
     width={
         width
         || (!Array.isArray(locations) && typeof locations !== 'undefined'

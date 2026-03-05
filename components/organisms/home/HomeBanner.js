@@ -29,7 +29,6 @@ const HomeBanner = ({ title, subtitle, infoCards }) => (
       alt="Building on the background"
       fill
       priority
-      loading="eager"
       quality={70}
       sizes="100dvw"
     />

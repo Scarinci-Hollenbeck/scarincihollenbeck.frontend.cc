@@ -50,6 +50,10 @@ module.exports = {
     'react/jsx-no-duplicate-props': 'off',
     'no-case-declarations': 'off',
     'import/extensions': 'off',
+    'import/no-extraneous-dependencies': [
+      'error',
+      { devDependencies: ['next.config.js', '*.config.js'] },
+    ],
     'no-console': [
       2,
       {

@@ -1,0 +1,49 @@
+/* Minimal animation utilities — replaces animate.css (~80KB).
+   Only the two keyframes actually used in the project are included. */
+
+:root {
+  --animate-duration: 1s;
+}
+
+.animate__animated {
+  animation-duration: var(--animate-duration);
+  animation-fill-mode: both;
+}
+
+.animate__animated.animate__slow {
+  animation-duration: calc(var(--animate-duration) * 2);
+}
+
+.animate__animated.animate__fast {
+  animation-duration: calc(var(--animate-duration) * 0.5);
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate__fadeInDown {
+  animation-name: fadeInDown;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.animate__fadeInUp {
+  animation-name: fadeInUp;
+}

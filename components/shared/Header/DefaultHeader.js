@@ -15,14 +15,12 @@ import Navigation from 'components/organisms/Navbar/Navigation';
 import InitGlobalVariables from 'styles/global_styles/InitGlobalVariables';
 import { useSelector } from 'react-redux';
 import dynamic from 'next/dynamic';
-import HeaderTopLine from './HeaderTopLine';
 import HeaderSearch from './HeaderSearch';
+import HeaderTopLine from './HeaderTopLine';
 
 const SidebarMenu = dynamic(() => import('./SidebarMenu'));
 
-const DefaultHeader = ({
-  practices, locations, industries, menuData,
-}) => {
+const DefaultHeader = ({ practices, locations, industries }) => {
   const [isOpenSearch, setIsOpenSearch] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const headerRef = useRef();
@@ -96,7 +94,6 @@ const DefaultHeader = ({
               <SidebarMenu
                 practices={practices}
                 locations={locations}
-                menuData={menuData}
                 industries={industries}
                 isSidebarOpen={isSidebarOpen}
                 setIsSidebarOpen={setIsSidebarOpen}

@@ -12,10 +12,9 @@ import { Provider } from 'react-redux';
  * 3rd Party Resources
  *
  * */
-import { GoogleTagManager } from '@next/third-parties/google';
 import 'nprogress/nprogress.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'animate.css/animate.min.css';
+import 'styles/animations.css';
 /* *
  * Custom Style Sheets and redux
  * */
@@ -25,9 +24,8 @@ import 'react-toastify/dist/ReactToastify.css';
 import { ReCaptchaProvider } from 'next-recaptcha-v3';
 import CommonModals from 'components/shared/CommonModals';
 import AnchorTop from 'components/atoms/AnchorTop';
+import { GoogleTagManager } from '@next/third-parties/google';
 import { store } from '../redux/store';
-// need update to new firebase version
-// import PushNotificationLayout from '../hoks/notifications';
 import { RECAPTCHA_SITE_KEY } from '../utils/constants';
 
 const SiteFooter = dynamic(() => import('components/shared/Footer/SiteFooter'));
@@ -49,7 +47,6 @@ const SHSite = ({ Component, pageProps }) => (
     <Provider store={store}>
       <GlobalStyle />
       <InitFonts />
-      {/* <PushNotificationLayout> */}
       <ReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
         <MainSiteHead />
         <ToastContainer />
@@ -62,7 +59,6 @@ const SHSite = ({ Component, pageProps }) => (
         <CommonModals />
         <GoogleTagManager gtmId="GTM-PZ2XWLW4" />
       </ReCaptchaProvider>
-      {/* </PushNotificationLayout> */}
     </Provider>
   </SSRProvider>
 );

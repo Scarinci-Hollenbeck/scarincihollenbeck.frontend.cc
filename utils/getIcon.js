@@ -11,6 +11,7 @@ const icons = {
   Industries: dynamic(() => import('components/common/icons/IndustriesIcon')),
   'News paper': dynamic(() => import('components/common/icons/LibraryIcon')),
   Locations: dynamic(() => import('components/common/icons/LocationsIcon')),
+  'Office Locations': dynamic(() => import('components/common/icons/LocationsIcon')),
   MailingList: dynamic(() => import('components/common/icons/MailingListIcon')),
   Media: dynamic(() => import('components/common/icons/MediaIcon')),
   Payment: dynamic(() => import('components/common/icons/PaymentIcon')),

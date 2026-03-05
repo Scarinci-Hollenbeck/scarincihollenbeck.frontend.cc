@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import {
   SidebarMenuBackdrop,
   SidebarMenuButton,
@@ -17,27 +17,141 @@ import {
   MAKE_A_PAYMENT,
   SIDEBAR_POLITIC_LINKS,
   SOCIAL_LINKS,
+  FIRM_PAGES,
 } from 'utils/constants';
-import PaymentIcon from 'components/common/icons/PaymentIcon';
-import MailingListIcon from 'components/common/icons/MailingListIcon';
 import { ButtonRed } from 'styles/Buttons.style';
 import Navigation from 'components/organisms/Navbar/Navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnimatePresence } from 'framer-motion';
-import SidebarMenuItems from './SidebarMenuItems';
+import empty from 'is-empty';
+import { getIcon } from 'utils/getIcon';
 import { handleSubscriptionModalOpener } from '../../../redux/slices/modals.slice';
+import SidebarMenuItems from './SidebarMenuItems';
+
+const createMenuData = (practices, locations, industries) => [
+  {
+    databaseId: 'menu-01',
+    title: 'Homepage',
+    icon: getIcon('Home'),
+    href: '/',
+  },
+  {
+    databaseId: 'menu-02',
+    title: 'Attorneys',
+    icon: getIcon('Attorneys'),
+    href: '/attorneys',
+  },
+  {
+    databaseId: 'menu-03',
+    title: 'Legal Practices',
+    icon: getIcon('Practices'),
+    href: '/services',
+    list: [
+      {
+        databaseId: 'menu-all-practices',
+        uri: '/services',
+        title: 'View all practices',
+        additionalClass: 'bolder',
+      },
+      ...practices,
+    ],
+  },
+  {
+    databaseId: 'menu-04',
+    title: 'Industries',
+    icon: getIcon('Industries'),
+    href: '/services',
+    list: [
+      {
+        databaseId: 'menu-all-industries',
+        uri: '/services#industries',
+        title: 'View all industries',
+        additionalClass: 'bolder',
+      },
+      ...industries,
+    ],
+  },
+  {
+    databaseId: 'menu-05',
+    title: 'Locations',
+    icon: getIcon('Locations'),
+    href: '/location/new-york',
+    list: !empty(locations) ? [...locations] : [],
+  },
+  {
+    databaseId: 'menu-06',
+    title: 'Library',
+    icon: getIcon('News paper'),
+    href: '/',
+    list: [
+      {
+        databaseId: 'menu-lib-00',
+        title: 'Library overview',
+        uri: '/library',
+      },
+      {
+        databaseId: 'menu-lib-01',
+        title: 'Client Alerts',
+        uri: '/library/category/client-alert',
+      },
+      {
+        databaseId: 'menu-lib-02',
+        title: 'Firm News',
+        uri: '/library/category/firm-news',
+      },
+      {
+        databaseId: 'menu-lib-03',
+        title: 'Firm Events',
+        uri: '/library/category/firm-events',
+      },
+      {
+        databaseId: 'menu-lib-04',
+        title: 'Firm Insights',
+        uri: '/library/category/law-firm-insights',
+      },
+      {
+        databaseId: 'menu-lib-05',
+        title: 'Subscription',
+        uri: '/library/subscriptions',
+      },
+    ],
+  },
+  {
+    databaseId: 'menu-07',
+    title: 'The Firm',
+    icon: getIcon('Firm'),
+    href: '/',
+    list: FIRM_PAGES,
+  },
+  {
+    databaseId: 'menu-08',
+    title: 'Careers',
+    icon: getIcon('Careers'),
+    href: '/careers',
+  },
+];
+
+const sanitizeIndustries = (data) => {
+  if (!data) return [];
+
+  return data?.map((item) => ({
+    databaseId: item?.databaseId,
+    uri: item?.uri,
+    title: item?.title,
+  }));
+};
 
 const SidebarMenu = memo(
   ({
-    practices,
-    locations,
-    industries,
-    menuData,
-    isSidebarOpen,
-    setIsSidebarOpen,
+    practices, locations, industries, isSidebarOpen, setIsSidebarOpen,
   }) => {
     const dispatch = useDispatch();
     const { headerSize } = useSelector((state) => state.sizes);
+
+    const menuData = useMemo(
+      () => createMenuData(practices, locations, sanitizeIndustries(industries)),
+      [practices, locations, industries],
+    );
 
     return (
       <AnimatePresence>
@@ -98,7 +212,7 @@ const SidebarMenu = memo(
                       className="sidebar-subscription-btn"
                     >
                       <SidebarMenuButtonIcon>
-                        <MailingListIcon />
+                        {getIcon('MailingList')}
                       </SidebarMenuButtonIcon>
                       Join our mailing list
                     </button>
@@ -109,7 +223,7 @@ const SidebarMenu = memo(
                       rel="noreferrer"
                     >
                       <SidebarMenuButtonIcon>
-                        <PaymentIcon />
+                        {getIcon('Payment')}
                       </SidebarMenuButtonIcon>
                       Make payment
                     </SidebarMenuButton>

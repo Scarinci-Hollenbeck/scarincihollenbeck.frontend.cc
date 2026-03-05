@@ -20,11 +20,10 @@ const ProfileImage = ({ name, profileImage, representativeVideo }) => (
           alt={name || 'Profile avatar'}
           width={500}
           height={535}
-          quality={100}
+          quality={85}
           sizes="(max-width: 992px) 360px, (max-width: 1680px) 400px, 500px"
           className="animate__animated animate__fadeInUp animate__fast"
           priority
-          loading="eager"
         />
       </ProfileImageWrapper>
 

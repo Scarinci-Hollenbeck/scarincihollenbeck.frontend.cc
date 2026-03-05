@@ -9,24 +9,6 @@ import {
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 import Link from 'next/link';
 
-export const RedButtonLink = styled.a`
-  padding: 15px 40px;
-  background-color: ${globalColor.red.darkRed};
-  font-weight: 600;
-  color: ${globalColor.white};
-  text-decoration: none;
-
-  :hover {
-    color: #ffffff;
-    text-decoration: none;
-    cursor: pointer;
-  }
-`;
-
-export const RedButtonBootstrap = styled(RedButtonLink)`
-  margin-left: 20px;
-`;
-
 export const ClearButton = styled(Button)`
   margin: 0;
   padding: 3px 15px;
