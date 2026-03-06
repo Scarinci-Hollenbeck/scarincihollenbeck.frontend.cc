@@ -21,12 +21,10 @@ import 'styles/animations.css';
 import { GlobalStyle } from 'styles/global_styles/Global.styles';
 import InitFonts from 'styles/global_styles/InitFonts';
 import 'react-toastify/dist/ReactToastify.css';
-import { ReCaptchaProvider } from 'next-recaptcha-v3';
 import CommonModals from 'components/shared/CommonModals';
 import AnchorTop from 'components/atoms/AnchorTop';
 import { GoogleTagManager } from '@next/third-parties/google';
 import { store } from '../redux/store';
-import { RECAPTCHA_SITE_KEY } from '../utils/constants';
 
 const SiteFooter = dynamic(() => import('components/shared/Footer/SiteFooter'));
 
@@ -47,18 +45,16 @@ const SHSite = ({ Component, pageProps }) => (
     <Provider store={store}>
       <GlobalStyle />
       <InitFonts />
-      <ReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
-        <MainSiteHead />
-        <ToastContainer />
-        <Header />
-        <main>
-          <Component {...pageProps} />
-          <AnchorTop />
-        </main>
-        <SiteFooter />
-        <CommonModals />
-        <GoogleTagManager gtmId="GTM-PZ2XWLW4" />
-      </ReCaptchaProvider>
+      <MainSiteHead />
+      <ToastContainer />
+      <Header />
+      <main>
+        <Component {...pageProps} />
+        <AnchorTop />
+      </main>
+      <SiteFooter />
+      <CommonModals />
+      <GoogleTagManager gtmId="GTM-PZ2XWLW4" />
     </Provider>
   </SSRProvider>
 );
