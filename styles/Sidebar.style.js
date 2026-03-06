@@ -1,13 +1,11 @@
 import styled from 'styled-components';
 import {
   globalColor,
-  globalShadow,
   globalTransition,
   rem,
 } from './global_styles/Global.styles';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 
 const sidebarBtnStyle = `
   padding: 11px 15px;
@@ -118,7 +116,7 @@ export const SidebarOpener = styled.button`
   }
 `;
 
-export const SidebarMenuWrapper = styled(motion.div)`
+export const SidebarMenuWrapper = styled.div`
   position: absolute;
   width: 50vw;
   height: 100%;
@@ -191,7 +189,7 @@ export const SidebarMenuContainer = styled.div`
   }
 `;
 
-export const SidebarMenuBackdrop = styled(motion.div)`
+export const SidebarMenuBackdrop = styled.div`
   position: absolute;
   top: 100%;
   left: 0;

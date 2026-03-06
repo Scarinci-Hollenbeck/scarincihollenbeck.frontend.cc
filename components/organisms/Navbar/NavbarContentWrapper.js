@@ -1,7 +1,9 @@
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import { ContainerDefault } from 'styles/Containers.style';
 import { NavbarItemContent } from 'styles/Navigation.style';
+
+const NavbarItemContentMotion = motion(NavbarItemContent);
 
 const NavbarContentWrapper = ({
   children,
@@ -13,7 +15,7 @@ const NavbarContentWrapper = ({
 }) => (
   <AnimatePresence>
     {showNavContent && (
-      <NavbarItemContent
+      <NavbarItemContentMotion
         key={`${id}-navbar-content`}
         initial={{ opacity: 0, height: 0, overflow: 'hidden' }}
         animate={{
@@ -35,7 +37,7 @@ const NavbarContentWrapper = ({
             {children}
           </ContainerDefault>
         )}
-      </NavbarItemContent>
+      </NavbarItemContentMotion>
     )}
   </AnimatePresence>
 );

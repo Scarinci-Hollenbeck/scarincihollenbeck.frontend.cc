@@ -22,11 +22,14 @@ import {
 import { ButtonRed } from 'styles/Buttons.style';
 import Navigation from 'components/organisms/Navbar/Navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import empty from 'is-empty';
 import { getIcon } from 'utils/getIcon';
 import { handleSubscriptionModalOpener } from '../../../redux/slices/modals.slice';
 import SidebarMenuItems from './SidebarMenuItems';
+
+const SidebarMenuWrapperMotion = motion(SidebarMenuWrapper);
+const SidebarMenuBackdropMotion = motion(SidebarMenuBackdrop);
 
 const createMenuData = (practices, locations, industries) => [
   {
@@ -157,7 +160,7 @@ const SidebarMenu = memo(
       <AnimatePresence>
         {isSidebarOpen && (
           <>
-            <SidebarMenuWrapper
+            <SidebarMenuWrapperMotion
               key="sidebar-menu-motion"
               className={isSidebarOpen ? 'sidebar-open' : ''}
               inert={isSidebarOpen ? undefined : ''}
@@ -246,9 +249,9 @@ const SidebarMenu = memo(
                   </SidebarMenuSocials>
                 </SidebarMenuContainer>
               </SidebarMenuFooter>
-            </SidebarMenuWrapper>
+            </SidebarMenuWrapperMotion>
 
-            <SidebarMenuBackdrop
+            <SidebarMenuBackdropMotion
               key="sidebar-menu-backdrop"
               $headerHeight={headerSize.height}
               onClick={() => setIsSidebarOpen(false)}
