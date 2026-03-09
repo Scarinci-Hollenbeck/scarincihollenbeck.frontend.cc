@@ -1,4 +1,3 @@
-import { Button } from 'react-bootstrap';
 import styled from 'styled-components';
 import {
   globalBorderRadius,
@@ -26,7 +25,7 @@ export const SelectionList = styled.ul`
 
 export const SelectionItem = styled.li``;
 
-export const SelectionButton = styled(Button)`
+export const SelectionButton = styled.button`
   display: flex;
   align-items: center;
   column-gap: 24px;
@@ -36,6 +35,7 @@ export const SelectionButton = styled(Button)`
   font-size: inherit;
   line-height: 1.5;
   padding: 4px 16px;
+  transition: ${globalTransition.default};
 
   :hover {
     color: ${globalColor.white};

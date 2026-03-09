@@ -1,9 +1,11 @@
 import { useRouter } from 'next/router';
 import { useEffect, useRef } from 'react';
 import empty from 'is-empty';
+import { useToast } from 'context/ToastContext';
 
 export default function useNotFoundNotification(message) {
   const router = useRouter();
+  const showToast = useToast();
   const notifyTime = 5000;
   const searchParams = new URLSearchParams(router.query);
   const timeoutRef = useRef(null);
@@ -11,19 +13,7 @@ export default function useNotFoundNotification(message) {
   useEffect(() => {
     const notFound = searchParams.get('notFound');
     if (notFound) {
-      import('react-toastify').then(({ toast }) => {
-        toast.error(message, {
-          position: 'bottom-right',
-          autoClose: notifyTime,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
-          className: 'error-notify',
-        });
-      });
+      showToast(message, 'error', notifyTime);
 
       searchParams.delete('notFound');
 
@@ -33,14 +23,10 @@ export default function useNotFoundNotification(message) {
           router.replace(
             `${router.pathname}?${updatedQueryString}`,
             undefined,
-            {
-              shallow: true,
-            },
+            { shallow: true },
           );
         } else {
-          router.replace(`${router.pathname}`, undefined, {
-            shallow: true,
-          });
+          router.replace(`${router.pathname}`, undefined, { shallow: true });
         }
       }, notifyTime);
     }

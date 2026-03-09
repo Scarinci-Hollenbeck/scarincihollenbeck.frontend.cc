@@ -1,28 +1,18 @@
 import { useRouter } from 'next/router';
 import React from 'react';
 import { IoCopy } from 'react-icons/io5';
+import { useToast } from 'context/ToastContext';
 import { PRODUCTION_URL } from 'utils/constants';
 
 const CopyUrl = () => {
   const router = useRouter();
-  const url = `${PRODUCTION_URL}${router.asPath}`;
+  const showToast = useToast();
 
   const handleCopyLink = () => {
-    navigator.clipboard.writeText(url);
-    import('react-toastify').then(({ toast }) => {
-      toast.info('Copied to clipboard', {
-        position: 'bottom-right',
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'colored',
-        className: 'copy-notify',
-      });
-    });
+    navigator.clipboard.writeText(`${PRODUCTION_URL}${router.asPath}`);
+    showToast('Copied to clipboard', 'info');
   };
+
   return (
     <button
       aria-label="copy link"

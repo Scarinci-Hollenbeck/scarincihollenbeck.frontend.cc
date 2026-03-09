@@ -12,8 +12,6 @@ import {
   media_breakpoint_exactly_down,
 } from 'styles/mediaBreakpoints.style';
 import { OfficeCardContainer } from '../Locations.style';
-import Link from 'next/link';
-import { UnderlinedLink } from 'styles/common/Typography.style';
 
 export const attorneyCardForPractices = `
   .attorney-card-box {

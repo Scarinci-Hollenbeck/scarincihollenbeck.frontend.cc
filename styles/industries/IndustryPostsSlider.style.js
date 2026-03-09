@@ -1,3 +1,4 @@
+import { DisclaimerTextStyles } from 'components/atoms/DisclaimerText';
 import styled from 'styled-components';
 import { Title60 } from 'styles/common/Typography.style';
 import { ContainerDefault } from 'styles/Containers.style';
@@ -11,7 +12,7 @@ export const IndustryPostsSection = styled.section`
   padding: 60px 0;
   background-color: ${globalColor.blue.darkBlue};
 
-  .disclaimer {
+  ${DisclaimerTextStyles} {
     color: ${globalColor.white};
   }
 

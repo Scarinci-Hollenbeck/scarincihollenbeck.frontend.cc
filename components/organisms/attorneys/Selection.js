@@ -39,7 +39,6 @@ const Selection = ({
         {selectionsWithoutKeyword?.map((selection) => (
           <SelectionItem key={selection.key}>
             <SelectionButton
-              variant="Primary"
               id={selection.selected}
               onClick={() => clearQuery(selection.key)}
               data-toggle="tooltip"
@@ -54,9 +53,7 @@ const Selection = ({
         ))}
       </SelectionList>
       {selections?.length > 0 && (
-        <ClearButton variant="Primary" onClick={clearAll}>
-          Reset Filters
-        </ClearButton>
+        <ClearButton onClick={clearAll}>Reset Filters</ClearButton>
       )}
     </SelectionWrapper>
   );
