@@ -11,7 +11,7 @@ import { BsFillBriefcaseFill } from 'react-icons/bs';
 import empty from 'is-empty';
 import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
 
-export const checkAllOffices = (locations) => {
+const checkAllOffices = (locations) => {
   if (empty(locations)) return null;
 
   if (locations.length > 1) {

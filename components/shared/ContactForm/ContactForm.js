@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
+import Script from 'next/script';
 import { FormContainer } from 'styles/attorney-page/GetInTouchForm.styles';
 import { StandardBlueButton } from 'styles/Buttons.style';
 import {
@@ -17,6 +18,7 @@ export default function ContactForm({
   buttonText = 'Submit form',
 }) {
   const [isCheckedDisclaimer, setIsCheckedDisclaimer] = useState('');
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
 
   const handleCheck = (event) => {
     const target = event.target;
@@ -40,7 +42,14 @@ export default function ContactForm({
         recaptcha-site-key={RECAPTCHA_SITE_KEY}
         // eslint-disable-next-line react/no-unknown-property
         success-message={THANKS_MESSAGE.title}
+        onFocus={() => setRecaptchaLoaded(true)}
       >
+        {recaptchaLoaded && (
+          <Script
+            src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
+            strategy="afterInteractive"
+          />
+        )}
         <RenderInputs
           arrayOfAttributes={inputsGetInTouchAttributes}
           attorneySlug={router.asPath}

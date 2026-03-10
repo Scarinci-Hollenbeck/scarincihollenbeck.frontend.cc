@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import {
   media_breakpoint_down,
   media_breakpoint_exactly,
@@ -9,8 +9,51 @@ import {
   rem,
 } from './global_styles/Global.styles';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import { ModalContainer } from './ModalWindow.style';
+
+const slideFromTop = keyframes` 
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`;
+
+const searchOpenerIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const searchSlideIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateX(-25%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+`;
+
+const searchSlideOut = keyframes`
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-25%);
+  }
+`;
 
 const HeaderTopLineItemStyles = `
   padding: 4px 4px 2px;
@@ -99,6 +142,8 @@ export const HeaderTopLineWrapper = styled.div`
   padding: 4px 0;
   background-color: ${globalColor.blue.darkBlue};
   width: 100%;
+  position: relative;
+  z-index: 10;
 `;
 
 export const HeaderTopLineItems = styled.ul`
@@ -113,8 +158,9 @@ export const HeaderTopLineItems = styled.ul`
   }
 `;
 
-export const HeaderTopLineItem = styled(motion.li)`
+export const HeaderTopLineItem = styled.li`
   width: ${({ $open }) => ($open ? '100%' : '')};
+  animation: ${slideFromTop} 0.3s ease forwards;
 
   .header-subscription-btn {
     ${HeaderTopLineItemStyles}
@@ -150,12 +196,17 @@ export const HeaderTopLineIcon = styled.span`
 `;
 
 export const HeaderSearchWrapper = styled.div`
+  height: 40px; // fixed because we used dynamic import for search component and without it we see jump
   position: relative;
   margin: 0 auto;
   max-width: 876px;
+  display: flex;
+  align-items: center;
+  width: 100%;
 
   ${media_breakpoint_down('md')} {
-    width: ${({ $open }) => ($open ? '100%' : '')};
+    width: ${({ $open }) => ($open ? '100%' : 'fit-content')};
+    height: 36px;
   }
 
   > div {
@@ -164,20 +215,35 @@ export const HeaderSearchWrapper = styled.div`
   }
 `;
 
-export const SearchOpener = styled(motion.button)`
-  width: 40px;
-  height: 40px;
+export const SearchOpener = styled.button`
+  aspect-ratio: 1 / 1;
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: ${globalColor.white};
   border-radius: 4px;
   color: ${globalColor.gray.gray110};
+  animation: ${searchOpenerIn} 0.28s ease forwards;
 
   > svg {
     width: 24px;
     height: 24px;
   }
+`;
+
+export const SearchAnimatedWrapper = styled.div`
+  width: 100%;
+  position: relative;
+  z-index: 10;
+  ${({ $closing }) =>
+    $closing
+      ? css`
+          animation: ${searchSlideOut} 0.28s ease forwards;
+        `
+      : css`
+          animation: ${searchSlideIn} 0.28s ease forwards;
+        `}
 `;
 
 export const HeaderMain = styled.div`
@@ -204,11 +270,6 @@ export const HeaderMainButtons = styled.div`
   }
 
   ${HeaderSearchWrapper} {
-    ${SearchOpener} {
-      width: 36px;
-      height: 36px;
-    }
-
     ${media_breakpoint_exactly(769)} {
       display: none;
     }

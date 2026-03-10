@@ -5,16 +5,10 @@ import {
   LinkedinShareButton,
   TwitterShareButton,
 } from 'react-share';
-import Button from 'react-bootstrap/Button';
 import { printScreen } from 'utils/helpers';
 import { PRODUCTION_URL } from 'utils/constants';
 import { FaEnvelope } from 'react-icons/fa';
-import {
-  BsFacebook,
-  BsFillPrinterFill,
-  BsLinkedin,
-  BsTwitterX,
-} from 'react-icons/bs';
+import { BsFacebook, BsLinkedin, BsTwitterX } from 'react-icons/bs';
 import { FaFilePdf } from 'react-icons/fa6';
 import CopyUrl from 'components/atoms/CopyUrl';
 import {
@@ -52,25 +46,15 @@ const SocialShare = ({
           <FaEnvelope />
         </EmailShareButton>
       )}
-      {isPrintBtn
-        && (handlePrint ? (
-          <button
-            aria-label="print"
-            onClick={handlePrint}
-            className="print-button"
-          >
-            <FaFilePdf />
-          </button>
-        ) : (
-          <Button
-            variant="link"
-            className="m-0 p-0 text-dark"
-            aria-label="Print Page"
-            onClick={() => printScreen()}
-          >
-            <BsFillPrinterFill />
-          </Button>
-        ))}
+      {isPrintBtn && (
+        <button
+          aria-label="print"
+          onClick={handlePrint ? () => handlePrint() : () => printScreen()}
+          className="print-button"
+        >
+          <FaFilePdf />
+        </button>
+      )}
       {isCopyBtn && <CopyUrl />}
     </ShareSocialBox>
   );

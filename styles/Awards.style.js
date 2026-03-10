@@ -6,6 +6,7 @@ import {
   rem,
 } from './global_styles/Global.styles';
 import { media_breakpoint_down } from './mediaBreakpoints.style';
+import { DisclaimerTextStyles } from 'components/atoms/DisclaimerText';
 
 export const AwardsWrapper = styled.section`
   padding: 60px 0;
@@ -50,7 +51,7 @@ export const AwardsSliderWrapper = styled.div`
   flex-direction: column;
   row-gap: 12px;
 
-  .disclaimer {
+  ${DisclaimerTextStyles} {
     color: ${({ $isLightVariant }) =>
       $isLightVariant ? globalColor.blue.darkBlue : globalColor.white};
     font-weight: 600;
@@ -186,7 +187,7 @@ export const AwardCardContent = styled.div`
 `;
 
 export const AwardsPrintContainer = styled.div`
-  .disclaimer {
+  ${DisclaimerTextStyles} {
     color: ${globalColor.blue.darkBlue};
     margin: 8px 0 0 0;
     font-weight: 600;

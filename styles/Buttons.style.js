@@ -1,4 +1,3 @@
-import { Button } from 'react-bootstrap';
 import styled, { css } from 'styled-components';
 import {
   globalBorderRadius,
@@ -9,25 +8,7 @@ import {
 import { media_breakpoint_down } from './mediaBreakpoints.style';
 import Link from 'next/link';
 
-export const RedButtonLink = styled.a`
-  padding: 15px 40px;
-  background-color: ${globalColor.red.darkRed};
-  font-weight: 600;
-  color: ${globalColor.white};
-  text-decoration: none;
-
-  :hover {
-    color: #ffffff;
-    text-decoration: none;
-    cursor: pointer;
-  }
-`;
-
-export const RedButtonBootstrap = styled(RedButtonLink)`
-  margin-left: 20px;
-`;
-
-export const ClearButton = styled(Button)`
+export const ClearButton = styled.button`
   margin: 0;
   padding: 3px 15px;
   border: 1px solid ${globalColor.gray.gray500};
@@ -36,6 +17,7 @@ export const ClearButton = styled(Button)`
   font-weight: 600;
   overflow: hidden;
   font-size: inherit;
+  transition: ${globalTransition.default};
 
   :hover {
     border: 1px solid ${globalColor.blue.blue500};

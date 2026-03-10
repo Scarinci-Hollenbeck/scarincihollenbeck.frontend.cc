@@ -331,7 +331,7 @@ export const buildServiceSchema = (name, description, url) => ({
   name,
   description,
   url,
-  serviceType: 'Legal Services',
+  serviceType: name,
   provider: {
     '@type': 'LegalService',
     '@id': `${CURRENT_DOMAIN}/#organization`,

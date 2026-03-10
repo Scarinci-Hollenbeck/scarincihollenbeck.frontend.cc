@@ -14,6 +14,8 @@ import { FaSquareXTwitter } from 'react-icons/fa6';
 import { FaFacebookSquare, FaLinkedin } from 'react-icons/fa';
 import SHDiamond from '../public/images/sh-mini-diamond-PNG.svg';
 
+export const IMAGE_BLUR_PLACEHOLDER = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
+
 export const LETTERS_LIST = [
   'a',
   'b',
@@ -207,30 +209,6 @@ export const FIRM_PAGES = [
   },
 ];
 
-/** List of Client Alert links on the covid pages and category landing pages */
-export const CLIENT_ALERTS = [
-  {
-    id: 20098,
-    slug: 'client-alert',
-    name: 'Client Alert',
-  },
-  {
-    id: 20250,
-    slug: 'covid-19-alerts',
-    name: 'COVID-19 Alerts',
-  },
-  {
-    id: 22896,
-    slug: 'covid-19-education-alert',
-    name: 'COVID-19 Education Alerts',
-  },
-  {
-    id: 18675,
-    slug: 'cyber-security-client-alert',
-    name: 'Cyber Security Client Alert',
-  },
-];
-
 /* List of locations in the footer of the website * */
 export const OFFICE_LOCATIONS = [
   {
@@ -315,22 +293,6 @@ export const CORE_PRACTICES = [
     id: 11,
     slug: '/practices/tax-trusts-estates',
     label: 'Tax, Trusts & Estates',
-  },
-];
-
-/** Social Media links found in the footer */
-export const SOCIAL_MEDIA_LINKS = [
-  {
-    id: 1,
-    url: 'https://www.linkedin.com/company/scarinci-hollenbeck-llc',
-    label: 'LinkedIn',
-    icon: <BsLinkedin />,
-  },
-  {
-    id: 2,
-    url: 'https://www.facebook.com/ScarinciHollenbeck',
-    label: 'Facebook',
-    icon: <BsFacebook />,
   },
 ];
 
@@ -627,7 +589,6 @@ export const ALGOLIA_SEARCH_INDEX = process.env.NEXT_PUBLIC_ALGOLIA_SEARCH_INDEX
 export const CURRENT_DOMAIN = process.env.NODE_ENV === 'production'
   ? 'https://scarincihollenbeck.com'
   : 'http://localhost:7700';
-export const KWES_API = process.env.NEXT_PUBLIC_KWES_API;
 export const GET_IN_TOUCH_FORM_API = process.env.NEXT_PUBLIC_GET_IN_TOUCH_FORM_API;
 export const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 // thats url for exceptions for wrong urls
@@ -636,32 +597,6 @@ export const HTTP_WWW_PRODUCTION_URL = 'http://www.scarincihollenbeck.com';
 export const PROJECT_MODE = process.env.NEXT_PUBLIC_PROJECT_MODE;
 
 export const NEXT_PUBLIC_WP_REST_KEY = process.env.NEXT_PUBLIC_WP_REST_KEY;
-
-export const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
-};
-
-export const initialAdminFCM = {
-  clientEmail: process.env.NEXT_PUBLIC_FIREBASE_CLIENT_EMAIL,
-  // this is temporary solution. In this time Vercel can't read big keys. When this problem will be solved we need to change this to process.env.FIREBASE_PRIVAT_KEY
-  privateKey:
-    '-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQDy2BXx9BbtdOOh\n0QhoN3d0eH60frAUWQ1t7BiR7ky04XyBf9z8aNWZLJQ5yTGd9bG6OraYRnU9BLZW\nVv0/IbvKdkRTKOdEkcgaUfdc8VRc5wVee/uG+HrsYnNXwoar7qqTUBpQJCHTTV7L\nesKfP62TEiKac6fnQU4fr7oHK9oI1vhAIDahkHY0JlTgCmJV2r0opV3XEWVnT+jm\nrNeN2Uc8mh10J7DIFCyqHUdfEut4lS57Qf9O38mnnyhzcdCaUmO0ECgDKWSINl14\nhY+OMw3MbZt6x8dXVF6dpMVj1AdJssj+KpcFjuGy3yHsKzo6rJXbWr028l+bGU5r\nx0KiMUg1AgMBAAECggEAB311csCkEdxphm3fUeBfBPDcv9zl7RXwmkPF1yooVy5r\nyLS9MoZaLUdye1Z12RShNlVH/3sYUb+DXBT56lEBE2tBrcRqGrwVjUl4piG5IYDS\nw2dysNXMjiH+1EfRykalyosNgx02c1aNAhzKw7yXS8e8lMGyqG1shRJojzqIDlxq\nUUXL9gR0tEiVGGi49lCqp6rJ1rzOQ3hboqmHTa6S9oF/FlAZBrArhsmNalWPBnIz\nRAXICFm9MMFK+Ool3yUd0UV3O15I7GV4/6F1op93U49f36eUQiH605bGOZ1HMhiI\n9oZfpga4nHmLC5ef9RiU46+SF+fFPP/fAOJeftOZywKBgQD7bZFXreJ0Qtm3RaKT\nukrmNyJbAGXFT6ZJpWYbaGfXqg8SK5eenl0CJ3W7ajVE1M1MjKZ15eEu7g6wsuLZ\nJ2ePdyXQ0jWoKsOprCvGxzI8Edcw2WByvN9ZsBSNSweADbM7mlPlO2/jeFnFUhz4\n0gCwEdgKpAM3ujFBMuk2PaBKLwKBgQD3Qo8ExFHut3/RRaAwkY2Y+IOZ8jxevLkd\nUjFFyxd+cGmnAeVKfjtTFcQdG7qHRvMVpceSyD2rXfVdLS1CmzjbVxUxe+3gl7ka\nELUYy47feJD95FRzMyNMkmlD1H1HnUwYMim+l/ObhlEGQOvNHV/5fkqgCBqoX8jQ\n3z87P6DO2wKBgA1HIwbTWwMyyJaiKczNaMkxnjHaGoXKCAkZoAPQhrNf+r3F6ZLp\n4BWOCeyk1j1VU6Y4Q040nqjAz6vLNqmrKA/uheO6RjUkVQLv4bv0pxV/B7M/t5U3\nnj/5SYyQqsu7bXy3ULjpY6ZKo8sE5BzL0ld6CcO+F6FoxtMfoitII9/nAoGACr65\nuFtPtDAFPfLoozOwE5W5IleEiBlrcfrAaWgJ/VSlQryyWipiKZooi5tI39gVeDtc\nEOTiyS+sGgB8lwhn0CBYq23XSItPX/KZ7Bnse4mhw2bIxLjUL9+s82WojBQp2mNT\nrRStYXTU0JDBrog4Q39ZftrbTbXb5DfPZ6O8OUECgYAoIWNX7wmxDb2JmeVpc/2/\nf4biXp9w2NbsW5oFo9Q74Bkj1tNO768eKDZPwCmV2Ylr/ekQTCV23ZVuPUDM6Kgd\nJPvlOXoZOv3CXkw+zppWyAPy7J6LbeDcm5QzkpfNBSCAjXShB1bsZvjYEGakBiYl\nV2ZRL/mCkwdyca2qNYDXRA==\n-----END PRIVATE KEY-----\n',
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-};
-
-export const googleLocationIds = {
-  'little-falls': 'ChIJT4-XoRdWwokR_STT5apGtEc',
-  'new-york': 'ChIJZSMV5ABZwokRvTg94J92jfU',
-  'red-bank': 'ChIJ41CJnUMvwokR-JVUIXV0IMI',
-};
-
-export const ALT_PREFIX = 'Image showing the text: ';
 
 export const NAVIGATION_OPENERS = ['Attorneys', 'Services', 'Locations'];
 

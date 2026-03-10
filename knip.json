@@ -1,0 +1,22 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": ["pages/**/*.{js,jsx}", "pages/api/**/*.js", "next.config.js"],
+  "project": [
+    "**/*.{js,jsx}",
+    "!node_modules/**",
+    "!.next/**",
+    "!public/**",
+    "!out/**"
+  ],
+  "paths": {
+    "components/*": ["components/*"],
+    "styles/*": ["styles/*"],
+    "utils/*": ["utils/*"],
+    "requests/*": ["requests/*"],
+    "redux/*": ["redux/*"],
+    "layouts/*": ["layouts/*"],
+    "hooks/*": ["hooks/*"],
+    "hoks/*": ["hoks/*"]
+  },
+  "ignoreDependencies": ["sharp", "eslint-config-next"]
+}
