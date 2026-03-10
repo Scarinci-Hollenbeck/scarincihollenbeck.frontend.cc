@@ -8,7 +8,6 @@ import { useMemo } from 'react';
 import HomeContactForm from 'components/organisms/home/HomeContactForm';
 import RandomBioCard from 'components/molecules/common/RandomBioCard';
 import { useGetAttorneysQuery } from '../../redux/services/project-api';
-// import InfoModal from '../atoms/InfoModal';
 
 // !! Attention the modal window was turned off. 12/31/2022
 const AllOfficeLocations = dynamic(
@@ -58,7 +57,6 @@ const HomePage = ({
       />
       <HomeBanner {...firstSection} />
       {isHoliday && <HappyHoliday />}
-      {/* <InfoModal /> */}
       <AboutFirmSection {...whoWeAre} />
       <HomeContactForm />
       <IndustriesSection {...industryWeWorkWith} />

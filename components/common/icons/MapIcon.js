@@ -1,6 +1,6 @@
 import React from 'react';
 
-const ScopeIcon = () => (
+const MapIcon = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     width="60"
@@ -39,4 +39,4 @@ const ScopeIcon = () => (
   </svg>
 );
 
-export default ScopeIcon;
+export default MapIcon;

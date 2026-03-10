@@ -12,7 +12,7 @@ import {
   LatestsPostsCardTitle,
   LatestsPostsCardWrapper,
 } from 'styles/LatestPosts.style';
-import { PRODUCTION_URL } from 'utils/constants';
+import { IMAGE_BLUR_PLACEHOLDER, PRODUCTION_URL } from 'utils/constants';
 import { formatDate } from 'utils/helpers';
 
 const LatestPostsCard = ({ article, isBig }) => (
@@ -25,7 +25,10 @@ const LatestPostsCard = ({ article, isBig }) => (
           alt={article?.title}
           width={900}
           height={375}
+          quality={70}
           sizes="(max-width: 768px) 100vw, 900px"
+          placeholder="blur"
+          blurDataURL={IMAGE_BLUR_PLACEHOLDER}
         />
       </LatestsPostsCardImage>
     )}

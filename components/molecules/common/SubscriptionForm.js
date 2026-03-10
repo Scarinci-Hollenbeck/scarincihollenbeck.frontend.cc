@@ -1,4 +1,5 @@
 import React, { useCallback, useRef, useState } from 'react';
+import Script from 'next/script';
 import { FormContainer } from 'styles/attorney-page/GetInTouchForm.styles';
 import {
   SubscriptionFormContainer,
@@ -28,6 +29,7 @@ const SubscriptionForm = ({
   industries = [],
 }) => {
   const router = useRouter();
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
   const [categoriesChosen, setCategoriesChosen] = useState([]);
   const [servicesChosen, setServicesChosen] = useState([]);
   const [activeKeys, setActiveKeys] = useState([]);
@@ -77,7 +79,14 @@ const SubscriptionForm = ({
           recaptcha-site-key={RECAPTCHA_SITE_KEY}
           // eslint-disable-next-line react/no-unknown-property
           success-message={THANKS_MESSAGE.title}
+          onFocus={() => setRecaptchaLoaded(true)}
         >
+          {recaptchaLoaded && (
+            <Script
+              src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
+              strategy="afterInteractive"
+            />
+          )}
           <RenderInputs
             arrayOfAttributes={subscriptionInputs}
             attorneySlug={router.asPath}

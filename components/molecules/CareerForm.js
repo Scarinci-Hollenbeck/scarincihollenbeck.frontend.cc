@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useState } from 'react';
+import Script from 'next/script';
 import { FormContainer } from 'styles/attorney-page/GetInTouchForm.styles';
 import { StandardBlueButton } from '../../styles/Buttons.style';
 import {
@@ -14,6 +15,7 @@ import RenderInputs from '../shared/ContactForm/RenderInputs';
 const CareerForm = () => {
   const router = useRouter();
   const [isCheckedDisclaimer, setIsCheckedDisclaimer] = useState('');
+  const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
 
   const careerHandleCheckDisclaimer = () => setIsCheckedDisclaimer(!isCheckedDisclaimer);
   const isDisabledSubmitButton = !isCheckedDisclaimer;
@@ -30,7 +32,14 @@ const CareerForm = () => {
           recaptcha-site-key={RECAPTCHA_SITE_KEY}
           // eslint-disable-next-line react/no-unknown-property
           success-message={THANKS_MESSAGE.title}
+          onFocus={() => setRecaptchaLoaded(true)}
         >
+          {recaptchaLoaded && (
+            <Script
+              src={`https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`}
+              strategy="afterInteractive"
+            />
+          )}
           <RenderInputs
             arrayOfAttributes={inputsCareerForm}
             attorneySlug={router.asPath}

@@ -1,8 +1,8 @@
 import Link from 'next/link';
 import { ContainerDefault } from 'styles/Containers.style';
 import { ButtonRed } from 'styles/Buttons.style';
-import MailingListIcon from 'components/common/icons/MailingListIcon';
 import { useDispatch } from 'react-redux';
+import { getIcon } from 'utils/getIcon';
 import {
   FooterNavigation,
   NavHolder,
@@ -31,7 +31,7 @@ const NavigationAndSubscription = () => {
             className="footer-subscription-btn"
           >
             <ButtonRed as="span">
-              <MailingListIcon />
+              {getIcon('MailingList')}
               Join our mailing list
             </ButtonRed>
           </button>

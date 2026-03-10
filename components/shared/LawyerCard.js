@@ -40,7 +40,7 @@ const LawyerCard = ({
       <Image
         src={image || SHDiamond}
         alt={`${name} photo`}
-        quality={100}
+        quality={80}
         width={400}
         height={350}
         sizes="400px"

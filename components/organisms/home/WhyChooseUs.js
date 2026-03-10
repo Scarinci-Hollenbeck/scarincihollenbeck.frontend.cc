@@ -1,5 +1,5 @@
-import { Fragment } from 'react';
 import empty from 'is-empty';
+import { getIcon } from 'utils/getIcon';
 import {
   ArticleBlock,
   ArticleBoxSimple,
@@ -10,7 +10,6 @@ import {
   WhyChooseUsTitle,
 } from '../../../styles/home-page/WhyChooseUs.style';
 import { JSXWithDynamicLinks } from '../../atoms/micro-templates/JSXWithDynamicLinks';
-import CheckIcon from '../../common/icons/CheckIcon';
 import FocusedCard from '../../atoms/FocusedCard';
 import { ContainerDefault } from '../../../styles/Containers.style';
 
@@ -31,7 +30,7 @@ const WhyChooseUs = ({ content }) => {
               <ArticleList>
                 {serviceList.map(({ service }, idx) => (
                   <li key={idx++}>
-                    <CheckIcon />
+                    {getIcon('Check')}
                     <p>{service}</p>
                   </li>
                 ))}

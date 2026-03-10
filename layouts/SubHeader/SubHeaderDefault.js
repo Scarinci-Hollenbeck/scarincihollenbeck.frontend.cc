@@ -52,7 +52,6 @@ const SubHeaderDefault = ({
             height={400}
             priority
             sizes="400px"
-            loading="eager"
           />
         </picture>
       )}

@@ -1,6 +1,6 @@
 import AuxiliarySearch from 'components/shared/GlobalSearch/AuxiliarySearch';
 import { useRouter } from 'next/router';
-import React, { useRef } from 'react';
+import React from 'react';
 import { useDispatch } from 'react-redux';
 import {
   FiltersColumns,

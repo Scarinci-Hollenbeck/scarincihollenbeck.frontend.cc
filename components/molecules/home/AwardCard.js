@@ -7,6 +7,7 @@ import {
 } from 'styles/Awards.style';
 import empty from 'is-empty';
 import Link from 'next/link';
+import { IMAGE_BLUR_PLACEHOLDER } from 'utils/constants';
 
 const AwardCard = ({
   image,
@@ -36,6 +37,8 @@ const AwardCard = ({
           loading="lazy"
           quality={60}
           sizes="(max-width: 768px) 144px, 200px"
+          placeholder="blur"
+          blurDataURL={IMAGE_BLUR_PLACEHOLDER}
         />
       )}
     </AwardCardImage>

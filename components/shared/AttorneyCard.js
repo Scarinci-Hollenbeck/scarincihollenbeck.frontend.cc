@@ -6,71 +6,15 @@ import {
   LinkBox,
   UserName,
 } from 'styles/AttorneyCard.style';
-import { useId } from 'react';
 import ContactBoxTemplate from '../atoms/ContactBox';
 import SHDiamond from '../../public/images/sh-mini-diamond-PNG.svg';
 
-export const renderLinkToLocationPractice = (locationsOrPractice) => {
-  if (Array.isArray(locationsOrPractice)) {
-    if (locationsOrPractice[0]?.uri) {
-      return locationsOrPractice.map((office, idx) => (
-        <li key={office.id || useId()}>
-          <Link href={office?.uri}>
-            {office.officeMainInformation.addressLocality
-              || office.officeMainInformation}
-          </Link>
-          <>{idx < locationsOrPractice.length - 1 && ','}</>
-        </li>
-      ));
-    }
-  }
-  return (
-    <li className="d-flex flex-column gap-1">
-      {locationsOrPractice.chair?.length > 0 && (
-        <div className="d-flx">
-          Chair:
-          {locationsOrPractice.chair?.map((location) => (
-            <Link key={location.id} href={`/practices/${location.slug}`}>
-              {' '}
-              {location?.title}
-            </Link>
-          ))}
-        </div>
-      )}
-      {locationsOrPractice.coChair?.length > 0 && (
-        <div className="d-flx">
-          Co-Chair:
-          {locationsOrPractice.coChair?.map((location) => (
-            <Link key={location.id} href={`/practice/${location.slug}`}>
-              {' '}
-              {location?.title}
-            </Link>
-          ))}
-        </div>
-      )}
-    </li>
-  );
-};
-
-const renderImage = (
-  isPrint,
-  image,
-  name,
-  width,
-  height,
-  locations,
-  placeholderProp,
-) => (isPrint ? (
+const renderImage = (isPrint, image, name, width, height, placeholderProp) => (isPrint ? (
 // eslint-disable-next-line @next/next/no-img-element
   <img
     src={image.src || image}
     alt={name}
-    width={
-        width
-        || (!Array.isArray(locations) && typeof locations !== 'undefined'
-          ? 130
-          : 125)
-      }
+    width={width || 125}
     height={height || 150}
   />
 ) : (
@@ -80,13 +24,8 @@ const renderImage = (
     loading="lazy"
     src={image || SHDiamond}
     alt={name}
-    quality={100}
-    width={
-        width
-        || (!Array.isArray(locations) && typeof locations !== 'undefined'
-          ? 130
-          : 125)
-      }
+    quality={75}
+    width={width || 125}
     height={height || 150}
     sizes="130px"
   />
@@ -97,10 +36,8 @@ export default function AttorneyCard({
   image,
   name,
   designation,
-  locations,
   number,
   email,
-  title,
   width,
   height,
   svgPhone,
@@ -118,25 +55,12 @@ export default function AttorneyCard({
         <span className="sr-only">{`Link to profile of ${name}`}</span>
       </Link>
       <LinkBox>
-        {renderImage(
-          isPrint,
-          image,
-          name,
-          width,
-          height,
-          locations,
-          placeholderProp,
-        )}
+        {renderImage(isPrint, image, name, width, height, placeholderProp)}
         <InfoBox>
           <UserName>{name}</UserName>
 
           <p>{designation}</p>
 
-          {locations && (
-            <ul className="d-flex gap-1 m-0 p-0">
-              {renderLinkToLocationPractice(locations)}
-            </ul>
-          )}
           <ContactBoxTemplate
             officeLocations={officeLocations}
             email={email}

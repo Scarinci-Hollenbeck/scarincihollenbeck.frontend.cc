@@ -49,16 +49,6 @@ export const IndustryPageWrapper = styled.div`
   }
 `;
 
-export const IndustryPageContainer = styled(ContainerDefault)`
-  display: flex;
-  flex-direction: column;
-  row-gap: 24px;
-
-  ${media_breakpoint_down('md')} {
-    row-gap: 16px;
-  }
-`;
-
 export const IndustriesWrapper = styled.section`
   padding: 60px 0;
 `;

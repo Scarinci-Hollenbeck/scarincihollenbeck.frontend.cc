@@ -1,3 +1,7 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 const withPWA = require('@ducanh2912/next-pwa').default({
   dest: 'public',
   cacheOnFrontEndNav: true,
@@ -61,7 +65,6 @@ const nextConfig = {
   },
   experimental: {
     scrollRestoration: true,
-    // nextScriptWorkers: true,
   },
   logging: {
     fetches: {
@@ -111,4 +114,4 @@ const nextConfig = {
   },
 };
 // @ts-ignore
-module.exports = withPWA(nextConfig);
+module.exports = withBundleAnalyzer(withPWA(nextConfig));

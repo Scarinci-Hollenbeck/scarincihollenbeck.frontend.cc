@@ -7,7 +7,6 @@ import {
   rem,
 } from './global_styles/Global.styles';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
 import {
   SidebarMenuItemOpener,
   SidebarMenuSubitemOpener,
@@ -78,7 +77,7 @@ export const NavbarItemOpener = styled.button`
   }
 `;
 
-export const NavbarItemContent = styled(motion.div)`
+export const NavbarItemContent = styled.div`
   position: absolute;
   left: 0;
   top: 100%;

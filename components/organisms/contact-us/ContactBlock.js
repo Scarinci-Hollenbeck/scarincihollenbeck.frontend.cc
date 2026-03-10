@@ -29,7 +29,7 @@ const ContactBlock = () => (
                 <JSXWithDynamicLinks HTML={tile?.textContent} />
               </ContactItemText>
               <ContactItemImage>
-                <Image src={tile?.image} alt={tile?.title} fill quality={100} />
+                <Image src={tile?.image} alt={tile?.title} fill quality={75} />
               </ContactItemImage>
             </ContactItem>
           ))}
