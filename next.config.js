@@ -59,6 +59,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'i.ytimg.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'scarinci.test',
+      },
     ],
     minimumCacheTTL: 60,
     deviceSizes: [576, 768, 992, 1200, 1456, 1920],
