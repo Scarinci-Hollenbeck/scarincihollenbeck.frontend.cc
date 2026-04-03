@@ -16,6 +16,10 @@ export const headers = {
 let tokenCache = { token: null, expiresAt: 0 };
 let inflightTokenRequest = null;
 
+function invalidateToken() {
+  tokenCache = { token: null, expiresAt: 0 };
+}
+
 async function getServiceToken() {
   if (Date.now() < tokenCache.expiresAt && tokenCache.token) return tokenCache.token;
   if (inflightTokenRequest) return inflightTokenRequest;
@@ -29,11 +33,23 @@ async function getServiceToken() {
           query: `mutation { login(input: { clientMutationId: "svc", username: "${process.env.WP_LOGIN}", password: "${process.env.WP_PASSWORD}" }) { authToken } }`,
         }),
       });
-      const { data } = await res.json();
-      const token = data?.login?.authToken;
+
+      if (!res.ok) {
+        throw new Error(`Login HTTP error: ${res.status}`);
+      }
+
+      const json = await res.json();
+
+      if (json.errors) {
+        console.error('Login error:', json.errors);
+        throw new Error(json.errors[0]?.message || 'WP login failed');
+      }
+
+      const token = json?.data?.login?.authToken;
+
       if (!token) throw new Error('WP login failed');
 
-      tokenCache = { token, expiresAt: Date.now() + 270000 }; // 4.5 mins
+      tokenCache = { token, expiresAt: Date.now() + 4 * 60 * 1000 }; // 4 mins
       return token;
     } finally {
       inflightTokenRequest = null;
@@ -61,16 +77,31 @@ export async function fetchAPI(query, { variables } = {}, retry = true) {
       }),
     });
 
-    if (res.status === 401 && retry) {
-      tokenCache = { token: null, expiresAt: 0 };
-      return fetchAPI(query, { variables }, false);
+    if (!res.ok) {
+      throw new Error(`HTTP error: ${res.status}`);
     }
 
     const json = await res.json();
+
+    if (json.errors) {
+      const isJwtError = json.errors.some((err) => {
+        const msg = err.extensions?.debugMessage || err.message || '';
+        return msg.includes('invalid-jwt');
+      });
+
+      if (isJwtError && retry) {
+        invalidateToken();
+        return fetchAPI(query, { variables }, false);
+      }
+
+      console.error('GraphQL errors:', json.errors);
+      throw new Error(json.errors[0]?.message || 'GraphQL error');
+    }
+
     return json.data;
   } catch (error) {
     console.error(error);
-    throw new Error('Failed to fetch API');
+    throw error;
   }
 }
 
