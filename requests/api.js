@@ -13,20 +13,58 @@ export const headers = {
   Accept: 'application/json; charset=UTF-8',
 };
 
-export async function fetchAPI(query, { variables } = {}) {
-  try {
-    if (process.env.WORDPRESS_AUTH_REFRESH_TOKEN) {
-      headers.Authorization = `Bearer ${process.env.WORDPRESS_AUTH_REFRESH_TOKEN}`;
+let tokenCache = { token: null, expiresAt: 0 };
+let inflightTokenRequest = null;
+
+async function getServiceToken() {
+  if (Date.now() < tokenCache.expiresAt && tokenCache.token) return tokenCache.token;
+  if (inflightTokenRequest) return inflightTokenRequest;
+
+  inflightTokenRequest = (async () => {
+    try {
+      const res = await fetch(GRAPHQL_API_URL, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          query: `mutation { login(input: { clientMutationId: "svc", username: "${process.env.WP_LOGIN}", password: "${process.env.WP_PASSWORD}" }) { authToken } }`,
+        }),
+      });
+      const { data } = await res.json();
+      const token = data?.login?.authToken;
+      if (!token) throw new Error('WP login failed');
+
+      tokenCache = { token, expiresAt: Date.now() + 270000 }; // 4.5 mins
+      return token;
+    } finally {
+      inflightTokenRequest = null;
     }
+  })();
+
+  return inflightTokenRequest;
+}
+
+export async function fetchAPI(query, { variables } = {}, retry = true) {
+  try {
+    const token = await getServiceToken();
+
+    const requestHeaders = {
+      ...headers,
+      ...(token && { Authorization: `Bearer ${token}` }),
+    };
 
     const res = await fetch(GRAPHQL_API_URL, {
       method: 'POST',
-      headers,
+      headers: requestHeaders,
       body: JSON.stringify({
         query,
         variables,
       }),
     });
+
+    if (res.status === 401 && retry) {
+      tokenCache = { token: null, expiresAt: 0 };
+      return fetchAPI(query, { variables }, false);
+    }
 
     const json = await res.json();
     return json.data;
