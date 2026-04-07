@@ -38,9 +38,11 @@ const getPostContentData = async (slug, categorySlug) => {
     fetchAPI(postQuery, {
       variables: { id: slug },
     }),
-    fetchAPI(postMainCategoryContentQuery, {
-      variables: { id: categorySlug },
-    }),
+    categorySlug
+      ? fetchAPI(postMainCategoryContentQuery, {
+        variables: { id: categorySlug },
+      })
+      : Promise.resolve(null),
   ]);
 
   if (
