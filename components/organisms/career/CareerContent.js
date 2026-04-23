@@ -13,7 +13,9 @@ import { Title20 } from 'styles/common/Typography.style';
 import SubscriptionSidebar from '../common/SubscriptionSidebar';
 import CareerHeader from './CareerHeader';
 
-const CareerContent = ({ sections, locations, duration }) => (
+const CareerContent = ({
+  sections, locations, duration, title,
+}) => (
   <ArticleContent>
     <ContainerDefault>
       <ArticleContentHolder>
@@ -31,7 +33,7 @@ const CareerContent = ({ sections, locations, duration }) => (
                 contentGap="8px"
               />
             ))}
-          <CareerForm />
+          <CareerForm title={title} />
         </ArticleContentSections>
         <ArticleContentSidebar>
           <SubscriptionSidebar isFirmLinks />

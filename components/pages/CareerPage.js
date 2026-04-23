@@ -28,6 +28,7 @@ const CareerProfile = ({
         backgroundImage={SubHeaderBgImage}
       />
       <CareerContent
+        title={career.title}
         locations={careerFields?.locations}
         duration={careerFields?.duration}
         sections={pagesFields?.sections}

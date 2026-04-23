@@ -6,13 +6,13 @@ import { StandardBlueButton } from '../../styles/Buttons.style';
 import {
   THANKS_MESSAGE,
   inputsCareerForm,
-  GET_IN_TOUCH_FORM_API,
+  CAREERS_FORM_API,
   RECAPTCHA_SITE_KEY,
 } from '../../utils/constants';
 import { CareerFormContainer } from '../../styles/Careers.style';
 import RenderInputs from '../shared/ContactForm/RenderInputs';
 
-const CareerForm = () => {
+const CareerForm = ({ title }) => {
   const router = useRouter();
   const [isCheckedDisclaimer, setIsCheckedDisclaimer] = useState('');
   const [recaptchaLoaded, setRecaptchaLoaded] = useState(false);
@@ -24,7 +24,7 @@ const CareerForm = () => {
     <CareerFormContainer>
       <FormContainer>
         <form
-          action={GET_IN_TOUCH_FORM_API}
+          action={CAREERS_FORM_API}
           className="kwes-form d-print-none w-100"
           // eslint-disable-next-line react/no-unknown-property
           has-recaptcha-v3=""
@@ -40,6 +40,11 @@ const CareerForm = () => {
               strategy="afterInteractive"
             />
           )}
+          <input
+            type="hidden"
+            name="currentTitle"
+            value={title || 'Career Position'}
+          />
           <RenderInputs
             arrayOfAttributes={inputsCareerForm}
             attorneySlug={router.asPath}
