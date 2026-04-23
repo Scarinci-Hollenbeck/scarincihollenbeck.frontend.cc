@@ -590,6 +590,7 @@ export const CURRENT_DOMAIN = process.env.NODE_ENV === 'production'
   ? 'https://scarincihollenbeck.com'
   : 'http://localhost:7700';
 export const GET_IN_TOUCH_FORM_API = process.env.NEXT_PUBLIC_GET_IN_TOUCH_FORM_API;
+export const CAREERS_FORM_API = process.env.NEXT_PUBLIC_CAREERS_FORM_API;
 export const RECAPTCHA_SITE_KEY = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
 // thats url for exceptions for wrong urls
 export const HTTP_PRODUCTION_URL = 'http://scarincihollenbeck.com';
