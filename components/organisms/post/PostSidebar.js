@@ -13,47 +13,31 @@ import throttle from 'lodash.throttle';
 import { useSelector } from 'react-redux';
 import { SidebarMenuSubitemIcon } from 'styles/Sidebar.style';
 
-const PostSidebar = ({ content, contentRef }) => {
+const PostSidebar = ({ headings = [], contentRef }) => {
   const [showAnchors, setShowAnchors] = useState(true);
-  const [anchorsList, setAnchorsList] = useState([]);
   const [activeSection, setActiveSection] = useState(null);
   const { headerSize } = useSelector((state) => state.sizes);
   const { handleClickAnchor } = useAnchorsLinks();
 
   useEffect(() => {
-    if (!contentRef.current) return;
-
+    if (!contentRef.current || empty(headings)) return;
     const anchors = Array.from(
       contentRef.current.querySelectorAll('.wp-block-heading'),
     );
-    if (empty(anchors)) {
-      setAnchorsList([]);
-      return;
-    }
-
-    anchors.forEach((anchor, index) => (anchor.id = `title-${index + 1}`));
-
-    const anchorsData = anchors.map((anchor) => ({
-      id: anchor.id,
-      title: anchor.textContent,
-    }));
-
-    setAnchorsList(anchorsData);
-  }, [content]);
+    anchors.forEach((anchor, index) => {
+      anchor.id = `title-${index + 1}`;
+    });
+  }, [headings]);
 
   useEffect(() => {
-    if (empty(anchorsList)) return;
-    // if (window && window?.innerWidth <= 992) {
-    //   setActiveSection(null);
-    //   return;
-    // }
+    if (empty(headings)) return;
 
-    const anchorElements = anchorsList.map((item) => document.getElementById(item.id));
+    const anchorElements = headings.map((item) => document.getElementById(item.id));
 
     const handleScroll = throttle(() => {
       const scrollPosition = window.scrollY;
 
-      const activeAnchor = anchorsList.find((_, index) => {
+      const activeAnchor = headings.find((_, index) => {
         const sectionElement = anchorElements[index];
 
         if (!sectionElement) return false;
@@ -75,7 +59,7 @@ const PostSidebar = ({ content, contentRef }) => {
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [anchorsList, headerSize]);
+  }, [headings, headerSize]);
 
   const handleClickAnchorsOpener = useCallback(() => {
     setShowAnchors((prev) => !prev);
@@ -92,7 +76,7 @@ const PostSidebar = ({ content, contentRef }) => {
       </PostSidebarAnchorsOpener>
       <PostSidebarAnchorsWrapper $active={showAnchors}>
         <PostSidebarAnchors>
-          {anchorsList?.map((anchor) => (
+          {headings.map((anchor) => (
             <PostSidebarAnchor
               key={anchor.id}
               className={activeSection === anchor.id ? 'active' : ''}

@@ -500,6 +500,15 @@ export const inputsGetInTouchAttributes = [
     title: 'Subject',
   },
   {
+    id: 'contactAttachment',
+    type: 'file',
+    name: 'contactAttachment',
+    placeholder: 'Attachment',
+    'aria-label': 'Attachment',
+    title: 'Attachment',
+    accept: '.txt, .rtf, .doc, .docx, .pdf, .odt, .tex, .md, .csv, .html, .xml',
+  },
+  {
     type: 'textarea',
     name: 'Message',
     placeholder: 'Message',

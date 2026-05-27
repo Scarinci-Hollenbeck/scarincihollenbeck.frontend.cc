@@ -22,6 +22,7 @@ const ArticlePage = ({
   keyContacts,
   selectedHeroes,
   breadcrumbs,
+  headings,
 }) => {
   const printPageProps = {
     title: post?.title,
@@ -71,6 +72,7 @@ const ArticlePage = ({
         content={post.content}
         tags={post.tags}
         postTypeConnections={post.postTypeConnections}
+        headings={headings}
       />
 
       <ArticleSecondaryContent>
