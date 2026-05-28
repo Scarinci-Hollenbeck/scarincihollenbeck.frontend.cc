@@ -63,6 +63,10 @@ export default function ContactForm({
           contacted by SMS text message. Message & data rates may apply. Message
           frequency may vary. You can reply STOP to opt-out of further
           messaging.
+          <br />
+          “If you would like to submit a file, please email it directly to
+          <a href="mailto:info@sh-law.com"> info@sh-law.com</a>
+          .
         </p>
         {!empty(blockName) && (
           // eslint-disable-next-line react/no-unknown-property

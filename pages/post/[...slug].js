@@ -11,6 +11,7 @@ import {
 import empty from 'is-empty';
 import ArticlePage from 'components/pages/ArticlePage';
 import { changePostLink, attorneysSanitize } from '../../utils/helpers';
+import { extractHeadings } from '../../utils/extractHeadings';
 
 const authorsSanitize = (attorneysArr) => attorneysArr.map((attorney) => {
   attorney.profileImage = attorney.attorneyMainInformation.profileImage?.sourceUrl
@@ -153,6 +154,7 @@ export const getServerSideProps = async ({ params, res, query }) => {
       mainCategory: mainCategory || null,
       selectedHeroes,
       breadcrumbs,
+      headings: extractHeadings(content),
     },
   };
 };
@@ -167,6 +169,7 @@ const SinglePost = ({
   keyContacts,
   selectedHeroes,
   breadcrumbs,
+  headings,
 }) => {
   const postProps = {
     post,
@@ -177,6 +180,7 @@ const SinglePost = ({
     keyContacts,
     selectedHeroes,
     breadcrumbs,
+    headings,
   };
   return <ArticlePage {...postProps} />;
 };

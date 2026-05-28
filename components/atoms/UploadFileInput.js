@@ -20,12 +20,14 @@ const UploadFileInput = ({ onChange, ...attributes }) => {
 
   return (
     <UploadContainer>
-      <UploadTitle>
-        {attributes.label}
-        {attributes.rules?.includes('required') && (
-          <span> (This field is required)</span>
-        )}
-      </UploadTitle>
+      {attributes.label && (
+        <UploadTitle>
+          {attributes.label}
+          {attributes.rules?.includes('required') && (
+            <span> (This field is required)</span>
+          )}
+        </UploadTitle>
+      )}
       <UploadRow>
         <UploadIcon>
           <BsPaperclip color={globalColor.gray.gray500} size={20} />

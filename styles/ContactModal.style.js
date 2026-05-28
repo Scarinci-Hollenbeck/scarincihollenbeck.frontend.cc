@@ -93,7 +93,7 @@ export const ContactModalWrapper = styled.div`
       .form-control {
         background-color: transparent;
         border-color: ${globalColor.gray.gray500};
-        color: ${globalColor.white};
+        color: ${globalColor.white} !important;
 
         &:hover,
         &:focus {

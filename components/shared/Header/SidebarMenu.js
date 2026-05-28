@@ -28,8 +28,8 @@ import { getIcon } from 'utils/getIcon';
 import { handleSubscriptionModalOpener } from '../../../redux/slices/modals.slice';
 import SidebarMenuItems from './SidebarMenuItems';
 
-const SidebarMenuWrapperMotion = motion(SidebarMenuWrapper);
-const SidebarMenuBackdropMotion = motion(SidebarMenuBackdrop);
+const SidebarMenuWrapperMotion = motion.create(SidebarMenuWrapper);
+const SidebarMenuBackdropMotion = motion.create(SidebarMenuBackdrop);
 
 const createMenuData = (practices, locations, industries) => [
   {

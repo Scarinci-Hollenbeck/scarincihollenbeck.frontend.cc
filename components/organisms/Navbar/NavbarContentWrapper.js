@@ -3,7 +3,7 @@ import React from 'react';
 import { ContainerDefault } from 'styles/Containers.style';
 import { NavbarItemContent } from 'styles/Navigation.style';
 
-const NavbarItemContentMotion = motion(NavbarItemContent);
+const NavbarItemContentMotion = motion.create(NavbarItemContent);
 
 const NavbarContentWrapper = ({
   children,

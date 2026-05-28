@@ -36,7 +36,7 @@ const SubHeaderIndustrySlider = ({
   return (
     <SubHeaderIndustrySliderWrapper ref={sliderRef}>
       <SubHeaderIndustryCards {...swipeHandlers}>
-        <AnimatePresence exitBeforeEnter>
+        <AnimatePresence mode="wait">
           <SubHeaderIndustryCard
             key={`${activeSlide?.title}-slide`}
             image={activeSlide?.image}

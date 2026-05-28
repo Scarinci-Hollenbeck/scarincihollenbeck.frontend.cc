@@ -8,7 +8,11 @@ import PostSidebar from './PostSidebar';
 import PostContent from './PostContent';
 
 const PostBody = ({
-  backLink, content, tags, postTypeConnections,
+  backLink,
+  content,
+  tags,
+  postTypeConnections,
+  headings,
 }) => {
   const contentRef = useRef(null);
 
@@ -16,7 +20,7 @@ const PostBody = ({
     <PostContentSection>
       <ContainerDefault>
         <PostContentHolder>
-          <PostSidebar content={content} contentRef={contentRef} />
+          <PostSidebar headings={headings} contentRef={contentRef} />
           <PostContent
             ref={contentRef}
             content={content}

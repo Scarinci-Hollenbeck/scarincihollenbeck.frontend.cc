@@ -27,7 +27,7 @@ const LatestPostsTabsRender = ({ tabsData }) => {
         ))}
       </LatestPostsTabs>
 
-      <AnimatePresence exitBeforeEnter>
+      <AnimatePresence mode="wait">
         <LatestPostsContent
           key={`${activeTabId}-slider`}
           as={motion.div}

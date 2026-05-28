@@ -20,7 +20,7 @@ const RandomBioCard = memo(({ displayedCard, randomIndex }) => {
   }
 
   return (
-    <AnimatePresence exitBeforeEnter>
+    <AnimatePresence mode="wait">
       <motion.div
         key={randomIndex}
         initial={{ opacity: 0, scale: 0.8 }}
