@@ -107,9 +107,7 @@ export const getStaticProps = async ({ params }) => {
 
   /** Variables */
   const authorId = attorneyBio?.attorneyAuthorId?.authorId?.databaseId;
-  const designation = mapDesignation(
-    attorneyBio.attorneyMainInformation?.designation,
-  );
+  const designation = mapDesignation(attorneyBio.attorneyMainInformation?.designation) || null;
   const profileImage = formatSrcToCloudinaryUrl(
     attorneyBio.attorneyMainInformation.profileImage?.sourceUrl,
   );
@@ -202,24 +200,27 @@ export const getStaticProps = async ({ params }) => {
     profileImage,
     representativeVideo:
       attorneyBio?.attorneyMainInformation?.videoPresentation?.videoLink
-      || attorneyBio?.attorneyMainInformation?.videoPresentation?.uploadVideo,
+      || attorneyBio?.attorneyMainInformation?.videoPresentation?.uploadVideo
+      || null,
     designation,
     contact: {
-      phoneNumber: attorneyBio.attorneyMainInformation?.phoneNumber,
-      email: attorneyBio.attorneyMainInformation?.email,
-      fax: attorneyBio.attorneyMainInformation?.faxNumber,
-      vizibility: attorneyBio.attorneyMainInformation?.vizibility,
-      socialMediaLinks: attorneyBio.attorneyMainInformation?.socialMediaLinks,
-      linkedIn: attorneyBio.attorneyMainInformation?.socialMediaLinks?.filter(
-        (a) => a.channel === 'LinkedIn',
-      )[0],
+      phoneNumber: attorneyBio.attorneyMainInformation?.phoneNumber || null,
+      email: attorneyBio.attorneyMainInformation?.email || null,
+      fax: attorneyBio.attorneyMainInformation?.faxNumber || null,
+      vizibility: attorneyBio.attorneyMainInformation?.vizibility || null,
+      socialMediaLinks:
+        attorneyBio.attorneyMainInformation?.socialMediaLinks || null,
+      linkedIn:
+        attorneyBio.attorneyMainInformation?.socialMediaLinks?.find(
+          (a) => a.channel === 'LinkedIn',
+        ) || null,
     },
     profilePractices: removeDuplicates(chairs, coChairs, practices),
     offices,
     chairs,
     coChairs,
-    qrCodeBioPage: attorneyBio.attorneyMainInformation.qrCodeBioPage,
-    qrCodeLinkedin: attorneyBio.attorneyMainInformation.qrCodeLinkedin,
+    qrCodeBioPage: attorneyBio.attorneyMainInformation.qrCodeBioPage || null,
+    qrCodeLinkedin: attorneyBio.attorneyMainInformation.qrCodeLinkedin || null,
   };
 
   /** Profile content data */
