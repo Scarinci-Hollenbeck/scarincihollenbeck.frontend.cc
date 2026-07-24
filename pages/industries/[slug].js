@@ -126,6 +126,7 @@ export const getStaticProps = async ({ params }) => {
       canonicalLink,
       breadcrumbs,
       webPageData,
+      pageSchemaJsonLd: industry?.pageSchemaJsonLd ?? null,
     },
     revalidate: 600,
   };
@@ -137,6 +138,7 @@ const Industry = ({
   canonicalLink,
   breadcrumbs,
   webPageData,
+  pageSchemaJsonLd,
 }) => {
   const industryProps = {
     content,
@@ -144,6 +146,7 @@ const Industry = ({
     canonicalLink,
     breadcrumbs,
     webPageData,
+    pageSchemaJsonLd,
   };
   return (
     <ApolloWrapper>

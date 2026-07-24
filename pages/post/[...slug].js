@@ -86,6 +86,7 @@ const getPostContentData = async (slug, categorySlug) => {
     mainCategory: postMainCategoryContent?.category,
     tags: post?.tags?.nodes,
     postTypeConnections: post?.linksToOtherPostTypes,
+    pageSchemaJsonLd: post?.pageSchemaJsonLd ?? null,
   };
 };
 
@@ -117,6 +118,7 @@ export const getServerSideProps = async ({ params, res, query }) => {
     seo,
     tags,
     postTypeConnections,
+    pageSchemaJsonLd,
   } = postData;
 
   const post = {
@@ -155,6 +157,7 @@ export const getServerSideProps = async ({ params, res, query }) => {
       selectedHeroes,
       breadcrumbs,
       headings: extractHeadings(content),
+      pageSchemaJsonLd: pageSchemaJsonLd ?? null,
     },
   };
 };
@@ -170,6 +173,7 @@ const SinglePost = ({
   selectedHeroes,
   breadcrumbs,
   headings,
+  pageSchemaJsonLd,
 }) => {
   const postProps = {
     post,
@@ -181,6 +185,7 @@ const SinglePost = ({
     selectedHeroes,
     breadcrumbs,
     headings,
+    pageSchemaJsonLd,
   };
   return <ArticlePage {...postProps} />;
 };

@@ -9,6 +9,9 @@
     "format": "prettier --write .",
     "prepare": "husky install",
     "knip": "knip",
+    "test": "playwright test",
+    "test:unit": "playwright test --project=unit",
+    "test:e2e": "playwright test --project=e2e",
     "analyze": "cross-env ANALYZE=true yarn build"
   },
   "lint-staged": {
@@ -71,6 +74,7 @@
     "@fullhuman/postcss-purgecss": "^8.0.0",
     "@next/bundle-analyzer": "^16.1.6",
     "@next/eslint-plugin-next": "^12.0.7",
+    "@playwright/test": "^1.61.1",
     "cross-env": "^10.1.0",
     "eslint": "^7.5.0",
     "eslint-config-airbnb": "^18.2.0",

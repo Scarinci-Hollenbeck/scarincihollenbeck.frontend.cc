@@ -1,4 +1,5 @@
 import BasicSiteHead from 'components/shared/head/BasicSiteHead';
+import PageSchemaMarkup from 'components/shared/head/PageSchemaMarkup';
 import dynamic from 'next/dynamic';
 import { useMemo } from 'react';
 import empty from 'is-empty';
@@ -59,6 +60,7 @@ const LocationPage = ({
   breadcrumbs,
   webPageData,
   locationSeo,
+  pageSchemaJsonLd,
 }) => {
   const anchorData = useMemo(() => {
     const copyAnchorLocationsData = { ...anchorLocationsData };
@@ -99,6 +101,7 @@ const LocationPage = ({
         locationSeo={locationSeo}
         includeOrganizationSchema
       />
+      <PageSchemaMarkup schemaJson={pageSchemaJsonLd} />
       <SubHeaderDefault
         title={currentOffice.title}
         subtitle={seo.metaDesc}

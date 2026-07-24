@@ -52,7 +52,7 @@ module.exports = {
     'import/extensions': 'off',
     'import/no-extraneous-dependencies': [
       'error',
-      { devDependencies: ['next.config.js', '*.config.js'] },
+      { devDependencies: ['next.config.js', '*.config.js', 'tests/**'] },
     ],
     'no-console': [
       2,

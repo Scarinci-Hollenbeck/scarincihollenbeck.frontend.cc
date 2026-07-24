@@ -57,6 +57,7 @@ const getOfficeData = async (slug) => {
   return {
     currentOffice,
     offices,
+    pageSchemaJsonLd: officeLocation?.pageSchemaJsonLd ?? null,
   };
 };
 
@@ -99,7 +100,7 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
-  const { currentOffice, offices } = officesData;
+  const { currentOffice, offices, pageSchemaJsonLd } = officesData;
   const attorneys = await getAttorneys();
   attorneys.sort((a, b) => {
     const aLoc = a.location_array.find((loc) => loc.officeMainInformation);
@@ -205,6 +206,7 @@ export const getStaticProps = async ({ params }) => {
       breadcrumbs,
       webPageData,
       locationSeo,
+      pageSchemaJsonLd,
     },
     revalidate: 600,
   };
@@ -222,6 +224,7 @@ const SingleLocation = ({
   breadcrumbs,
   locationSeo,
   webPageData,
+  pageSchemaJsonLd,
 }) => {
   const router = useRouter();
 
@@ -240,6 +243,7 @@ const SingleLocation = ({
     breadcrumbs,
     webPageData,
     locationSeo,
+    pageSchemaJsonLd,
   };
 
   return <LocationPage {...locationProps} />;
