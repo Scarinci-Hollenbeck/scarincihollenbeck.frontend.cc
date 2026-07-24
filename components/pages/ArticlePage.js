@@ -1,5 +1,6 @@
 import dynamic from 'next/dynamic';
 import PostSiteHead from 'components/shared/head/PostSiteHead';
+import PageSchemaMarkup from 'components/shared/head/PageSchemaMarkup';
 import SubHeaderDefault from 'layouts/SubHeader/SubHeaderDefault';
 import SubHeaderKeyContacts from 'layouts/SubHeader/SubHeaderKeyContacts';
 import PostBody from 'components/organisms/post/PostBody';
@@ -23,6 +24,7 @@ const ArticlePage = ({
   selectedHeroes,
   breadcrumbs,
   headings,
+  pageSchemaJsonLd,
 }) => {
   const printPageProps = {
     title: post?.title,
@@ -47,6 +49,7 @@ const ArticlePage = ({
         breadcrumbs={breadcrumbs}
         mainCategory={mainCategory}
       />
+      <PageSchemaMarkup schemaJson={pageSchemaJsonLd} />
       <SubHeaderDefault
         title={post.title}
         authors={authors}

@@ -2,6 +2,7 @@ export const attorneyBySlugQuery = `query AttorneyProfileBySlug($slug: String) {
   attorneyProfileBy(slug: $slug) {
     status
     databaseId
+    pageSchemaJsonLd
     seo {
       title
       metaDesc
@@ -394,6 +395,7 @@ query PostContentQuery($id: ID!) {
     date
     modified
     status
+    pageSchemaJsonLd
     seo {
       opengraphDescription
       title
@@ -1103,6 +1105,7 @@ export const getOfficeAndMoreData = `query FirmPageQuery($id: ID!) {
     databaseId
     title
     status
+    pageSchemaJsonLd
     officeMainInformation {
       autoMap {
         mediaItemUrl
@@ -1217,6 +1220,7 @@ query IndustryQuery($id: ID!) {
     title
     status
     databaseId
+    pageSchemaJsonLd
     seo {
       metaDesc
       title

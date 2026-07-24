@@ -1,5 +1,6 @@
 import ProfileHeader from 'components/organisms/attorney/ProfileHeader';
 import PersonSiteHead from 'components/shared/head/PersonSiteHead';
+import PageSchemaMarkup from 'components/shared/head/PageSchemaMarkup';
 import { CURRENT_DOMAIN } from 'utils/constants';
 import ProfileContent from 'components/organisms/attorney/ProfileContent';
 import ProfileMedia from 'components/organisms/attorney/ProfileMedia';
@@ -15,6 +16,7 @@ const AttorneyProfilePage = (props) => {
     asideItems,
     profileMedia,
     breadcrumbs,
+    pageSchemaJsonLd,
   } = props;
 
   const { data: locations } = useGetLocationsQuery();
@@ -46,6 +48,7 @@ const AttorneyProfilePage = (props) => {
         affiliations={seo.affiliations}
         awards={seo.awards}
       />
+      <PageSchemaMarkup schemaJson={pageSchemaJsonLd} />
       <ProfileHeader handlePrint={handlePrint} {...profileHeader} />
 
       <ProfileContent profileContent={profileContent} asideItems={asideItems} />
