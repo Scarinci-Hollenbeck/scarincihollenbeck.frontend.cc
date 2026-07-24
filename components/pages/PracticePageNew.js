@@ -1,4 +1,5 @@
 import BasicSiteHead from 'components/shared/head/BasicSiteHead';
+import PageSchemaMarkup from 'components/shared/head/PageSchemaMarkup';
 import { useMemo } from 'react';
 import empty from 'is-empty';
 import dynamic from 'next/dynamic';
@@ -59,6 +60,7 @@ const PracticePageNew = ({
   posts,
   breadcrumbs,
   webPageData,
+  pageSchemaJsonLd,
 }) => {
   const anchorData = useMemo(() => {
     let updatedAnchorData = {};
@@ -117,6 +119,7 @@ const PracticePageNew = ({
           url: canonicalUrl,
         }}
       />
+      <PageSchemaMarkup schemaJson={pageSchemaJsonLd} />
       <div className="d-print-none">
         <SubHeaderDefault
           title={practice?.title}

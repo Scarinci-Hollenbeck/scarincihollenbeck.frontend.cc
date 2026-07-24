@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import BasicSiteHead from 'components/shared/head/BasicSiteHead';
+import PageSchemaMarkup from 'components/shared/head/PageSchemaMarkup';
 import SubHeaderIndustry from 'layouts/SubHeader/SubHeaderIndustry';
 import { Title60 } from 'styles/common/Typography.style';
 import { IndustryPageWrapper } from 'styles/Industries.style';
@@ -63,6 +64,7 @@ const IndustryPage = ({
   canonicalLink,
   breadcrumbs,
   webPageData,
+  pageSchemaJsonLd,
 }) => {
   const [activeTab, setActiveTab] = useState(0);
   const { query } = useRouter();
@@ -150,6 +152,7 @@ const IndustryPage = ({
           url: canonicalLink,
         }}
       />
+      <PageSchemaMarkup schemaJson={pageSchemaJsonLd} />
       <SubHeaderIndustry
         title={title}
         description={description}

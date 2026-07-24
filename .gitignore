@@ -7,6 +7,10 @@
 
 # testing
 /coverage
+/test-results
+/playwright-report
+/blob-report
+/.playwright
 
 # next.js
 /.next/
@@ -47,3 +51,5 @@ sw.js.map
 swe-worker-*.js
 workbox-*.js
 workbox-*.js.map
+
+docs/task

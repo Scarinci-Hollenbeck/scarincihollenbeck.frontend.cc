@@ -129,6 +129,7 @@ export const getStaticProps = async ({ params }) => {
       webPageData,
       canonicalUrl,
       siteTabs,
+      pageSchemaJsonLd: practice?.pageSchemaJsonLd ?? null,
     },
     revalidate: 600,
   };
@@ -151,6 +152,7 @@ const SinglePractice = ({
   webPageData,
   canonicalUrl,
   siteTabs,
+  pageSchemaJsonLd,
 }) => {
   const practiceProps = {
     practice,
@@ -168,6 +170,7 @@ const SinglePractice = ({
     posts,
     breadcrumbs,
     webPageData,
+    pageSchemaJsonLd,
   };
 
   return <PracticePageNew {...practiceProps} />;

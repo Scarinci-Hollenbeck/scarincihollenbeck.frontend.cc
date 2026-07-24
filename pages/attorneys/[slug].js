@@ -313,6 +313,7 @@ export const getStaticProps = async ({ params }) => {
       asideItems,
       profileMedia,
       breadcrumbs,
+      pageSchemaJsonLd: attorneyBio?.pageSchemaJsonLd ?? null,
     },
     revalidate: 600,
   };
@@ -326,6 +327,7 @@ const AttorneyProfile = ({
   asideItems,
   profileMedia,
   breadcrumbs,
+  pageSchemaJsonLd,
 }) => {
   const attorneyPageProps = {
     seo,
@@ -334,6 +336,7 @@ const AttorneyProfile = ({
     asideItems,
     profileMedia,
     breadcrumbs,
+    pageSchemaJsonLd,
   };
 
   return (

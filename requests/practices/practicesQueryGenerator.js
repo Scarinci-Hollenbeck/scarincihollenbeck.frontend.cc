@@ -4,6 +4,7 @@ export const practicesQuery = `query PracticeQuery($id: ID!) {
     slug
     title
     status
+    pageSchemaJsonLd
     practicesIncluded {
 			practiceImage {
 					sourceUrl
