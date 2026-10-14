@@ -93,8 +93,9 @@ NEXT_PUBLIC_FIREBASE_*            # Firebase config vars
 
 ### Deployment Branches
 
-- `production` branch → Vercel preview deployment
-- `client-prod` branch → live site at scarincihollenbeck.com
+- Feature branches → PR into `staging`; every branch and PR gets a Vercel preview deployment
+- `staging` → PR into `production`
+- `production` branch → Vercel Production, the live site at scarincihollenbeck.com (merging here deploys to live)
 
 ### ESLint
 
