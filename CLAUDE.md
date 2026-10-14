@@ -11,7 +11,7 @@ yarn start      # Start production server on port 7300
 yarn lint       # ESLint with auto-fix (airbnb config)
 yarn format     # Prettier formatting
 yarn test:unit  # Playwright unit tests (tests/unit), no server needed
-yarn test:e2e   # Playwright e2e tests (tests/e2e) against E2E_BASE_URL, default http://localhost:7300 (run `yarn build && yarn start` first)
+yarn test:e2e   # Playwright e2e tests (tests/e2e) against E2E_BASE_URL, default http://localhost:7300 (run `yarn build && yarn start` first; browser tests need `npx playwright install chromium` once)
 ```
 
 ## Architecture Overview
@@ -79,6 +79,10 @@ Follows atomic design under `components/`:
 - **Animate.css** — imported globally in `_app.js`
 - Global styles: `styles/global_styles/Global.styles.js` and `styles/global_styles/InitFonts.js`
 - Breakpoints defined in `styles/mediaBreakpoints.style.js`
+
+### Animations (framer-motion 12)
+
+Do not set a style only in `transitionEnd` (e.g. `transitionEnd: { overflow: 'visible' }`) when that key is not animated: framer-motion 12 creates the value at the end without scheduling a render, so the DOM keeps the `initial` value until some other value of the element changes. A per-value `delay` does not help either: string values such as `overflow` are applied instantly. Toggle a class from `onAnimationComplete` (and `useIsPresent` for exit) instead, as `NavbarContentWrapper.js` does; `tests/e2e/navbar-menu.spec.js` covers the header panel. `NavbarLocations.js` and `SubHeaderLocations.js` still use the old pattern; checked on production 2026-10-14: the Locations menu keeps `overflow: hidden` but nothing in it overflows, and the location sub-header does switch to `visible`, so neither needs a fix now.
 
 ### Path Aliases
 

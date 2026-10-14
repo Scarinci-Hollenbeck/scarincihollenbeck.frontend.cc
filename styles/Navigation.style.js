@@ -87,6 +87,11 @@ export const NavbarItemContent = styled.div`
   max-height: calc(95dvh - var(--header-height));
   display: flex;
   transition: max-height 0.3s ease-in-out;
+  overflow: hidden;
+
+  &.is-expanded {
+    overflow: visible;
+  }
 
   .navbar-container {
     display: flex;
