@@ -82,7 +82,7 @@ Follows atomic design under `components/`:
 
 ### Animations (framer-motion 12)
 
-Do not set a style only in `transitionEnd` (e.g. `transitionEnd: { overflow: 'visible' }`) when that key is not animated: framer-motion 12 creates the value at the end without scheduling a render, so the DOM keeps the `initial` value until some other value of the element changes. A per-value `delay` does not help either: string values such as `overflow` are applied instantly. Toggle a class from `onAnimationComplete` (and `useIsPresent` for exit) instead, as `NavbarContentWrapper.js` does; `tests/e2e/navbar-menu.spec.js` covers the header panel. `NavbarLocations.js` and `SubHeaderLocations.js` still use the old pattern.
+Do not set a style only in `transitionEnd` (e.g. `transitionEnd: { overflow: 'visible' }`) when that key is not animated: framer-motion 12 creates the value at the end without scheduling a render, so the DOM keeps the `initial` value until some other value of the element changes. A per-value `delay` does not help either: string values such as `overflow` are applied instantly. Toggle a class from `onAnimationComplete` (and `useIsPresent` for exit) instead, as `NavbarContentWrapper.js` does; `tests/e2e/navbar-menu.spec.js` covers the header panel. `NavbarLocations.js` and `SubHeaderLocations.js` still use the old pattern; checked on production 2026-10-14: the Locations menu keeps `overflow: hidden` but nothing in it overflows, and the location sub-header does switch to `visible`, so neither needs a fix now.
 
 ### Path Aliases
 
