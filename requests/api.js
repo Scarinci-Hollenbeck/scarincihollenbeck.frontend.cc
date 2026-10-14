@@ -1,7 +1,7 @@
 import {
   BASE_API_URL,
   GRAPHQL_API_URL,
-  NEXT_PUBLIC_WP_REST_KEY,
+  WP_REST_KEY,
   headers as restApiHeaders,
 } from 'utils/constants';
 import decodeResponse from 'utils/decodeResponse';
@@ -108,7 +108,7 @@ export async function fetchAPI(query, { variables } = {}, retry = true) {
 export async function fetchRestAPI(query, params = {}) {
   try {
     const searchParams = new URLSearchParams({
-      secret_key: NEXT_PUBLIC_WP_REST_KEY,
+      secret_key: WP_REST_KEY,
       ...params,
     });
 
