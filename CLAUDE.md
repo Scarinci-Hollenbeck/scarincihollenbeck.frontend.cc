@@ -10,9 +10,9 @@ yarn build      # Production build
 yarn start      # Start production server on port 7300
 yarn lint       # ESLint with auto-fix (airbnb config)
 yarn format     # Prettier formatting
+yarn test:unit  # Playwright unit tests (tests/unit), no server needed
+yarn test:e2e   # Playwright e2e tests (tests/e2e) against E2E_BASE_URL, default http://localhost:7300 (run `yarn build && yarn start` first)
 ```
-
-No test suite is configured in this project.
 
 ## Architecture Overview
 
