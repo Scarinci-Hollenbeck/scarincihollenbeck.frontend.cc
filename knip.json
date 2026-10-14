@@ -18,5 +18,5 @@
     "hooks/*": ["hooks/*"],
     "hoks/*": ["hoks/*"]
   },
-  "ignoreDependencies": ["sharp", "eslint-config-next"]
+  "ignoreDependencies": ["sharp"]
 }

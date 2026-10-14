@@ -38,7 +38,7 @@ const SubHeaderIndustry = ({
           src={backgroundImage}
           alt={`${title} background`}
           fill
-          priority
+          preload
           loading="eager"
           sizes="100vw"
         />

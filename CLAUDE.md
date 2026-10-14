@@ -16,7 +16,16 @@ yarn test:e2e   # Playwright e2e tests (tests/e2e) against E2E_BASE_URL, default
 
 ## Architecture Overview
 
-This is a **Next.js 14** frontend (Pages Router) for the Scarinci Hollenbeck law firm website. It is deployed on Vercel. The backend is a headless WordPress instance, consumed via both GraphQL and a custom REST API.
+This is a **Next.js 16** frontend (Pages Router, React 18) for the Scarinci Hollenbeck law firm website. It is deployed on Vercel (Node 22.x, pinned via `engines` in `package.json`). The backend is a headless WordPress instance, consumed via both GraphQL and a custom REST API.
+
+### Next 16 specifics
+
+- `dev` and `build` run with `--webpack`: `@ducanh2912/next-pwa` adds a webpack config, and Next 16 refuses a Turbopack build when one exists. Dropping the flag means moving PWA to Serwist first.
+- `experimental.staticGenerationMaxConcurrency: 1` keeps Next 14's one page per build worker. The default (8) overloads WordPress and pages hit the 60s prerender timeout.
+- `images.qualities` must list every `quality` prop used in components; Next 16 coerces other values and answers 400 to them on `/_next/image`.
+- `<Html data-scroll-behavior="smooth">` in `_document.js` keeps instant scroll-to-top on navigation, since the global CSS sets `scroll-behavior: smooth`.
+- Use `preload`, not the deprecated `priority`, on `next/image`.
+- ESLint stays on v7 + `.eslintrc.js` with `@next/eslint-plugin-next` 12; `eslint-config-next` 16 needs ESLint 9 flat config, which is a separate migration.
 
 ### Data Fetching Strategy
 
