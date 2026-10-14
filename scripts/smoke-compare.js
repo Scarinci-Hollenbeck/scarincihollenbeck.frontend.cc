@@ -3,15 +3,16 @@
 //
 //   node scripts/smoke-compare.js <target> [<reference>]
 //
-// With only <target>, it fails on pages that are not 200, redirects that do not
-// land where utils/permanent-redirects.js says, and any 5xx.
+// With only <target>, it fails on sitemap pages, posts and parameterless
+// rewrites that are not 200, redirects that do not land where
+// utils/permanent-redirects.js says, and any 5xx.
 // With <reference> (e.g. the current production before a release, or the
 // previous production deployment URL after one), it also fails on any
 // difference in status, Location, title, canonical, robots, h1 or JSON-LD count.
 //
-// Requests go one URL at a time on purpose: WordPress renders every uncached
-// page, and a handful of parallel renders already makes its login time out
-// (504) on the live site.
+// Requests go strictly one at a time, target then reference: both deployments
+// use the same WordPress, which renders every uncached page, and a handful of
+// parallel renders already makes its login time out (504) on the live site.
 
 /* eslint-disable no-console, no-restricted-syntax -- CLI report; the loop keeps requests sequential */
 
@@ -34,6 +35,9 @@ const FIELDS = [
   'jsonld',
 ];
 const SAMPLE = { ':slug*': 'sample-a/sample-b', ':slug': 'sample-slug' };
+// A WordPress failure makes the sitemaps come back (and get cached) almost
+// empty; a short list would otherwise pass as "all OK".
+const MIN_URLS = { 'sitemap.xml': 200, 'sitemap-posts.xml': 1000 };
 
 const [target, reference] = process.argv
   .slice(2)
@@ -51,10 +55,17 @@ const pick = (re, html) => {
 };
 
 async function sitemapPaths(file) {
-  const xml = await (await fetch(`${PRODUCTION}/${file}`)).text();
-  return (xml.match(/<loc>[^<]*/g) || []).map(
+  const res = await fetch(`${PRODUCTION}/${file}`);
+  const paths = ((await res.text()).match(/<loc>[^<]*/g) || []).map(
     (loc) => loc.replace('<loc>', '').replace(PRODUCTION, '') || '/',
   );
+  if (!res.ok || paths.length < MIN_URLS[file]) {
+    console.error(
+      `${PRODUCTION}/${file}: status ${res.status}, ${paths.length} URLs (expected at least ${MIN_URLS[file]}); is WordPress down?`,
+    );
+    process.exit(1);
+  }
+  return paths;
 }
 
 async function probe(host, path) {
@@ -81,15 +92,18 @@ async function probe(host, path) {
 }
 
 // Next applies the first redirect whose source matches, so a later, more
-// specific rule can be shadowed by an earlier wildcard.
+// specific rule can be shadowed by an earlier wildcard. Like Next, matching is
+// case-insensitive and `/:slug*` also matches the bare prefix.
 const sourceRegex = (source) => new RegExp(
   `^${source
-    .split(/(:\w+\*?)/)
+    .split(/(\/:\w+\*|:\w+)/)
     .map((part) => {
-      if (!part.startsWith(':')) return part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      return part.endsWith('*') ? '(.*)' : '([^/]+)';
+      if (/^\/:\w+\*$/.test(part)) return '(?:/(.*))?';
+      if (/^:\w+$/.test(part)) return '([^/]+)';
+      return part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     })
     .join('')}$`,
+  'i',
 );
 
 function appliedRedirect(path) {
@@ -100,20 +114,33 @@ function appliedRedirect(path) {
   const byName = Object.fromEntries(names.map((name, i) => [name, values[i]]));
   return {
     rule,
-    destination: rule.destination.replace(/:\w+\*?/g, (name) => byName[name]),
+    destination: rule.destination.replace(
+      /:\w+\*?/g,
+      (name) => byName[name] || '',
+    ),
   };
 }
 
 // Returns [failures, warnings] for the target's own response.
 function ownProblems(c, t) {
   if (typeof t.status !== 'number' || t.status >= 500) return [[`status ${t.status}`], []];
-  if (c.kind === 'page' && t.status >= 300 && t.status < 400) {
+  const isListed = c.kind === 'page' || c.kind === 'post';
+  if (isListed && t.status >= 300 && t.status < 400) {
     return [
       [],
       [`sitemap lists a redirecting URL (${t.status} -> ${t.location})`],
     ];
   }
-  if (c.kind === 'page' && t.status !== 200) return [[`status ${t.status}, expected 200`], []];
+  if (isListed && t.status !== 200) return [[`status ${t.status}, expected 200`], []];
+  if (c.kind === 'rewrite') {
+    // Redirects run before rewrites; parameterised ones get a made-up slug,
+    // so only a 5xx counts for them.
+    if (/:\w/.test(c.source)) return [[], []];
+    const applied = appliedRedirect(c.path);
+    const expected = applied ? `308 -> ${applied.destination}` : '200';
+    const actual = t.status === 308 ? `308 -> ${t.location}` : String(t.status);
+    return [actual === expected ? [] : [`${actual}, expected ${expected}`], []];
+  }
   if (c.kind === 'redirect') {
     const applied = appliedRedirect(c.path);
     const warnings = applied.rule === c.rule
@@ -135,11 +162,8 @@ function ownProblems(c, t) {
 }
 
 async function check(c) {
-  // Two hosts at once is still one render per deployment.
-  const [t, r] = await Promise.all([
-    probe(target, c.path),
-    reference && probe(reference, c.path),
-  ]);
+  const t = await probe(target, c.path);
+  const r = reference && (await probe(reference, c.path));
   const [failures, warnings] = ownProblems(c, t);
   if (r) {
     FIELDS.filter((f) => String(t[f]) !== String(r[f])).forEach((f) => failures.push(
@@ -176,7 +200,11 @@ const report = (rows, key) => rows
       ...POST_TYPE_REWRITES,
       ...POST_CATEGORY_REWRITES,
       ...SITE_PAGES_REWRITES,
-    ].map((r) => ({ kind: 'rewrite', path: concrete(r.source) })),
+    ].map((r) => ({
+      kind: 'rewrite',
+      path: concrete(r.source),
+      source: r.source,
+    })),
   ];
   // Redirects stay even when repeated: a duplicate source is a shadowed rule.
   const cases = all.filter(
