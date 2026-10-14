@@ -93,6 +93,8 @@ test.describe('security headers', () => {
         'https://*.algolia.net',
         'https://kwes.io',
         'https://*.google-analytics.com',
+        // GA4 collects on the bare host, which *.analytics.google.com does not match.
+        'https://analytics.google.com',
       ]),
     );
   });

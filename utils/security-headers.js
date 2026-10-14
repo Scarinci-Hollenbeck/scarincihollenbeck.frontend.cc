@@ -26,6 +26,7 @@ const GOOGLE_TAGS = [
   'https://www.googletagmanager.com',
   'https://*.googletagmanager.com',
   'https://*.google-analytics.com',
+  'https://analytics.google.com',
   'https://*.analytics.google.com',
   'https://www.googleadservices.com',
   'https://googleads.g.doubleclick.net',
