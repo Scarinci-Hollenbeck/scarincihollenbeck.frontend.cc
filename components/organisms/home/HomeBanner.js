@@ -28,7 +28,7 @@ const HomeBanner = ({ title, subtitle, infoCards }) => (
       src="/images/home-page-banner.webp"
       alt="Building on the background"
       fill
-      priority
+      preload
       quality={70}
       sizes="100dvw"
     />

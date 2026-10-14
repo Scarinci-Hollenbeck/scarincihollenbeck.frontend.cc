@@ -23,7 +23,7 @@ const Logo = ({ whiteVariant, isPrint = false }) => (
           alt={`${SITE_TITLE}, LLC`}
           width={170}
           height={147}
-          priority
+          preload
           quality={100}
           src={SHDiamond}
           loading="eager"
@@ -35,7 +35,7 @@ const Logo = ({ whiteVariant, isPrint = false }) => (
           alt={`${SITE_TITLE}, LLC`}
           width={320}
           height={50}
-          priority
+          preload
           quality={100}
           src={LogoLetters}
           loading="eager"
@@ -46,7 +46,7 @@ const Logo = ({ whiteVariant, isPrint = false }) => (
           alt={`${SITE_TITLE}, LLC`}
           width={320}
           height={50}
-          priority
+          preload
           quality={100}
           src={LogoLettersBlack}
           loading="eager"

@@ -47,7 +47,7 @@ const SubHeaderCardsSlider = ({
               src={activeSlide?.image}
               width={300}
               height={350}
-              priority={activeSlideIndex === 0}
+              preload={activeSlideIndex === 0}
               loading={activeSlideIndex === 0 ? 'eager' : 'lazy'}
             />
           </SubHeaderSlideImage>

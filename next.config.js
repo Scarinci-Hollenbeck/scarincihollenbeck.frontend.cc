@@ -66,9 +66,14 @@ const nextConfig = {
     ],
     minimumCacheTTL: 60,
     deviceSizes: [576, 768, 992, 1200, 1456, 1920],
+    // Next 16 only serves qualities listed here (default [75]); keep every `quality` prop used in components.
+    qualities: [60, 70, 75, 80, 85, 90, 100],
   },
   experimental: {
     scrollRestoration: true,
+    // Next 15+ prerenders up to 8 pages per build worker at once; the WordPress
+    // backend times out under that load, so keep Next 14's one page per worker.
+    staticGenerationMaxConcurrency: 1,
   },
   logging: {
     fetches: {
