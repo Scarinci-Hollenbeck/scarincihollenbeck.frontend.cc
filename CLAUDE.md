@@ -20,6 +20,8 @@ This is a **Next.js 16** frontend (Pages Router, React 18) for the Scarinci Holl
 
 ### Next 16 specifics
 
+- Version-matched Next docs ship in `node_modules/next/dist/docs/` (`02-pages/` for this router); read them before relying on memory of older Next APIs. `AGENTS.md` holds the same pointer and is rewritten by `next dev` (disable with `agentRules: false`).
+
 - `dev` and `build` run with `--webpack`: `@ducanh2912/next-pwa` adds a webpack config, and Next 16 refuses a Turbopack build when one exists. Dropping the flag means moving PWA to Serwist first.
 - `experimental.staticGenerationMaxConcurrency: 1` keeps Next 14's one page per build worker. The default (8) overloads WordPress and pages hit the 60s prerender timeout.
 - `images.qualities` must list every `quality` prop used in components; Next 16 coerces other values and answers 400 to them on `/_next/image`.
