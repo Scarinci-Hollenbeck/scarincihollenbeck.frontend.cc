@@ -50,7 +50,7 @@ const SubHeaderDefault = ({
             alt={title || 'sub header image'}
             width={400}
             height={400}
-            priority
+            preload
             sizes="400px"
           />
         </picture>

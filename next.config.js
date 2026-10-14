@@ -18,9 +18,11 @@ const {
   POST_CATEGORY_REWRITES,
 } = require('./utils/rewrites');
 const { PERMANENT_REDIRECTS } = require('./utils/permanent-redirects');
+const { SECURITY_HEADERS } = require('./utils/security-headers');
 
 const nextConfig = {
   reactStrictMode: false,
+  poweredByHeader: false,
   images: {
     remotePatterns: [
       {
@@ -66,15 +68,23 @@ const nextConfig = {
     ],
     minimumCacheTTL: 60,
     deviceSizes: [576, 768, 992, 1200, 1456, 1920],
+    // Next 16 only serves qualities listed here (default [75]); keep every `quality` prop used in components.
+    qualities: [60, 70, 75, 80, 85, 90, 100],
   },
   experimental: {
     scrollRestoration: true,
+    // Next 15+ prerenders up to 8 pages per build worker at once; the WordPress
+    // backend times out under that load, so keep Next 14's one page per worker.
+    staticGenerationMaxConcurrency: 1,
   },
   logging: {
     fetches: {
       fullUrl: true,
     },
   },
+  // Never list server-only secrets in `env`: Next inlines them into client
+  // chunks as soon as browser code references them. Read them via process.env
+  // in server code only.
   env: {
     NEXT_PUBLIC_GA_TRACKING_ID: process.env.NEXT_PUBLIC_GA_TRACKING_ID,
     NEXT_PUBLIC_BASE_API_URL: process.env.NEXT_PUBLIC_BASE_API_URL,
@@ -98,14 +108,14 @@ const nextConfig = {
     NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID:
       process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
     NEXT_PUBLIC_FIREBASE_VAPID_KEY: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
-    NEXT_PUBLIC_FIREBASE_CLIENT_EMAIL:
-      process.env.NEXT_PUBLIC_FIREBASE_CLIENT_EMAIL,
-    FIREBASE_PRIVAT_KEY: process.env.FIREBASE_PRIVAT_KEY,
   },
   compiler: {
     styledComponents: true,
   },
 
+  async headers() {
+    return [{ source: '/:path*', headers: SECURITY_HEADERS }];
+  },
   async redirects() {
     return [...PERMANENT_REDIRECTS];
   },

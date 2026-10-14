@@ -5,7 +5,7 @@ import { formatSrcToCloudinaryUrl } from 'utils/helpers';
 import MemorialPage from 'components/pages/MemorialPage';
 import { CURRENT_DOMAIN } from 'utils/constants';
 
-export async function memorialBySlug(slug) {
+async function memorialBySlug(slug) {
   const data = await fetchAPI(memorialPageQuery, {
     variables: { slug },
   });

@@ -597,7 +597,8 @@ export const HTTP_PRODUCTION_URL = 'http://scarincihollenbeck.com';
 export const HTTP_WWW_PRODUCTION_URL = 'http://www.scarincihollenbeck.com';
 export const PROJECT_MODE = process.env.NEXT_PUBLIC_PROJECT_MODE;
 
-export const NEXT_PUBLIC_WP_REST_KEY = process.env.NEXT_PUBLIC_WP_REST_KEY;
+// Server-only (no NEXT_PUBLIC_ prefix, so Next never inlines it into client chunks).
+export const WP_REST_KEY = process.env.WP_REST_KEY;
 
 export const NAVIGATION_OPENERS = ['Attorneys', 'Services', 'Locations'];
 

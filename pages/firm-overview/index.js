@@ -5,7 +5,7 @@ import { firmOverviewQuery } from 'requests/graphql-queries';
 import empty from 'is-empty';
 
 /** Fetch the firm overview page content WP GRAPHQL API */
-export async function getFirmOverviewContent() {
+async function getFirmOverviewContent() {
   const data = await fetchAPI(firmOverviewQuery);
   return data?.pageBy;
 }
