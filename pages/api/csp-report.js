@@ -63,14 +63,16 @@ const normalize = (payload) => {
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
-    return res.status(405).end();
+    res.status(405).end();
+    return;
   }
 
   let payload;
   try {
     payload = JSON.parse(await readBody(req));
   } catch (error) {
-    return res.status(400).end();
+    res.status(400).end();
+    return;
   }
 
   normalize(payload)
@@ -89,5 +91,5 @@ export default async function handler(req, res) {
       );
     });
 
-  return res.status(204).end();
+  res.status(204).end();
 }
