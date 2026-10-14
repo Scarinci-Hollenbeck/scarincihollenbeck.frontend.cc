@@ -461,3 +461,21 @@ export const extractHtmlListItems = (html) => {
       .trim())
     .filter(Boolean);
 };
+
+/** Flatten office nodes from the officeLocations GraphQL query */
+export const sanitizeOffices = (offices) => offices.map(({
+  databaseId, slug, title, officeMainInformation,
+}) => {
+  if (officeMainInformation?.autoMap?.mediaItemUrl?.length > 0) {
+    officeMainInformation.autoMap = officeMainInformation.autoMap.mediaItemUrl;
+  }
+  if (officeMainInformation?.trainStationsMap?.mediaItemUrl?.length > 0) {
+    officeMainInformation.trainStationsMap = officeMainInformation.trainStationsMap.mediaItemUrl;
+  }
+  return {
+    databaseId,
+    slug,
+    title,
+    ...officeMainInformation,
+  };
+});

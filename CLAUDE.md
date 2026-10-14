@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ```bash
 yarn dev        # Start dev server on port 7700
-yarn build      # Production build
+yarn build      # Production build, then scripts/check-client-bundle.js (fails on server code/secrets in client chunks)
 yarn start      # Start production server on port 7300
 yarn lint       # ESLint with auto-fix (airbnb config)
 yarn format     # Prettier formatting
@@ -41,6 +41,12 @@ Pages use one of two approaches:
 
 - `fetchAPI(query, { variables })` — posts GraphQL queries to `NEXT_PUBLIC_BASE_GRAPHQL_API_URL` (WPGraphQL endpoint). All `getStaticProps` data fetching goes through here.
 - `fetchRestAPI(query, params)` — GETs from the custom WP REST API at `BASE_API_URL/wp-json/wcra/v1/{query}/` using a secret key. Used by the `/api/` route handlers.
+
+`requests/api.js` is server-only: `fetchAPI` logs in to WordPress with the service account (`WP_LOGIN` / `WP_PASSWORD`). Next strips only `getStaticProps`/`getStaticPaths` (and code used only by them) from a page's client bundle, so a page must not export any other helper that reaches `fetchAPI`; keep such helpers unexported or in `requests/`, and shared pure helpers in `utils/`. `scripts/check-client-bundle.js` enforces this after every build. Never put server secrets in the `env` block of `next.config.js`.
+
+### Security headers and CSP
+
+`utils/security-headers.js` (applied to every route by `headers()` in `next.config.js`) sends the same headers as the WordPress backend (`X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, HSTS) plus a CSP in `Content-Security-Policy-Report-Only`. Violations go to `pages/api/csp-report.js`, which logs `[csp-report]` lines via `console.warn` (Vercel logs). The source lists cover GTM `GTM-PZ2XWLW4` (GA4, Google Ads, CallRail via a custom HTML tag), reCAPTCHA, Kwes, Algolia, YouTube embeds and WordPress; a new third party (or a new GTM tag) needs its hosts added there. Switch to the enforcing `Content-Security-Policy` only when the reports contain no unexpected sources. `tests/e2e/security-headers.spec.js` pins the header values.
 
 ### Redux Store (`redux/`)
 
@@ -96,7 +102,7 @@ NEXT_PUBLIC_BASE_GRAPHQL_API_URL  # WPGraphQL endpoint
 NEXT_PUBLIC_ALGOLIA_PUBLIC_API    # Algolia search API key
 NEXT_PUBLIC_ALGOLIA_APP_ID
 NEXT_PUBLIC_ALGOLIA_SEARCH_INDEX
-NEXT_PUBLIC_WP_REST_KEY           # WordPress REST API secret key
+WP_REST_KEY                       # WordPress REST API secret key (server-only; was NEXT_PUBLIC_WP_REST_KEY)
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 NEXT_PUBLIC_PROJECT_MODE          # Set to "development" to disable PWA
 NEXT_PUBLIC_FIREBASE_*            # Firebase config vars

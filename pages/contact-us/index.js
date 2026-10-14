@@ -5,7 +5,7 @@ import {
   officeLocationsQuery,
 } from 'requests/graphql-queries';
 import ContactPage from 'components/pages/ContactPage';
-import { sanitizeOffices } from 'pages';
+import { sanitizeOffices } from 'utils/helpers';
 
 const sanitizeLocations = (locations) => locations.map((office) => ({
   databaseId: office.databaseId,

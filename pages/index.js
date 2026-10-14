@@ -9,11 +9,11 @@ import {
   latestFirmNewsArticles,
   officeLocationsQuery,
 } from 'requests/graphql-queries';
-import { chunkArray, formateAwards } from 'utils/helpers';
+import { chunkArray, formateAwards, sanitizeOffices } from 'utils/helpers';
 import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 
 /** Get homepage content WP GRAPHQL API */
-export async function homePageContent() {
+async function homePageContent() {
   const data = await fetchAPI(homePageQuery, {});
 
   return data?.pageBy;
@@ -55,23 +55,6 @@ const getLatestArticlesTabsData = async () => {
     },
   };
 };
-
-export const sanitizeOffices = (offices) => offices.map(({
-  databaseId, slug, title, officeMainInformation,
-}) => {
-  if (officeMainInformation?.autoMap?.mediaItemUrl?.length > 0) {
-    officeMainInformation.autoMap = officeMainInformation.autoMap.mediaItemUrl;
-  }
-  if (officeMainInformation?.trainStationsMap?.mediaItemUrl?.length > 0) {
-    officeMainInformation.trainStationsMap = officeMainInformation.trainStationsMap.mediaItemUrl;
-  }
-  return {
-    databaseId,
-    slug,
-    title,
-    ...officeMainInformation,
-  };
-});
 
 /** Map the home page query data to page props */
 export const getStaticProps = async () => {

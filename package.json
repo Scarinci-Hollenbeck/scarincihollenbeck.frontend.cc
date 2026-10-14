@@ -6,7 +6,7 @@
   },
   "scripts": {
     "dev": "next dev --webpack -p 7700",
-    "build": "next build --webpack",
+    "build": "next build --webpack && node scripts/check-client-bundle.js",
     "start": "next start -p 7300",
     "lint": " eslint . --fix",
     "format": "prettier --write .",
@@ -76,6 +76,7 @@
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^8.0.0",
     "@next/bundle-analyzer": "16.4.0",
+    "@next/env": "16.4.0",
     "@next/eslint-plugin-next": "^12.0.7",
     "@playwright/test": "^1.61.1",
     "cross-env": "^10.1.0",
