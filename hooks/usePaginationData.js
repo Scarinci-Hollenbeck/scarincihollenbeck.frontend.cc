@@ -1,10 +1,14 @@
 import empty from 'is-empty';
-import gql from 'graphql-tag';
-import { useQuery } from 'react-apollo-hooks';
+// Relative on purpose: a bare `redux/...` path resolves to the npm package.
+import { useGetGraphQLQueryQuery } from '../redux/services/wp-graphql';
 
-export const getPaginationData = (query, params) => {
-  if (empty(query)) return {};
-
+/**
+ * One page of a paginated WPGraphQL query, fetched in the browser.
+ * `loading` is true while the requested page has no data yet (also on the
+ * server and the first client render, so hydration matches); a page fetched
+ * earlier in the session comes from the RTK Query cache without a request.
+ */
+export const usePaginationData = (query, params) => {
   const {
     id,
     authorId,
@@ -34,22 +38,19 @@ export const getPaginationData = (query, params) => {
     slug: !empty(slug) ? slug : null,
   };
 
-  const FEED_QUERY = gql`
-    ${query}
-  `;
+  const skip = empty(query);
+  const { currentData, error } = useGetGraphQLQueryQuery(
+    { query, variables },
+    { skip },
+  );
 
-  const { data, loading, error } = useQuery(FEED_QUERY, {
-    variables,
-    refresh: false,
-  });
+  if (skip) return {};
 
-  const result = {
-    loading,
+  return {
+    loading: currentData === undefined && !error,
     error,
     page: currentPage || 1,
     limit: itemsPerPage,
-    ...data,
+    ...currentData,
   };
-
-  return result;
 };
