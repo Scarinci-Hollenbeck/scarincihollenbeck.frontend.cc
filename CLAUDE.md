@@ -17,7 +17,7 @@ yarn test:e2e   # Playwright e2e tests (tests/e2e) against E2E_BASE_URL, default
 
 ## Architecture Overview
 
-This is a **Next.js 16** frontend (Pages Router, React 18) for the Scarinci Hollenbeck law firm website. It is deployed on Vercel (Node 22.x, pinned via `engines` in `package.json`). The backend is a headless WordPress instance, consumed via both GraphQL and a custom REST API.
+This is a **Next.js 16** frontend (Pages Router, React 19) for the Scarinci Hollenbeck law firm website. It is deployed on Vercel (Node 22.x, pinned via `engines` in `package.json`). The backend is a headless WordPress instance, consumed via both GraphQL and a custom REST API.
 
 ### Next 16 specifics
 
