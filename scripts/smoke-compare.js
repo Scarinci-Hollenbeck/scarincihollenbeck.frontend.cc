@@ -114,10 +114,8 @@ function appliedRedirect(path) {
   const byName = Object.fromEntries(names.map((name, i) => [name, values[i]]));
   return {
     rule,
-    destination: rule.destination.replace(
-      /:\w+\*?/g,
-      (name) => byName[name] || '',
-    ),
+    // An empty `/:slug*` drops its slash too: /attorneys/:slug* -> /attorneys.
+    destination: rule.destination.replace(/(\/?)(:\w+\*?)/g, (_, slash, name) => (byName[name] ? `${slash}${byName[name]}` : '')),
   };
 }
 
@@ -258,5 +256,5 @@ ${
     ? `${failing.length} of ${cases.length} URLs failed`
     : `All ${cases.length} URLs OK`
   }`);
-  process.exit(failing.length ? 1 : 0);
+  process.exitCode = failing.length ? 1 : 0;
 })();
