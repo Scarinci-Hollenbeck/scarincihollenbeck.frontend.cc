@@ -1,4 +1,5 @@
 import React from 'react';
+import { useInstantSearch, useRefinementList } from 'react-instantsearch';
 import {
   ResultFilterItem,
   ResultFilterList,
@@ -6,15 +7,29 @@ import {
 } from 'styles/GlobalSearch.style';
 import empty from 'is-empty';
 
-const MySearchFilters = ({ items, refine, currentRefinement }) => {
-  const SEARCH_FILTERS = [
-    'Attorneys',
-    'Practices',
-    'Industries',
-    'Office Locations',
-    'Careers',
-    'Posts',
-  ];
+const SEARCH_FILTERS = [
+  'Attorneys',
+  'Practices',
+  'Industries',
+  'Office Locations',
+  'Careers',
+  'Posts',
+];
+
+// Single-select post type filter: a click replaces the current filter (the
+// active one stays active), "No filter" clears it. Every click goes back to
+// page 1, a click on the active filter too, as in v6.
+const MySearchFilters = ({ attribute }) => {
+  const { items } = useRefinementList({ attribute });
+  const { indexUiState, setIndexUiState } = useInstantSearch();
+  const currentRefinement = indexUiState.refinementList?.[attribute];
+
+  const refine = (values) => {
+    setIndexUiState(({ page, ...state }) => ({
+      ...state,
+      refinementList: { ...state.refinementList, [attribute]: values },
+    }));
+  };
 
   const filteredItems = items.filter((item) => SEARCH_FILTERS.includes(item.label));
 
@@ -23,7 +38,7 @@ const MySearchFilters = ({ items, refine, currentRefinement }) => {
   );
 
   const handleRefine = (item) => {
-    refine(item?.label);
+    refine([item?.label]);
   };
   return (
     <ResultFilterList>
@@ -41,7 +56,7 @@ const MySearchFilters = ({ items, refine, currentRefinement }) => {
 
       {!empty(currentRefinement) && (
         <ResultFilterItem>
-          <ResultFilterToggle onClick={() => refine({})}>
+          <ResultFilterToggle onClick={() => refine([])}>
             <p className="search-filter-label clear">No filter</p>
           </ResultFilterToggle>
         </ResultFilterItem>

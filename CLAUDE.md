@@ -79,6 +79,8 @@ Follows atomic design under `components/`:
 - `pages/` — full page-level components (imported by pages/)
 - `shared/` — site-wide: `Header`, `Footer`, `CommonModals`, global search
 
+The header search (`components/shared/GlobalSearch/`) runs on `react-instantsearch` 7 hooks with `insights={false}`. `SearchHits.js` and `SearchPagination.js` reproduce the markup of the old `react-instantsearch-dom` 6 widgets because `styles/GlobalSearch.style.js` targets those `ais-*` classes; the post type filter is single-select. `tests/e2e/global-search.spec.js` pins the behaviour against the live index. `instantsearch.js` lists `react` as a dependency (it never imports it); the `**/instantsearch.js/react` entry in `resolutions` keeps a second React copy out of `node_modules`, so bump it together with `react`.
+
 ### Styling
 
 - **Styled Components** (with Next.js compiler integration) — most component styles live alongside components as `*.style.js` files in `styles/`
