@@ -10,6 +10,11 @@ import blockAnalytics from './support/block-analytics';
 const banner = (page) => page.locator('.CookieConsent');
 const DAY = 24 * 60 * 60;
 
+// The banner decides whether to show itself after hydration, so "no banner"
+// only means something once the app has hydrated. CommonModals fetches this
+// route from an effect, i.e. after the first commit.
+const hydrated = (page) => page.waitForResponse(/\/api\/revalidate-subscriptions/);
+
 test.beforeEach(async ({ page }) => {
   await blockAnalytics(page);
 });
@@ -33,7 +38,7 @@ test('accepting stores CookieConsent=true for a year and hides the banner', asyn
   expect(days).toBeGreaterThan(364);
   expect(days).toBeLessThan(366);
 
-  await page.reload();
+  await Promise.all([hydrated(page), page.reload()]);
   await expect(banner(page)).toHaveCount(0);
 });
 
@@ -58,7 +63,11 @@ test('a consent cookie set by the previous version keeps the banner hidden', asy
   await context.addCookies([
     { name: 'CookieConsent', value: 'true', url: baseURL },
   ]);
-  await page.goto('/');
-  await page.waitForLoadState('load');
+  await Promise.all([hydrated(page), page.goto('/')]);
   await expect(banner(page)).toHaveCount(0);
+
+  // Control: without the cookie the same page does show the banner.
+  await context.clearCookies({ name: 'CookieConsent' });
+  await page.reload();
+  await expect(banner(page)).toBeVisible();
 });

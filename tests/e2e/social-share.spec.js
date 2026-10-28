@@ -6,7 +6,7 @@ import blockAnalytics from './support/block-analytics';
  * react-share 5 dropped its default aria-labels, so SocialShare sets them.
  */
 
-const SHARE_HOSTS = /facebook\.com|twitter\.com|x\.com|linkedin\.com/;
+const SHARE_HOSTS = (url) => /(^|\.)(facebook|twitter|x|linkedin)\.com$/.test(url.hostname);
 
 test.beforeEach(async ({ page, context }) => {
   await blockAnalytics(page);

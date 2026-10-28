@@ -83,6 +83,9 @@ test('clients block renders the clients, including ones without a logo', async (
   const section = page.locator('#clients-section');
   await expect(section).toBeVisible();
   await expect(section.getByText(/^Test Client \d+$/)).toHaveCount(12 * 2);
-  await expect(section.locator('img[src=""]')).toHaveCount(0);
+  // Clients 5 and 10 have no logo: exactly ten logos, none without a source
+  // (React 19 drops src="" on its own, so count the images instead).
+  await expect(section.locator('img')).toHaveCount(10);
+  await expect(section.locator('img:not([src]), img[src=""]')).toHaveCount(0);
   expect(consoleErrors.filter((t) => /src/.test(t))).toEqual([]);
 });
