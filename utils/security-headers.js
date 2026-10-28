@@ -15,7 +15,7 @@ const originOf = (url) => {
   }
 };
 
-// The browser talks to WordPress directly (RTK Query GraphQL, Apollo pagination).
+// The browser talks to WordPress directly (RTK Query GraphQL, incl. the paginated lists).
 const WORDPRESS_ORIGINS = [
   originOf(process.env.NEXT_PUBLIC_BASE_GRAPHQL_API_URL),
   originOf(process.env.NEXT_PUBLIC_BASE_API_URL),

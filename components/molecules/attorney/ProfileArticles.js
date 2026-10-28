@@ -1,5 +1,5 @@
 import React from 'react';
-import { getPaginationData } from 'requests/getPaginationData';
+import { usePaginationData } from 'hooks/usePaginationData';
 import { useRouter } from 'next/router';
 import { attorneyPostsQuery } from 'requests/graphql-queries';
 import BlogsBox from './BlogsBox';
@@ -18,7 +18,7 @@ const ProfileArticles = (props) => {
     itemsPerPage: params?.itemsPerPage || 3,
   };
 
-  const data = getPaginationData(attorneyPostsQuery, paginationParams);
+  const data = usePaginationData(attorneyPostsQuery, paginationParams);
   return (
     <ProfileSection title={title}>
       <BlogsBox

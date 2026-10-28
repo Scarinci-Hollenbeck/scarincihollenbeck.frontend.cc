@@ -53,7 +53,7 @@ Pages use one of two approaches:
 
 RTK Query powers two API services:
 
-- `redux/services/wp-graphql.js` — mutation-based GraphQL client for client-side queries
+- `redux/services/wp-graphql.js` — GraphQL client for client-side queries: mutations, plus the cached `getGraphQLQuery` endpoint behind `hooks/usePaginationData.js` (paginated attorney articles and industry clients; results stay cached for the whole session)
 - `redux/services/project-api.js` — queries internal `/api/` routes for attorneys, practices, locations, industries
 
 Slices: `attorneys`, `sizes`, `modals`, `library`

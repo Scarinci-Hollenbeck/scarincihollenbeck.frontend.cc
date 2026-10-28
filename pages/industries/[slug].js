@@ -4,7 +4,6 @@ import empty from 'is-empty';
 import IndustryPage from 'components/pages/IndustryPage';
 import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import { getIndustryContent } from 'requests/industries/industry-default';
-import ApolloWrapper from 'layouts/ApolloWrapper';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 import { formateAwards } from 'utils/helpers';
 
@@ -148,11 +147,7 @@ const Industry = ({
     webPageData,
     pageSchemaJsonLd,
   };
-  return (
-    <ApolloWrapper>
-      <IndustryPage {...industryProps} />
-    </ApolloWrapper>
-  );
+  return <IndustryPage {...industryProps} />;
 };
 
 export default Industry;
