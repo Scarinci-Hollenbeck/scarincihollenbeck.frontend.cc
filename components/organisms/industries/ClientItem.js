@@ -35,7 +35,7 @@ const ClientItem = ({
         </ClientTexts>
 
         <ClientImage>
-          <Image src={image} alt={title} width={240} height={240} />
+          {image && <Image src={image} alt={title} width={240} height={240} />}
         </ClientImage>
 
         <ClientOpenerIcon $isActive />
