@@ -12,27 +12,8 @@ import { Highlight } from 'react-instantsearch';
 import empty from 'is-empty';
 import { getIcon } from 'utils/getIcon';
 import { changeTitle } from '../../../utils/helpers';
+import { changeHighlightedTitle } from '../../../utils/highlighted-title';
 import { BASE_API_URL, PRODUCTION_URL } from '../../../utils/constants';
-
-// Hits carry HTML-escaped highlight values with <mark> tags, and Highlight
-// unescapes them (the same five entities as below); changeTitle has to see
-// the raw title, as it did in v6.
-const ENTITIES = {
-  '&amp;': '&',
-  '&lt;': '<',
-  '&gt;': '>',
-  '&quot;': '"',
-  '&#39;': "'",
-};
-const CHARACTERS = Object.fromEntries(
-  Object.entries(ENTITIES).map(([entity, character]) => [character, entity]),
-);
-const unescapeHtml = (value) => value.replace(/&(amp|lt|gt|quot|#39);/g, (e) => ENTITIES[e]);
-const escapeHtml = (value) => value.replace(/[&<>"']/g, (c) => CHARACTERS[c]);
-const changeHighlightedTitle = (value) => escapeHtml(changeTitle(unescapeHtml(value))).replace(
-  /&lt;(\/?)mark&gt;/g,
-  '<$1mark>',
-);
 
 /* eslint-disable no-underscore-dangle */
 const withChangedTitle = (hit) => (empty(hit._highlightResult?.post_title?.value)

@@ -17,7 +17,8 @@ const SEARCH_FILTERS = [
 ];
 
 // Single-select post type filter: a click replaces the current filter (the
-// active one stays active), "No filter" clears it; both go back to page 1.
+// active one stays active), "No filter" clears it. Every click goes back to
+// page 1, a click on the active filter too, as in v6.
 const MySearchFilters = ({ attribute }) => {
   const { items } = useRefinementList({ attribute });
   const { indexUiState, setIndexUiState } = useInstantSearch();

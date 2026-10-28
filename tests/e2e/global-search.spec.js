@@ -169,14 +169,16 @@ test('post type filters are single-select and go back to page 1', async ({
   await expect(noFilter(page)).toBeVisible();
   expect(queries.at(-1).facetFilters).toBe('[["post_type_label:Practices"]]');
 
-  // Clicking the active filter keeps it.
-  await filterToggles(page).filter({ hasText: 'Practices' }).click();
-  await page.waitForTimeout(1000);
-  expect(await activeFilters(page)).toEqual(['Practices']);
-
   await filterToggles(page).filter({ hasText: 'Posts' }).click();
   await expect.poll(() => activeFilters(page)).toEqual(['Posts']);
   expect(queries.at(-1).facetFilters).toBe('[["post_type_label:Posts"]]');
+
+  // Clicking the active filter keeps it and goes back to page 1 (as in v6).
+  await pageLink(page, 2).click();
+  await expect(selectedPage(page)).toHaveText('2');
+  await filterToggles(page).filter({ hasText: 'Posts' }).click();
+  await expect(selectedPage(page)).toHaveText('1');
+  expect(await activeFilters(page)).toEqual(['Posts']);
 
   await pageLink(page, 2).click();
   await expect(selectedPage(page)).toHaveText('2');

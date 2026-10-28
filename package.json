@@ -87,6 +87,7 @@
     "typescript": "^5.9.3"
   },
   "resolutions": {
-    "jquery": "^3.5.0"
+    "jquery": "^3.5.0",
+    "**/instantsearch.js/react": "19.2.9"
   }
 }
