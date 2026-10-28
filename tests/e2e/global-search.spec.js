@@ -267,3 +267,24 @@ test('search talks to the Algolia search hosts only', async ({ page }) => {
   expect([...hosts].filter((h) => /insights/.test(h))).toEqual([]);
   expect(errors.filter((e) => /instantsearch|algolia/i.test(e))).toEqual([]);
 });
+
+test('an Algolia error shows no results and throws nothing', async ({
+  page,
+}) => {
+  const errors = [];
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.route(/algolia/, (route) => (route.request().method() === 'POST'
+    ? route.fulfill({
+      status: 400,
+      json: { message: 'Invalid request', status: 400 },
+      headers: { 'access-control-allow-origin': '*' },
+    })
+    : route.continue()));
+
+  await openSearch(page);
+  await search(page, 'real estate');
+  await page.waitForTimeout(2000);
+  await expect(hits(page)).toHaveCount(0);
+  await expect(pagination(page)).toHaveCount(0);
+  expect(errors).toEqual([]);
+});
