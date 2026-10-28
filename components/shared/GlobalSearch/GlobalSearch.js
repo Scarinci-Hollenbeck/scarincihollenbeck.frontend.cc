@@ -1,10 +1,5 @@
 import algoliasearch from 'algoliasearch/lite';
-import {
-  InstantSearch,
-  createConnector,
-  Configure,
-  connectRefinementList,
-} from 'react-instantsearch-dom';
+import { InstantSearch, Configure } from 'react-instantsearch';
 import {
   ALGOLIA_PUBLIC_API,
   ALGOLIA_APP_ID,
@@ -12,40 +7,13 @@ import {
 } from 'utils/constants';
 import { ResultsContainer } from 'styles/GlobalSearch.style';
 import React from 'react';
-import AuxiliarySearch from './AuxiliarySearch';
 import MySearchResults from './MySearchResults';
 import MySearchFilters from './MySearchFilters';
-import { MySearchBox } from './MySearchBox';
+import { ConnectedSearchBox } from './MySearchBox';
 
 const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_PUBLIC_API);
 
-const connectWithQuery = createConnector({
-  displayName: 'WidgetWithQuery',
-  getProvidedProps(props, searchState) {
-    const currentRefinement = searchState.attributeForMyQuery || '';
-    return { currentRefinement, ...props };
-  },
-  refine(props, searchState, nextRefinement) {
-    return {
-      ...searchState,
-      attributeForMyQuery: nextRefinement.currentTarget.value,
-      props,
-    };
-  },
-  getSearchParameters(searchParameters, props, searchState) {
-    // When the `attributeForMyQuery` state entry changes, we update the query.
-    return searchParameters.setQuery(searchState.attributeForMyQuery || '');
-  },
-  cleanUp(props, searchState) {
-    const { attributeForMyQuery, ...nextSearchState } = searchState;
-
-    return { nextSearchState, ...props };
-  },
-});
-
-const ConnectedSearchBox = connectWithQuery(MySearchBox);
-const ConnectedRefinementList = connectRefinementList(MySearchFilters);
-connectWithQuery(AuxiliarySearch);
+const FUTURE = { preserveSharedStateOnUnmount: true };
 
 export const GlobalSearch = ({
   setIsOpenSearch,
@@ -67,8 +35,14 @@ export const GlobalSearch = ({
     'post_type_label:-Posts',
   ];
 
+  // insights off: no click events and no extra third-party host (CSP).
   return (
-    <InstantSearch indexName={ALGOLIA_SEARCH_INDEX} searchClient={searchClient}>
+    <InstantSearch
+      indexName={ALGOLIA_SEARCH_INDEX}
+      searchClient={searchClient}
+      insights={false}
+      future={FUTURE}
+    >
       <Configure filters={filters} optionalFilters={optionalFilters} />
       <ConnectedSearchBox
         placeholder="Search"
@@ -78,9 +52,7 @@ export const GlobalSearch = ({
         label={label}
       />
       <ResultsContainer className="search-result-container">
-        {!filterByPostType && (
-          <ConnectedRefinementList attribute="post_type_label" />
-        )}
+        {!filterByPostType && <MySearchFilters attribute="post_type_label" />}
         <MySearchResults
           setIsOpenSearch={setIsOpenSearch}
           handleHideSearch={handleHideSearch}
