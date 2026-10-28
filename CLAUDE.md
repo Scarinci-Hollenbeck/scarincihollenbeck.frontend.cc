@@ -11,6 +11,7 @@ yarn start      # Start production server on port 7300
 yarn lint       # ESLint with auto-fix (airbnb config)
 yarn format     # Prettier formatting
 yarn test:unit  # Playwright unit tests (tests/unit), no server needed
+node scripts/smoke-compare.js <target> [<reference>]  # Release HTTP sweep, one URL at a time (see "Releasing staging to production")
 yarn test:e2e   # Playwright e2e tests (tests/e2e) against E2E_BASE_URL, default http://localhost:7300 (run `yarn build && yarn start` first; browser tests need `npx playwright install chromium` once)
 ```
 
@@ -117,6 +118,19 @@ NEXT_PUBLIC_FIREBASE_*            # Firebase config vars
 - Feature branches → PR into `staging`; every branch and PR gets a Vercel preview deployment
 - `staging` → PR into `production`
 - `production` branch → Vercel Production, the live site at scarincihollenbeck.com (merging here deploys to live)
+
+### Releasing `staging` to production
+
+WordPress renders every uncached page and its login starts returning 504 (and ISR tasks time out on the live site) at about 8 parallel renders. Never sweep the live site in parallel; the tools below go one URL at a time.
+
+The `vercel` commands below need a directory linked once with `vercel link --project scarincihollenbeck-frontend-cc --scope scarinci-hollenbeck`.
+
+1. Before the merge, against the staging alias (`https://scarincihollenbeck-frontend-cc-git-staging-scarinci-hollenbeck.vercel.app`, public): `node scripts/smoke-compare.js <staging> https://scarincihollenbeck.com` (every sitemap URL, 40 posts, every redirect and rewrite; diffs status, Location, title, canonical, robots, h1, JSON-LD; pre-existing issues print as warnings) and `E2E_BASE_URL=<staging> yarn test:e2e --workers=1`.
+2. Merge in a quiet hour (evening or weekend, US Eastern). Note the URL of the outgoing production deployment first (`vercel ls --prod`): it is the rollback target and the reference for step 3. Check it answers 200 without a login; if Deployment Protection ever covers deployment URLs, use the staging alias as the reference instead.
+3. Right after the deploy: `node scripts/smoke-compare.js https://scarincihollenbeck.com <previous production deployment URL>`, `E2E_BASE_URL=https://scarincihollenbeck.com npx playwright test --project=e2e --workers=1 tests/e2e/release-smoke.spec.js` (only this spec on the live site: it aborts analytics beacons and blocks the service worker, the other specs do not; the Maps test runs only on the real domain, the Maps key rejects `*.vercel.app`), and `vercel logs --environment production --level error --since 30m --no-follow`. The new deployment's ISR cache is cold, so timeouts show up first.
+4. Rollback is Vercel instant rollback; afterwards Vercel stops auto-assigning the domain to new production deployments until that is undone in the dashboard.
+
+Expected noise on previews: `X-Robots-Tag: noindex` (Lighthouse SEO drops) and CSP reports from the `vercel.live` toolbar. `/library/category/*` is SSR and returns 504 or a false 404 when WordPress is overloaded, on any deployment.
 
 ### ESLint
 
