@@ -1,28 +1,12 @@
 import { test, expect } from '@playwright/test';
+import blockAnalytics from './support/block-analytics';
 
 /**
  * Browser smoke checks for a release: run against the preview before switching
  * production and against production right after (E2E_BASE_URL).
- * Analytics, ads and call-tracking beacons are aborted so the run does not add
- * visits or conversions to the client's reports. The PWA service worker is
- * kept from registering too: requests it sends itself never reach page.route.
- * (Playwright's `serviceWorkers: 'block'` removes navigator.serviceWorker, and
- * the PWA register script then throws.)
  * Run with --workers=1 (see CLAUDE.md): every uncached page is a WordPress
  * render.
  */
-
-const AD_HOSTS = /(^|\.)(google-analytics\.com|doubleclick\.net|googleadservices\.com|googlesyndication\.com|analytics\.google\.com)$/;
-// Google Ads also pings google.<country TLD>, e.g. google.com.ua/pagead.
-const GOOGLE_HOST = /(^|\.)google\.[a-z]{2,3}(\.[a-z]{2})?$/;
-const GOOGLE_BEACON_PATH = /^\/(g\/collect|rmkt|pagead|ccm|ads|measurement)\b/;
-
-const isBeacon = ({ hostname, pathname }) => AD_HOSTS.test(hostname)
-  || (GOOGLE_HOST.test(hostname) && GOOGLE_BEACON_PATH.test(pathname))
-  || (hostname === 'www.googletagmanager.com' && pathname === '/a')
-  // CallRail: let the swap script load, block everything it reports.
-  || (/(^|\.)callrail\.com$/.test(hostname)
-    && !/^\/companies\/.+\.js$/.test(pathname));
 
 // One page of every type; slugs picked to be long-lived.
 const PAGES = [
@@ -35,7 +19,7 @@ const PAGES = [
   '/library/category/firm-news',
   '/client-alert/new-intoxicating-hemp-law',
   '/location/little-falls',
-  '/contact',
+  '/contact-us',
   '/careers',
   '/awards',
   '/diversity',
@@ -50,12 +34,7 @@ test.describe.configure({ retries: 1 });
 test.use({ viewport: { width: 1440, height: 900 } });
 
 test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => {
-    if (navigator.serviceWorker) {
-      navigator.serviceWorker.register = () => new Promise(() => {});
-    }
-  });
-  await page.route(isBeacon, (route) => route.abort());
+  await blockAnalytics(page);
 });
 
 PAGES.forEach((path) => {
@@ -75,7 +54,7 @@ PAGES.forEach((path) => {
 });
 
 test('Lead forms are initialised by Kwes', async ({ page }) => {
-  await page.goto('/contact');
+  await page.goto('/contact-us');
   await expect(page.locator('.kwes-form-init').first()).toBeAttached({
     timeout: 15000,
   });
@@ -111,5 +90,10 @@ test('Google Maps embed loads', async ({ page, baseURL }) => {
   );
   const maps = page.waitForResponse(/google\.com\/maps\/embed/);
   await page.goto('/location/little-falls');
+  // The embed iframe is loading="lazy"; bring it into view so it loads.
+  await page
+    .locator('iframe[src*="maps/embed"]')
+    .first()
+    .scrollIntoViewIfNeeded();
   expect((await maps).status()).toBe(200);
 });
