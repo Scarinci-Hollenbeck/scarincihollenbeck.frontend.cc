@@ -8,8 +8,7 @@ import blockAnalytics from './support/block-analytics';
 
 const INDUSTRY = '/industries/cannabis';
 
-// Shaped like the real WPGraphQL response, __typename included (Apollo
-// discards results without it).
+// Shaped like the real WPGraphQL response.
 const makeClients = (offset, size, total) => ({
   data: {
     clients: {

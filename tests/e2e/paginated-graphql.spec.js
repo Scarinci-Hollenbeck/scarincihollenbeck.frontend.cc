@@ -154,3 +154,42 @@ test('a GraphQL error hides the articles list without breaking the page', async 
   await expect(page.locator('.loader')).toHaveCount(0);
   expect(errors).toEqual([]);
 });
+
+test('a retry after a GraphQL error shows the loader again, as Apollo did', async ({
+  page,
+}) => {
+  let failing = true;
+  let release;
+  const held = new Promise((resolve) => {
+    release = resolve;
+  });
+  await page.route(/graphql/, async (route) => {
+    if (!isQuery('AttorneyPostsQuery')(route.request())) return route.continue();
+    if (failing) {
+      return route.fulfill({
+        json: { errors: [{ message: 'Internal server error' }], data: null },
+        headers: { 'access-control-allow-origin': '*' },
+      });
+    }
+    await held;
+    return route.continue();
+  });
+
+  await page.goto(ATTORNEY);
+  await expect(
+    page.getByRole('heading', { name: 'Articles', exact: true }),
+  ).toBeVisible();
+  await page.waitForTimeout(3000);
+  await expect(articleCards(page)).toHaveCount(0);
+
+  // Coming back refetches the failed query; while it runs the box shows the
+  // loader, not the old error.
+  failing = false;
+  await page.evaluate(() => window.next.router.push('/attorneys'));
+  await expect(page).toHaveURL(/\/attorneys$/);
+  await page.goBack();
+  await expect(page).toHaveURL(new RegExp(`${ATTORNEY}$`));
+  await expect(articlesBox(page).locator('.loader')).toBeVisible();
+  release();
+  await expect(articleCards(page)).toHaveCount(3);
+});

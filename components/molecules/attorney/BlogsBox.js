@@ -24,11 +24,11 @@ const BlogsBox = ({
     posts, limit, page, loading, error,
   } = paginationData;
 
+  const memoData = useMemo(() => sanitizePosts(posts), [posts]);
+
   if (error) {
     return null;
   }
-
-  const memoData = useMemo(() => sanitizePosts(posts), [paginationData]);
 
   return (
     <>

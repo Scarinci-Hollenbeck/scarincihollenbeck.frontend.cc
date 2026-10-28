@@ -39,10 +39,13 @@ export const usePaginationData = (query, params) => {
   };
 
   const skip = empty(query);
-  const { currentData, error } = useGetGraphQLQueryQuery(
-    { query, variables },
-    { skip },
-  );
+  const {
+    currentData,
+    error: lastError,
+    isFetching,
+  } = useGetGraphQLQueryQuery({ query, variables }, { skip });
+  // RTK Query keeps the old error while it refetches; Apollo showed the loader.
+  const error = isFetching ? undefined : lastError;
 
   if (skip) return {};
 
