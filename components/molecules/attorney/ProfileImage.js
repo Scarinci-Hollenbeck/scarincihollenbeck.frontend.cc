@@ -23,7 +23,7 @@ const ProfileImage = ({ name, profileImage, representativeVideo }) => (
           quality={85}
           sizes="(max-width: 992px) 360px, (max-width: 1680px) 400px, 500px"
           className="animate__animated animate__fadeInUp animate__fast"
-          priority
+          preload
         />
       </ProfileImageWrapper>
 
@@ -41,7 +41,7 @@ const ProfileImage = ({ name, profileImage, representativeVideo }) => (
       width={700}
       height={900}
       alt="Profile background"
-      priority
+      preload
       sizes="(max-width: 768px) 100vw, (max-width: 1680px) 480px, 700px"
       loading="eager"
     />

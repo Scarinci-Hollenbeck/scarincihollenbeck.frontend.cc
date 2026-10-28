@@ -2,7 +2,7 @@ import {
   CURRENT_DOMAIN,
   BASE_API_URL,
   headers,
-  NEXT_PUBLIC_WP_REST_KEY,
+  WP_REST_KEY,
 } from 'utils/constants';
 import fetch from 'node-fetch';
 import empty from 'is-empty';
@@ -20,7 +20,7 @@ const getCurrentPublishedPages = async () => {
   try {
     const response = await (
       await fetch(
-        `${BASE_API_URL}/wp-json/wcra/v1/sitemap/?secret_key=${NEXT_PUBLIC_WP_REST_KEY}`,
+        `${BASE_API_URL}/wp-json/wcra/v1/sitemap/?secret_key=${WP_REST_KEY}`,
         headers,
       )
     ).json();
