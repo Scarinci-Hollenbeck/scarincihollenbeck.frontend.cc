@@ -34,7 +34,7 @@ This is a **Next.js 16** frontend (Pages Router, React 19) for the Scarinci Holl
 
 Pages use one of two approaches:
 
-1. **Static Generation (ISR)** — most pages use `getStaticProps` with `revalidate` for ISR. Revalidation times vary: home/attorneys/locations/etc. use 1 day (86400s), library content uses shorter intervals.
+1. **Static Generation (ISR)** — most pages use `getStaticProps` with `revalidate` for ISR. Almost every page uses `revalidate: 600`; attorney profiles and `/practices/:slug` use 60.
 
 2. **Internal API routes** (`/pages/api/`) — caching middleware layer that proxies WordPress REST API calls with a 600-second in-memory global cache (`global.cache`). These are consumed by RTK Query in the Redux store for client-side data like attorneys list, locations, practices, and industries.
 
@@ -123,12 +123,12 @@ NEXT_PUBLIC_FIREBASE_*            # Firebase config vars
 
 ### Releasing `staging` to production
 
-WordPress renders every uncached page and its login starts returning 504 (and ISR tasks time out on the live site) at about 8 parallel renders. Never sweep the live site in parallel; the tools below go one URL at a time.
+WordPress renders every uncached page and its login starts returning 504 (and ISR tasks time out on the live site) at about 8 parallel renders. Never sweep the live site in parallel; the tools below go one URL at a time. One URL at a time is not enough on its own: most hits are `x-vercel-cache: STALE`, and Vercel re-renders those in the background after answering, so a fast sequential sweep still stacks dozens of renders (2026-11-02, 60 s timeouts on production and staging). `smoke-compare.js` therefore waits after each STALE answer until the background render has finished; any new sweep tool must do the same.
 
 The `vercel` commands below need a directory linked once with `vercel link --project scarincihollenbeck-frontend-cc --scope scarinci-hollenbeck`. The `VAR=value command` prefixes are Git Bash syntax. Browser specs must call `blockAnalytics(page)` from `tests/e2e/support/block-analytics.js` before opening a page, so runs against previews or production never send analytics or ad hits.
 
 1. Before the merge, against the staging alias (`https://scarincihollenbeck-frontend-cc-git-staging-scarinci-hollenbeck.vercel.app`, public): `node scripts/smoke-compare.js <staging> https://scarincihollenbeck.com` (every sitemap URL, 40 posts, every redirect and rewrite; diffs status, Location, title, canonical, robots, h1, JSON-LD; pre-existing issues print as warnings) and `E2E_BASE_URL=<staging> yarn test:e2e --workers=1`.
-2. Merge in a quiet hour (evening or weekend, US Eastern). Note the URL of the outgoing production deployment first (`vercel ls --prod`): it is the rollback target and the reference for step 3. Check it answers 200 without a login; if Deployment Protection ever covers deployment URLs, use the staging alias as the reference instead.
+2. Merge in a quiet hour (early morning US Eastern, before the firm's working day; announce the time to the backend on the tasks repo beforehand). Note the URL of the outgoing production deployment first (`vercel ls --prod`): it is the rollback target and the reference for step 3. A deployment built before a `WP_PASSWORD` rotation can no longer log in to WordPress, so it is no rollback target. Check it answers 200 without a login; if Deployment Protection ever covers deployment URLs, use the staging alias as the reference instead.
 3. Right after the deploy: `node scripts/smoke-compare.js https://scarincihollenbeck.com <previous production deployment URL>`, `E2E_BASE_URL=https://scarincihollenbeck.com npx playwright test --project=e2e --workers=1 tests/e2e/release-smoke.spec.js` (only this spec on the live site, the others are not meant for production; the Maps test runs only on the real domain, the Maps key rejects `*.vercel.app`), and `vercel logs --environment production --level error --since 30m --no-follow --no-branch` (without `--no-branch`, run inside this repo the CLI filters by the current git branch and finds nothing for `production` deploys). The new deployment's ISR cache is cold, so timeouts show up first.
 4. Rollback is Vercel instant rollback; afterwards Vercel stops auto-assigning the domain to new production deployments until that is undone in the dashboard.
 

@@ -13,6 +13,12 @@
 // Requests go strictly one at a time, target then reference: both deployments
 // use the same WordPress, which renders every uncached page, and a handful of
 // parallel renders already makes its login time out (504) on the live site.
+// That alone is not enough: pages revalidate every 60-600 s, so most hits are
+// STALE, and Vercel answers them at once while it re-renders the page in the
+// background. Without waiting, a sweep at one URL per second stacks dozens of
+// background renders (2026-11-02: 60 s timeouts on production and staging).
+// So after a STALE answer the script polls the same URL until the background
+// render has finished, keeping at most one render running at a time.
 
 /* eslint-disable no-console, no-restricted-syntax -- CLI report; the loop keeps requests sequential */
 
@@ -38,6 +44,37 @@ const SAMPLE = { ':slug*': 'sample-a/sample-b', ':slug': 'sample-slug' };
 // A WordPress failure makes the sitemaps come back (and get cached) almost
 // empty; a short list would otherwise pass as "all OK".
 const MIN_URLS = { 'sitemap.xml': 200, 'sitemap-posts.xml': 1000 };
+// A background render is cut at Vercel's 60 s function limit; past that the
+// page stays STALE and the next request would start a new render.
+const REVALIDATE_POLL_MS = 3000;
+const REVALIDATE_WAIT_MS = 70000;
+let slowRevalidations = 0;
+
+const sleep = (ms) => new Promise((resolve) => {
+  setTimeout(resolve, ms);
+});
+
+// Polls until the background render started by a STALE answer is done (the
+// page then comes back HIT with a fresh Age). Polling a STALE page does not
+// start a second render while one is in flight.
+async function waitForRevalidation(url) {
+  const deadline = Date.now() + REVALIDATE_WAIT_MS;
+  while (Date.now() < deadline) {
+    // eslint-disable-next-line no-await-in-loop
+    await sleep(REVALIDATE_POLL_MS);
+    try {
+      // eslint-disable-next-line no-await-in-loop
+      const res = await fetch(url, { redirect: 'manual' });
+      // eslint-disable-next-line no-await-in-loop
+      await res.arrayBuffer();
+      if (res.headers.get('x-vercel-cache') !== 'STALE') return;
+    } catch (error) {
+      // A network blip is no reason to stop waiting.
+    }
+  }
+  slowRevalidations += 1;
+  console.warn(`  still STALE after ${REVALIDATE_WAIT_MS / 1000} s: ${url}`);
+}
 
 const [target, reference] = process.argv
   .slice(2)
@@ -71,10 +108,12 @@ async function sitemapPaths(file) {
 async function probe(host, path) {
   try {
     const res = await fetch(host + path, { redirect: 'manual' });
+    const stale = res.headers.get('x-vercel-cache') === 'STALE';
     const isHtml = res.status === 200
       && (res.headers.get('content-type') || '').includes('html');
     const html = isHtml ? await res.text() : '';
     if (!isHtml) await res.arrayBuffer();
+    if (stale) await waitForRevalidation(host + path);
     return {
       status: res.status,
       location: (res.headers.get('location') || '')
@@ -249,6 +288,12 @@ Warnings (${warned.length}), not caused by a release:`);
     console.log(`
 Failures (${failing.length}):`);
     report(rows, 'failures');
+  }
+  if (slowRevalidations) {
+    console.log(
+      `
+${slowRevalidations} background renders did not finish in time; check the Vercel logs for timeouts.`,
+    );
   }
   console.log(`
 ${
