@@ -13,7 +13,6 @@ import {
   extractHtmlListItems,
 } from 'utils/helpers';
 import { GOV_LAW_URL, CURRENT_DOMAIN } from 'utils/constants';
-import ApolloWrapper from 'layouts/ApolloWrapper';
 import AttorneyProfilePage from 'components/pages/AttorneyProfilePage';
 import empty from 'is-empty';
 
@@ -339,11 +338,7 @@ const AttorneyProfile = ({
     pageSchemaJsonLd,
   };
 
-  return (
-    <ApolloWrapper>
-      <AttorneyProfilePage {...attorneyPageProps} />
-    </ApolloWrapper>
-  );
+  return <AttorneyProfilePage {...attorneyPageProps} />;
 };
 
 export default AttorneyProfile;

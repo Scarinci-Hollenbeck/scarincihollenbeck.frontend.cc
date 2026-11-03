@@ -18,7 +18,6 @@ This repository contains the code base for the frontend of scarincihollenbeck.co
 
 **Client Application built with**
 
-- [Apollo GraphQL](https://www.apollographql.com/)
 - [Algolia](https://www.algolia.com/)
 - [Animate.css](https://animate.style/)
 - [Bootstrap 4](https://getbootstrap.com/docs/4.0/getting-started/introduction/)

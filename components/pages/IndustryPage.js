@@ -7,7 +7,7 @@ import { Title60 } from 'styles/common/Typography.style';
 import { IndustryPageWrapper } from 'styles/Industries.style';
 import empty from 'is-empty';
 import { useRouter } from 'next/router';
-import { getPaginationData } from 'requests/getPaginationData';
+import { usePaginationData } from 'hooks/usePaginationData';
 import { getClientsQuery } from 'requests/graphql-queries';
 
 const FilledSection = dynamic(() => import('components/organisms/industries/FilledSection'));
@@ -87,7 +87,7 @@ const IndustryPage = ({
     spotlight,
   } = content;
 
-  const clientsPaginationData = getPaginationData(getClientsQuery, {
+  const clientsPaginationData = usePaginationData(getClientsQuery, {
     currentPage: query?.['client-page'] || 1,
     itemsPerPage: 12,
     id: [clients?.clientsConnection?.[0]?.databaseId],

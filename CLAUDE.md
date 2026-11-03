@@ -17,7 +17,7 @@ yarn test:e2e   # Playwright e2e tests (tests/e2e) against E2E_BASE_URL, default
 
 ## Architecture Overview
 
-This is a **Next.js 16** frontend (Pages Router, React 18) for the Scarinci Hollenbeck law firm website. It is deployed on Vercel (Node 22.x, pinned via `engines` in `package.json`). The backend is a headless WordPress instance, consumed via both GraphQL and a custom REST API.
+This is a **Next.js 16** frontend (Pages Router, React 19) for the Scarinci Hollenbeck law firm website. It is deployed on Vercel (Node 22.x, pinned via `engines` in `package.json`). The backend is a headless WordPress instance, consumed via both GraphQL and a custom REST API.
 
 ### Next 16 specifics
 
@@ -53,7 +53,7 @@ Pages use one of two approaches:
 
 RTK Query powers two API services:
 
-- `redux/services/wp-graphql.js` — mutation-based GraphQL client for client-side queries
+- `redux/services/wp-graphql.js` — GraphQL client for client-side queries: mutations, plus the cached `getGraphQLQuery` endpoint behind `hooks/usePaginationData.js` (paginated attorney articles and industry clients; results stay cached for the whole session)
 - `redux/services/project-api.js` — queries internal `/api/` routes for attorneys, practices, locations, industries
 
 Slices: `attorneys`, `sizes`, `modals`, `library`
@@ -78,6 +78,8 @@ Follows atomic design under `components/`:
 - `organisms/` — complex sections (Navbar, forms)
 - `pages/` — full page-level components (imported by pages/)
 - `shared/` — site-wide: `Header`, `Footer`, `CommonModals`, global search
+
+The header search (`components/shared/GlobalSearch/`) runs on `react-instantsearch` 7 hooks with `insights={false}`. `SearchHits.js` and `SearchPagination.js` reproduce the markup of the old `react-instantsearch-dom` 6 widgets because `styles/GlobalSearch.style.js` targets those `ais-*` classes; the post type filter is single-select. `tests/e2e/global-search.spec.js` pins the behaviour against the live index. `instantsearch.js` lists `react` as a dependency (it never imports it); the `**/instantsearch.js/react` entry in `resolutions` keeps a second React copy out of `node_modules`, so bump it together with `react`.
 
 ### Styling
 
@@ -123,11 +125,11 @@ NEXT_PUBLIC_FIREBASE_*            # Firebase config vars
 
 WordPress renders every uncached page and its login starts returning 504 (and ISR tasks time out on the live site) at about 8 parallel renders. Never sweep the live site in parallel; the tools below go one URL at a time.
 
-The `vercel` commands below need a directory linked once with `vercel link --project scarincihollenbeck-frontend-cc --scope scarinci-hollenbeck`.
+The `vercel` commands below need a directory linked once with `vercel link --project scarincihollenbeck-frontend-cc --scope scarinci-hollenbeck`. The `VAR=value command` prefixes are Git Bash syntax. Browser specs must call `blockAnalytics(page)` from `tests/e2e/support/block-analytics.js` before opening a page, so runs against previews or production never send analytics or ad hits.
 
 1. Before the merge, against the staging alias (`https://scarincihollenbeck-frontend-cc-git-staging-scarinci-hollenbeck.vercel.app`, public): `node scripts/smoke-compare.js <staging> https://scarincihollenbeck.com` (every sitemap URL, 40 posts, every redirect and rewrite; diffs status, Location, title, canonical, robots, h1, JSON-LD; pre-existing issues print as warnings) and `E2E_BASE_URL=<staging> yarn test:e2e --workers=1`.
 2. Merge in a quiet hour (evening or weekend, US Eastern). Note the URL of the outgoing production deployment first (`vercel ls --prod`): it is the rollback target and the reference for step 3. Check it answers 200 without a login; if Deployment Protection ever covers deployment URLs, use the staging alias as the reference instead.
-3. Right after the deploy: `node scripts/smoke-compare.js https://scarincihollenbeck.com <previous production deployment URL>`, `E2E_BASE_URL=https://scarincihollenbeck.com npx playwright test --project=e2e --workers=1 tests/e2e/release-smoke.spec.js` (only this spec on the live site: it aborts analytics beacons and blocks the service worker, the other specs do not; the Maps test runs only on the real domain, the Maps key rejects `*.vercel.app`), and `vercel logs --environment production --level error --since 30m --no-follow`. The new deployment's ISR cache is cold, so timeouts show up first.
+3. Right after the deploy: `node scripts/smoke-compare.js https://scarincihollenbeck.com <previous production deployment URL>`, `E2E_BASE_URL=https://scarincihollenbeck.com npx playwright test --project=e2e --workers=1 tests/e2e/release-smoke.spec.js` (only this spec on the live site, the others are not meant for production; the Maps test runs only on the real domain, the Maps key rejects `*.vercel.app`), and `vercel logs --environment production --level error --since 30m --no-follow --no-branch` (without `--no-branch`, run inside this repo the CLI filters by the current git branch and finds nothing for `production` deploys). The new deployment's ISR cache is cold, so timeouts show up first.
 4. Rollback is Vercel instant rollback; afterwards Vercel stops auto-assigning the domain to new production deployments until that is undone in the dashboard.
 
 Expected noise on previews: `X-Robots-Tag: noindex` (Lighthouse SEO drops) and CSP reports from the `vercel.live` toolbar. `/library/category/*` is SSR and returns 504 or a false 404 when WordPress is overloaded, on any deployment.

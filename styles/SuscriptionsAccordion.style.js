@@ -15,7 +15,6 @@ export const CheckboxesList = styled.ul`
   grid-template-columns: repeat(auto-fill, minmax(min(220px, 100%), 1fr));
   gap: 16px;
 
-  > .css-1458dhy,
   > span {
     margin: 0 auto;
     grid-column: -1 / 1;

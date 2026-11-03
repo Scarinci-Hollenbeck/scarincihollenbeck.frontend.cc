@@ -53,3 +53,5 @@ workbox-*.js
 workbox-*.js.map
 
 docs/task
+# Local agent specs, plans and progress (never committed)
+.superpowers/

@@ -1,35 +1,38 @@
 import React from 'react';
-import { connectStateResults, Pagination } from 'react-instantsearch-dom';
-import { HitsStyled, ResultBox } from 'styles/GlobalSearch.style';
-import Hit from './Hit';
+import { useHits, useInstantSearch } from 'react-instantsearch';
+import { ResultBox } from 'styles/GlobalSearch.style';
+import SearchHits from './SearchHits';
+import SearchPagination from './SearchPagination';
 
 const MySearchResults = ({ setIsOpenSearch, handleHideSearch }) => {
+  // catchError: a failed search shows no results, as in v6, instead of an
+  // uncaught error.
+  const { results } = useInstantSearch({ catchError: true });
+  const { items } = useHits();
+
   const handleClear = () => {
     if (handleHideSearch) {
       handleHideSearch();
     }
   };
 
-  const CustomHit = ({ hit }) => (
-    <Hit
-      hit={hit}
-      setIsOpenSearch={setIsOpenSearch}
-      handleClear={handleClear}
-    />
-  );
+  // The pagination widget stays mounted while hidden: mounting it with the
+  // first results would send every search twice.
+  const showResults = results?.query?.length > 0 && items.length > 0;
 
-  const RenderSearchResults = connectStateResults(
-    ({ searchResults }) => searchResults?.query.length > 0
-      && searchResults?.hits.length > 0 && (
-        <>
-          <ResultBox onClick={handleClear} className="results-container">
-            <HitsStyled hitComponent={CustomHit} />
-          </ResultBox>
-          <Pagination totalPages={10} />
-        </>
-    ),
+  return (
+    <>
+      {showResults && (
+        <ResultBox onClick={handleClear} className="results-container">
+          <SearchHits
+            hits={items}
+            setIsOpenSearch={setIsOpenSearch}
+            handleClear={handleClear}
+          />
+        </ResultBox>
+      )}
+      <SearchPagination totalPages={10} visible={showResults} />
+    </>
   );
-
-  return <RenderSearchResults />;
 };
 export default MySearchResults;

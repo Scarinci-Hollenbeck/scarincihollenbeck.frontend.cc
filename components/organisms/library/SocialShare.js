@@ -32,17 +32,23 @@ const SocialShare = ({
     <ShareSocialBox className={customClass}>
       <SocialHr />
       <SocialLabel>Share</SocialLabel>
-      <FacebookShareButton url={postUrl} quote={title}>
+      {/* react-share 5 no longer sets aria-label on its buttons */}
+      <FacebookShareButton url={postUrl} aria-label="facebook">
         <BsFacebook className="faceBookBtn" />
       </FacebookShareButton>
-      <TwitterShareButton url={postUrl} quote={title}>
+      <TwitterShareButton url={postUrl} aria-label="twitter">
         <BsTwitterX className="twitterBtn" />
       </TwitterShareButton>
-      <LinkedinShareButton url={postUrl} quote={title}>
+      <LinkedinShareButton url={postUrl} aria-label="linkedin">
         <BsLinkedin className="linkedIn" />
       </LinkedinShareButton>
       {isEmailShare && (
-        <EmailShareButton subject={title} body={postUrl} separator="">
+        <EmailShareButton
+          subject={title}
+          body={postUrl}
+          separator=""
+          aria-label="email"
+        >
           <FaEnvelope />
         </EmailShareButton>
       )}

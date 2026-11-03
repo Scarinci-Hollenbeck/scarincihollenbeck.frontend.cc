@@ -8,22 +8,31 @@ import {
   SearchedItemIcon,
   SearchedItemLink,
 } from 'styles/Hit.style';
-import { Highlight } from 'react-instantsearch-dom';
+import { Highlight } from 'react-instantsearch';
 import empty from 'is-empty';
 import { getIcon } from 'utils/getIcon';
 import { changeTitle } from '../../../utils/helpers';
+import { changeHighlightedTitle } from '../../../utils/highlighted-title';
 import { BASE_API_URL, PRODUCTION_URL } from '../../../utils/constants';
 
-export default function Hit({ hit, setIsOpenSearch, handleClear }) {
-  // eslint-disable-next-line no-underscore-dangle
-  if (!empty(hit._highlightResult?.post_title?.value)) {
-    // eslint-disable-next-line no-underscore-dangle
-    hit._highlightResult.post_title.value = changeTitle(
-      // eslint-disable-next-line no-underscore-dangle
-      hit._highlightResult.post_title.value,
-    );
-  }
+/* eslint-disable no-underscore-dangle */
+const withChangedTitle = (hit) => (empty(hit._highlightResult?.post_title?.value)
+  ? hit
+  : {
+    ...hit,
+    _highlightResult: {
+      ...hit._highlightResult,
+      post_title: {
+        ...hit._highlightResult.post_title,
+        value: changeHighlightedTitle(
+          hit._highlightResult.post_title.value,
+        ),
+      },
+    },
+  });
+/* eslint-enable no-underscore-dangle */
 
+export default function Hit({ hit, setIsOpenSearch, handleClear }) {
   const handleClickItem = (e) => {
     e.stopPropagation();
     if (setIsOpenSearch) {
@@ -47,7 +56,12 @@ export default function Hit({ hit, setIsOpenSearch, handleClear }) {
         </SearchedItemIcon>
         <SearchedItemContent>
           <SearchableItemTitle>
-            <Highlight hit={hit} attribute="post_title" />
+            <Highlight
+              hit={withChangedTitle(hit)}
+              attribute="post_title"
+              highlightedTagName="em"
+              nonHighlightedTagName="span"
+            />
           </SearchableItemTitle>
           {hit.post_type === 'post' && (
             <SearchableItemFooter>

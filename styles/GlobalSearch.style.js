@@ -1,5 +1,4 @@
 import { Form } from 'react-bootstrap';
-import { Hits } from 'react-instantsearch-dom';
 import styled from 'styled-components';
 import {
   globalColor,
@@ -63,7 +62,7 @@ export const SearchInput = styled(Form.Control)`
   }
 `;
 
-export const HitsStyled = styled(Hits)`
+export const HitsStyled = styled.div`
   .ais-Hits-list {
     margin-bottom: 0;
     padding: 0 10px 0;

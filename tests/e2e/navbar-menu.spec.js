@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import blockAnalytics from './support/block-analytics';
 
 /**
  * The header dropdowns animate open with `overflow: hidden` and must switch to
@@ -8,6 +9,10 @@ import { test, expect } from '@playwright/test';
  */
 
 test.use({ viewport: { width: 1440, height: 900 } });
+
+test.beforeEach(async ({ page }) => {
+  await blockAnalytics(page);
+});
 
 test('attorneys filter list is not clipped by the header panel', async ({
   page,
