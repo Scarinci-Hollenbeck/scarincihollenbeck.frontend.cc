@@ -1,6 +1,7 @@
 User-agent: *
 Disallow: /wp-admin/
 Disallow: /?
+Disallow: /library/search?
 Disallow: /wp-content/uploads/wpo-plugins-tables-list.json
 Allow: /wp-admin/admin-ajax.php
 
