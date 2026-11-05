@@ -12,7 +12,8 @@
 //   --render-wait <s>    how long one render is assumed to run (default 70,
 //                        at least 60 against real hosts)
 //   --min-gap <s>        pause between any two requests, cached pages too
-//                        (default 1.5, at least 1 against real hosts)
+//                        (default and minimum against real hosts 1.5,
+//                        at most 60)
 //
 // With only <target>, it fails on sitemap pages, posts and parameterless
 // rewrites that are not 200, redirects that do not land where
@@ -44,6 +45,8 @@
 // fast burst trips Vercel's DDoS mitigation (403 challenge for the whole IP,
 // 2026-11-05). So every request, sitemaps included, starts at least --min-gap
 // after the previous one, which keeps the sweep at most 40 requests a minute.
+// A 429 or 403 means the Firewall has already limited this IP, so the sweep
+// stops at the first one instead of recording firewall answers for hours.
 
 /* eslint-disable no-console, no-restricted-syntax, no-await-in-loop -- CLI report; the loops keep requests sequential */
 
@@ -82,7 +85,12 @@ const OVERLOAD_STATUSES = new Set([502, 503, 504]);
 // render runs up to 60 s. Local stubs (tests) may go faster.
 const MAX_RENDERS_LIMIT = 4;
 const MIN_RENDER_WAIT_MS = 60000;
-const MIN_GAP_LIMIT_MS = 1000;
+// 1.5 s = 40 requests a minute, well under the Firewall's 60 pages a minute.
+const MIN_GAP_LIMIT_MS = 1500;
+const MAX_GAP_MS = 60000;
+// Vercel Firewall answers (rate limit, deny, challenge): from here on every
+// request would get the same, so the sweep stops at the first one.
+const FIREWALL_STATUSES = new Set([403, 429]);
 
 const stopError = (message) => Object.assign(new Error(message), { stop: true });
 
@@ -130,6 +138,7 @@ function parseArgs(argv) {
     && options.maxRenders >= 1
     && options.renderWaitMs > 0
     && options.minGapMs >= 0
+    && options.minGapMs <= MAX_GAP_MS
     && (local
       || (options.maxRenders <= MAX_RENDERS_LIMIT
         && options.renderWaitMs >= MIN_RENDER_WAIT_MS
@@ -310,6 +319,15 @@ async function main(options) {
       answer = { status: res.status, res, body };
     } catch (error) {
       answer = { status: `ERR ${error.message}` };
+    }
+    if (FIREWALL_STATUSES.has(answer.status)) {
+      throw stopError(
+        `Stopped after ${minutes(Date.now() - startedAt)} and ${
+          rows.length
+        } URLs: ${host}${path} answered ${
+          answer.status
+        }, a Vercel Firewall answer (rate limit, deny or challenge) for this IP. Check Firewall -> Traffic before running again.`,
+      );
     }
     const overload = typeof answer.status !== 'number' || OVERLOAD_STATUSES.has(answer.status);
     errorsInARow = overload ? errorsInARow + 1 : 0;
