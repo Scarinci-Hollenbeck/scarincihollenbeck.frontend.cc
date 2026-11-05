@@ -110,7 +110,7 @@ function run(args) {
   return new Promise((resolve) => {
     const child = spawn(
       process.execPath,
-      [SCRIPT, ...args, '--render-wait', RENDER_WAIT_S],
+      [SCRIPT, ...args, '--render-wait', RENDER_WAIT_S, '--min-gap', '0'],
       { env: { ...process.env, NODE_OPTIONS: `--require "${LOCAL_ONLY}"` } },
     );
     let output = '';
@@ -244,6 +244,14 @@ test('parseArgs rejects unknown flags and unsafe pacing on real hosts', () => {
   expect(parseArgs([real])).toMatchObject({
     maxRenders: 1,
     renderWaitMs: 70000,
+    minGapMs: 1500,
+  });
+  expect(parseArgs([real, '--min-gap', '0.5'])).toBeNull();
+  expect(parseArgs([real, '--min-gap', '2'])).toMatchObject({
+    minGapMs: 2000,
+  });
+  expect(parseArgs(['http://127.0.0.1:1', '--min-gap', '0'])).toMatchObject({
+    minGapMs: 0,
   });
   expect(parseArgs([real, '--maxrenders', '3'])).toBeNull();
   expect(parseArgs([real, '--save=x.json'])).toBeNull();
@@ -364,6 +372,23 @@ test('RenderPacer never requests a URL while its own render may run', async () =
     expect(Date.now() - started).toBeGreaterThanOrEqual(250);
     expect(stub.stats.renders).toBe(2);
     expect(stub.stats.rerenders).toBe(0);
+  } finally {
+    await stub.close();
+  }
+});
+
+test('RenderPacer keeps --min-gap between any two requests, cached ones too', async () => {
+  // The site answers 429 above 60 pages a minute from one IP, and bursts
+  // trip Vercel's DDoS mitigation, so cached (HIT) pages must be spaced too.
+  const stub = await startStub();
+  try {
+    const pacer = new RenderPacer(1, 300, 200);
+    const started = Date.now();
+    await pacer.fetch(`${stub.url}/page-100`);
+    await pacer.fetch(`${stub.url}/page-101`);
+    await pacer.fetch(`${stub.url}/page-102`);
+    expect(Date.now() - started).toBeGreaterThanOrEqual(400);
+    expect(stub.stats.renders).toBe(0);
   } finally {
     await stub.close();
   }

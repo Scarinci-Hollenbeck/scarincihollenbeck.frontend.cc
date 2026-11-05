@@ -11,6 +11,8 @@
 //                        at most 4 against real hosts)
 //   --render-wait <s>    how long one render is assumed to run (default 70,
 //                        at least 60 against real hosts)
+//   --min-gap <s>        pause between any two requests, cached pages too
+//                        (default 1.5, at least 1 against real hosts)
 //
 // With only <target>, it fails on sitemap pages, posts and parameterless
 // rewrites that are not 200, redirects that do not land where
@@ -36,6 +38,12 @@
 // plus a margin. It sends nothing while --max-renders such renders are
 // counted, and never requests a URL while its own render is counted.
 // A full sweep of a mostly stale deployment therefore takes hours.
+//
+// Cached (HIT) answers start no render, but they still go through the Vercel
+// Firewall: the site answers 429 above 60 pages a minute from one IP, and a
+// fast burst trips Vercel's DDoS mitigation (403 challenge for the whole IP,
+// 2026-11-05). So every request, sitemaps included, starts at least --min-gap
+// after the previous one, which keeps the sweep at most 40 requests a minute.
 
 /* eslint-disable no-console, no-restricted-syntax, no-await-in-loop -- CLI report; the loops keep requests sequential */
 
@@ -74,6 +82,7 @@ const OVERLOAD_STATUSES = new Set([502, 503, 504]);
 // render runs up to 60 s. Local stubs (tests) may go faster.
 const MAX_RENDERS_LIMIT = 4;
 const MIN_RENDER_WAIT_MS = 60000;
+const MIN_GAP_LIMIT_MS = 1000;
 
 const stopError = (message) => Object.assign(new Error(message), { stop: true });
 
@@ -82,7 +91,7 @@ const sleep = (ms) => new Promise((resolve) => {
 });
 
 function parseArgs(argv) {
-  const options = { maxRenders: 1, renderWaitMs: 70000 };
+  const options = { maxRenders: 1, renderWaitMs: 70000, minGapMs: 1500 };
   const positional = [];
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
@@ -95,6 +104,9 @@ function parseArgs(argv) {
     } else if (arg === '--render-wait') {
       i += 1;
       options.renderWaitMs = Number(argv[i]) * 1000;
+    } else if (arg === '--min-gap') {
+      i += 1;
+      options.minGapMs = Number(argv[i]) * 1000;
     } else if (arg.startsWith('-')) {
       return null;
     } else {
@@ -117,9 +129,11 @@ function parseArgs(argv) {
     && Number.isInteger(options.maxRenders)
     && options.maxRenders >= 1
     && options.renderWaitMs > 0
+    && options.minGapMs >= 0
     && (local
       || (options.maxRenders <= MAX_RENDERS_LIMIT
-        && options.renderWaitMs >= MIN_RENDER_WAIT_MS))
+        && options.renderWaitMs >= MIN_RENDER_WAIT_MS
+        && options.minGapMs >= MIN_GAP_LIMIT_MS))
     && (!argv.includes('--save')
       || (options.save && !options.save.startsWith('-')));
   return valid ? options : null;
@@ -128,22 +142,29 @@ function parseArgs(argv) {
 // Holds every request back while `maxRenders` background renders may still be
 // running, and never requests a URL while its own render may be running. A
 // render is assumed to start with the request and to last `renderWaitMs` after
-// the answer.
+// the answer. Any two requests start at least `minGapMs` apart.
 class RenderPacer {
-  constructor(maxRenders, renderWaitMs) {
+  constructor(maxRenders, renderWaitMs, minGapMs = 0) {
     this.maxRenders = maxRenders;
     this.renderWaitMs = renderWaitMs;
+    this.minGapMs = minGapMs;
+    this.lastRequestAt = -Infinity;
     this.renders = []; // { url, end }
     this.started = 0;
   }
 
   async beforeRequest(url) {
     for (;;) {
+      const gap = this.lastRequestAt + this.minGapMs - Date.now();
+      if (gap > 0) await sleep(gap);
       const now = Date.now();
       this.renders = this.renders.filter((r) => r.end > now);
       const own = this.renders.filter((r) => r.url === url);
       const blocking = this.renders.length >= this.maxRenders ? this.renders : own;
-      if (!blocking.length) return;
+      if (!blocking.length) {
+        this.lastRequestAt = Date.now();
+        return;
+      }
       await sleep(Math.min(...blocking.map((r) => r.end)) - now);
     }
   }
@@ -260,9 +281,15 @@ const minutes = (ms) => `${Math.round(ms / 60000)} min`;
 
 async function main(options) {
   const {
-    target, reference, snapshot, save, maxRenders, renderWaitMs,
+    target,
+    reference,
+    snapshot,
+    save,
+    maxRenders,
+    renderWaitMs,
+    minGapMs,
   } = options;
-  const pacer = new RenderPacer(maxRenders, renderWaitMs);
+  const pacer = new RenderPacer(maxRenders, renderWaitMs, minGapMs);
   const startedAt = Date.now();
   let errorsInARow = 0;
 
@@ -535,10 +562,10 @@ if (require.main === module) {
   const options = parseArgs(process.argv.slice(2));
   if (!options) {
     console.error(
-      `Usage: node scripts/smoke-compare.js <target> [<reference URL> | <snapshot.json>] [--save <file>] [--max-renders <n>] [--render-wait <seconds>]
-Against real hosts --max-renders is at most ${MAX_RENDERS_LIMIT} and --render-wait at least ${
+      `Usage: node scripts/smoke-compare.js <target> [<reference URL> | <snapshot.json>] [--save <file>] [--max-renders <n>] [--render-wait <seconds>] [--min-gap <seconds>]
+Against real hosts --max-renders is at most ${MAX_RENDERS_LIMIT}, --render-wait at least ${
   MIN_RENDER_WAIT_MS / 1000
-}.`,
+} and --min-gap at least ${MIN_GAP_LIMIT_MS / 1000}.`,
     );
     process.exit(2);
   }
