@@ -125,6 +125,14 @@ NEXT_PUBLIC_FIREBASE_*            # Firebase config vars
 - `staging` → PR into `production`
 - `production` branch → Vercel Production, the live site at scarincihollenbeck.com (merging here deploys to live)
 
+Every build prerenders all pages through WordPress (about 670 requests in 3 minutes; on 2026-11-05 the backend measured 15 preview builds making 62% of that day's WordPress traffic). Preview builds stay identical to production on purpose, so they keep checking every page. To keep the load down, push to a PR in batches (commit locally, push when the PR is ready for review or a fix is complete), not after every small edit. The Vercel project's Ignored Build Step (dashboard, Build and Deployment) skips a build for `dependabot/*` branches and when nothing changed since the last deployed commit outside `*.md`, `tests/` and `.superpowers/`; an unknown previous commit always builds:
+
+```sh
+case "$VERCEL_GIT_COMMIT_REF" in dependabot/*) exit 0;; esac; B=${VERCEL_GIT_PREVIOUS_SHA:-HEAD^}; git cat-file -e "$B" || exit 1; git diff --quiet "$B" HEAD -- . ':!*.md' ':!tests/' ':!.superpowers/'
+```
+
+A docs- or test-only change therefore gets no preview; run changed e2e specs against the staging alias instead.
+
 ### Releasing `staging` to production
 
 WordPress renders every uncached page and its login starts returning 504 (and ISR tasks time out on the live site) at about 8 parallel renders. Every request to a stale ISR page starts a background render: Vercel answers `x-vercel-cache: STALE` (or `PRERENDER` on a deployment that has not served the page since its build) at once and renders after answering, and a request to a page whose render is still running starts one more (2026-11-03: a 3 s poll loop timed out `/practices/education-law` every 3 s). Pages revalidate every 600 s, so almost every page of a deployment is stale. A sequential sweep therefore still stacks renders (2026-11-02 and 2026-11-03, 60 s timeouts on production and staging).
