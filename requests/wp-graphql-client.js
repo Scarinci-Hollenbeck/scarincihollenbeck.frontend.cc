@@ -6,6 +6,7 @@ const LOGIN_MUTATION = `mutation ServiceLogin($username: String!, $password: Str
 }`;
 
 const DEFAULT_TOKEN_TTL_MS = 4 * 60 * 1000;
+const DEFAULT_FORCED_LOGIN_INTERVAL_MS = 60 * 1000;
 
 const firstErrorMessage = (errors, fallback) => errors[0]?.message || fallback;
 
@@ -16,10 +17,12 @@ export function createWpGraphQLClient({
   fetchImpl = (...args) => fetch(...args),
   now = Date.now,
   tokenTtlMs = DEFAULT_TOKEN_TTL_MS,
+  forcedLoginIntervalMs = DEFAULT_FORCED_LOGIN_INTERVAL_MS,
   logError = console.error,
 }) {
   let cached = { token: null, expiresAt: 0 };
   let inflightLogin = null;
+  let lastForcedLoginAt = -Infinity;
 
   async function login() {
     const res = await fetchImpl(url, {
@@ -57,12 +60,6 @@ export function createWpGraphQLClient({
     return { token: await inflightLogin, fromCache: false };
   }
 
-  // Drop the token only if it is still the one that failed, so parallel
-  // requests that failed with it share a single new login.
-  function invalidate(token) {
-    if (cached.token === token) cached = { token: null, expiresAt: 0 };
-  }
-
   async function request(query, variables, retry) {
     const { token, fromCache } = await getToken();
 
@@ -72,17 +69,32 @@ export function createWpGraphQLClient({
       body: JSON.stringify({ query, variables }),
     });
 
-    // A token WordPress no longer accepts (JWT secret rotated, user's
-    // tokens revoked) comes back as 401/403, or, without GRAPHQL_DEBUG, as a
-    // bare "Internal server error" that hides the `invalid-jwt` reason. So any
-    // such answer to a cached token gets one retry with a fresh login. 5xx
-    // (WordPress overloaded) is never retried: that would add load.
     const rejected = res.status === 401 || res.status === 403;
-    let json = null;
-    if (res.ok || rejected) json = await res.json().catch(() => null);
+    if (!res.ok && !rejected) throw new Error(`HTTP error: ${res.status}`);
 
-    if ((rejected || json?.errors) && fromCache && retry) {
-      invalidate(token);
+    let json = null;
+    try {
+      json = await res.json();
+    } catch (e) {
+      if (res.ok) throw new Error('GraphQL response is not JSON');
+    }
+
+    // A token WordPress no longer accepts (JWT secret rotated, tokens
+    // revoked) comes back as 401/403, or, without GRAPHQL_DEBUG, as a bare
+    // "Internal server error" with no data that hides the `invalid-jwt`
+    // reason. Such an answer to a cached token gets one retry with a fresh
+    // login. An overloaded WordPress can answer the same way, so a forced
+    // login happens at most once per interval per instance; other requests
+    // just fail (ISR keeps the old page). 5xx is never retried.
+    const tokenRejected = rejected || (json?.errors && !json.data);
+    if (
+      tokenRejected
+      && fromCache
+      && retry
+      && now() - lastForcedLoginAt >= forcedLoginIntervalMs
+    ) {
+      lastForcedLoginAt = now();
+      if (cached.token === token) cached = { token: null, expiresAt: 0 };
       return request(query, variables, false);
     }
 
@@ -93,7 +105,11 @@ export function createWpGraphQLClient({
       throw new Error(firstErrorMessage(json.errors, 'GraphQL error'));
     }
 
-    return json?.data;
+    if (!json || !('data' in json)) {
+      throw new Error('GraphQL response has no data');
+    }
+
+    return json.data;
   }
 
   async function fetchAPI(query, { variables } = {}) {

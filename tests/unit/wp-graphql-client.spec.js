@@ -41,8 +41,8 @@ const fakeWordPress = ({ rejectAs = 'internal-error' } = {}) => {
         await new Promise((r) => {
           setTimeout(r, delay);
         });
-        if (rejectAs === 'forbidden') {
-          return jsonResponse(403, {
+        if (rejectAs === 'forbidden' || rejectAs === 'unauthorized') {
+          return jsonResponse(rejectAs === 'forbidden' ? 403 : 401, {
             errors: [{ message: 'Internal server error' }],
           });
         }
@@ -84,7 +84,7 @@ test.describe('createWpGraphQLClient', () => {
     expect(wp.lastLoginBody.query).not.toContain('pa"ss');
   });
 
-  ['internal-error', 'forbidden'].forEach((rejectAs) => {
+  ['internal-error', 'forbidden', 'unauthorized'].forEach((rejectAs) => {
     test(`logs in again after a secret rotation (${rejectAs})`, async () => {
       const wp = fakeWordPress({ rejectAs });
       const client = clientFor(wp);
@@ -95,16 +95,100 @@ test.describe('createWpGraphQLClient', () => {
     });
   });
 
-  test('parallel requests with a stale token share one new login', async () => {
+  test('parallel requests with a stale token cause one new login', async () => {
     const wp = fakeWordPress();
     const client = clientFor(wp);
     await client.fetchAPI(QUERY);
     wp.secret = 2;
-    const results = await Promise.all(
+    const results = await Promise.allSettled(
       Array.from({ length: 5 }, () => client.fetchAPI(QUERY)),
     );
-    expect(results).toEqual(Array(5).fill(DATA));
+    expect(results.filter((r) => r.status === 'fulfilled')).toHaveLength(1);
     expect(wp.logins).toBe(2);
+    expect(await client.fetchAPI(QUERY)).toEqual(DATA);
+    expect(wp.logins).toBe(2);
+  });
+
+  test('a failing WordPress gets at most one forced login a minute', async () => {
+    const wp = fakeWordPress();
+    let clock = 0;
+    let failing = false;
+    const client = clientFor(wp, {
+      now: () => clock,
+      tokenTtlMs: 10 * 60 * 1000,
+      fetchImpl: async (url, init) => {
+        if (failing && !JSON.parse(init.body).query.includes('login(')) {
+          wp.queries += 1;
+          return jsonResponse(200, {
+            errors: [{ message: 'Internal server error' }],
+          });
+        }
+        return wp.fetch(url, init);
+      },
+    });
+    await client.fetchAPI(QUERY);
+    failing = true;
+    clock = 1000;
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
+      'Internal server error',
+    );
+    expect(wp.logins).toBe(2); // first failure: one forced login
+    expect(wp.queries).toBe(3);
+    clock = 30 * 1000;
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
+      'Internal server error',
+    );
+    expect(wp.logins).toBe(2); // within the minute: no login, no retry
+    expect(wp.queries).toBe(4);
+    clock = 62 * 1000;
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
+      'Internal server error',
+    );
+    expect(wp.logins).toBe(3);
+  });
+
+  test('does not retry an error that comes with partial data', async () => {
+    const wp = fakeWordPress();
+    let partial = false;
+    const client = clientFor(wp, {
+      fetchImpl: async (url, init) => {
+        if (partial && !JSON.parse(init.body).query.includes('login(')) {
+          wp.queries += 1;
+          return jsonResponse(200, {
+            data: { posts: null },
+            errors: [{ message: 'Field error' }],
+          });
+        }
+        return wp.fetch(url, init);
+      },
+    });
+    await client.fetchAPI(QUERY);
+    partial = true;
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow('Field error');
+    expect(wp.logins).toBe(1);
+  });
+
+  test('a 200 answer that is not JSON is an error, not empty data', async () => {
+    const wp = fakeWordPress();
+    let html = false;
+    const client = clientFor(wp, {
+      fetchImpl: async (url, init) => {
+        if (html && !JSON.parse(init.body).query.includes('login(')) {
+          return {
+            ok: true,
+            status: 200,
+            json: async () => {
+              throw new SyntaxError('Unexpected token <');
+            },
+          };
+        }
+        return wp.fetch(url, init);
+      },
+    });
+    await client.fetchAPI(QUERY);
+    html = true;
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow();
+    expect(wp.logins).toBe(1);
   });
 
   test('does not retry an error that comes with a fresh token', async () => {
