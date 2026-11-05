@@ -126,6 +126,17 @@ test.describe('createWpGraphQLClient without auth (default)', () => {
     expect(wp.queries).toBe(1);
   });
 
+  [401, 403].forEach((status) => {
+    test(`a ${status} is thrown without a login or a retry`, async () => {
+      const wp = fakeWordPress();
+      const client = clientFor(wp);
+      wp.answerAnonymous = () => response(status, { errors: MASKED });
+      await expect(client.fetchAPI(QUERY)).rejects.toThrow(String(status));
+      expect(wp.queries).toBe(1);
+      expect(wp.logins).toBe(0);
+    });
+  });
+
   test('a 200 answer that is not JSON or has no data is an error', async () => {
     const wp = fakeWordPress();
     const client = clientFor(wp);
