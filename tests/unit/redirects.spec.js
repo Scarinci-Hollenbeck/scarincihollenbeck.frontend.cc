@@ -6,13 +6,13 @@ const { finalSitemapEntries } = require('../../utils/sitemap-entries');
 const concrete = (source) => source.replace(/:\w+\*?/g, 'sample-slug');
 
 // Three rules for one source with two destinations; the first one
-// (entertainment-and-media) is what the site does. Which one is right is the
-// client's call (tasks repo #8), so the duplicates stay until they choose.
-const AWAITING_CLIENT = '/practices/sports-and-entertainment-law/intellectual-property-and-technology-law';
+// (entertainment-and-media) is what the site does, and it stays that way:
+// decided 05.11 (tasks repo #8) to leave these rules untouched.
+const KEPT_AS_IS = '/practices/sports-and-entertainment-law/intellectual-property-and-technology-law';
 
 test('every redirect rule is the one Next applies to its own source', () => {
   const shadowed = PERMANENT_REDIRECTS.filter(
-    (rule) => rule.source !== AWAITING_CLIENT
+    (rule) => rule.source !== KEPT_AS_IS
       && appliedRedirect(concrete(rule.source)).rule !== rule,
   ).map((rule) => rule.source);
   expect(shadowed).toEqual([]);

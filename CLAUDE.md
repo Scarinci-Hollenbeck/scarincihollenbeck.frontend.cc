@@ -71,7 +71,7 @@ The site uses Next.js **rewrites** (not redirects) to map public-facing URLs to 
 - `/diversity`, `/community-involvement`, `/pro-bono` → `/firm-page/:slug`
 - `/awards`, `/privacy-policy`, etc. → `/basic-page/:slug`
 
-Permanent redirects are in `utils/permanent-redirects.js`. Next applies the first rule that matches, so a specific path must come before a wildcard that covers it; `tests/unit/redirects.spec.js` fails on a rule that never fires. The three rules for `/practices/sports-and-entertainment-law/intellectual-property-and-technology-law` (the first one, to `/practices/entertainment-and-media`, wins) wait for the client to pick the destination (tasks repo #8). `utils/redirect-match.js` resolves a path the way Next does; `pages/sitemap.xml.js` uses it to list final URLs only.
+Permanent redirects are in `utils/permanent-redirects.js`. Next applies the first rule that matches, so a specific path must come before a wildcard that covers it; `tests/unit/redirects.spec.js` fails on a rule that never fires. The three rules for `/practices/sports-and-entertainment-law/intellectual-property-and-technology-law` (the first one, to `/practices/entertainment-and-media`, wins) are kept as they are by decision (tasks repo #8, 05.11); smoke-compare keeps printing their shadow warnings. `utils/redirect-match.js` resolves a path the way Next does; `pages/sitemap.xml.js` uses it to list final URLs only.
 
 ### Component Structure
 
