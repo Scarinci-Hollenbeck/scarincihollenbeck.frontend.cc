@@ -17,6 +17,5 @@
     "layouts/*": ["layouts/*"],
     "hooks/*": ["hooks/*"],
     "hoks/*": ["hoks/*"]
-  },
-  "ignoreDependencies": ["sharp"]
+  }
 }
