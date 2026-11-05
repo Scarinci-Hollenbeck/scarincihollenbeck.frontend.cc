@@ -21,10 +21,9 @@ const RULES = PERMANENT_REDIRECTS.map((rule) => ({
   regex: sourceRegex(rule.source),
 }));
 
-// The rule Next applies to `path` and where it sends it, or null. With
-// `trailingSlash: false` Next drops a trailing slash before any redirect.
-function appliedRedirect(rawPath) {
-  const path = rawPath.length > 1 ? rawPath.replace(/\/+$/, '') : rawPath;
+// The rule Next applies to `path` (no trailing slash: Next first answers a
+// separate 308 to the path without it) and where it sends it, or null.
+function appliedRedirect(path) {
   const hit = RULES.find(({ regex }) => regex.test(path));
   if (!hit) return null;
   const values = path.match(hit.regex).slice(1);
@@ -41,9 +40,10 @@ function appliedRedirect(rawPath) {
 }
 
 // Where `path` ends up after following our redirects (it may be `path`
-// itself). Stops after a few hops so a redirect loop cannot hang the caller.
+// itself). With `trailingSlash: false` Next drops a trailing slash first.
+// Stops after a few hops so a redirect loop cannot hang the caller.
 function finalPath(path) {
-  let current = path;
+  let current = path.length > 1 ? path.replace(/\/+$/, '') : path;
   for (let hop = 0; hop < 10; hop += 1) {
     const applied = appliedRedirect(current);
     if (!applied) return current;

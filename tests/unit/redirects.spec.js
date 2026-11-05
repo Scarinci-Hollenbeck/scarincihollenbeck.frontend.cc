@@ -51,7 +51,22 @@ test('finalPath follows a chain of redirects', () => {
 test('a trailing slash is dropped before matching, as Next does', () => {
   expect(finalPath('/contact/')).toBe('/contact-us');
   expect(finalPath('/attorney/x/')).toBe('/attorneys/x');
+  expect(finalPath('/contact-us/')).toBe('/contact-us');
+  expect(finalPath('/')).toBe('/');
+  // One redirect step is exact: Next answers the slash 308 separately.
+  expect(appliedRedirect('/contact/')).toBeNull();
   expect(appliedRedirect('/')).toBeNull();
+});
+
+test('sitemap skips entries without a slug and folds trailing slashes', () => {
+  const result = finalSitemapEntries([
+    { slug: null },
+    {},
+    { slug: '/contact-us/' },
+    { slug: '/contact-us' },
+    { slug: '/careers/' },
+  ]).map(({ slug }) => slug);
+  expect(result).toEqual(['/contact-us', '/careers']);
 });
 
 test('sitemap lists final URLs only, each once', () => {

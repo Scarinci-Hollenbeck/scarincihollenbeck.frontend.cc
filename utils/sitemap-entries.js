@@ -4,7 +4,11 @@ const { finalPath } = require('./redirect-match');
 // our redirects send elsewhere (/contact -> /contact-us), so each entry gets
 // the path it ends up at; an entry is dropped when that path is already listed,
 // is the home page (always listed first) or carries a #fragment.
-function finalSitemapEntries(entries) {
+function finalSitemapEntries(allEntries) {
+  // An entry without a slug would only print `<loc>…undefined`.
+  const entries = allEntries.filter(
+    ({ slug }) => typeof slug === 'string' && slug,
+  );
   const listed = new Set(
     entries
       .filter(({ slug }) => finalPath(slug) === slug)
