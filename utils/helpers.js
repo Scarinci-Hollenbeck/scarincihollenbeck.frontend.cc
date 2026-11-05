@@ -143,16 +143,28 @@ export const concatNameUser = (name, abbreviation) => {
   return name;
 };
 
-export const changeTitle = (title, isH1) => {
-  if (!title) return '';
+/**
+ * A WordPress title as plain text: decodes the first of each entity below
+ * (the old behaviour, kept on purpose). Use it wherever the title is rendered
+ * as text; changeTitle adds HTML and only fits dangerouslySetInnerHTML.
+ */
+export const decodeTitle = (rawTitle) => {
+  if (!rawTitle) return '';
   const symbolCheckObject = {
     '&#8220;': '"',
     '&#8221;': '"',
     '&amp;': '&',
   };
-  Object.keys(symbolCheckObject).map(
-    (symbol) => (title = title.replace(symbol, symbolCheckObject[symbol])),
+  return Object.keys(symbolCheckObject).reduce(
+    (title, symbol) => title.replace(symbol, symbolCheckObject[symbol]),
+    rawTitle,
   );
+};
+
+/** decodeTitle plus `12<span>th</span>` markup (and an optional <h1>): HTML. */
+export const changeTitle = (rawTitle, isH1) => {
+  if (!rawTitle) return '';
+  let title = decodeTitle(rawTitle);
 
   const pattern = /(\d+)th/g;
   title = title.replace(pattern, (match, number) => `${number}<span>th</span>`);

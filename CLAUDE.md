@@ -57,7 +57,7 @@ Crawler waves overload WordPress (about 10 PHP workers, every uncached render hi
 
 RTK Query powers two API services:
 
-- `redux/services/wp-graphql.js` — GraphQL client for client-side queries: mutations, plus the cached `getGraphQLQuery` endpoint behind `hooks/usePaginationData.js` (paginated attorney articles and industry clients; results stay cached for the whole session)
+- `redux/services/wp-graphql.js` — GraphQL client for client-side queries: the cached `getGraphQLQuery` endpoint behind `hooks/usePaginationData.js` (paginated attorney articles and industry clients; results stay cached for the whole session)
 - `redux/services/project-api.js` — queries internal `/api/` routes for attorneys, practices, locations, industries
 
 Slices: `attorneys`, `sizes`, `modals`, `library`
