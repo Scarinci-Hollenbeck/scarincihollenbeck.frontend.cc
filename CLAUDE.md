@@ -57,7 +57,7 @@ Crawler waves overload WordPress (about 10 PHP workers, every uncached render hi
 
 RTK Query powers two API services:
 
-- `redux/services/wp-graphql.js` — GraphQL client for client-side queries: mutations, plus the cached `getGraphQLQuery` endpoint behind `hooks/usePaginationData.js` (paginated attorney articles and industry clients; results stay cached for the whole session)
+- `redux/services/wp-graphql.js` — GraphQL client for client-side queries: the cached `getGraphQLQuery` endpoint behind `hooks/usePaginationData.js` (paginated attorney articles and industry clients; results stay cached for the whole session)
 - `redux/services/project-api.js` — queries internal `/api/` routes for attorneys, practices, locations, industries
 
 Slices: `attorneys`, `sizes`, `modals`, `library`
@@ -71,7 +71,7 @@ The site uses Next.js **rewrites** (not redirects) to map public-facing URLs to 
 - `/diversity`, `/community-involvement`, `/pro-bono` → `/firm-page/:slug`
 - `/awards`, `/privacy-policy`, etc. → `/basic-page/:slug`
 
-Permanent redirects are in `utils/permanent-redirects.js`.
+Permanent redirects are in `utils/permanent-redirects.js`. Next applies the first rule that matches, so a specific path must come before a wildcard that covers it; `tests/unit/redirects.spec.js` fails on a rule that never fires. The three rules for `/practices/sports-and-entertainment-law/intellectual-property-and-technology-law` (the first one, to `/practices/entertainment-and-media`, wins) are kept as they are by decision (tasks repo #8, 05.11); smoke-compare keeps printing their shadow warnings. `utils/redirect-match.js` resolves a path the way Next does; `pages/sitemap.xml.js` uses it to list final URLs only.
 
 ### Component Structure
 
@@ -138,7 +138,7 @@ The `vercel` commands below need a directory linked once with `vercel link --pro
 3. Right after the deploy: `E2E_BASE_URL=https://scarincihollenbeck.com npx playwright test --project=e2e --workers=1 tests/e2e/release-smoke.spec.js` (only this spec on the live site, the others are not meant for production; the Maps test runs only on the real domain, the Maps key rejects `*.vercel.app`), and `vercel logs --environment production --level error --since 30m --no-follow --no-branch` (without `--no-branch`, run inside this repo the CLI filters by the current git branch and finds nothing for `production` deploys). The new deployment's ISR cache is cold, so timeouts show up first. No full sweep of production when it is the commit already swept on staging; if something looks wrong, sweep it later in a quiet hour against `$TEMP/prod-before.json`.
 4. Rollback is Vercel instant rollback; afterwards Vercel stops auto-assigning the domain to new production deployments until that is undone in the dashboard.
 
-Expected noise on previews: `X-Robots-Tag: noindex` (Lighthouse SEO drops) and CSP reports from the `vercel.live` toolbar. `/library/category/*` is SSR and returns 504 or a false 404 when WordPress is overloaded, on any deployment.
+Expected noise on previews: `X-Robots-Tag: noindex` (Lighthouse SEO drops) and CSP reports from the `vercel.live` toolbar. `/library/category/*`, `/library/author/*` and `/library/search` are SSR and return 500 or 504 when WordPress is overloaded, on any deployment (they read their own `/api/library/*` routes through `requests/fetchOwnApi.js`, which throws on an error answer, so a WordPress failure is never a cached 404).
 
 ### ESLint
 

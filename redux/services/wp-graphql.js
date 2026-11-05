@@ -8,13 +8,6 @@ export const wpGraphQl = createApi({
   reducerPath: 'graphqlApi',
   baseQuery: fetchBaseQuery({ baseUrl: GRAPHQL_API_URL }),
   endpoints: (builder) => ({
-    getDataFromWPGraphQL: builder.mutation({
-      query: (graphQLData) => ({
-        url: '/',
-        method: 'POST',
-        body: graphQLData,
-      }),
-    }),
     // Read-only query, cached per { query, variables } for the whole session
     // like the Apollo client it replaced: a page of results fetched once is
     // shown again without a request.
@@ -35,4 +28,4 @@ export const wpGraphQl = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetDataFromWPGraphQLQuery, useGetGraphQLQueryQuery } = wpGraphQl;
+export const { useGetGraphQLQueryQuery } = wpGraphQl;

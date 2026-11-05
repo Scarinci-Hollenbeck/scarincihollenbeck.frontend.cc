@@ -7,6 +7,21 @@ export const BlogsBoxWrapper = styled.div`
   row-gap: 24px;
 `;
 
+export const BlogsBoxError = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  row-gap: 16px;
+
+  p {
+    margin: 0;
+  }
+
+  button {
+    width: auto;
+  }
+`;
+
 export const BlogsBoxList = styled.div`
   --news-list-gap: 24px;
   display: flex;

@@ -16,7 +16,7 @@ import empty from 'is-empty';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsXLg } from 'react-icons/bs';
-import { changeTitle } from 'utils/helpers';
+import { decodeTitle } from 'utils/helpers';
 import { useRouter } from 'next/router';
 import { setSelectedTags } from '../../../redux/slices/library.slice';
 
@@ -158,7 +158,7 @@ const LibraryTags = ({ tags = [], maxLengthTags = 10, handleClickTag }) => {
                   onClick={() => onClickTag(tag, isSelected)}
                   className={isSelected ? 'selected' : ''}
                 >
-                  {changeTitle(tag?.name, false)}
+                  {decodeTitle(tag?.name)}
                   {isSelected && <BsXLg />}
                 </LibraryTagLink>
               </LibraryTag>
