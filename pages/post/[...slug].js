@@ -95,6 +95,11 @@ export const getServerSideProps = async ({ params, res, query }) => {
     'Cache-Control',
     'max-age=0, s-maxage=600, stale-while-revalidate=120',
   );
+  // A request for the literal route path (/law-firm-insights/[...slug], sent
+  // by bots) reaches this page without params.
+  if (!Array.isArray(params?.slug) || !params.slug.length) {
+    return { notFound: true };
+  }
   const postSlug = params.slug[params.slug.length - 1];
   const { category } = query;
 

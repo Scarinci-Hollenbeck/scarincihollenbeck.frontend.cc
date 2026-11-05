@@ -7,6 +7,7 @@ import { useGetGraphQLQueryQuery } from '../redux/services/wp-graphql';
  * `loading` is true while the requested page has no data yet (also on the
  * server and the first client render, so hydration matches); a page fetched
  * earlier in the session comes from the RTK Query cache without a request.
+ * After a failed request `error` is set and `refetch` asks again.
  */
 export const usePaginationData = (query, params) => {
   const {
@@ -43,6 +44,7 @@ export const usePaginationData = (query, params) => {
     currentData,
     error: lastError,
     isFetching,
+    refetch,
   } = useGetGraphQLQueryQuery({ query, variables }, { skip });
   // RTK Query keeps the old error while it refetches; Apollo showed the loader.
   const error = isFetching ? undefined : lastError;
@@ -52,6 +54,7 @@ export const usePaginationData = (query, params) => {
   return {
     loading: currentData === undefined && !error,
     error,
+    refetch,
     page: currentPage || 1,
     limit: itemsPerPage,
     ...currentData,

@@ -3,7 +3,9 @@ import { useMemo } from 'react';
 import SimpleNewsCard from '../../common/SimpleNewsCard';
 import CustomPagination from '../../atoms/CustomPagination';
 import Loader from '../../atoms/Loader';
+import { StandardBlueButton } from '../../../styles/Buttons.style';
 import {
+  BlogsBoxError,
   BlogsBoxList,
   BlogsBoxWrapper,
 } from '../../../styles/attorney-page/BlogsBox.style';
@@ -21,13 +23,24 @@ const BlogsBox = ({
   isWhiteCards,
 }) => {
   const {
-    posts, limit, page, loading, error,
+    posts, limit, page, loading, error, refetch,
   } = paginationData;
 
   const memoData = useMemo(() => sanitizePosts(posts), [posts]);
 
+  // The section title is already on the page; without this it would sit
+  // over an empty box when the browser cannot reach WordPress.
   if (error) {
-    return null;
+    return (
+      <BlogsBoxError role="status">
+        <p>These articles could not be loaded.</p>
+        {refetch && (
+          <StandardBlueButton type="button" onClick={() => refetch()}>
+            Try again
+          </StandardBlueButton>
+        )}
+      </BlogsBoxError>
+    );
   }
 
   return (

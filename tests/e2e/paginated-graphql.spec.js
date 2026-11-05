@@ -132,7 +132,9 @@ test('fetched pages stay cached after leaving the page for a while', async ({
   expect(queries).toHaveLength(3);
 });
 
-test('a GraphQL error hides the articles list without breaking the page', async ({
+const loadError = (page) => articlesBox(page).getByText('These articles could not be loaded.');
+
+test('a GraphQL error says so under the heading without breaking the page', async ({
   page,
 }) => {
   const errors = [];
@@ -149,10 +151,28 @@ test('a GraphQL error hides the articles list without breaking the page', async 
   await expect(
     page.getByRole('heading', { name: 'Articles', exact: true }),
   ).toBeVisible();
-  await page.waitForTimeout(3000);
+  await expect(loadError(page)).toBeVisible();
   await expect(articleCards(page)).toHaveCount(0);
   await expect(page.locator('.loader')).toHaveCount(0);
   expect(errors).toEqual([]);
+});
+
+test('when WordPress is unreachable, "Try again" loads the articles', async ({
+  page,
+}) => {
+  // A firewall block on the WordPress host looks like a failed CORS request.
+  let failing = true;
+  await page.route(/graphql/, (route) => {
+    if (!isQuery('AttorneyPostsQuery')(route.request())) return route.continue();
+    return failing ? route.abort('failed') : route.continue();
+  });
+
+  await page.goto(ATTORNEY);
+  await expect(loadError(page)).toBeVisible();
+  failing = false;
+  await articlesBox(page).getByRole('button', { name: 'Try again' }).click();
+  await expect(articleCards(page)).toHaveCount(3);
+  await expect(loadError(page)).toHaveCount(0);
 });
 
 test('a retry after a GraphQL error shows the loader again, as Apollo did', async ({

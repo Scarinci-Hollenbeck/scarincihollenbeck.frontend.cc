@@ -52,6 +52,9 @@
 
 const fs = require('fs');
 const { PERMANENT_REDIRECTS } = require('../utils/permanent-redirects');
+// Next applies the first redirect whose source matches, so a later, more
+// specific rule can be shadowed by an earlier wildcard.
+const { appliedRedirect } = require('../utils/redirect-match');
 const {
   POST_TYPE_REWRITES,
   POST_CATEGORY_REWRITES,
@@ -210,34 +213,6 @@ const pick = (re, html) => {
   const match = html.match(re);
   return match ? match[1].trim().replace(/\s+/g, ' ') : null;
 };
-
-// Next applies the first redirect whose source matches, so a later, more
-// specific rule can be shadowed by an earlier wildcard. Like Next, matching is
-// case-insensitive and `/:slug*` also matches the bare prefix.
-const sourceRegex = (source) => new RegExp(
-  `^${source
-    .split(/(\/:\w+\*|:\w+)/)
-    .map((part) => {
-      if (/^\/:\w+\*$/.test(part)) return '(?:/(.*))?';
-      if (/^:\w+$/.test(part)) return '([^/]+)';
-      return part.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    })
-    .join('')}$`,
-  'i',
-);
-
-function appliedRedirect(path) {
-  const rule = PERMANENT_REDIRECTS.find((r) => sourceRegex(r.source).test(path));
-  if (!rule) return null;
-  const values = path.match(sourceRegex(rule.source)).slice(1);
-  const names = rule.source.match(/:\w+\*?/g) || [];
-  const byName = Object.fromEntries(names.map((name, i) => [name, values[i]]));
-  return {
-    rule,
-    // An empty `/:slug*` drops its slash too: /attorneys/:slug* -> /attorneys.
-    destination: rule.destination.replace(/(\/?)(:\w+\*?)/g, (_, slash, name) => (byName[name] ? `${slash}${byName[name]}` : '')),
-  };
-}
 
 // Returns [failures, warnings] for the target's own response.
 function ownProblems(c, t) {

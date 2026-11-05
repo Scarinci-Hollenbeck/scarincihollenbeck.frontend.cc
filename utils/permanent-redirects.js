@@ -70,6 +70,27 @@ const PERMANENT_REDIRECTS = [
     destination: '/practices/corporate-transactions-business',
     permanent: true,
   },
+  // Specific sub-paths first: Next applies the first rule that matches, so
+  // below the wildcard they would never fire.
+  {
+    source:
+      '/practices/corporate-transactions-and-business-law/labor-and-employment-law',
+    destination: '/practices/labor-employment',
+    permanent: true,
+  },
+  {
+    source:
+      '/practices/corporate-transactions-and-business-law/securities-offerings-and-corporate-disclosure',
+    destination:
+      '/practices/finra-defense-lawyers-securities-litigation-finra-arbitrations',
+    permanent: true,
+  },
+  {
+    source:
+      '/practices/corporate-transactions-and-business-law/crisis-management',
+    destination: '/practices/crisis-risk-management',
+    permanent: true,
+  },
   {
     source: '/practices/corporate-transactions-and-business-law/:slug*',
     destination: '/practices/corporate-transactions-business',
@@ -97,12 +118,6 @@ const PERMANENT_REDIRECTS = [
   },
   {
     source:
-      '/practices/corporate-transactions-and-business-law/labor-and-employment-law',
-    destination: '/practices/labor-employment',
-    permanent: true,
-  },
-  {
-    source:
       '/practices/sports-and-entertainment-law/intellectual-property-and-technology-law',
     destination: '/practices/technology-law',
     permanent: true,
@@ -115,17 +130,6 @@ const PERMANENT_REDIRECTS = [
   {
     source: '/library/category/environmental-land-use',
     destination: '/library/category/environmental',
-    permanent: true,
-  },
-  {
-    source:
-      '/practices/corporate-transactions-and-business-law/labor-and-employment-law',
-    destination: '/practices/labor-employment',
-    permanent: true,
-  },
-  {
-    source: '/attorneys/counsel/dan-brecher',
-    destination: '/attorneys/dan-brecher',
     permanent: true,
   },
   {
@@ -147,13 +151,6 @@ const PERMANENT_REDIRECTS = [
   {
     source: '/practices/sophisticated-estate-planning-and-wealth-preservation',
     destination: '/practices/sophisticated-estate-planning-wealth-preservation',
-    permanent: true,
-  },
-  {
-    source:
-      '/practices/corporate-transactions-and-business-law/securities-offerings-and-corporate-disclosure',
-    destination:
-      '/practices/finra-defense-lawyers-securities-litigation-finra-arbitrations',
     permanent: true,
   },
   {
@@ -202,12 +199,6 @@ const PERMANENT_REDIRECTS = [
   {
     source: '/practices/litigation/%20',
     destination: '/practices/litigation',
-    permanent: true,
-  },
-  {
-    source:
-      '/practices/corporate-transactions-and-business-law/crisis-management',
-    destination: '/practices/crisis-risk-management',
     permanent: true,
   },
   {

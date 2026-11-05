@@ -1,27 +1,29 @@
 import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import LibraryAuthorPage from 'components/pages/LibraryAuthorPage';
-import { getBaseUrl, sanitizeCategories, stripHtml } from 'utils/helpers';
+import { sanitizeCategories, stripHtml } from 'utils/helpers';
+import { fetchOwnApi } from 'requests/fetchOwnApi';
 import empty from 'is-empty';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 
 export const getServerSideProps = async ({
   params, query, req, res,
 }) => {
-  res.setHeader(
-    'Cache-Control',
-    'max-age=0, s-maxage=60, stale-while-revalidate=120',
-  );
-  const { slug } = params;
+  // The literal route path (/library/author/[slug]) comes without params.
+  const slug = params?.slug;
+  if (!slug) return { notFound: true };
 
-  const response = await fetch(
-    `${getBaseUrl(req.headers.host)}/api/library/author-static?slug=${
-      query.slug
-    }`,
+  // A WordPress failure throws (500, not cached by the CDN); only an author
+  // WordPress does not have is a 404.
+  const { authorContent, mainCategories } = await fetchOwnApi(
+    req,
+    `/api/library/author-static?slug=${encodeURIComponent(slug)}`,
   );
-
-  const { authorContent, mainCategories } = await response.json();
 
   if (empty(authorContent) || empty(authorContent?.user)) {
+    res.setHeader(
+      'Cache-Control',
+      'max-age=0, s-maxage=60, stale-while-revalidate=120',
+    );
     return {
       notFound: true,
     };
@@ -31,6 +33,11 @@ export const getServerSideProps = async ({
   const { postsData, tags } = await getFilteredLibraryData(query, {
     author: user?.databaseId,
   });
+
+  res.setHeader(
+    'Cache-Control',
+    'max-age=0, s-maxage=60, stale-while-revalidate=120',
+  );
 
   const canonicalUrl = `${PRODUCTION_URL}/library/author/${slug}`;
 
