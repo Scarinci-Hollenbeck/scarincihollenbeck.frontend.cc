@@ -23,6 +23,9 @@ export function createWpGraphQLClient({
   let cached = { token: null, expiresAt: 0 };
   let inflightLogin = null;
   let lastForcedLoginAt = -Infinity;
+  // Set once WordPress has sent X-JWT-Refresh on an answer to our token,
+  // i.e. once its missing header can mean "token rejected".
+  let wpSendsRefreshHeader = false;
 
   async function login() {
     const res = await fetchImpl(url, {
@@ -79,16 +82,25 @@ export function createWpGraphQLClient({
       if (res.ok) throw new Error('GraphQL response is not JSON');
     }
 
-    // A token WordPress no longer accepts (JWT secret rotated, tokens
-    // revoked) comes back as 401/403, or, without GRAPHQL_DEBUG, as a bare
-    // "Internal server error" with no data that hides the `invalid-jwt`
-    // reason. Such an answer to a cached token gets one retry with a fresh
-    // login. An overloaded WordPress can answer the same way, so a forced
-    // login happens at most once per interval per instance; other requests
-    // just fail (ISR keeps the old page). 5xx is never retried.
-    const tokenRejected = rejected || (json?.errors && !json.data);
+    // WPGraphQL JWT Authentication 0.7 answers a token signed with an old
+    // secret (JWT_AUTH_SECRET_KEY rotated) with 200 and, without
+    // GRAPHQL_DEBUG, a masked "Internal server error" on every field: the
+    // same text an overloaded or failing WordPress gives. What tells them
+    // apart: over HTTPS the plugin adds X-JWT-Refresh only when the Bearer
+    // token validated. Its other rejections (wrong iss, revoked user secret)
+    // come as 401/403. So a cached token gets one retry with a fresh login
+    // only on 401/403, or on a 200 with errors and no X-JWT-Refresh from a
+    // WordPress that sends the header otherwise. Anything else (5xx, a
+    // masked error with a valid token) fails without a retry: retrying
+    // there would double the load during bot waves. A forced login also
+    // happens at most once per interval per instance, in case WordPress ever
+    // starts dropping the header.
+    const hasRefreshHeader = Boolean(res.headers?.get('x-jwt-refresh'));
+    if (hasRefreshHeader) wpSendsRefreshHeader = true;
+    const authRejected = rejected
+      || (res.ok && json?.errors && wpSendsRefreshHeader && !hasRefreshHeader);
     if (
-      tokenRejected
+      authRejected
       && fromCache
       && retry
       && now() - lastForcedLoginAt >= forcedLoginIntervalMs

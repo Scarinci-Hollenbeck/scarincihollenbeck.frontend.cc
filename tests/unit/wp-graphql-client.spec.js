@@ -4,53 +4,73 @@ import { createWpGraphQLClient } from '../../requests/wp-graphql-client';
 const URL = 'https://wp.test/graphql';
 const QUERY = '{ posts { nodes { id } } }';
 const DATA = { posts: { nodes: [] } };
+const MASKED = [{ message: 'Internal server error', path: ['posts'] }];
 
-const jsonResponse = (status, body) => ({
+const sleep = (ms) => new Promise((r) => {
+  setTimeout(r, ms);
+});
+
+const response = (status, body, headers = {}) => ({
   ok: status >= 200 && status < 300,
   status,
+  headers: {
+    get: (name) => headers[name.toLowerCase()] ?? null,
+  },
   json: async () => body,
 });
 
-// A WordPress stand-in: `secret` is the JWT secret, rotated by the test.
-// Tokens minted under an old secret get `rejectAs`: either the HTTP status
-// WPGraphQL JWT sends, or the bare "Internal server error" it shows without
-// GRAPHQL_DEBUG.
-const fakeWordPress = ({ rejectAs = 'internal-error' } = {}) => {
+const isLogin = (init) => JSON.parse(init.body).query.includes('login(');
+
+// A stand-in for WPGraphQL + WPGraphQL JWT Authentication 0.7 without
+// GRAPHQL_DEBUG. `secret` is the JWT secret; the test rotates it.
+// - a token signed with the current secret: data, plus `X-JWT-Refresh`
+//   (the plugin sends it over HTTPS only for a token that validated)
+// - a token signed with an old secret (`rejectAs: 'signature'`): JWT::decode
+//   fails, the status stays 200 and every field throws a plain Exception that
+//   WPGraphQL masks as "Internal server error"; no `X-JWT-Refresh`
+// - `rejectAs: 401 | 403`: the plugin's explicit statuses (wrong iss, revoked
+//   user secret)
+// `sendsRefreshHeader: false` is a WordPress that never sends the header
+// (e.g. is_ssl() false behind a proxy).
+const fakeWordPress = ({
+  rejectAs = 'signature',
+  sendsRefreshHeader = true,
+} = {}) => {
   const wp = {
     secret: 1,
     logins: 0,
     queries: 0,
     lastLoginBody: null,
-    fetch: async (url, { headers, body }) => {
-      const parsed = JSON.parse(body);
-      if (parsed.query.includes('login(')) {
+    // Replaced by tests that make WordPress fail while the token is valid.
+    answerValid: () => response(200, { data: DATA }),
+    fetch: async (url, init) => {
+      const parsed = JSON.parse(init.body);
+      if (isLogin(init)) {
         wp.logins += 1;
         wp.lastLoginBody = parsed;
-        await new Promise((r) => {
-          setTimeout(r, 5);
-        });
-        return jsonResponse(200, {
+        await sleep(5);
+        return response(200, {
           data: { login: { authToken: `token-${wp.secret}-${wp.logins}` } },
         });
       }
       wp.queries += 1;
-      const token = (headers.Authorization || '').replace('Bearer ', '');
-      if (!token.startsWith(`token-${wp.secret}-`)) {
-        // Rejections arrive spread out, some after a new login has finished.
-        const delay = wp.queries * 10;
-        await new Promise((r) => {
-          setTimeout(r, delay);
-        });
-        if (rejectAs === 'forbidden' || rejectAs === 'unauthorized') {
-          return jsonResponse(rejectAs === 'forbidden' ? 403 : 401, {
-            errors: [{ message: 'Internal server error' }],
-          });
+      const token = (init.headers.Authorization || '').replace('Bearer ', '');
+      if (token.startsWith(`token-${wp.secret}-`)) {
+        const res = wp.answerValid();
+        if (sendsRefreshHeader) {
+          const { get } = res.headers;
+          res.headers = {
+            get: (name) => (name.toLowerCase() === 'x-jwt-refresh' ? 'refresh' : get(name)),
+          };
         }
-        return jsonResponse(200, {
-          errors: [{ message: 'Internal server error' }],
-        });
+        return res;
       }
-      return jsonResponse(200, { data: DATA });
+      // Rejections arrive spread out, some after a new login has finished.
+      await sleep(wp.queries * 10);
+      if (rejectAs === 401 || rejectAs === 403) {
+        return response(rejectAs, { errors: MASKED });
+      }
+      return response(200, { data: { posts: null }, errors: MASKED });
     },
   };
   return wp;
@@ -60,7 +80,7 @@ const clientFor = (wp, extra = {}) => createWpGraphQLClient({
   url: URL,
   headers: { 'Content-Type': 'application/json' },
   credentials: () => ({ username: 'svc', password: 'pa"ss\\word' }),
-  fetchImpl: wp.fetch,
+  fetchImpl: (url, init) => wp.fetch(url, init),
   logError: () => {},
   ...extra,
 });
@@ -84,7 +104,7 @@ test.describe('createWpGraphQLClient', () => {
     expect(wp.lastLoginBody.query).not.toContain('pa"ss');
   });
 
-  ['internal-error', 'forbidden', 'unauthorized'].forEach((rejectAs) => {
+  ['signature', 401, 403].forEach((rejectAs) => {
     test(`logs in again after a secret rotation (${rejectAs})`, async () => {
       const wp = fakeWordPress({ rejectAs });
       const client = clientFor(wp);
@@ -92,7 +112,42 @@ test.describe('createWpGraphQLClient', () => {
       wp.secret = 2;
       expect(await client.fetchAPI(QUERY)).toEqual(DATA);
       expect(wp.logins).toBe(2);
+      expect(wp.queries).toBe(3);
     });
+  });
+
+  test('a 500 with no sign of an auth error is not retried', async () => {
+    const wp = fakeWordPress();
+    const client = clientFor(wp);
+    await client.fetchAPI(QUERY);
+    wp.answerValid = () => response(500, { errors: MASKED });
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow('500');
+    expect(wp.logins).toBe(1);
+    expect(wp.queries).toBe(2);
+  });
+
+  test('a masked error with a valid token (WP overloaded) is not retried', async () => {
+    const wp = fakeWordPress();
+    const client = clientFor(wp);
+    await client.fetchAPI(QUERY);
+    wp.answerValid = () => response(200, { data: { posts: null }, errors: MASKED });
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
+      'Internal server error',
+    );
+    expect(wp.logins).toBe(1);
+    expect(wp.queries).toBe(2);
+  });
+
+  test('without X-JWT-Refresh from this WordPress a 200 error is never retried', async () => {
+    const wp = fakeWordPress({ sendsRefreshHeader: false });
+    const client = clientFor(wp);
+    await client.fetchAPI(QUERY);
+    wp.secret = 2;
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
+      'Internal server error',
+    );
+    expect(wp.logins).toBe(1);
+    expect(wp.queries).toBe(2);
   });
 
   test('parallel requests with a stale token cause one new login', async () => {
@@ -109,133 +164,100 @@ test.describe('createWpGraphQLClient', () => {
     expect(wp.logins).toBe(2);
   });
 
-  test('a failing WordPress gets at most one forced login a minute', async () => {
+  test('forced logins happen at most once a minute', async () => {
     const wp = fakeWordPress();
     let clock = 0;
-    let failing = false;
     const client = clientFor(wp, {
       now: () => clock,
       tokenTtlMs: 10 * 60 * 1000,
-      fetchImpl: async (url, init) => {
-        if (failing && !JSON.parse(init.body).query.includes('login(')) {
-          wp.queries += 1;
-          return jsonResponse(200, {
-            errors: [{ message: 'Internal server error' }],
-          });
-        }
-        return wp.fetch(url, init);
-      },
     });
     await client.fetchAPI(QUERY);
-    failing = true;
+    wp.secret = 2;
     clock = 1000;
-    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
-      'Internal server error',
-    );
-    expect(wp.logins).toBe(2); // first failure: one forced login
-    expect(wp.queries).toBe(3);
+    await client.fetchAPI(QUERY);
+    expect(wp.logins).toBe(2);
+    wp.secret = 3;
     clock = 30 * 1000;
     await expect(client.fetchAPI(QUERY)).rejects.toThrow(
       'Internal server error',
     );
     expect(wp.logins).toBe(2); // within the minute: no login, no retry
-    expect(wp.queries).toBe(4);
     clock = 62 * 1000;
-    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
-      'Internal server error',
-    );
+    expect(await client.fetchAPI(QUERY)).toEqual(DATA);
     expect(wp.logins).toBe(3);
   });
 
-  test('does not retry an error that comes with partial data', async () => {
+  test('a stale token is retried only once', async () => {
     const wp = fakeWordPress();
-    let partial = false;
-    const client = clientFor(wp, {
-      fetchImpl: async (url, init) => {
-        if (partial && !JSON.parse(init.body).query.includes('login(')) {
-          wp.queries += 1;
-          return jsonResponse(200, {
-            data: { posts: null },
-            errors: [{ message: 'Field error' }],
-          });
-        }
-        return wp.fetch(url, init);
-      },
-    });
+    const client = clientFor(wp);
     await client.fetchAPI(QUERY);
-    partial = true;
-    await expect(client.fetchAPI(QUERY)).rejects.toThrow('Field error');
+    wp.secret = 2;
+    const realFetch = wp.fetch;
+    // From now on every login hands out a token that is already stale.
+    wp.fetch = async (url, init) => {
+      const res = await realFetch(url, init);
+      if (isLogin(init)) wp.secret += 1;
+      return res;
+    };
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
+      'Internal server error',
+    );
+    expect(wp.logins).toBe(2);
+    expect(wp.queries).toBe(3); // first call, stale, one retry, no more
+  });
+
+  test('an error with a token minted for the same call is not retried', async () => {
+    const wp = fakeWordPress();
+    let clock = 0;
+    const client = clientFor(wp, { now: () => clock, tokenTtlMs: 1000 });
+    await client.fetchAPI(QUERY); // WordPress has sent X-JWT-Refresh
+    clock = 2000; // the cached token expired, the next call logs in
+    wp.secret = 2;
+    const realFetch = wp.fetch;
+    wp.fetch = async (url, init) => {
+      const res = await realFetch(url, init);
+      if (isLogin(init)) wp.secret += 1;
+      return res;
+    };
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
+      'Internal server error',
+    );
+    expect(wp.logins).toBe(2);
+    expect(wp.queries).toBe(2);
+  });
+
+  test('requests that failed with the same token share one new login', async () => {
+    const wp = fakeWordPress();
+    const client = clientFor(wp, { forcedLoginIntervalMs: 0 });
+    await client.fetchAPI(QUERY);
+    wp.secret = 2;
+    const results = await Promise.all(
+      Array.from({ length: 5 }, () => client.fetchAPI(QUERY)),
+    );
+    expect(results).toEqual(Array(5).fill(DATA));
+    expect(wp.logins).toBe(2);
+  });
+
+  test('a gateway error is not retried', async () => {
+    const wp = fakeWordPress();
+    const client = clientFor(wp);
+    await client.fetchAPI(QUERY);
+    wp.answerValid = () => response(504, {});
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow('504');
     expect(wp.logins).toBe(1);
   });
 
   test('a 200 answer that is not JSON is an error, not empty data', async () => {
     const wp = fakeWordPress();
-    let html = false;
-    const client = clientFor(wp, {
-      fetchImpl: async (url, init) => {
-        if (html && !JSON.parse(init.body).query.includes('login(')) {
-          return {
-            ok: true,
-            status: 200,
-            json: async () => {
-              throw new SyntaxError('Unexpected token <');
-            },
-          };
-        }
-        return wp.fetch(url, init);
-      },
-    });
+    const client = clientFor(wp);
     await client.fetchAPI(QUERY);
-    html = true;
-    await expect(client.fetchAPI(QUERY)).rejects.toThrow();
-    expect(wp.logins).toBe(1);
-  });
-
-  test('does not retry an error that comes with a fresh token', async () => {
-    const wp = fakeWordPress();
-    const client = clientFor(wp, {
-      fetchImpl: async (url, init) => {
-        if (JSON.parse(init.body).query.includes('login(')) return wp.fetch(url, init);
-        wp.queries += 1;
-        return jsonResponse(200, { errors: [{ message: 'Syntax Error' }] });
+    wp.answerValid = () => ({
+      ...response(200, null),
+      json: async () => {
+        throw new SyntaxError('Unexpected token <');
       },
     });
-    await expect(client.fetchAPI(QUERY)).rejects.toThrow('Syntax Error');
-    expect(wp.logins).toBe(1);
-    expect(wp.queries).toBe(1);
-  });
-
-  test('retries a stale token only once', async () => {
-    const wp = fakeWordPress();
-    const realFetch = wp.fetch;
-    // Every login hands out a token that is already stale.
-    const client = clientFor(wp, {
-      fetchImpl: async (url, init) => {
-        const res = await realFetch(url, init);
-        if (JSON.parse(init.body).query.includes('login(')) wp.secret += 1;
-        return res;
-      },
-    });
-    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
-      'Internal server error',
-    );
-    expect(wp.queries).toBe(1); // fresh token: no retry
-    await expect(client.fetchAPI(QUERY)).rejects.toThrow(
-      'Internal server error',
-    );
-    expect(wp.queries).toBe(3); // cached token: one retry, no more
-    expect(wp.logins).toBe(2);
-  });
-
-  test('does not retry a gateway error', async () => {
-    const wp = fakeWordPress();
-    let gatewayDown = false;
-    const client = clientFor(wp, {
-      fetchImpl: async (url, init) => (gatewayDown ? jsonResponse(504, {}) : wp.fetch(url, init)),
-    });
-    await client.fetchAPI(QUERY);
-    gatewayDown = true;
-    await expect(client.fetchAPI(QUERY)).rejects.toThrow('504');
+    await expect(client.fetchAPI(QUERY)).rejects.toThrow('not JSON');
     expect(wp.logins).toBe(1);
   });
 
