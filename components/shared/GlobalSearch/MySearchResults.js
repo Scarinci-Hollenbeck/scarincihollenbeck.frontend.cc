@@ -5,9 +5,7 @@ import SearchHits from './SearchHits';
 import SearchPagination from './SearchPagination';
 
 const MySearchResults = ({ setIsOpenSearch, handleHideSearch }) => {
-  // catchError: a failed search shows no results, as in v6, instead of an
-  // uncaught error.
-  const { results } = useInstantSearch({ catchError: true });
+  const { results } = useInstantSearch();
   const { items } = useHits();
 
   const handleClear = () => {

@@ -282,8 +282,13 @@ test('an Algolia error shows no results and throws nothing', async ({
     : route.continue()));
 
   await openSearch(page);
+  const failed = page.waitForResponse(
+    (res) => /algolia/.test(res.url())
+      && res.status() === 400
+      && /real(%20| )estate/.test(res.request().postData() || ''),
+  );
   await search(page, 'real estate');
-  await page.waitForTimeout(2000);
+  await failed;
   await expect(hits(page)).toHaveCount(0);
   await expect(pagination(page)).toHaveCount(0);
   expect(errors).toEqual([]);

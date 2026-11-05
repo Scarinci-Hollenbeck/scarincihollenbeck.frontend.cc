@@ -1,8 +1,14 @@
 // Security headers for every route, wired in next.config.js `headers()`.
 // The fixed ones match what the WordPress backend sends, so both hosts behave
-// the same. CSP is report-only for now: violations go to /api/csp-report and
-// show up in the Vercel logs; switch to the enforcing header only once the
-// reports from preview/production are down to known sources.
+// the same. CSP stays report-only: ticket #3 asked only for reports from
+// expected sources; switching to the enforcing header is a separate decision
+// for the client. Violations go to /api/csp-report and show up in the Vercel
+// logs.
+//
+// Expected reports that are not fixed here: `www.google.<ccTLD>/ads/ga-audiences`
+// (connect-src; Google Ads remarketing picks the visitor's country domain, and
+// CSP cannot wildcard a TLD) and `vercel.live` (the Vercel toolbar, shown only
+// to logged-in team members; do not allow it).
 
 const CSP_REPORT_PATH = '/api/csp-report';
 const CSP_REPORT_GROUP = 'csp-endpoint';
@@ -38,7 +44,8 @@ const CALLRAIL = ['https://cdn.callrail.com', 'https://*.callrail.com'];
 
 const RECAPTCHA = ['https://www.google.com', 'https://www.gstatic.com'];
 
-const KWES = ['https://kwes.io', 'https://*.kwes.io'];
+// kwesforms (npm) loads its language chunks from and submits to kwesforms.com.
+const KWES = ['https://kwes.io', 'https://*.kwes.io', 'https://kwesforms.com'];
 
 const ALGOLIA = [
   'https://*.algolia.net',

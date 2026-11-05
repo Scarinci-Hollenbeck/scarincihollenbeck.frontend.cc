@@ -1,5 +1,9 @@
 import algoliasearch from 'algoliasearch/lite';
-import { InstantSearch, Configure } from 'react-instantsearch';
+import {
+  InstantSearch,
+  Configure,
+  useInstantSearch,
+} from 'react-instantsearch';
 import {
   ALGOLIA_PUBLIC_API,
   ALGOLIA_APP_ID,
@@ -14,6 +18,14 @@ import { ConnectedSearchBox } from './MySearchBox';
 const searchClient = algoliasearch(ALGOLIA_APP_ID, ALGOLIA_PUBLIC_API);
 
 const FUTURE = { preserveSharedStateOnUnmount: true };
+
+// catchError: a failed search keeps the previous results on screen, as in v6,
+// instead of throwing an uncaught error. Rendered unconditionally so the guard
+// stays for as long as InstantSearch is mounted.
+const SearchErrorGuard = () => {
+  useInstantSearch({ catchError: true });
+  return null;
+};
 
 export const GlobalSearch = ({
   setIsOpenSearch,
@@ -43,6 +55,7 @@ export const GlobalSearch = ({
       insights={false}
       future={FUTURE}
     >
+      <SearchErrorGuard />
       <Configure filters={filters} optionalFilters={optionalFilters} />
       <ConnectedSearchBox
         placeholder="Search"
