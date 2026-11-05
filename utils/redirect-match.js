@@ -21,8 +21,10 @@ const RULES = PERMANENT_REDIRECTS.map((rule) => ({
   regex: sourceRegex(rule.source),
 }));
 
-// The rule Next applies to `path` and where it sends it, or null.
-function appliedRedirect(path) {
+// The rule Next applies to `path` and where it sends it, or null. With
+// `trailingSlash: false` Next drops a trailing slash before any redirect.
+function appliedRedirect(rawPath) {
+  const path = rawPath.length > 1 ? rawPath.replace(/\/+$/, '') : rawPath;
   const hit = RULES.find(({ regex }) => regex.test(path));
   if (!hit) return null;
   const values = path.match(hit.regex).slice(1);

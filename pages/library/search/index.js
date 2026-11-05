@@ -10,13 +10,13 @@ export async function getServerSideProps({ query, req, res }) {
     fetchOwnApi(req, '/api/library/search-static'),
   ]);
 
+  const { title, seo, pagesFields } = pageBy;
+
   // Set only on success, so the CDN never keeps a failed render.
   res.setHeader(
     'Cache-Control',
     'max-age=0, s-maxage=60, stale-while-revalidate=120',
   );
-
-  const { title, seo, pagesFields } = pageBy;
 
   const canonicalUrl = `${PRODUCTION_URL}/library/search`;
 

@@ -48,6 +48,12 @@ test('finalPath follows a chain of redirects', () => {
   expect(finalPath('/contact-us')).toBe('/contact-us');
 });
 
+test('a trailing slash is dropped before matching, as Next does', () => {
+  expect(finalPath('/contact/')).toBe('/contact-us');
+  expect(finalPath('/attorney/x/')).toBe('/attorneys/x');
+  expect(appliedRedirect('/')).toBeNull();
+});
+
 test('sitemap lists final URLs only, each once', () => {
   const entry = (slug) => ({ slug, title: slug, date_modified: 'd' });
   const result = finalSitemapEntries([
