@@ -1,5 +1,16 @@
-// WPGraphQL client that logs in with the service account (server-only).
+// WPGraphQL client for server-side requests (server-only).
 // No bare imports here, so tests/unit can load it with a stubbed fetch.
+//
+// Requests go without a token unless the caller passes `auth: true`.
+// WordPress skips WPGraphQL Smart Cache (and its Redis object cache) for
+// any request with an Authorization header, so a token on public queries
+// makes every render run the full query. With the token, ACF relationship
+// fields also return trashed and draft posts (e.g. a trashed attorney's
+// email and phone on a practice page); anonymous answers carry published
+// posts only. Checked 2026-11-05: every server query of the site returns
+// the same data without the token apart from those unpublished entries.
+// `auth: true` logs in with the service account; nothing needs it today
+// (the site has no preview mode), it stays for a future preview/draft query.
 
 const LOGIN_MUTATION = `mutation ServiceLogin($username: String!, $password: String!) {
   login(input: { clientMutationId: "svc", username: $username, password: $password }) { authToken }
@@ -63,6 +74,38 @@ export function createWpGraphQLClient({
     return { token: await inflightLogin, fromCache: false };
   }
 
+  function parseData(json) {
+    if (json?.errors) {
+      logError('GraphQL errors:', json.errors);
+      throw new Error(firstErrorMessage(json.errors, 'GraphQL error'));
+    }
+
+    if (!json || !('data' in json)) {
+      throw new Error('GraphQL response has no data');
+    }
+
+    return json.data;
+  }
+
+  async function anonymousRequest(query, variables) {
+    const res = await fetchImpl(url, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ query, variables }),
+    });
+
+    if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
+
+    let json;
+    try {
+      json = await res.json();
+    } catch (e) {
+      throw new Error('GraphQL response is not JSON');
+    }
+
+    return parseData(json);
+  }
+
   async function request(query, variables, retry) {
     const { token, fromCache } = await getToken();
 
@@ -112,21 +155,14 @@ export function createWpGraphQLClient({
 
     if (!res.ok) throw new Error(`HTTP error: ${res.status}`);
 
-    if (json?.errors) {
-      logError('GraphQL errors:', json.errors);
-      throw new Error(firstErrorMessage(json.errors, 'GraphQL error'));
-    }
-
-    if (!json || !('data' in json)) {
-      throw new Error('GraphQL response has no data');
-    }
-
-    return json.data;
+    return parseData(json);
   }
 
-  async function fetchAPI(query, { variables } = {}) {
+  async function fetchAPI(query, { variables, auth = false } = {}) {
     try {
-      return await request(query, variables, true);
+      return auth
+        ? await request(query, variables, true)
+        : await anonymousRequest(query, variables);
     } catch (error) {
       logError(error);
       throw error;
