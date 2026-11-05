@@ -44,7 +44,12 @@ function startStub({
   statusFor = () => null, // a status to answer instead of the page, or null
   wordpress = newWordpress(),
 } = {}) {
-  const stats = { requests: 0, renders: 0, rerenders: 0 };
+  const stats = {
+    requests: 0,
+    renders: 0,
+    rerenders: 0,
+    times: [],
+  };
   const rendering = new Set();
   const fresh = new Set();
   const render = (p) => {
@@ -61,6 +66,7 @@ function startStub({
   };
   const server = http.createServer((req, res) => {
     stats.requests += 1;
+    stats.times.push(Date.now());
     // Redirect sources are written encoded (`/%20`), so match the raw path.
     const p = req.url;
     const sitemapFile = p === '/sitemap.xml' || p === '/sitemap-posts.xml';
@@ -110,7 +116,8 @@ function run(args) {
   return new Promise((resolve) => {
     const child = spawn(
       process.execPath,
-      [SCRIPT, ...args, '--render-wait', RENDER_WAIT_S],
+      // Defaults first, so a test can override them.
+      [SCRIPT, '--render-wait', RENDER_WAIT_S, '--min-gap', '0', ...args],
       { env: { ...process.env, NODE_OPTIONS: `--require "${LOCAL_ONLY}"` } },
     );
     let output = '';
@@ -244,6 +251,15 @@ test('parseArgs rejects unknown flags and unsafe pacing on real hosts', () => {
   expect(parseArgs([real])).toMatchObject({
     maxRenders: 1,
     renderWaitMs: 70000,
+    minGapMs: 1500,
+  });
+  expect(parseArgs([real, '--min-gap', '1'])).toBeNull();
+  expect(parseArgs([real, '--min-gap', '120'])).toBeNull();
+  expect(parseArgs([real, '--min-gap', '2'])).toMatchObject({
+    minGapMs: 2000,
+  });
+  expect(parseArgs(['http://127.0.0.1:1', '--min-gap', '0'])).toMatchObject({
+    minGapMs: 0,
   });
   expect(parseArgs([real, '--maxrenders', '3'])).toBeNull();
   expect(parseArgs([real, '--save=x.json'])).toBeNull();
@@ -367,4 +383,58 @@ test('RenderPacer never requests a URL while its own render may run', async () =
   } finally {
     await stub.close();
   }
+});
+
+test('RenderPacer keeps --min-gap between any two requests, cached ones too', async () => {
+  // The site answers 429 above 60 pages a minute from one IP, and bursts
+  // trip Vercel's DDoS mitigation, so cached (HIT) pages must be spaced too.
+  const stub = await startStub();
+  try {
+    const pacer = new RenderPacer(1, 300, 200);
+    const started = Date.now();
+    await pacer.fetch(`${stub.url}/page-100`);
+    await pacer.fetch(`${stub.url}/page-101`);
+    await pacer.fetch(`${stub.url}/page-102`);
+    expect(Date.now() - started).toBeGreaterThanOrEqual(400);
+    expect(stub.stats.renders).toBe(0);
+  } finally {
+    await stub.close();
+  }
+});
+
+test('the CLI spaces requests by --min-gap', async () => {
+  // Pages answer 503, so the sweep stops after 2 sitemaps, "/" and page-0..2.
+  const stub = await startStub({
+    statusFor: (p) => (p.startsWith('/page-') ? 503 : null),
+  });
+  try {
+    const { code } = await run([stub.url, '--min-gap', '0.3']);
+    expect(code).toBe(1);
+    expect(stub.stats.requests).toBe(6);
+    const gaps = stub.stats.times
+      .slice(1)
+      .map((t, i) => t - stub.stats.times[i]);
+    expect(Math.min(...gaps)).toBeGreaterThanOrEqual(280);
+  } finally {
+    await stub.close();
+  }
+});
+
+[429, 403].forEach((blocked) => {
+  test(`a firewall answer (${blocked}) stops the sweep at once`, async () => {
+    const stub = await startStub({
+      statusFor: (p) => (p === '/page-5' ? blocked : null),
+    });
+    try {
+      const { code, output } = await run([stub.url]);
+      expect(code).toBe(1);
+      expect(output).toMatch(
+        new RegExp(`Stopped after .*/page-5 answered ${blocked}`),
+      );
+      // 2 sitemaps, then "/" and page-0 .. page-5.
+      expect(stub.stats.requests).toBe(2 + 1 + 6);
+    } finally {
+      await stub.close();
+    }
+  });
 });
