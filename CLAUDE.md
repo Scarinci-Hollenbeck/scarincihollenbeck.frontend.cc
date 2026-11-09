@@ -113,7 +113,7 @@ NEXT_PUBLIC_BASE_GRAPHQL_API_URL  # WPGraphQL endpoint
 NEXT_PUBLIC_ALGOLIA_PUBLIC_API    # Algolia search API key
 NEXT_PUBLIC_ALGOLIA_APP_ID
 NEXT_PUBLIC_ALGOLIA_SEARCH_INDEX
-WP_REST_KEY                       # WordPress REST API secret key (server-only; was NEXT_PUBLIC_WP_REST_KEY)
+WP_REST_KEY                       # WordPress REST API secret key (server-only; rotated 2026-11-09, the old NEXT_PUBLIC_WP_REST_KEY is deleted)
 NEXT_PUBLIC_RECAPTCHA_SITE_KEY
 NEXT_PUBLIC_PROJECT_MODE          # Set to "development" to disable PWA
 NEXT_PUBLIC_FIREBASE_*            # Firebase config vars
