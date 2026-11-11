@@ -26,13 +26,7 @@ const FORBIDDEN_CODE = [
 
 // Secret values, checked only when the build environment has them. Values are
 // never printed. Short values are skipped to avoid matching unrelated code.
-// NEXT_PUBLIC_WP_REST_KEY is the old name of WP_REST_KEY, kept until it is removed from Vercel.
-const SECRET_ENV_VARS = [
-  'WP_PASSWORD',
-  'FIREBASE_PRIVAT_KEY',
-  'WP_REST_KEY',
-  'NEXT_PUBLIC_WP_REST_KEY',
-];
+const SECRET_ENV_VARS = ['WP_PASSWORD', 'FIREBASE_PRIVAT_KEY', 'WP_REST_KEY'];
 const MIN_SECRET_LENGTH = 8;
 
 const listJsFiles = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {

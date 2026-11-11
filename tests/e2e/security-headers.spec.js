@@ -86,12 +86,14 @@ test.describe('security headers', () => {
         'https://cdn.callrail.com',
         'https://www.google.com',
         'https://kwes.io',
+        'https://kwesforms.com',
       ]),
     );
     expect(csp['connect-src']).toEqual(
       expect.arrayContaining([
         'https://*.algolia.net',
         'https://kwes.io',
+        'https://kwesforms.com',
         'https://*.google-analytics.com',
         // GA4 collects on the bare host, which *.analytics.google.com does not match.
         'https://analytics.google.com',

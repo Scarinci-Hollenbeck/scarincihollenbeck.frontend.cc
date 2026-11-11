@@ -1,5 +1,6 @@
 import { test, expect } from '@playwright/test';
 import { changeHighlightedTitle } from '../../utils/highlighted-title';
+import { changeTitle, decodeTitle } from '../../utils/helpers';
 
 // What react-instantsearch 7 does to a highlight value before and after us.
 const escapeLikeInstantSearch = (raw) => raw
@@ -25,7 +26,7 @@ const unescapeLikeHighlight = (value) => value.replace(
   }[e]),
 );
 
-// Text the v6 Highlight showed: changeTitle on the raw value (tags kept).
+// Text the Highlight shows: decodeTitle on the raw value (tags kept).
 const shown = (raw) => unescapeLikeHighlight(changeHighlightedTitle(escapeLikeInstantSearch(raw)));
 
 test.describe('changeHighlightedTitle', () => {
@@ -46,15 +47,26 @@ test.describe('changeHighlightedTitle', () => {
     );
   });
 
-  test('marks ordinals only when the digits and "th" are not split by a highlight', () => {
-    expect(shown('<mark>12th</mark> Annual')).toBe(
-      '<mark>12<span>th</span></mark> Annual',
-    );
+  test('leaves ordinals as text: the hit is not rendered as HTML', () => {
+    expect(shown('<mark>12th</mark> Annual')).toBe('<mark>12th</mark> Annual');
     expect(shown('<mark>12</mark>th Annual')).toBe('<mark>12</mark>th Annual');
   });
 
   test('returns a value Highlight can parse: only <mark> tags stay unescaped', () => {
-    const value = changeHighlightedTitle('<mark>15th</mark> &amp; more');
-    expect(value).toBe('<mark>15&lt;span&gt;th&lt;/span&gt;</mark> &amp; more');
+    const value = changeHighlightedTitle(
+      '<mark>15th</mark> &lt;b&gt; &amp; more',
+    );
+    expect(value).toBe('<mark>15th</mark> &lt;b&gt; &amp; more');
+  });
+});
+
+test.describe('decodeTitle and changeTitle', () => {
+  test('decodeTitle is plain text, changeTitle adds the ordinal markup', () => {
+    expect(decodeTitle('October 12th &amp; 13th')).toBe('October 12th & 13th');
+    expect(changeTitle('October 12th &amp; 13th')).toBe(
+      'October 12<span>th</span> & 13<span>th</span>',
+    );
+    expect(changeTitle('12th', true)).toBe('<h1>12<span>th</span></h1>');
+    expect(decodeTitle(undefined)).toBe('');
   });
 });

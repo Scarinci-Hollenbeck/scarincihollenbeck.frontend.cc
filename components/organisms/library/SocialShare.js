@@ -42,13 +42,10 @@ const SocialShare = ({
       <LinkedinShareButton url={postUrl} aria-label="linkedin">
         <BsLinkedin className="linkedIn" />
       </LinkedinShareButton>
+      {/* The mail body is the url prop. With `body` set react-share appends
+          the url after it, which printed "undefined" without a url. */}
       {isEmailShare && (
-        <EmailShareButton
-          subject={title}
-          body={postUrl}
-          separator=""
-          aria-label="email"
-        >
+        <EmailShareButton url={postUrl} subject={title} aria-label="email">
           <FaEnvelope />
         </EmailShareButton>
       )}

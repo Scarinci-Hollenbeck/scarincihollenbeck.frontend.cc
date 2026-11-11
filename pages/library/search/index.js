@@ -1,21 +1,22 @@
 import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import LibrarySearchResultsPage from 'components/pages/LibrarySearchResultsPage';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
-import { getBaseUrl, stripHtml } from 'utils/helpers';
+import { fetchOwnApi } from 'requests/fetchOwnApi';
+import { stripHtml } from 'utils/helpers';
 
 export async function getServerSideProps({ query, req, res }) {
+  const [{ postsData, tags }, { pageBy, filters, subHeaderSlides }] = await Promise.all([
+    getFilteredLibraryData(query),
+    fetchOwnApi(req, '/api/library/search-static'),
+  ]);
+
+  const { title, seo, pagesFields } = pageBy;
+
+  // Set only on success, so the CDN never keeps a failed render.
   res.setHeader(
     'Cache-Control',
     'max-age=0, s-maxage=60, stale-while-revalidate=120',
   );
-  const [{ postsData, tags }, response] = await Promise.all([
-    getFilteredLibraryData(query),
-    fetch(`${getBaseUrl(req.headers.host)}/api/library/search-static`),
-  ]);
-
-  const { pageBy, filters, subHeaderSlides } = await response.json();
-
-  const { title, seo, pagesFields } = pageBy;
 
   const canonicalUrl = `${PRODUCTION_URL}/library/search`;
 

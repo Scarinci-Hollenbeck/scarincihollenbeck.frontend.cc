@@ -6,6 +6,7 @@ import {
 } from 'utils/constants';
 import fetch from 'node-fetch';
 import empty from 'is-empty';
+import { finalSitemapEntries } from 'utils/sitemap-entries';
 
 const reformatDate = (date) => {
   const newDate = new Date(date);
@@ -96,11 +97,13 @@ const getCurrentPublishedPages = async () => {
       },
     );
 
-    return siteMapArr
-      .flat()
-      .filter(
-        ({ slug }) => slug !== exception1 && slug !== exception2 && slug !== exception3,
-      );
+    return finalSitemapEntries(
+      siteMapArr
+        .flat()
+        .filter(
+          ({ slug }) => slug !== exception1 && slug !== exception2 && slug !== exception3,
+        ),
+    );
   } catch (error) {
     console.error(error.message);
   }

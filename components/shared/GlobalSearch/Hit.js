@@ -11,7 +11,7 @@ import {
 import { Highlight } from 'react-instantsearch';
 import empty from 'is-empty';
 import { getIcon } from 'utils/getIcon';
-import { changeTitle } from '../../../utils/helpers';
+import { decodeTitle } from '../../../utils/helpers';
 import { changeHighlightedTitle } from '../../../utils/highlighted-title';
 import { BASE_API_URL, PRODUCTION_URL } from '../../../utils/constants';
 
@@ -71,7 +71,7 @@ export default function Hit({ hit, setIsOpenSearch, handleClear }) {
                 {hit.post_author.display_name}
               </SearchableItemLabel>
               <SearchableItemText>
-                {changeTitle(hit.post_date_formatted)}
+                {decodeTitle(hit.post_date_formatted)}
               </SearchableItemText>
             </SearchableItemFooter>
           )}

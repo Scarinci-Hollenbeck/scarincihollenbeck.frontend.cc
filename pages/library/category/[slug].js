@@ -2,25 +2,29 @@ import { PRODUCTION_URL, CURRENT_DOMAIN } from 'utils/constants';
 import LibraryCategoryPage from 'components/pages/LibraryCategoryPage';
 import empty from 'is-empty';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
-import { getBaseUrl, stripHtml } from 'utils/helpers';
+import { fetchOwnApi } from 'requests/fetchOwnApi';
+import { stripHtml } from 'utils/helpers';
 
 export const getServerSideProps = async ({
   params, query, req, res,
 }) => {
-  res.setHeader(
-    'Cache-Control',
-    'max-age=0, s-maxage=60, stale-while-revalidate=120',
+  // The literal route path (/library/category/[slug]) comes without params.
+  if (!params?.slug) return { notFound: true };
+
+  // A WordPress failure throws (500, not cached by the CDN); only a category
+  // WordPress does not have is a 404.
+  const { data, filters, subHeaderSlides } = await fetchOwnApi(
+    req,
+    `/api/library/category-static?slug=${encodeURIComponent(params.slug)}`,
   );
-  const response = await fetch(
-    `${getBaseUrl(req.headers.host)}/api/library/category-static?slug=${
-      query.slug
-    }`,
-  );
-  const { data, filters, subHeaderSlides } = await response.json();
 
   const pageContent = data?.category;
 
   if (empty(pageContent)) {
+    res.setHeader(
+      'Cache-Control',
+      'max-age=0, s-maxage=60, stale-while-revalidate=120',
+    );
     return {
       notFound: true,
     };
@@ -29,6 +33,11 @@ export const getServerSideProps = async ({
   const { postsData, tags } = await getFilteredLibraryData(query, {
     category: pageContent?.databaseId,
   });
+
+  res.setHeader(
+    'Cache-Control',
+    'max-age=0, s-maxage=60, stale-while-revalidate=120',
+  );
 
   const canonicalUrl = `${PRODUCTION_URL}/library/category/${params.slug}`;
 

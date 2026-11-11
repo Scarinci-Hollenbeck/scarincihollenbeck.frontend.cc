@@ -10,6 +10,16 @@ const withPWA = require('@ducanh2912/next-pwa').default({
   disable: process.env.NEXT_PUBLIC_PROJECT_MODE === 'development',
   workboxOptions: {
     disableDevLogs: true,
+    // next-pwa's defaults (this option replaces them), plus Next 16's
+    // dynamic-css-manifest.json: a server-only file next-pwa 10 does not know,
+    // so it precached /_next/dynamic-css-manifest.json, which is a 404, and a
+    // failed precache request stops the service worker from installing.
+    exclude: [
+      /\/_next\/static\/.*(?<!\.p)\.woff2/,
+      /\.map$/,
+      /^manifest.*\.js$/,
+      /^dynamic-css-manifest\.json$/,
+    ],
   },
 });
 const {
