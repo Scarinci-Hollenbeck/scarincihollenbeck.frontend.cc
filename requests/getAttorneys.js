@@ -1,5 +1,5 @@
 import { sortByKey } from 'utils/helpers';
-import { SITE_PHONE } from 'utils/constants';
+import { FIRM_DESIGNATION, SITE_PHONE } from 'utils/constants';
 import { fetchAPI, fetchRestAPI } from './api';
 import { attorneysPageQuery, attorneysQuery } from './graphql-queries';
 
@@ -7,7 +7,7 @@ export const getAttorneys = async () => {
   const { attorneyProfiles } = await fetchAPI(attorneysQuery, {});
 
   attorneyProfiles.nodes.forEach((attorneyItem, idx) => {
-    if (attorneyItem.attorneyMainInformation.designation === 'The Firm') {
+    if (attorneyItem.attorneyMainInformation.designation === FIRM_DESIGNATION) {
       attorneyProfiles.nodes.splice(idx, 1);
     }
   });

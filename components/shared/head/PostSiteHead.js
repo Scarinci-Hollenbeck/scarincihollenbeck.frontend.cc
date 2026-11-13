@@ -8,10 +8,11 @@ import {
 
 const buildAuthorField = (authors) => {
   if (!authors?.length) return null;
-  // The firm as author is the site's organization node, not a Person.
-  const mapAuthor = (a) => (a.designation === FIRM_DESIGNATION
+  // The firm as author is the site's organization node (typed LegalService,
+  // as everywhere else on the site), not a Person.
+  const mapAuthor = (a) => (a.designation?.trim() === FIRM_DESIGNATION
     ? {
-      '@type': 'Organization',
+      '@type': 'LegalService',
       '@id': `${CURRENT_DOMAIN}/#organization`,
       name: SITE_TITLE,
       url: CURRENT_DOMAIN,
