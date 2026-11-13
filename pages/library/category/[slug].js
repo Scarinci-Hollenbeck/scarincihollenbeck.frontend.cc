@@ -4,6 +4,7 @@ import empty from 'is-empty';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
 import { fetchOwnApi } from 'requests/fetchOwnApi';
 import { stripHtml } from 'utils/helpers';
+import { paginatedUrl } from 'utils/paginated-url';
 
 export const getServerSideProps = async ({
   params, query, req, res,
@@ -39,7 +40,10 @@ export const getServerSideProps = async ({
     'max-age=0, s-maxage=60, stale-while-revalidate=120',
   );
 
-  const canonicalUrl = `${PRODUCTION_URL}/library/category/${params.slug}`;
+  const canonicalUrl = paginatedUrl(
+    `${PRODUCTION_URL}/library/category/${params.slug}`,
+    query.page,
+  );
 
   const breadcrumbs = [
     { name: 'Home', url: `${CURRENT_DOMAIN}/` },

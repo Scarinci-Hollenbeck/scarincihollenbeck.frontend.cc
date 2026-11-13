@@ -35,7 +35,12 @@ const PostContentRender = forwardRef((props, ref) => {
         <LibraryTags>
           {tags.map((tag) => (
             <LibraryTag key={tag?.databaseId}>
-              <LibraryTagLink href={`/library/search?tag=${tag?.databaseId}`}>
+              {/* nofollow: tag search is noindex, uncached and renders
+                  through WordPress on every crawl (tasks #11). */}
+              <LibraryTagLink
+                href={`/library/search?tag=${tag?.databaseId}`}
+                rel="nofollow"
+              >
                 {tag?.name}
               </LibraryTagLink>
             </LibraryTag>

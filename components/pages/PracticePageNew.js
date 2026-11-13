@@ -107,6 +107,7 @@ const PracticePageNew = ({
       <BasicSiteHead
         title={practice?.seo?.title}
         metaDescription={practice?.seo?.metaDesc}
+        ogImage={practice?.seo?.opengraphImage?.sourceUrl}
         canonicalUrl={canonicalUrl}
         personDataForSchema={attorneysSchemaData}
         breadcrumbs={breadcrumbs}

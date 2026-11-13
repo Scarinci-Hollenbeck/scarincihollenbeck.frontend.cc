@@ -1,5 +1,6 @@
 import {
   CURRENT_DOMAIN,
+  DEFAULT_OG_IMAGE,
   PRODUCTION_URL,
   ScarinciHollenbeckAuthor,
 } from 'utils/constants';
@@ -71,7 +72,7 @@ const getPostContentData = async (slug, categorySlug) => {
     metaDescription: post?.seo?.opengraphDescription,
     opengraphImage: !empty(post?.seo?.opengraphImage?.sourceUrl)
       ? post.seo.opengraphImage.sourceUrl
-      : `${CURRENT_DOMAIN}/images/no-image-found-diamond.png`,
+      : DEFAULT_OG_IMAGE,
     canonicalUrl: `${PRODUCTION_URL}${changePostLink(post?.link)}`,
   };
 

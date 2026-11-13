@@ -97,3 +97,72 @@ test('Google Maps embed loads', async ({ page, baseURL }) => {
     .scrollIntoViewIfNeeded();
   expect((await maps).status()).toBe(200);
 });
+
+// SEO signals from tasks #11; they must not come back.
+test('home page shares a real image, not the placeholder', async ({ page }) => {
+  await page.goto('/');
+  const images = await Promise.all(
+    ['meta[property="og:image"]', 'meta[name="twitter:image"]'].map(
+      (selector) => page.locator(selector).getAttribute('content'),
+    ),
+  );
+  images.forEach((image) => {
+    expect(image).toMatch(/^https?:\/\//);
+    expect(image).not.toContain('no-image-found');
+  });
+});
+
+test('sitemap lastmod is a WordPress date, not the render time', async ({
+  page,
+}) => {
+  const response = await page.goto('/sitemap.xml');
+  const xml = await response.text();
+  expect(xml).toContain(
+    '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+  );
+  const entry = (path) => xml
+    .split('<url>')
+    .find((block) => new RegExp(`<loc>[^<]*${path}</loc>`).test(block));
+  // Library categories have no date in WordPress, so they carry no lastmod at
+  // all; listings that are WordPress pages carry the page's date. (A "not
+  // today" check on the home page would fail on the day editors change it.)
+  ['/library/category/firm-news', '/library/category/client-alert'].forEach(
+    (path) => {
+      expect(entry(path), path).toBeTruthy();
+      expect(entry(path), path).not.toContain('<lastmod>');
+    },
+  );
+  expect(entry('/attorneys')).toContain('<lastmod>');
+  const home = xml.split('<url>')[1];
+  const homeDate = home.match(/<lastmod>([^<]+)<\/lastmod>/)?.[1];
+  if (homeDate) {
+    expect(Date.parse(homeDate)).toBeLessThan(Date.now());
+  }
+});
+
+test('paginated library listing is self-canonical', async ({ page }) => {
+  await page.goto('/library/category/firm-news?page=2');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    /\/library\/category\/firm-news\?page=2$/,
+  );
+});
+
+test('library search is noindex', async ({ page }) => {
+  await page.goto('/library/search?query=tax');
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    'content',
+    /noindex/,
+  );
+});
+
+test('www redirects permanently', async ({ page, baseURL }) => {
+  test.skip(
+    !baseURL.startsWith('https://scarincihollenbeck.com'),
+    'only the production domain has a www alias',
+  );
+  const response = await page.goto('https://www.scarincihollenbeck.com/');
+  const redirect = await response.request().redirectedFrom()?.response();
+  expect(redirect?.status()).toBe(308);
+  expect(response.url()).toBe('https://scarincihollenbeck.com/');
+});

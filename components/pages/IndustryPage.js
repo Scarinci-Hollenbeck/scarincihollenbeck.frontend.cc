@@ -142,6 +142,7 @@ const IndustryPage = ({
       <BasicSiteHead
         title={seo?.title}
         metaDescription={seo?.metaDesc}
+        ogImage={seo?.opengraphImage?.sourceUrl}
         canonicalUrl={canonicalLink}
         breadcrumbs={breadcrumbs}
         faqData={faq}

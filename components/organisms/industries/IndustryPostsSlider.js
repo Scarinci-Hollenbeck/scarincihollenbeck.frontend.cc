@@ -27,6 +27,7 @@ const IndustryPostsSlider = ({ posts, anchorId, industryId }) => {
             $isLight
             as={Link}
             href={`/library/search?industries=${industryId}`}
+            rel="nofollow"
           >
             Open library
           </StandardBlueButton>

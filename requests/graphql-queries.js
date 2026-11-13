@@ -606,6 +606,9 @@ query CategoryPosts($slug: ID!) {
     description
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
   }
@@ -616,6 +619,9 @@ query ContactPageQuery {
   pageBy(pageId: 29488) {
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
     title
@@ -719,6 +725,9 @@ export const homePageQuery = `query HomePageQuery {
     }
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
   }
@@ -731,6 +740,9 @@ export const attorneysPageQuery = `query AttorneysPagesQuery {
     title
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
     attorneyArchives {
@@ -752,6 +764,9 @@ query CareersPagesQuery {
     title
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
     careersPage {
@@ -821,6 +836,9 @@ query CareerPageQuery($slug: ID!) {
     seo {
       title
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
     }
     pagesFields {
       description
@@ -844,6 +862,9 @@ query AdministrationPagesQuery {
     title
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
     pagesFields {
@@ -901,6 +922,9 @@ export const basicPagesQuery = `query BasicPageQuery($slug: String) {
     status
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
     featuredImage {
@@ -931,6 +955,9 @@ query FirmPageQuery($slug: ID!) {
     status
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
     firmPagesRelatedPostsMembers {
@@ -978,6 +1005,9 @@ query FirmOverviewQuery {
     title
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
     firmOverviewTabs {
@@ -1149,6 +1179,9 @@ export const getOfficeAndMoreData = `query FirmPageQuery($id: ID!) {
     }
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
   }
@@ -1183,6 +1216,9 @@ query ServicesQuery {
     seo {
       title
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
     }
     pagesFields {
       description
@@ -1199,6 +1235,9 @@ query IndustryQuery($id: ID!) {
     pageSchemaJsonLd
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
     featuredImage {
@@ -1335,6 +1374,9 @@ query MemorialsPageContentQuery {
     }
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
   }
@@ -1398,6 +1440,9 @@ query LibraryPageContentQuery {
     }
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
   }
@@ -1527,6 +1572,9 @@ query AuthorContentQuery($id: ID!) {
     seo {
       title
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
     }
   }
 }`;
@@ -1540,6 +1588,9 @@ query PodcastsPageContentQuery {
     }
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
   }
@@ -1554,6 +1605,9 @@ query LibrarySubscriptionsPageContentQuery {
     }
     seo {
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
       title
     }
   }

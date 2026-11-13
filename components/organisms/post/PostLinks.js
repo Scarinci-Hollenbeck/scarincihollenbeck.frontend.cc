@@ -11,6 +11,7 @@ const PostLinks = ({ items, title, queryParam }) => {
         <Fragment key={item?.databaseId}>
           <PostConnectionLink
             href={`/library/search?${queryParam}=${item?.databaseId}`}
+            rel="nofollow"
           >
             {item?.title}
           </PostConnectionLink>
