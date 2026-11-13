@@ -22,6 +22,8 @@ const PracticeAttorneys = ({
   anchorId,
   title = 'Practice Area Attorneys',
   isBackground = true,
+  titleAs,
+  cardTitleAs,
 }) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -73,7 +75,7 @@ const PracticeAttorneys = ({
           />
         )}
         <ContainerDefault>
-          <Title32>{title}</Title32>
+          <Title32 as={titleAs}>{title}</Title32>
           <PracticeNoAttorneys>Attorneys will appear soon!</PracticeNoAttorneys>
         </ContainerDefault>
       </PracticeAttorneysSection>
@@ -97,7 +99,7 @@ const PracticeAttorneys = ({
       )}
       <ContainerDefault>
         <div className="attorneys-practice__header">
-          <Title32>{title}</Title32>
+          <Title32 as={titleAs}>{title}</Title32>
           {totalItems > calculateItemsPerRow && (
             <button onClick={handleCollapse}>
               {!isCollapsed ? 'See all' : 'HIDE'}
@@ -114,6 +116,7 @@ const PracticeAttorneys = ({
               handleSetCardParams={handleSetCardParams}
               handleSetCardGap={handleSetCardGap}
               minHeight={chairs.length > 0 ? cardHeight + 34 : cardHeight}
+              cardTitleAs={cardTitleAs}
             />
           )}
         </div>

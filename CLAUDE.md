@@ -83,6 +83,8 @@ Follows atomic design under `components/`:
 - `pages/` — full page-level components (imported by pages/)
 - `shared/` — site-wide: `Header`, `Footer`, `CommonModals`, global search
 
+On a post page (`components/pages/ArticlePage.js`) the template blocks (Key Contacts, lawyers, Related Posts, subscription banner) render their titles and card names as `div` through `titleAs` / `cardTitleAs` props, so the only headings under the h1 are the post's own (tasks #12); the defaults keep the old tags on every other page. A style that targets those elements by tag (`h2`, `h3`) must also match their class (`.sub-header-interactive__title`, `.attorney-card__name`) or the post page loses it. `tests/e2e/post-headings.spec.js` checks that the page's h2-h6 equal the post content's.
+
 The header search (`components/shared/GlobalSearch/`) runs on `react-instantsearch` 7 hooks with `insights={false}`. `SearchHits.js` and `SearchPagination.js` reproduce the markup of the old `react-instantsearch-dom` 6 widgets because `styles/GlobalSearch.style.js` targets those `ais-*` classes; the post type filter is single-select. `tests/e2e/global-search.spec.js` pins the behaviour against the live index. `instantsearch.js` lists `react` as a dependency (it never imports it); the `**/instantsearch.js/react` entry in `resolutions` keeps a second React copy out of `node_modules`, so bump it together with `react`.
 
 ### Styling

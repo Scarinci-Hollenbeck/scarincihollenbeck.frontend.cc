@@ -14,6 +14,14 @@ const LogoSeparator = dynamic(() => import('components/common/LogoSeparator'));
 const RelatedPosts = dynamic(() => import('components/organisms/post/RelatedPosts'));
 const SubscriptionBanner = dynamic(() => import('components/organisms/common/SubscriptionBanner'));
 
+// Search engines and AI tools read an article's outline from its headings, so
+// the template blocks around the text (key contacts, lawyers, related posts,
+// subscription banner) render their titles as plain elements and the post's
+// own h2/h3 sections are the first level under the h1 (tasks #12). The
+// styles stay the same: each block keeps its styled component, only the tag
+// changes.
+const NOT_A_HEADING = 'div';
+
 const ArticlePage = ({
   post,
   seo,
@@ -60,6 +68,8 @@ const ArticlePage = ({
         RightContentComponent={SubHeaderKeyContacts}
         rightContentProps={{
           keyContacts,
+          titleAs: NOT_A_HEADING,
+          cardTitleAs: NOT_A_HEADING,
           isPrint: true,
           handlePrint,
           printButtonText: 'Print article page',
@@ -87,6 +97,8 @@ const ArticlePage = ({
               attorneys={selectedHeroes}
               title="Lawyers mentioned in this article"
               isBackground={false}
+              titleAs={NOT_A_HEADING}
+              cardTitleAs={NOT_A_HEADING}
             />
           </>
         )}
@@ -95,11 +107,18 @@ const ArticlePage = ({
           <>
             <LogoSeparator direction="row" isBig isContainer />
 
-            <RelatedPosts posts={relatedPosts} />
+            <RelatedPosts
+              posts={relatedPosts}
+              titleAs={NOT_A_HEADING}
+              cardTitleAs={NOT_A_HEADING}
+            />
           </>
         )}
 
-        <SubscriptionBanner />
+        <SubscriptionBanner
+          titleAs={NOT_A_HEADING}
+          subtitleAs={NOT_A_HEADING}
+        />
       </ArticleSecondaryContent>
 
       {isRenderPdf && (

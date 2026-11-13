@@ -17,12 +17,16 @@ const SubHeaderKeyContacts = ({
   isPrint,
   handlePrint,
   printButtonText = 'Print page',
+  titleAs: TitleTag = 'h2',
+  cardTitleAs,
 }) => {
   if (empty(keyContacts)) return null;
 
   return (
     <SubHeaderInteractive $bg={globalColor.blue.blue6002}>
-      <h2>Key Contacts</h2>
+      <TitleTag className="sub-header-interactive__title">
+        Key Contacts
+      </TitleTag>
 
       <SubHeaderKeyContactsCards>
         {keyContacts?.slice(0, 2)?.map((keyContact) => (
@@ -38,6 +42,7 @@ const SubHeaderKeyContacts = ({
               width={300}
               height={300}
               isPrint={isPrint}
+              nameAs={cardTitleAs}
             />
             {isPrint
               && (!empty(keyContact.qrCodeLinkedin)

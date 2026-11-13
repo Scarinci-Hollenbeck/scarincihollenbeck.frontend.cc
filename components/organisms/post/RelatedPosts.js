@@ -8,13 +8,20 @@ const RelatedPosts = ({
   posts,
   title = 'Related Posts',
   link = '/library',
+  titleAs,
+  cardTitleAs,
 }) => {
   if (empty(posts)) return null;
 
   return (
     <RelatedPostsContainer>
-      <SectionHeader title={title} link={link} linkText="See all" />
-      <RelatedPostsSlider items={posts} />
+      <SectionHeader
+        title={title}
+        link={link}
+        linkText="See all"
+        titleAs={titleAs}
+      />
+      <RelatedPostsSlider items={posts} cardTitleAs={cardTitleAs} />
       <DisclaimerText
         text="No Aspect of the advertisement has been approved by the Supreme Court.
         Results may vary depending on your particular facts and legal

@@ -44,6 +44,7 @@ export default function AttorneyCard({
   svgEmail,
   officeLocations,
   isPrint = false,
+  nameAs,
 }) {
   const placeholderProp = image?.src?.includes('next') || SHDiamond?.src?.includes('next')
     ? 'empty'
@@ -57,7 +58,9 @@ export default function AttorneyCard({
       <LinkBox>
         {renderImage(isPrint, image, name, width, height, placeholderProp)}
         <InfoBox>
-          <UserName>{name}</UserName>
+          <UserName as={nameAs} className="attorney-card__name">
+            {name}
+          </UserName>
 
           <p>{designation}</p>
 
