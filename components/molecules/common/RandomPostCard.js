@@ -13,7 +13,7 @@ import LogoSeparator from 'components/common/LogoSeparator';
 import { JSXWithDynamicLinks } from 'components/atoms/micro-templates/JSXWithDynamicLinks';
 import empty from 'is-empty';
 import { PRODUCTION_URL } from 'utils/constants';
-import Image from 'next/image';
+import CompactImage from 'components/atoms/CompactImage';
 import SHDiamond from '../../../public/images/sh-mini-diamond-PNG.svg';
 
 const RandomPostCard = memo(({ displayedCard, randomIndex }) => {
@@ -32,7 +32,7 @@ const RandomPostCard = memo(({ displayedCard, randomIndex }) => {
       >
         <RandomSliderCard>
           <RandomSliderCardImage>
-            <Image
+            <CompactImage
               src={displayedCard?.featuredImage?.node?.sourceUrl || SHDiamond}
               alt={displayedCard?.title}
               width={440}

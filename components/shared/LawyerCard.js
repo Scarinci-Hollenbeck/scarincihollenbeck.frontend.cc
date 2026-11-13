@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import CompactImage from 'components/atoms/CompactImage';
 import React from 'react';
 import { BsFillEnvelopeFill } from 'react-icons/bs';
 import { MdLocalPhone } from 'react-icons/md';
@@ -37,7 +37,7 @@ const LawyerCard = ({
 }) => (
   <LawyerCardWrapper className={isHorizontal ? 'horizontal-card' : ''}>
     <LawyerCardImage>
-      <Image
+      <CompactImage
         src={image || SHDiamond}
         alt={`${name} photo`}
         quality={80}

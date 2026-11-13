@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import Image from 'next/image';
+import CompactImage from 'components/atoms/CompactImage';
 import {
   AttorneyCardBox,
   InfoBox,
@@ -18,7 +18,7 @@ const renderImage = (isPrint, image, name, width, height, placeholderProp) => (i
     height={height || 150}
   />
 ) : (
-  <Image
+  <CompactImage
     placeholder={placeholderProp}
     blurDataURL={image || SHDiamond}
     loading="lazy"
