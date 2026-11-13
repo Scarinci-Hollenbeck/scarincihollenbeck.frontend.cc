@@ -9,6 +9,8 @@ import blockAnalytics from './support/block-analytics';
  * the ones in the post content the page was built from.
  */
 
+// Each post needs key contacts and related posts in WordPress (the region
+// checks below); pick another post if editors remove them.
 const POSTS = [
   // Sections as h2 (current editor template), FAQ questions as h3.
   '/law-firm-insights/rule-26-expert-discovery-ai',

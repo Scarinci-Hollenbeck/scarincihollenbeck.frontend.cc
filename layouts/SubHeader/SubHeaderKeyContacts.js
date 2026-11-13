@@ -32,7 +32,11 @@ const SubHeaderKeyContacts = ({
         'aria-label': 'Key Contacts',
       })}
     >
-      <TitleTag className="sub-header-interactive__title">
+      <TitleTag
+        className={
+          TitleTag !== 'h2' ? 'sub-header-interactive__title' : undefined
+        }
+      >
         Key Contacts
       </TitleTag>
 

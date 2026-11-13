@@ -58,7 +58,13 @@ export default function AttorneyCard({
       <LinkBox>
         {renderImage(isPrint, image, name, width, height, placeholderProp)}
         <InfoBox>
-          <UserName as={nameAs} className="attorney-card__name">
+          {/* The class only where the tag changes (post pages, tasks #12): on
+              every other page the name stays the plain h3 it was, so
+              overrides such as RandomSliderCard's keep winning. */}
+          <UserName
+            as={nameAs}
+            className={nameAs ? 'attorney-card__name' : undefined}
+          >
             {name}
           </UserName>
 
