@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import CompactImage from 'components/atoms/CompactImage';
 import React from 'react';
 import {
   AwardCardContent,
@@ -29,7 +29,7 @@ const AwardCard = ({
         // eslint-disable-next-line @next/next/no-img-element, jsx-a11y/img-redundant-alt
         <img src={image?.src} alt={image?.alt} />
       ) : (
-        <Image
+        <CompactImage
           src={image?.src}
           alt={image?.alt}
           width={200}

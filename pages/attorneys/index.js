@@ -8,6 +8,37 @@ import {
 import { sortAttorneysByCategory, sortByKey } from 'utils/helpers';
 import { getPractices } from 'requests/getPractices';
 
+// The fields LawyerCard reads (through AttorneyCards). The REST answer also
+// carries the full biography and a second copy of the photo URL, which the
+// directory never shows (tasks #13: 81 kB of page data, about half unused).
+const CARD_FIELDS = [
+  'id',
+  'title',
+  'designation',
+  'email',
+  'phone',
+  'link',
+  'uri',
+  'better_featured_image',
+  'featuredImage',
+  'location_array',
+];
+
+const toCardFields = (attorney) => Object.fromEntries(
+  CARD_FIELDS.filter((key) => attorney[key] !== undefined).map((key) => [
+    key,
+    attorney[key],
+  ]),
+);
+
+const trimForCards = (attorneysByCategory) => attorneysByCategory
+  && Object.fromEntries(
+    Object.entries(attorneysByCategory).map(([category, group]) => [
+      category,
+      { ...group, attorneys: group.attorneys.map(toCardFields) },
+    ]),
+  );
+
 /** Map all the page data to component props */
 export async function getStaticProps() {
   const page = await attorneysPageContent();
@@ -81,7 +112,7 @@ export async function getStaticProps() {
       },
       canonicalUrl,
       attorneyArchives,
-      seoAttorneys: sortedAttorneysByCategory,
+      seoAttorneys: trimForCards(sortedAttorneysByCategory),
       practices,
       breadcrumbs,
       webPageData,

@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import CompactImage from 'components/atoms/CompactImage';
 import React, { useCallback } from 'react';
 import { Title20 } from 'styles/common/Typography.style';
 import {
@@ -43,7 +43,7 @@ const LibraryCard = ({
   return (
     <LibraryCardBox className={isDarker ? 'darker' : ''}>
       <LibraryCardImage $isEmptyImage={!image || empty(image)}>
-        <Image
+        <CompactImage
           src={image || SHDiamond}
           alt={`${title} post image`}
           width={500}

@@ -28,6 +28,7 @@ This is a **Next.js 16** frontend (Pages Router, React 19) for the Scarinci Holl
 - `images.qualities` must list every `quality` prop used in components; Next 16 silently snaps other values to the nearest listed one (direct `/_next/image` URLs with them get 400).
 - `<Html data-scroll-behavior="smooth">` in `_document.js` keeps instant scroll-to-top on navigation, since the global CSS sets `scroll-behavior: smooth`.
 - Use `preload`, not the deprecated `priority`, on `next/image`.
+- With a `sizes` made of pixel values only (`"400px"`, `"(max-width: 768px) 144px, 200px"`) `next/image` lists all 13 widths in `srcSet` (about 3 kB per image), so fixed-size card images use `components/atoms/CompactImage` instead (tasks #13): same props, `srcSet` cut to the files a browser picks at 1x, 2x and 3x (`utils/trim-src-set.js`), so it loads the same file as before. Not for `preload` images (no preload link).
 - ESLint stays on v7 + `.eslintrc.js` with `@next/eslint-plugin-next` 12; `eslint-config-next` 16 needs ESLint 9 flat config, which is a separate migration.
 
 ### Data Fetching Strategy
