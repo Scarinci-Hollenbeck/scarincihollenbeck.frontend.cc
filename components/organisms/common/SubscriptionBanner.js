@@ -18,21 +18,26 @@ const DynamicTitle32 = dynamic(() => import('styles/common/Typography.style').th
 const SubscriptionBanner = ({
   isIndustry = false,
   TitleComponent = DynamicTitle32,
+  titleAs,
+  subtitleAs,
 }) => {
   const dispatch = useDispatch();
   return (
     <SubscriptionBannerSection
       className={isIndustry ? 'subscription-industry' : ''}
+      aria-label={
+        titleAs ? 'Sign up to get the latest from our attorneys' : undefined
+      }
     >
       <ContainerDefault>
         <SubscriptionBannerHolder>
-          <SubscriptionBannerTitle as={TitleComponent}>
+          <SubscriptionBannerTitle as={TitleComponent} forwardedAs={titleAs}>
             <strong>Sign up </strong>
             to get the latest from our attorneys!
           </SubscriptionBannerTitle>
 
           <SubscriptionBannerContent>
-            <SubscriptionBannerSubtitle>
+            <SubscriptionBannerSubtitle as={subtitleAs}>
               Explore What Matters Most to You.
             </SubscriptionBannerSubtitle>
 

@@ -17,12 +17,28 @@ const SubHeaderKeyContacts = ({
   isPrint,
   handlePrint,
   printButtonText = 'Print page',
+  titleAs: TitleTag = 'h2',
+  cardTitleAs,
 }) => {
   if (empty(keyContacts)) return null;
 
   return (
-    <SubHeaderInteractive $bg={globalColor.blue.blue6002}>
-      <h2>Key Contacts</h2>
+    <SubHeaderInteractive
+      $bg={globalColor.blue.blue6002}
+      // Not a heading here: a landmark keeps the block reachable for screen
+      // readers without adding it to the page outline.
+      {...(TitleTag !== 'h2' && {
+        role: 'region',
+        'aria-label': 'Key Contacts',
+      })}
+    >
+      <TitleTag
+        className={
+          TitleTag !== 'h2' ? 'sub-header-interactive__title' : undefined
+        }
+      >
+        Key Contacts
+      </TitleTag>
 
       <SubHeaderKeyContactsCards>
         {keyContacts?.slice(0, 2)?.map((keyContact) => (
@@ -38,6 +54,7 @@ const SubHeaderKeyContacts = ({
               width={300}
               height={300}
               isPrint={isPrint}
+              nameAs={cardTitleAs}
             />
             {isPrint
               && (!empty(keyContact.qrCodeLinkedin)

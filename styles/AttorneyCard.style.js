@@ -17,7 +17,8 @@ export const AttorneyCardBox = styled.article`
     box-shadow: rgb(99 98 98 / 90%) -2px 0px 18px;
 
     > div {
-      h3 {
+      h3,
+      .attorney-card__name {
         color: ${globalColor.red.darkRed};
       }
     }

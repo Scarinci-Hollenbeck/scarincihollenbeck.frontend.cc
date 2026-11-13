@@ -26,7 +26,8 @@ export const attorneyCardForPractices = `
       box-shadow: none;
 
       > div {
-        h3 {
+        h3,
+        .attorney-card__name {
           color: ${globalColor.white};
         }
       }
@@ -58,11 +59,13 @@ export const attorneyCardForPractices = `
 
     ${InfoBox} {
       h3,
+      .attorney-card__name,
       p {
         font-family: var(--font-poppins);
       }
 
-      h3 {
+      h3,
+      .attorney-card__name {
         margin: 0 0 4px 0;
         color: ${globalColor.white};
         font-size: ${rem(20)};
@@ -329,7 +332,8 @@ export const SubHeaderInteractive = styled.div`
   justify-content: center;
   row-gap: 12px;
 
-  > h2 {
+  > h2,
+  > .sub-header-interactive__title {
     margin: 0;
     color: ${globalColor.white};
     font-size: ${rem(18)};

@@ -12,6 +12,7 @@ const AttorneysArea = ({
   handleSetCardParams,
   handleSetCardGap,
   minHeight = null,
+  cardTitleAs,
 }) => {
   const { chairs, attorneysList } = attorneys;
   const chair = chairs[0];
@@ -42,7 +43,7 @@ const AttorneysArea = ({
             width={180}
             height={210}
             handleSetCardParams={handleSetCardParams}
-            cardTag="h4"
+            cardTag={cardTitleAs || 'h4'}
           />
         </AttorneysAreaChair>
       )}
@@ -72,6 +73,7 @@ const AttorneysArea = ({
               width={180}
               height={210}
               handleSetCardParams={handleSetCardParams}
+              cardTag={cardTitleAs}
             />
           ),
         )}

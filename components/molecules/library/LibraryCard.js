@@ -29,6 +29,7 @@ const LibraryCard = ({
   tags,
   onTagClick,
   isDarker = false,
+  titleAs,
 }) => {
   const handleTagClick = useCallback(
     (e, tag) => {
@@ -53,7 +54,11 @@ const LibraryCard = ({
       </LibraryCardImage>
 
       <LibraryCardContent>
-        {!empty(title) && <Title20 title={title}>{title}</Title20>}
+        {!empty(title) && (
+          <Title20 as={titleAs} title={title}>
+            {title}
+          </Title20>
+        )}
         {!empty(description) && (
           <LibraryCardText>
             <JSXWithDynamicLinks HTML={description} />

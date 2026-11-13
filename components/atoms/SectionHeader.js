@@ -5,9 +5,11 @@ import { SectionHeaderWrapper } from 'styles/SectionHeader.style';
 import { StandardBlueButton } from 'styles/Buttons.style';
 import Link from 'next/link';
 
-const SectionHeader = ({ title, linkText = 'Read more', link }) => (
+const SectionHeader = ({
+  title, linkText = 'Read more', link, titleAs,
+}) => (
   <SectionHeaderWrapper>
-    {!empty(title) && <Title32>{title}</Title32>}
+    {!empty(title) && <Title32 as={titleAs}>{title}</Title32>}
 
     {!empty(link) && (
       <StandardBlueButton as={Link} href={link}>

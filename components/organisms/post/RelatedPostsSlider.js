@@ -19,7 +19,7 @@ const breakpoints = {
   },
 };
 
-const RelatedPostsSlider = ({ items, isDarkerCards = false }) => {
+const RelatedPostsSlider = ({ items, isDarkerCards = false, cardTitleAs }) => {
   if (empty(items)) return null;
 
   return (
@@ -42,6 +42,7 @@ const RelatedPostsSlider = ({ items, isDarkerCards = false }) => {
               date={item?.date}
               tags={item?.tags?.nodes}
               isDarker={isDarkerCards}
+              titleAs={cardTitleAs}
             />
           </SwiperSlide>
         ))}
