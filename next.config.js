@@ -86,10 +86,11 @@ const nextConfig = {
     // Next 15+ prerenders up to 8 pages per build worker at once; the WordPress
     // backend times out under that load, so keep Next 14's one page per worker.
     staticGenerationMaxConcurrency: 1,
-    // One build worker instead of cores - 1 (3 on Vercel's 4-core machine):
-    // about 1.4 WordPress requests a second instead of 4, so a build leaves
-    // the backend's 2 vCPUs room for visitors (tasks #15, backend's request).
-    // The build takes about 8 minutes instead of 3.
+    // One build worker instead of cores - 1 (3 on Vercel's 4-core machine), so
+    // one page prerenders at a time and a build leaves the backend's 2 vCPUs
+    // room for visitors (tasks #15, backend's request). Measured 13.11: page
+    // generation 4.4 min instead of 2.8 (about 2.5 WordPress requests a second
+    // instead of 4, the same ~670 in total).
     cpus: 1,
   },
   logging: {
