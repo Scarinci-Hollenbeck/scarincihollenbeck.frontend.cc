@@ -47,5 +47,18 @@ POSTS.forEach((path) => {
 
     expect(await page.locator('h1').count()).toBe(1);
     expect(onPage).toEqual(inText);
+
+    // The blocks stay reachable for screen readers as landmarks instead.
+    await expect(
+      page.getByRole('region', { name: 'Key Contacts' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('region', { name: 'Related Posts' }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole('region', {
+        name: 'Sign up to get the latest from our attorneys',
+      }),
+    ).toBeVisible();
   });
 });

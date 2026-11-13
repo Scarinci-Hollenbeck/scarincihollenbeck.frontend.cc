@@ -23,7 +23,15 @@ const SubHeaderKeyContacts = ({
   if (empty(keyContacts)) return null;
 
   return (
-    <SubHeaderInteractive $bg={globalColor.blue.blue6002}>
+    <SubHeaderInteractive
+      $bg={globalColor.blue.blue6002}
+      // Not a heading here: a landmark keeps the block reachable for screen
+      // readers without adding it to the page outline.
+      {...(TitleTag !== 'h2' && {
+        role: 'region',
+        'aria-label': 'Key Contacts',
+      })}
+    >
       <TitleTag className="sub-header-interactive__title">
         Key Contacts
       </TitleTag>

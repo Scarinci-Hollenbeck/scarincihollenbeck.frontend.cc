@@ -63,6 +63,7 @@ const PracticeAttorneys = ({
       <PracticeAttorneysSection
         id={anchorId}
         className="margin-scroll"
+        aria-label={titleAs ? title : undefined}
         data-testid="collapse-attorneys"
       >
         {isBackground && (
@@ -87,6 +88,7 @@ const PracticeAttorneys = ({
       className={`margin-scroll ${isCollapsed ? 'collapsed' : ''}`}
       id={anchorId}
       data-testid="collapse-attorneys"
+      aria-label={titleAs ? title : undefined}
     >
       {isBackground && (
         <PracticeAttorneysBg

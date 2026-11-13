@@ -14,7 +14,9 @@ const RelatedPosts = ({
   if (empty(posts)) return null;
 
   return (
-    <RelatedPostsContainer>
+    <RelatedPostsContainer
+      {...(titleAs && { role: 'region', 'aria-label': title })}
+    >
       <SectionHeader
         title={title}
         link={link}

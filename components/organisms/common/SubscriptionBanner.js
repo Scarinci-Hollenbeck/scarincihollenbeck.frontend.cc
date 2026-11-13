@@ -25,6 +25,9 @@ const SubscriptionBanner = ({
   return (
     <SubscriptionBannerSection
       className={isIndustry ? 'subscription-industry' : ''}
+      aria-label={
+        titleAs ? 'Sign up to get the latest from our attorneys' : undefined
+      }
     >
       <ContainerDefault>
         <SubscriptionBannerHolder>
