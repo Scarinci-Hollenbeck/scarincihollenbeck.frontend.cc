@@ -29,6 +29,7 @@ export default function FirmPage({ page }) {
       <BasicSiteHead
         title={seo.title}
         metaDescription={seo.metaDesc}
+        ogImage={seo?.opengraphImage?.sourceUrl}
         canonicalUrl={canonicalLink}
         breadcrumbs={breadcrumbs}
         webPageData={webPageData}

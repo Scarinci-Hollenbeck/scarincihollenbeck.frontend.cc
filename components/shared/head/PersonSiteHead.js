@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { CURRENT_DOMAIN } from 'utils/constants';
+import { CURRENT_DOMAIN, DEFAULT_OG_IMAGE } from 'utils/constants';
 import {
   STANDARD_SCHEMA,
   buildAttorneyProfileSchema,
@@ -54,7 +54,7 @@ const PersonSiteHead = ({
       <meta property="og:title" content={title} />
       <meta property="og:locale" content="en_US" />
       <meta property="og:url" content={currentUrl} />
-      <meta property="og:image" content={featuredImage || standardImage} />
+      <meta property="og:image" content={featuredImage || DEFAULT_OG_IMAGE} />
       <meta property="og:description" content={metaDescription} />
       <meta property="og:type" content="website" />
       <meta property="og:site_name" content={title} />
@@ -92,7 +92,7 @@ const PersonSiteHead = ({
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={metaDescription} />
-      <meta name="twitter:image" content={featuredImage || standardImage} />
+      <meta name="twitter:image" content={featuredImage || DEFAULT_OG_IMAGE} />
       {breadcrumbs?.length > 0 && (
         <script
           type="application/ld+json"

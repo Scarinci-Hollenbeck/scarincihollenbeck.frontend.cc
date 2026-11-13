@@ -51,6 +51,7 @@ const HomePage = ({
       <HomeSiteHead
         title={seo?.title || ''}
         metaDescription={seo?.metaDesc || ''}
+        ogImage={seo?.opengraphImage?.sourceUrl}
         canonicalUrl={PRODUCTION_URL}
         webPageData={webPageData}
         hqGeo={hqGeo}

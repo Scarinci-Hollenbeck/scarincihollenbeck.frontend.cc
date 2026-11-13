@@ -90,6 +90,7 @@ const LocationPage = ({
       <BasicSiteHead
         title={seo.title}
         metaDescription={seo.metaDesc}
+        ogImage={seo?.opengraphImage?.sourceUrl}
         canonicalUrl={canonicalUrl}
         personDataForSchema={attorneysSchemaData}
         breadcrumbs={breadcrumbs}

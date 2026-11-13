@@ -21,6 +21,7 @@ const MemorialsPage = ({
     <BasicSiteHead
       title={seo?.title}
       metaDescription={seo?.metaDesc}
+      ogImage={seo?.opengraphImage?.sourceUrl}
       canonicalUrl={canonicalUrl}
       itemListData={itemListData}
       itemListMeta={itemListMeta}

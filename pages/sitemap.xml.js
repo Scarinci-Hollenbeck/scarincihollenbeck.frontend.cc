@@ -26,17 +26,17 @@ const getCurrentPublishedPages = async () => {
       )
     ).json();
 
-    if (empty(response?.data)) return [];
+    if (empty(response?.data)) return { homeModified: null, pages: [] };
 
     const siteMapArr = Array.from(
       Object.entries(response?.data),
       ([key, value]) => {
         value = value.map((page) => {
-          if (page.date_modified.length === 0) {
-            page.date_modified = new Date().toISOString();
-          } else {
-            page.date_modified = reformatDate(page.date_modified);
-          }
+          // No date in WordPress means no <lastmod>: the build time would
+          // change on every request and teach crawlers to ignore the field.
+          page.date_modified = page.date_modified
+            ? reformatDate(page.date_modified)
+            : null;
           return page;
         });
         if (key === 'categories') {
@@ -49,7 +49,7 @@ const getCurrentPublishedPages = async () => {
             {
               id: value.length,
               title: 'Categories',
-              date_modified: new Date().toISOString(),
+              date_modified: null,
               slug: '/library/category/firm-news',
             },
           ];
@@ -60,7 +60,7 @@ const getCurrentPublishedPages = async () => {
             {
               id: value.length,
               title: 'Attorneys',
-              date_modified: new Date().toISOString(),
+              date_modified: null,
               slug: '/attorneys',
             },
           ];
@@ -71,7 +71,7 @@ const getCurrentPublishedPages = async () => {
             {
               id: value.length,
               title: 'Administration',
-              date_modified: new Date().toISOString(),
+              date_modified: null,
               slug: '/administration',
             },
           ];
@@ -82,7 +82,7 @@ const getCurrentPublishedPages = async () => {
             {
               id: value.length,
               title: 'Careers',
-              date_modified: new Date().toISOString(),
+              date_modified: null,
               slug: '/careers',
             },
           ];
@@ -97,44 +97,55 @@ const getCurrentPublishedPages = async () => {
       },
     );
 
-    return finalSitemapEntries(
-      siteMapArr
-        .flat()
-        .filter(
+    // Dated entries first: the hard-coded listings above (/attorneys, /careers,
+    // ...) are also WordPress pages with a real date, and the first copy of a
+    // URL is the one kept. The sort is stable, so the order is otherwise kept.
+    const entries = siteMapArr
+      .flat()
+      .sort((a, b) => Number(!a.date_modified) - Number(!b.date_modified));
+    // The home page is the WordPress page /front-page.
+    const homeModified = entries.find(({ slug }) => slug === exception3)?.date_modified || null;
+
+    return {
+      homeModified,
+      pages: finalSitemapEntries(
+        entries.filter(
           ({ slug }) => slug !== exception1 && slug !== exception2 && slug !== exception3,
         ),
-    );
+      ),
+    };
   } catch (error) {
     console.error(error.message);
+    return { homeModified: null, pages: [] };
   }
 };
+
+const lastmod = (date) => (date
+  ? `
+                <lastmod>${date}</lastmod>`
+  : '');
 const Sitemap = () => null;
 export const getServerSideProps = async ({ res }) => {
   const baseUrl = CURRENT_DOMAIN;
-  const sitemapArr = await getCurrentPublishedPages();
+  const { homeModified, pages: sitemapArr } = await getCurrentPublishedPages();
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-    <urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
         <url>
-          <loc>${baseUrl}</loc>
-          <lastmod>${new Date().toISOString()}</lastmod>
+          <loc>${baseUrl}</loc>${lastmod(homeModified)}
           <changefreq>daily</changefreq>
           <priority>1.0</priority>
         </url>
-        ${
-  !empty(sitemapArr)
-          && sitemapArr
-            .map(
-              (page) => `
+        ${sitemapArr
+    .map(
+      (page) => `
               <url>
-                <loc>${baseUrl}${page.slug}</loc>
-                <lastmod>${page.date_modified}</lastmod>
+                <loc>${baseUrl}${page.slug}</loc>${lastmod(page.date_modified)}
                 <changefreq>daily</changefreq>
                 <priority>0.9</priority>
               </url>      
                 `,
-            )
-            .join('')
-} 
+    )
+    .join('')} 
     </urlset>
   `;
   res.setHeader(

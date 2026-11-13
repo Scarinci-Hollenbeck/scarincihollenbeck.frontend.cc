@@ -94,6 +94,7 @@ const LibraryCard = ({
               <LibraryTag key={tag?.databaseId || tag?.id}>
                 <LibraryTagLink
                   href={`/library/search?tag=${tag?.databaseId || tag?.id}`}
+                  rel="nofollow"
                   onClick={(e) => handleTagClick(e, tag)}
                 >
                   {tag?.name}

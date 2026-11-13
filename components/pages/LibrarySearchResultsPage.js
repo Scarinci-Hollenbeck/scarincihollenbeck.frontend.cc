@@ -22,7 +22,11 @@ const LibrarySearchResultsPage = ({
     <BasicSiteHead
       title={seo?.title}
       metaDescription={seo?.metaDesc}
+      ogImage={seo?.opengraphImage?.sourceUrl}
       canonicalUrl={seo?.canonicalUrl}
+      // Search results are thin, uncached (each request renders through
+      // WordPress) and keyed by query string: keep them out of the index.
+      noindex
       breadcrumbs={breadcrumbs}
       webPageData={webPageData}
     />

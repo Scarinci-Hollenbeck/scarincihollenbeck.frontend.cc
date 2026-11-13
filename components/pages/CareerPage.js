@@ -18,6 +18,7 @@ const CareerProfile = ({
       <BasicSiteHead
         title={title}
         metaDescription={seo.metaDesc}
+        ogImage={seo?.opengraphImage?.sourceUrl}
         canonicalUrl={canonicalUrl}
         breadcrumbs={breadcrumbs}
         jobPostingData={jobPostingData}

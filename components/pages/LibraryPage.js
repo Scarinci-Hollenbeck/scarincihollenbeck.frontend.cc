@@ -26,6 +26,7 @@ const LibraryPage = ({
     <BasicSiteHead
       title={seo?.title}
       metaDescription={seo?.metaDesc}
+      ogImage={seo?.opengraphImage?.sourceUrl}
       canonicalUrl={canonicalUrl}
       breadcrumbs={breadcrumbs}
       webPageData={webPageData}

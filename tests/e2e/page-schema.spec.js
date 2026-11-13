@@ -182,7 +182,7 @@ test.describe('code schemas tell the truth (tasks #10)', () => {
     const authors = await fetchArticleAuthors(request, path);
 
     expect(authors).toHaveLength(1);
-    expect(authors[0]['@type']).not.toBe('Person');
+    expect(authors[0]['@type']).toBe('LegalService');
     expect(authors[0]['@id']).toMatch(/\/#organization$/);
   });
 

@@ -4,6 +4,7 @@ import { sanitizeCategories, stripHtml } from 'utils/helpers';
 import { fetchOwnApi } from 'requests/fetchOwnApi';
 import empty from 'is-empty';
 import { getFilteredLibraryData } from 'requests/getFilteredLibraryData';
+import { paginatedUrl } from 'utils/paginated-url';
 
 export const getServerSideProps = async ({
   params, query, req, res,
@@ -39,7 +40,10 @@ export const getServerSideProps = async ({
     'max-age=0, s-maxage=60, stale-while-revalidate=120',
   );
 
+  // The author's Person @id stays on the first page; the page itself is
+  // self-canonical, ?page=N included.
   const canonicalUrl = `${PRODUCTION_URL}/library/author/${slug}`;
+  const pageUrl = paginatedUrl(canonicalUrl, query.page);
 
   const breadcrumbs = [
     { name: 'Home', url: `${CURRENT_DOMAIN}/` },
@@ -65,7 +69,7 @@ export const getServerSideProps = async ({
   ];
 
   const webPageData = {
-    url: canonicalUrl,
+    url: pageUrl,
     name: `Writings by ${user?.name}`,
     description: stripHtml(user?.description),
     pageType: 'CollectionPage',
@@ -79,7 +83,7 @@ export const getServerSideProps = async ({
       authorId: user?.databaseId,
       seo: {
         ...user?.seo,
-        canonicalUrl,
+        canonicalUrl: pageUrl,
       },
       subHeaderSlides: sanitizeCategories([
         ...mainCategories?.categories?.nodes,

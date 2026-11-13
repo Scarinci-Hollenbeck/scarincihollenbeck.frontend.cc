@@ -127,6 +127,9 @@ export const practicesQuery = `query PracticeQuery($id: ID!) {
     seo {
       title
       metaDesc
+      opengraphImage {
+        sourceUrl
+      }
     }
   }
 }`;

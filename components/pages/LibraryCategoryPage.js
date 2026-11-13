@@ -42,6 +42,7 @@ const LibraryCategoryPage = ({
       <BasicSiteHead
         title={seo?.title}
         metaDescription={seo?.metaDesc}
+        ogImage={seo?.opengraphImage?.sourceUrl}
         canonicalUrl={seo?.canonicalUrl}
         breadcrumbs={breadcrumbs}
         webPageData={webPageData}
