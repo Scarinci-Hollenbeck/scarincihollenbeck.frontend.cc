@@ -55,4 +55,10 @@ To create a production copy of the client application run `yarn build`. Then to 
 
 ### Deployment
 
-To deploy changes to the live domain [scarincihollenbeck.com](https://scarinciholleneck.com) commit your changes to the `client-prod` branch. To send changes to the live preview domain [https://scarincihollenbeck-cc-git-production.s1100h.vercel.app/](https://scarincihollenbeck-cc-git-production.s1100h.vercel.app/) commit your changes to `production` branch.
+The site is deployed on Vercel from three kinds of branches:
+
+- Feature branches open a PR into `staging`. A branch gets a preview deployment only for a push whose commit message contains `[preview]`.
+- `staging` (preview at https://scarincihollenbeck-frontend-cc-git-staging-scarinci-hollenbeck.vercel.app) builds on every push and holds what goes into the next release.
+- `production` is the live site [scarincihollenbeck.com](https://scarincihollenbeck.com); merging the release PR from `staging` deploys it.
+
+Pushes that change only docs or tests are not built. The build rules, the release steps and the limits that protect the WordPress backend are in [CLAUDE.md](CLAUDE.md).
