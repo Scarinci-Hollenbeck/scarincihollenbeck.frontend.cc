@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { CURRENT_DOMAIN, SITE_TITLE } from 'utils/constants';
+import { CURRENT_DOMAIN, FIRM_DESIGNATION, SITE_TITLE } from 'utils/constants';
 import {
   STANDARD_SCHEMA,
   articleSchema,
@@ -8,12 +8,20 @@ import {
 
 const buildAuthorField = (authors) => {
   if (!authors?.length) return null;
-  const mapAuthor = (a) => ({
-    '@type': 'Person',
-    '@id': `${CURRENT_DOMAIN}${a.uri}`,
-    name: a.display_name,
-    url: `${CURRENT_DOMAIN}${a.uri}`,
-  });
+  // The firm as author is the site's organization node, not a Person.
+  const mapAuthor = (a) => (a.designation === FIRM_DESIGNATION
+    ? {
+      '@type': 'Organization',
+      '@id': `${CURRENT_DOMAIN}/#organization`,
+      name: SITE_TITLE,
+      url: CURRENT_DOMAIN,
+    }
+    : {
+      '@type': 'Person',
+      '@id': `${CURRENT_DOMAIN}${a.uri}`,
+      name: a.display_name,
+      url: `${CURRENT_DOMAIN}${a.uri}`,
+    });
   return authors.length === 1 ? mapAuthor(authors[0]) : authors.map(mapAuthor);
 };
 

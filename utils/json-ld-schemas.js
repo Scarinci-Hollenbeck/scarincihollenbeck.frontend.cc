@@ -14,6 +14,12 @@ const SOCIAL_LINKS = [
   'https://twitter.com/s_h_law',
 ];
 
+// One value for the firm and every office. They match the editor-written
+// JSON-LD (`pageSchemaJsonLd`) of all three offices; the firm has not yet
+// confirmed which hours and price range are right (tasks repo #10).
+const FIRM_OPENING_HOURS = 'Mo-Fr 09:00-17:00';
+const FIRM_PRICE_RANGE = '$$$';
+
 const FIRM_AREA_SERVED = [
   { '@type': 'State', name: 'New Jersey' },
   { '@type': 'State', name: 'New York' },
@@ -46,7 +52,7 @@ export const buildBusinessSchema = (geo = null) => ({
         '@type': 'ImageObject',
         url: LOGO_URL,
       },
-      priceRange: '$$$$',
+      priceRange: FIRM_PRICE_RANGE,
       telephone: '201-896-4100',
       email: SITE_EMAIL,
       hasMap:
@@ -76,7 +82,7 @@ export const buildBusinessSchema = (geo = null) => ({
         },
       ],
       sameAs: SOCIAL_LINKS,
-      openingHours: 'Mo-Fr 8:30-18:00',
+      openingHours: FIRM_OPENING_HOURS,
     },
     {
       '@type': 'WebSite',
@@ -126,7 +132,7 @@ export const buildLocationSchema = (location) => ({
         postalCode: location.postalCode,
         addressCountry: location.addressCountry || 'US',
       },
-      openingHours: 'Mo-Fr 09:00-17:00',
+      openingHours: FIRM_OPENING_HOURS,
       ...(location.mapAddress && {
         hasMap: location.mapAddress.startsWith('http')
           ? location.mapAddress
@@ -140,7 +146,7 @@ export const buildLocationSchema = (location) => ({
           longitude: parseFloat(location.longitude),
         },
       }),
-      priceRange: '$$',
+      priceRange: FIRM_PRICE_RANGE,
       ...(location.areaServed && { areaServed: location.areaServed }),
       parentOrganization: {
         '@type': 'Organization',

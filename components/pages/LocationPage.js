@@ -6,7 +6,6 @@ import empty from 'is-empty';
 import LocationContent from 'components/organisms/locations/LocationContent';
 import { FaqContainer } from 'styles/Faq.style';
 import SubHeaderLocations from 'layouts/SubHeader/SubHeaderLocations';
-import { DEFAULT_SCHEMA_FAQ } from '../../utils/constants';
 import { sortByKey } from '../../utils/helpers';
 import SubHeaderDefault from '../../layouts/SubHeader/SubHeaderDefault';
 import PracticeAnchors from '../organisms/practices/PracticeAnchors';
@@ -94,9 +93,8 @@ const LocationPage = ({
         canonicalUrl={canonicalUrl}
         personDataForSchema={attorneysSchemaData}
         breadcrumbs={breadcrumbs}
-        faqData={
-          !empty(currentOffice.faq) ? currentOffice.faq : DEFAULT_SCHEMA_FAQ
-        }
+        // FAQPage only from the office's own FAQ, not the firm-wide fallback.
+        faqData={currentOffice.faq}
         webPageData={webPageData}
         locationSeo={locationSeo}
         includeOrganizationSchema
