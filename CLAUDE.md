@@ -123,7 +123,7 @@ NEXT_PUBLIC_FIREBASE_*            # Firebase config vars
 
 ### Deployment Branches
 
-- Feature branches → PR into `staging`; every branch and PR gets a Vercel preview deployment
+- Feature branches → PR into `staging`; a branch gets a Vercel preview deployment only for a push whose commit message contains `[preview]` (see the Ignored Build Step below)
 - `staging` → PR into `production`
 - `production` branch → Vercel Production, the live site at scarincihollenbeck.com (merging here deploys to live)
 
@@ -131,9 +131,12 @@ Every build prerenders all pages through WordPress (about 670 requests in 3 minu
 
 - `staging` and `production` always build, so each always shows the code merged into it, except a push that changed only `*.md`, `tests/` or `.superpowers/` since the branch's last deployment;
 - a PR branch builds a preview only when the pushed commit's message contains `[preview]` (the other pushes show as `Canceled by Ignored Build Step` in GitHub). Put it in the last commit before a push that needs checking, or push an empty commit: `git commit --allow-empty -m "[preview]"`;
-- `dependabot/*` branches never build.
+- `dependabot/*` branches never build;
+- `[build]` (or `[preview]`) in the commit message always builds, on any branch. An empty commit to `staging` or `production` is skipped otherwise, so after changing a secret in Vercel rebuild with `git commit --allow-empty -m "[build] rebuild after secret change"` or Redeploy in the dashboard.
 
-A docs- or test-only change gets no preview; run changed e2e specs against the staging alias instead. Push to a PR in batches anyway (commit locally, push when the PR is ready for review or a fix is complete).
+Merge a PR that changes code only after its preview (pushed with `[preview]`) built and was checked, and after the merge check the `Vercel` status of the `staging` commit: a failed staging build leaves the staging alias on the previous deployment.
+
+A push that changed only docs or tests gets no staging or production build (`Canceled by Ignored Build Step`), and a PR branch gets none without `[preview]`; run changed e2e specs against the staging alias instead. Push to a PR in batches anyway (commit locally, push when the PR is ready for review or a fix is complete).
 
 ### Releasing `staging` to production
 

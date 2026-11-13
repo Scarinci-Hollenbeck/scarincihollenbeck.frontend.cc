@@ -13,15 +13,21 @@
 # - a PR branch builds a preview only when the pushed commit's message
 #   contains [preview];
 # - dependabot branches never build;
-# - staging and production skip a push that changed only docs and tests.
+# - staging and production skip a push that changed only docs and tests;
+# - [build] (or [preview]) in the commit message always builds, e.g. an empty
+#   commit to rebuild staging after a secret changed in Vercel.
 
 REF=$VERCEL_GIT_COMMIT_REF
 
 # Without the branch name a PR branch cannot be told from staging: build.
 [ -n "$REF" ] || exit 1
 
+case "$REF" in dependabot/*) exit 0 ;; esac
+
+MSG=${VERCEL_GIT_COMMIT_MESSAGE:-$(git log -1 --format=%B)}
+case "$MSG" in *"[build]"* | *"[preview]"*) exit 1 ;; esac
+
 case "$REF" in
-  dependabot/*) exit 0 ;;
   staging | production)
     B=$VERCEL_GIT_PREVIOUS_SHA
     { [ -n "$B" ] && git cat-file -e "$B" 2>/dev/null; } || exit 1
@@ -30,7 +36,5 @@ case "$REF" in
     ;;
 esac
 
-MSG=${VERCEL_GIT_COMMIT_MESSAGE:-$(git log -1 --format=%B)}
-case "$MSG" in *"[preview]"*) exit 1 ;; esac
 echo "No [preview] in the commit message: no preview build for this push."
 exit 0
