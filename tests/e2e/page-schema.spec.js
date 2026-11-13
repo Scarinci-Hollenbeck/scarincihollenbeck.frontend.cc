@@ -110,3 +110,104 @@ test.describe('remaining priority routes', () => {
     });
   });
 });
+
+const nodesIn = (blocks) => blocks
+  .map((block) => JSON.parse(block))
+  .flatMap((json) => (json['@graph'] ? json['@graph'] : [json]));
+
+const nodeTypes = (node) => [].concat(node['@type']);
+
+const fetchArticleAuthors = async (request, path) => {
+  const article = nodesIn(
+    expectHealthyBlocks(await fetchHead(request, path), path),
+  ).find((node) => nodeTypes(node).includes('Article'));
+
+  expect(article, `${path} should emit an Article node`).toBeTruthy();
+  return [].concat(article.author);
+};
+
+/** The firm-wide FAQ must stay visible on the page: only its markup goes. */
+const expectVisibleFirmFaq = async (request, path) => {
+  const html = await (await request.get(path)).text();
+  const body = html.slice(html.indexOf('</head>'));
+
+  expect(body).toContain('data-testid="faq-wrapper"');
+  expect(body).toContain('How do you pronounce');
+};
+
+/**
+ * Tasks repo #10. Paths depend on WordPress content as of 2026-11-13: if one
+ * fails, first check the page still matches its description.
+ */
+test.describe('code schemas tell the truth (tasks #10)', () => {
+  test('a practice without its own FAQ emits no FAQPage', async ({
+    request,
+  }) => {
+    // No practicesIncluded.faq and no pageSchemaJsonLd in WordPress.
+    const path = '/practices/ip-litigation';
+    const types = typesIn(
+      expectHealthyBlocks(await fetchHead(request, path), path),
+    );
+
+    expect(types).not.toContain('FAQPage');
+    await expectVisibleFirmFaq(request, path);
+  });
+
+  test('a practice with its own FAQ keeps its FAQPage', async ({ request }) => {
+    const path = '/practices/real-estate-litigation';
+    const types = typesIn(
+      expectHealthyBlocks(await fetchHead(request, path), path),
+    );
+
+    expect(types).toContain('FAQPage');
+  });
+
+  test('a location without its own FAQ emits no FAQPage', async ({
+    request,
+  }) => {
+    const path = '/location/little-falls';
+    const types = typesIn(
+      expectHealthyBlocks(await fetchHead(request, path), path),
+    );
+
+    expect(types).not.toContain('FAQPage');
+    await expectVisibleFirmFaq(request, path);
+  });
+
+  test('the firm as post author is the organization, not a Person', async ({
+    request,
+  }) => {
+    // Author picked in WordPress: the "Scarinci Hollenbeck, LLC" profile.
+    const path = '/firm-news/new-jersey-super-lawyers-2027';
+    const authors = await fetchArticleAuthors(request, path);
+
+    expect(authors).toHaveLength(1);
+    expect(authors[0]['@type']).not.toBe('Person');
+    expect(authors[0]['@id']).toMatch(/\/#organization$/);
+  });
+
+  test('an attorney as post author stays a Person', async ({ request }) => {
+    const path = '/law-firm-insights/bess-emergency-response-planning';
+    const authors = await fetchArticleAuthors(request, path);
+
+    expect(authors.length).toBeGreaterThan(0);
+    authors.forEach((author) => {
+      expect(author['@type']).toBe('Person');
+      expect(author['@id']).toContain('/attorneys/');
+    });
+  });
+
+  test('every LegalService on a location page has the same hours and price range', async ({
+    request,
+  }) => {
+    // Covers the code schemas and the editor-written pageSchemaJsonLd.
+    const path = '/location/little-falls';
+    const services = nodesIn(
+      expectHealthyBlocks(await fetchHead(request, path), path),
+    ).filter((node) => nodeTypes(node).includes('LegalService'));
+
+    expect(services.length).toBeGreaterThan(1);
+    expect(new Set(services.map((node) => node.openingHours)).size).toBe(1);
+    expect(new Set(services.map((node) => node.priceRange)).size).toBe(1);
+  });
+});

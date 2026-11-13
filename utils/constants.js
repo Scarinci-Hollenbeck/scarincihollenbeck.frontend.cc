@@ -123,6 +123,13 @@ export const FIRM_BLOG_PAGES = [
   },
 ];
 
+/**
+ * `designation` of the firm itself when it stands in for an attorney: the
+ * fallback author below and the "Scarinci Hollenbeck, LLC" attorney profile in
+ * WordPress (/attorneys/scarinci-hollenbeck) that editors pick as a post author.
+ */
+export const FIRM_DESIGNATION = 'The Firm';
+
 export const ScarinciHollenbeckAuthor = [
   {
     uri: '/attorneys',
@@ -135,7 +142,7 @@ export const ScarinciHollenbeckAuthor = [
     profileImage: SHDiamond,
     email: SITE_EMAIL,
     phoneNumber: SITE_PHONE,
-    designation: 'The Firm',
+    designation: FIRM_DESIGNATION,
     author: {
       uri: '/firm-overview',
     },
@@ -148,7 +155,7 @@ export const ScarinciHollenbeckKeyContact = {
   display_name: 'Scarinci Hollenbeck, LLC',
   keyContactsByPractice: null,
   profileImage: SHDiamond,
-  designation: 'The Firm',
+  designation: FIRM_DESIGNATION,
   phoneNumber: SITE_PHONE,
   email: SITE_EMAIL,
   officeLocation: [
