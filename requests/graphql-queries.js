@@ -1121,30 +1121,6 @@ export const getOfficeAndMoreData = `query FirmPageQuery($id: ID!) {
       addressRegion
       latitude
       longitude
-      officePractices {
-        ... on Practice {
-          id
-          uri
-          title
-          databaseId
-          practicesIncluded {
-            childPractice {
-              ... on Practice {
-                id
-                databaseId
-                title
-                uri
-                practicePortalPageContent {
-                  practicePortalCategories
-                }
-              }
-            }
-          }
-          practicePortalPageContent {
-            practicePortalCategories
-          }
-        }
-      }
       trainStationsMap {
         mediaItemUrl
         databaseId

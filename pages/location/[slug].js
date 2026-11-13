@@ -148,6 +148,23 @@ export const getStaticProps = async ({ params }) => {
     };
   });
 
+  // Page data is sent to the browser: keep only the fields the attorney cards
+  // (AttorneysArea) and the client-side sort by lastName read. The JSON-LD above
+  // is built from the full objects.
+  currentOffice.attorneys = currentOffice.attorneys.map(
+    ({
+      title, lastName, designation, email, phone, link, profileImage,
+    }) => ({
+      title,
+      lastName,
+      designation,
+      email,
+      phone,
+      link,
+      profileImage,
+    }),
+  );
+
   const canonicalUrl = `${PRODUCTION_URL}/location/${slug}`;
 
   const breadcrumbs = [
