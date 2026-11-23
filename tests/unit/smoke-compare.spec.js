@@ -411,9 +411,14 @@ test('the CLI spaces requests by --min-gap', async () => {
     const { code } = await run([stub.url, '--min-gap', '0.3']);
     expect(code).toBe(1);
     expect(stub.stats.requests).toBe(6);
-    const gaps = stub.stats.times
-      .slice(1)
-      .map((t, i) => t - stub.stats.times[i]);
+    // The stub sees when a request arrives, not when the script started it.
+    // The first fetch of a process reaches the server 80-90 ms late (Node 22
+    // and 24, 2026-11-23: fetch warms up on its first call, later calls take
+    // 2-6 ms), so the gap after it looks short. Check the gaps between the
+    // later requests: with --min-gap 0 they are a few milliseconds.
+    const times = stub.stats.times.slice(1);
+    const gaps = times.slice(1).map((t, i) => t - times[i]);
+    expect(gaps).toHaveLength(4);
     expect(Math.min(...gaps)).toBeGreaterThanOrEqual(280);
   } finally {
     await stub.close();
