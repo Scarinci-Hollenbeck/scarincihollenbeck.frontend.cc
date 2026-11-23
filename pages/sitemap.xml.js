@@ -1,9 +1,4 @@
-import {
-  CURRENT_DOMAIN,
-  BASE_API_URL,
-  headers,
-  WP_REST_KEY,
-} from 'utils/constants';
+import { CURRENT_DOMAIN, BASE_API_URL, WP_REST_KEY } from 'utils/constants';
 import fetch from 'node-fetch';
 import empty from 'is-empty';
 import { finalSitemapEntries } from 'utils/sitemap-entries';
@@ -19,11 +14,11 @@ const getCurrentPublishedPages = async () => {
   const exception3 = '/front-page';
 
   try {
+    // Key in a header, as in requests/api.js.
     const response = await (
-      await fetch(
-        `${BASE_API_URL}/wp-json/wcra/v1/sitemap/?secret_key=${WP_REST_KEY}`,
-        headers,
-      )
+      await fetch(`${BASE_API_URL}/wp-json/wcra/v1/sitemap/?`, {
+        headers: { 'X-WCRA-Key': WP_REST_KEY },
+      })
     ).json();
 
     if (empty(response?.data)) return { homeModified: null, pages: [] };
