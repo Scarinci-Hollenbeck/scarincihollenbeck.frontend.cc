@@ -152,6 +152,7 @@ const PracticePageNew = ({
           attorneys={attorneyListPractice}
           chairs={chairPractice}
           anchorId={anchorData.attorneys.id}
+          collapsible={false}
         />
         <LatestPostsSection
           title="Read more about this practice in our library"

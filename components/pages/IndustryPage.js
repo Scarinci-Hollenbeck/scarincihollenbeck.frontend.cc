@@ -83,6 +83,7 @@ const IndustryPage = ({
     attorneyListIndustry,
     clients,
     relatedPosts,
+    articlesTagId,
     awards,
     spotlight,
   } = content;
@@ -226,6 +227,7 @@ const IndustryPage = ({
         <IndustryPostsSlider
           posts={relatedPosts}
           industryId={databaseId}
+          articlesTagId={articlesTagId}
           anchorId={anchorLinks?.articles?.id}
         />
       </IndustryPageWrapper>
