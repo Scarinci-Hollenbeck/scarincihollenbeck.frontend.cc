@@ -14,6 +14,17 @@ const PERMANENT_REDIRECTS = [
     destination: '/firm-overview',
     permanent: true,
   },
+  // Attorneys who left the firm (404 in Search Console on 2026-11-13).
+  {
+    source: '/attorneys/patrick-t-conlon',
+    destination: '/attorneys',
+    permanent: true,
+  },
+  {
+    source: '/attorneys/daniel-tokarz',
+    destination: '/attorneys',
+    permanent: true,
+  },
   {
     source: '/location',
     destination: '/location/little-falls',
