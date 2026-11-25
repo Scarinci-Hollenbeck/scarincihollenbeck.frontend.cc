@@ -327,7 +327,10 @@ export const attorneysSanitize = (attorneysArr) => {
     'Associate',
   ];
 
+  // WPGraphQL answers null for a linked attorney whose profile is no longer
+  // published (draft or trash); one such entry used to fail the whole page.
   return attorneysArr
+    .filter(Boolean)
     .map((attorney) => {
       attorney.attorneyMainInformation.profileImage = !empty(
         attorney.attorneyMainInformation?.profileImage?.sourceUrl,
