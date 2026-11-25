@@ -97,3 +97,16 @@ test('sitemap keeps the entry that WordPress lists under its final URL', () => {
   ]);
   expect(result).toEqual([{ slug: '/contact-us', date_modified: 'new' }]);
 });
+
+// Profiles of attorneys who left the firm answered 404 with no redirect
+// (Search Console, 2026-11-13; patrick-t-conlon had 95 clicks since August).
+// In WordPress the first is in the trash since 2026-10-26, the second is
+// deleted. A closed vacancy is not redirected: it may be published again.
+test('profiles of departed attorneys lead to the attorneys list', () => {
+  expect(finalPath('/attorneys/patrick-t-conlon')).toBe('/attorneys');
+  expect(finalPath('/attorneys/daniel-tokarz')).toBe('/attorneys');
+  expect(appliedRedirect('/attorneys/patrick-t-conlon').rule.permanent).toBe(
+    true,
+  );
+  expect(appliedRedirect('/careers/litigation-paralegal')).toBeNull();
+});
