@@ -38,7 +38,7 @@ Pages use one of two approaches:
 
 1. **Static Generation (ISR)** — most pages use `getStaticProps` with `revalidate` for ISR. Pages use `revalidate: 600`; the "not found" answers of attorney profiles and `/practices/:slug` use 60, so a profile or practice that gets published shows up quickly.
 
-2. **Internal API routes** (`/pages/api/`) — caching middleware layer that proxies WordPress REST API calls with a 600-second in-memory global cache (`global.cache`). These are consumed by RTK Query in the Redux store for client-side data like attorneys list, locations, practices, and industries.
+2. **Internal API routes** (`/pages/api/`) — caching middleware layer that proxies WordPress REST API calls with a 600-second in-memory global cache (`global.cache`). These are consumed by RTK Query in the Redux store for client-side data like attorneys list, locations, practices, and industries. Industries are the exception: `/api/revalidate-industries` keeps no in-memory cache and the CDN caches it for 60 s (`utils/revalidate-cache.js`), so the Services -> Industries menu follows a WordPress save in about a minute.
 
 ### Two API Clients (`requests/api.js`)
 

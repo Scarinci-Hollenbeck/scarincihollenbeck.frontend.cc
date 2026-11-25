@@ -10,6 +10,8 @@
  *
  * Required env var: REVALIDATION_SECRET
  */
+import { resetCacheForPostType } from 'utils/revalidate-cache';
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ message: 'Method not allowed' });
@@ -36,22 +38,7 @@ export default async function handler(req, res) {
     : { path: paths[i], revalidated: false, error: result.reason?.message }));
 
   // Also clear in-memory caches so /api/revalidate-* routes fetch fresh data
-  if (global.cache) {
-    const postType = req.body.post_type;
-    const cacheMap = {
-      attorneys: 'attorneys',
-      attorneyProfile: 'attorneys',
-      practices: 'practices',
-      officeLocation: 'locations',
-      location: 'locations',
-      industry: 'industries',
-    };
-
-    const cacheKey = cacheMap[postType];
-    if (cacheKey && global.cache[cacheKey]) {
-      global.cache[cacheKey].lastFetchTime = 0;
-    }
-  }
+  resetCacheForPostType(global.cache, req.body.post_type);
 
   const failed = results.filter((r) => !r.revalidated);
 
