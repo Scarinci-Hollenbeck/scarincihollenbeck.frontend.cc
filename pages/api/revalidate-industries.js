@@ -1,39 +1,23 @@
 import { getIndustries } from 'requests/getIndustries';
 import { setResponseHeaders } from 'utils/helpers';
+import { INDUSTRIES_CACHE_SECONDS } from 'utils/revalidate-cache';
 
-global.cache = global.cache || {};
-global.cache.industries = global.cache.industries || {
-  data: [],
-  lastFetchTime: 0,
-};
+// Last good answer, served only when WordPress fails. Fresh answers are cached
+// by the CDN alone (see INDUSTRIES_CACHE_SECONDS), so a saved industry reaches
+// the menu without waiting out a second, in-memory cache.
+let lastGood = [];
 
 export default async function handler(req, res) {
-  const currentTime = Date.now();
-  const cacheDurationSeconds = 600;
-  const cacheDuration = cacheDurationSeconds * 1000; // 600 sec
-
-  const { data, lastFetchTime } = global.cache.industries;
-  const timeSinceLastFetch = currentTime - lastFetchTime;
-
-  if (timeSinceLastFetch < cacheDuration && data?.length > 0) {
-    setResponseHeaders(res, cacheDurationSeconds, 'HIT');
-    return res.status(200).json({ data });
-  }
-
   try {
     const industries = await getIndustries();
+    lastGood = industries;
 
-    global.cache.industries = {
-      data: industries,
-      lastFetchTime: currentTime,
-    };
-
-    setResponseHeaders(res, cacheDurationSeconds, 'MISS');
+    setResponseHeaders(res, INDUSTRIES_CACHE_SECONDS, 'MISS');
     return res.status(200).json({ data: industries });
   } catch (err) {
-    if (data?.length > 0) {
-      setResponseHeaders(res, cacheDurationSeconds, 'HIT');
-      return res.status(200).json({ data });
+    if (lastGood.length > 0) {
+      setResponseHeaders(res, INDUSTRIES_CACHE_SECONDS, 'STALE');
+      return res.status(200).json({ data: lastGood });
     }
 
     return res.status(500).json({
