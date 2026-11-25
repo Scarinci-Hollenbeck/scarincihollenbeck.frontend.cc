@@ -77,10 +77,14 @@ export const getStaticProps = async ({ params }) => {
     };
   }
 
-  const { postsData } = await getFilteredLibraryData({
-    industries: industry?.databaseId,
-    limit: '6',
-  });
+  // An industry with an "Articles tag" in WordPress shows the newest posts with
+  // that tag; without one it keeps the posts linked to the industry.
+  const articlesTagId = industry?.articlesTagId || null;
+  const { postsData } = await getFilteredLibraryData(
+    articlesTagId
+      ? { tag: articlesTagId, limit: '12' }
+      : { industries: industry?.databaseId, limit: '6' },
+  );
 
   const content = {
     title: industry?.title,
@@ -98,6 +102,7 @@ export const getStaticProps = async ({ params }) => {
     attorneyListIndustry: includeAttorney || [],
     clients: industry?.industryContent?.clients,
     relatedPosts: sanitizePosts(postsData?.posts),
+    articlesTagId,
     awards: formateAwards(industry?.awards?.awardsItems),
     spotlight: industry?.industryContent?.spotlight,
   };

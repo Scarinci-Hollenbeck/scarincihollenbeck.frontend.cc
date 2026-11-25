@@ -1233,6 +1233,7 @@ query IndustryQuery($id: ID!) {
     title
     status
     databaseId
+    articlesTagId
     pageSchemaJsonLd
     seo {
       metaDesc

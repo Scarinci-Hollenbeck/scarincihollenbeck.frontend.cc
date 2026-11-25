@@ -11,8 +11,17 @@ import { StandardBlueButton } from 'styles/Buttons.style';
 import Link from 'next/link';
 import RelatedPostsSlider from '../post/RelatedPostsSlider';
 
-const IndustryPostsSlider = ({ posts, anchorId, industryId }) => {
+const IndustryPostsSlider = ({
+  posts,
+  anchorId,
+  industryId,
+  articlesTagId,
+}) => {
   if (empty(posts)) return null;
+
+  const libraryHref = articlesTagId
+    ? `/library/search?tag=${articlesTagId}`
+    : `/library/search?industries=${industryId}`;
 
   return (
     <IndustryPostsSection id={anchorId} className="margin-scroll">
@@ -26,7 +35,7 @@ const IndustryPostsSlider = ({ posts, anchorId, industryId }) => {
           <StandardBlueButton
             $isLight
             as={Link}
-            href={`/library/search?industries=${industryId}`}
+            href={libraryHref}
             rel="nofollow"
           >
             Open library
