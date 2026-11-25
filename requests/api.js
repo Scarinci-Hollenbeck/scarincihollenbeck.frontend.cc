@@ -27,16 +27,17 @@ export const fetchAPI = (query, options) => wpGraphQL.fetchAPI(query, options);
 
 export async function fetchRestAPI(query, params = {}) {
   try {
-    const searchParams = new URLSearchParams({
-      secret_key: WP_REST_KEY,
-      ...params,
-    });
+    // The key goes in a header, not the query string: WordPress error logs
+    // record the URL. The backend reads it in mu-plugins/sh-wcra-key-header.php,
+    // which also restores the "?" fetch drops when there are no params (wcra
+    // finds the endpoint by "/?").
+    const searchParams = new URLSearchParams(params);
 
     const url = `${BASE_API_URL}/wp-json/wcra/v1/${query}/?${searchParams}`;
 
     const res = await fetch(url, {
       method: 'GET',
-      headers: restApiHeaders,
+      headers: { ...restApiHeaders, 'X-WCRA-Key': WP_REST_KEY },
     });
 
     if (!res.ok) {
