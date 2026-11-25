@@ -24,6 +24,7 @@ const PracticeAttorneys = ({
   isBackground = true,
   titleAs,
   cardTitleAs,
+  collapsible = true,
 }) => {
   const [containerWidth, setContainerWidth] = useState(0);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -33,6 +34,9 @@ const PracticeAttorneys = ({
   const containerRef = useRef();
   const totalItems = attorneys?.length + chairs.length;
   const { width } = useSelector((state) => state.sizes.viewportSize);
+  // The grid shows one row until the section gets the `collapsed` class, which
+  // opens it. Without `collapsible` the list is always open and has no button.
+  const isOpen = !collapsible || isCollapsed;
 
   useEffect(() => {
     if (containerRef.current) {
@@ -85,7 +89,7 @@ const PracticeAttorneys = ({
 
   return (
     <PracticeAttorneysSection
-      className={`margin-scroll ${isCollapsed ? 'collapsed' : ''}`}
+      className={`margin-scroll ${isOpen ? 'collapsed' : ''}`}
       id={anchorId}
       data-testid="collapse-attorneys"
       aria-label={titleAs ? title : undefined}
@@ -102,7 +106,7 @@ const PracticeAttorneys = ({
       <ContainerDefault>
         <div className="attorneys-practice__header">
           <Title32 as={titleAs}>{title}</Title32>
-          {totalItems > calculateItemsPerRow && (
+          {collapsible && totalItems > calculateItemsPerRow && (
             <button onClick={handleCollapse}>
               {!isCollapsed ? 'See all' : 'HIDE'}
             </button>
