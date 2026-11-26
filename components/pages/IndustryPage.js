@@ -11,7 +11,8 @@ import { usePaginationData } from 'hooks/usePaginationData';
 import { getClientsQuery } from 'requests/graphql-queries';
 
 const FilledSection = dynamic(() => import('components/organisms/industries/FilledSection'));
-const VerticalTabs = dynamic(() => import('components/organisms/locations/VerticalTabs'));
+const IndustryAreas = dynamic(() => import('components/organisms/industries/IndustryAreas'));
+const IndustryContact = dynamic(() => import('components/organisms/industries/IndustryContact'));
 const LogoSeparator = dynamic(() => import('components/common/LogoSeparator'));
 const IndustryAttorneys = dynamic(() => import('components/organisms/industries/IndustryAttorneys'));
 const IndustryFaq = dynamic(() => import('components/organisms/industries/IndustryFaq'));
@@ -22,6 +23,8 @@ const IndustryPostsSlider = dynamic(() => import('components/organisms/industrie
 const Awards = dynamic(() => import('components/organisms/home/Awards'));
 const IndustrySpotlight = dynamic(() => import('components/organisms/industries/IndustrySpotlight'));
 
+// Key order is the order of the sections on the page and of the jump links
+// at the top of it.
 const anchorDataDefault = {
   filledSection: {
     id: 'filled-section',
@@ -33,8 +36,9 @@ const anchorDataDefault = {
     id: 'tabs-section',
     title: 'Areas of Service',
   },
-  clients: {
-    id: 'clients-section',
+  articles: {
+    id: 'articles-section',
+    title: 'Related Articles',
   },
   attorneys: {
     id: 'attorneys-section',
@@ -44,6 +48,9 @@ const anchorDataDefault = {
     id: 'awards-section',
     title: 'Awards',
   },
+  clients: {
+    id: 'clients-section',
+  },
   faq: {
     id: 'faq-section',
     title: 'FAQs',
@@ -51,10 +58,6 @@ const anchorDataDefault = {
   whyChooseUs: {
     id: 'why-choose-us-section',
     title: 'Why choose us',
-  },
-  articles: {
-    id: 'articles-section',
-    title: 'Related Articles',
   },
 };
 
@@ -175,20 +178,19 @@ const IndustryPage = ({
           spotlight={spotlight}
           anchorId={anchorLinks?.spotlight?.id}
         />
-        <VerticalTabs
+        <IndustryAreas
           title={anchorLinks?.verticalTabs?.title}
-          contentTabs={contentTabs}
+          areas={contentTabs}
           anchorId={anchorLinks?.verticalTabs?.id}
-          headerOffset={100}
-          activeTab={activeTab}
-          setActiveTab={setActiveTab}
+          activeArea={activeTab}
+          setActiveArea={setActiveTab}
         />
 
-        <IndustryClients
-          title={clients?.title}
-          description={clients?.description}
-          clientsPaginationData={clientsPaginationData}
-          anchorId={anchorLinks?.clients?.id}
+        <IndustryPostsSlider
+          posts={relatedPosts}
+          industryId={databaseId}
+          articlesTagId={articlesTagId}
+          anchorId={anchorLinks?.articles?.id}
         />
 
         {!empty(concatenatedAttorneys) && (
@@ -212,6 +214,13 @@ const IndustryPage = ({
           />
         )}
 
+        <IndustryClients
+          title={clients?.title}
+          description={clients?.description}
+          clientsPaginationData={clientsPaginationData}
+          anchorId={anchorLinks?.clients?.id}
+        />
+
         <>
           <LogoSeparator direction="row" isBig isContainer />
           <IndustryFaq faqList={faq} anchorId={anchorLinks?.faq?.id} />
@@ -222,13 +231,10 @@ const IndustryPage = ({
           anchorId={anchorLinks?.whyChooseUs?.id}
         />
 
-        <SubscriptionBanner isIndustry TitleComponent={Title60} />
-
-        <IndustryPostsSlider
-          posts={relatedPosts}
-          industryId={databaseId}
-          articlesTagId={articlesTagId}
-          anchorId={anchorLinks?.articles?.id}
+        <SubscriptionBanner
+          isIndustry
+          TitleComponent={Title60}
+          aside={<IndustryContact />}
         />
       </IndustryPageWrapper>
     </>
