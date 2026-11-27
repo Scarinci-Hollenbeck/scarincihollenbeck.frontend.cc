@@ -73,16 +73,35 @@ test.describe('server HTML, no JavaScript', () => {
     page,
   }) => {
     await page.goto(INDUSTRY);
-    const first = panels(page).first();
-    const column = first
-      .getByText('Related practices', { exact: true })
-      .locator('..');
-    const links = column.locator('a[href*="/practices/"]');
 
-    expect(await links.count()).toBeGreaterThan(0);
+    // No "Related practices:" paragraph is left in any area's text, on every
+    // industry: a paragraph the split missed would show up here.
     expect(
-      await first.locator('p', { hasText: /^Related practices:/ }).count(),
+      await panels(page)
+        .locator('p', { hasText: /^\s*Related practices\s*:/ })
+        .count(),
     ).toBe(0);
+
+    // Only some industries list related practices in their areas (on
+    // 25.11 only Data Centers did); the default industry must have them.
+    const columns = panels(page).getByText('Related practices', {
+      exact: true,
+    });
+    const columnCount = await columns.count();
+    if (!process.env.E2E_AREAS_INDUSTRY) {
+      expect(columnCount).toBeGreaterThan(0);
+    }
+    test.skip(columnCount === 0, `${INDUSTRY} lists no related practices`);
+
+    for (let i = 0; i < columnCount; i += 1) {
+      const links = columns
+        .nth(i)
+        .locator('..')
+        .locator('a[href*="/practices/"]');
+      expect(await links.count(), `column ${i + 1} has links`).toBeGreaterThan(
+        0,
+      );
+    }
   });
 
   test('sections and jump links follow the page order', async ({ page }) => {
