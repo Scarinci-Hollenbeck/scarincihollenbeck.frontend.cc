@@ -1234,6 +1234,7 @@ query IndustryQuery($id: ID!) {
     status
     databaseId
     articlesTagId
+    pageReady
     pageSchemaJsonLd
     seo {
       metaDesc
