@@ -14,6 +14,10 @@ export const SubscriptionBannerHolder = styled.div`
   }
 `;
 
+// Wraps the banner and an optional side block (the industry page puts the
+// contact form there). Without the side block it changes nothing.
+export const SubscriptionBannerSplit = styled.div``;
+
 export const SubscriptionBannerTitle = styled.h2`
   max-width: 270px;
   color: inherit;
@@ -172,6 +176,33 @@ export const SubscriptionBannerSection = styled.section`
 
     ${media_breakpoint_down('md')} {
       padding: 24px 0;
+    }
+  }
+
+  &.has-aside {
+    ${SubscriptionBannerSplit} {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: start;
+      gap: 60px;
+
+      ${media_breakpoint_down('xxl')} {
+        gap: 40px;
+      }
+
+      ${media_breakpoint_down('lg')} {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 32px;
+      }
+    }
+
+    ${SubscriptionBannerHolder} {
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    ${SubscriptionBannerTitle} {
+      width: 100%;
     }
   }
 `;
