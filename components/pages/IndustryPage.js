@@ -64,6 +64,7 @@ const anchorDataDefault = {
 const IndustryPage = ({
   content,
   seo,
+  noindex,
   canonicalLink,
   breadcrumbs,
   webPageData,
@@ -151,6 +152,7 @@ const IndustryPage = ({
         breadcrumbs={breadcrumbs}
         faqData={faq}
         webPageData={webPageData}
+        noindex={noindex}
         serviceSchemaData={{
           name: title,
           description: seo?.metaDesc,
