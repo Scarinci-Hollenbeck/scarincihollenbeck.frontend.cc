@@ -127,6 +127,9 @@ export const getStaticProps = async ({ params }) => {
     props: {
       content,
       seo: industry?.seo,
+      // "Page ready" off in WordPress: the page has no full content yet, so it
+      // stays out of search until editors turn the switch on.
+      noindex: industry?.pageReady !== true,
       canonicalLink,
       breadcrumbs,
       webPageData,
@@ -139,6 +142,7 @@ export const getStaticProps = async ({ params }) => {
 const Industry = ({
   content,
   seo,
+  noindex,
   canonicalLink,
   breadcrumbs,
   webPageData,
@@ -147,6 +151,7 @@ const Industry = ({
   const industryProps = {
     content,
     seo,
+    noindex,
     canonicalLink,
     breadcrumbs,
     webPageData,
